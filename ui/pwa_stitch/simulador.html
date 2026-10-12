@@ -168,7 +168,11 @@
 
         <!-- Botones Selectores de Entorno / IP -->
         <div class="grid grid-cols-2 gap-1.5 text-[10px] font-medium">
-          <button type="button" onclick="setHostIp('172.16.0.6')" class="px-2 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center justify-center gap-1 active:scale-95 transition-all text-center">
+          <button type="button" onclick="setHostIp('https://movilnet-core.onrender.com')" class="col-span-2 px-2.5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold border border-emerald-400/40 flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition-all text-center">
+            <span class="material-symbols-outlined text-[15px]">cloud_done</span>
+            <span>☁️ Nube Render (Funciona Fuera de Wi-Fi / Datos 4G)</span>
+          </button>
+          <button type="button" onclick="setHostIp('172.16.0.6')" class="px-2 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center justify-center gap-1 active:scale-95 transition-all text-center" title="Solo dentro de tu Wi-Fi">
             <span>🏠 Wi-Fi Local</span>
           </button>
           <button type="button" onclick="setHostIp('100.87.72.93')" class="px-2 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-emerald-500/30 flex items-center justify-center gap-1 active:scale-95 transition-all text-center" title="Tailscale VPN Global">
@@ -184,8 +188,11 @@
 
         <!-- Código QR Dinámico -->
         <div class="bg-white p-2.5 rounded-xl flex flex-col items-center justify-center self-center shadow-lg my-1">
-          <img id="qr-code-img" src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=http://172.16.0.6:8010/ui/pwa_stitch/index.html" alt="QR Code PWA" class="w-36 h-36 object-contain"/>
+          <img id="qr-code-img" src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://movilnet-core.onrender.com/ui/pwa_stitch/index.html" alt="QR Code PWA" class="w-40 h-40 object-contain"/>
         </div>
+        <p id="qr-net-hint" class="text-[10px] text-center font-semibold text-emerald-400">
+          🌐 Enlace Público Global: Escanéalo con tu celular con Datos Móviles (4G/5G) o cualquier red.
+        </p>
 
         <!-- Entrada IP Personalizada y URL Directa -->
         <div class="flex items-center gap-1.5">
@@ -196,7 +203,7 @@
         </div>
 
         <div class="bg-slate-950/80 p-2 rounded-lg border border-slate-800 flex items-center justify-between text-xs font-mono">
-          <span id="local-url" class="text-orange-400 truncate select-all text-[11px]">http://172.16.0.6:8010/ui/pwa_stitch/index.html</span>
+          <span id="local-url" class="text-orange-400 truncate select-all text-[11px]">https://movilnet-core.onrender.com/ui/pwa_stitch/index.html</span>
         </div>
       </div>
 
@@ -220,7 +227,7 @@
           </button>
         </div>
         <p id="whatsapp-link-preview" class="text-[10px] font-mono text-slate-500 truncate">
-          Enlace generado: http://localhost:8010/ui/pwa_stitch/index.html?phone=04142554590
+          Enlace generado: https://movilnet-core.onrender.com/ui/pwa_stitch/index.html?phone=04142554590
         </p>
       </div>
 
@@ -242,7 +249,7 @@
       iframe.src = targetUrl;
       const preview = document.getElementById('whatsapp-link-preview');
       if (preview) {
-        preview.textContent = `Enlace generado: ${window.location.origin}${targetUrl}`;
+        preview.textContent = `Enlace generado: ${currentHost.startsWith('http') ? currentHost : 'http://' + currentHost}/ui/pwa_stitch/index.html?phone=${encodeURIComponent(phone)}`;
       }
     }
 
@@ -253,12 +260,25 @@
       });
     }
 
-    let currentHost = '172.16.0.6';
+    let currentHost = 'https://movilnet-core.onrender.com';
 
     function updatePwaUrl(host) {
       currentHost = host;
-      const port = window.location.port || '8010';
-      const pwaUrl = `http://${host}:${port}/ui/pwa_stitch/index.html`;
+      let pwaUrl = '';
+
+      if (host.startsWith('http://') || host.startsWith('https://')) {
+        let clean = host.replace(/\/+$/, '');
+        if (clean.includes('/ui/pwa_stitch/index.html')) {
+          pwaUrl = clean;
+        } else {
+          pwaUrl = `${clean}/ui/pwa_stitch/index.html`;
+        }
+      } else if (host.includes('onrender.com') || host.includes('movilnet.com.ve')) {
+        pwaUrl = `https://${host}/ui/pwa_stitch/index.html`;
+      } else {
+        const port = window.location.port || '8010';
+        pwaUrl = `http://${host}:${port}/ui/pwa_stitch/index.html`;
+      }
 
       const localUrlEl = document.getElementById('local-url');
       if (localUrlEl) localUrlEl.textContent = pwaUrl;
@@ -268,7 +288,18 @@
 
       const qrImg = document.getElementById('qr-code-img');
       if (qrImg) {
-        qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(pwaUrl)}`;
+        qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(pwaUrl)}`;
+      }
+
+      const hintEl = document.getElementById('qr-net-hint');
+      if (hintEl) {
+        if (pwaUrl.startsWith('https://') || pwaUrl.includes('100.')) {
+          hintEl.className = 'text-[10px] text-center font-semibold text-emerald-400';
+          hintEl.textContent = '🌐 Enlace Global / Nube: Escanéalo con tu celular con Datos Móviles (4G/5G) o cualquier red.';
+        } else {
+          hintEl.className = 'text-[10px] text-center font-semibold text-amber-400';
+          hintEl.textContent = '🏠 Enlace Wi-Fi Local: Requiere que el celular esté conectado a la MISMA red Wi-Fi de esta Mac.';
+        }
       }
     }
 
@@ -282,11 +313,9 @@
       }
     }
 
-    // Auto-detección dinámica de IP y Puerto para el Código QR
+    // Auto-detección dinámica: Por defecto apunta a la Nube Render para compatibilidad global con celulares
     window.addEventListener('DOMContentLoaded', () => {
-      const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-      const actualHost = isLocalhost ? '172.16.0.6' : window.location.hostname;
-      updatePwaUrl(actualHost);
+      updatePwaUrl('https://movilnet-core.onrender.com');
     });
   </script>
 </body>
