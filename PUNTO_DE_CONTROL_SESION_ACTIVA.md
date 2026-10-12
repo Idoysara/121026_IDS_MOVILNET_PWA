@@ -1,7 +1,7 @@
 # PUNTO DE CONTROL — SESIÓN ACTIVA (MOVILNET ↔ PROTOCOLO DECAGONAL CERO ERRORES)
-- **Fecha/Hora:** 2026-10-12 08:45 VET | **Capítulo Bitácora:** 163 (Replicación Soberana, Auditoría Decagonal y Certificación Criptográfica de Movilnet PWA en Carpeta Destino Dedicada)
+- **Fecha/Hora:** 2026-10-12 09:52 VET | **Capítulo Bitácora:** 164 (Respaldo Soberano y Sincronización en GitHub: Idoysara/121026_IDS_MOVILNET_PWA)
 - **Declaración Estratégica Ratificada:**
-  > *"En Resumen: Replicación y certificación completa del Núcleo Movilnet y Asistente PWA en `/Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_121026/Movilnet_PWA/`. El paquete cuenta con 863 archivos verificados bit a bit con SHA-256, 388/388 pruebas aprobadas (100% pass), 10/10 fases decagonales y lanzadores de doble clic para activación de PWA con número de celular proveniente de WhatsApp."*
+  > *"En Resumen: Respaldo, sincronización y certificación en GitHub completada con éxito en https://github.com/Idoysara/121026_IDS_MOVILNET_PWA. Repositorio con 876 archivos, 388/388 pruebas aprobadas (100% pass), 10/10 fases decagonales, .gitignore Zero-PII y lanzadores de doble clic."*
 - **Estado de Calidad:** 388 / 388 tests aprobados (100% PASS, 0 fallos en destino).
 - **Módulos del Núcleo y Despliegue Nube Activos:**
   1. `Dockerfile` (Multi-stage hardened, usuario non-root 1001 movilnet, core/ incluido, healthcheck dinámico por $PORT).
