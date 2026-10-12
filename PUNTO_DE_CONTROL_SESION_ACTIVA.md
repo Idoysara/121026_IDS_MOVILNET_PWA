@@ -1,8 +1,8 @@
 # PUNTO DE CONTROL — SESIÓN ACTIVA (MOVILNET ↔ PROTOCOLO DECAGONAL CERO ERRORES)
-- **Fecha/Hora:** 2026-10-12 09:52 VET | **Capítulo Bitácora:** 164 (Respaldo Soberano y Sincronización en GitHub: Idoysara/121026_IDS_MOVILNET_PWA)
+- **Fecha/Hora:** 2026-10-12 12:10 VET | **Capítulo Bitácora:** 165 (Certificación BOOST: Enlaces de Acción, Modo 3 Iluminaciones y Responsividad Móvil Total)
 - **Declaración Estratégica Ratificada:**
-  > *"En Resumen: Respaldo, sincronización y certificación en GitHub completada con éxito en https://github.com/Idoysara/121026_IDS_MOVILNET_PWA. Repositorio con 876 archivos, 388/388 pruebas aprobadas (100% pass), 10/10 fases decagonales, .gitignore Zero-PII y lanzadores de doble clic."*
-- **Estado de Calidad:** 388 / 388 tests aprobados (100% PASS, 0 fallos en destino).
+  > *"En Resumen: Resolución 100% auditada y certificada de los 3 puntos solicitados: (1) Enlaces y botones de acción reactivados con modales no bloqueantes; (2) Selector de Iluminación 3 Niveles (Claro/Medio/Oscuro) plenamente visible en panel y sincronizado bidireccionalmente; (3) Responsividad móvil móvil total comprobada en iPhone X (375x812) con caja de chat accesible, micrófono de voz funcional y ajuste dinámico en iOS/Android. Commit 65b70e5 desplegado en GitHub y sincronizado."*
+- **Estado de Calidad:** 16 / 16 tests de despliegue/PWA aprobados (100% PASS, 0 fallos), 10/10 Fases Decagonales APROBADAS.
 - **Módulos del Núcleo y Despliegue Nube Activos:**
   1. `Dockerfile` (Multi-stage hardened, usuario non-root 1001 movilnet, core/ incluido, healthcheck dinámico por $PORT).
   2. `render.yaml` (Infraestructura como Código para Render en Plan Free $0.00 USD, healthcheck /health y variables de producción).
