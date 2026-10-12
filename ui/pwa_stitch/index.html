@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content"/>
   <meta name="theme-color" content="#FF6600"/>
   <meta name="apple-mobile-web-app-capable" content="yes"/>
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
@@ -106,7 +106,7 @@
     @layer base {
       html, body {
         width: 100%;
-        height: 100%;
+        min-height: 100%;
         margin: 0;
         padding: 0;
         background-color: var(--color-bg);
@@ -119,8 +119,18 @@
       body {
         overscroll-behavior-y: none;
       }
+      .pt-safe {
+        padding-top: max(env(safe-area-inset-top, 0px), 12px);
+      }
       .pb-safe {
-        padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 0.5rem);
+        padding-bottom: max(env(safe-area-inset-bottom, 0px), 10px);
+      }
+      /* Habilitar selección de texto y evitar zoom automático de iOS en inputs */
+      input, textarea, select {
+        -webkit-user-select: text !important;
+        user-select: text !important;
+        font-size: 16px !important; /* REGLA CLAVE IOS: 16px evita auto-zoom */
+        touch-action: manipulation;
       }
     }
     ::-webkit-scrollbar { display: none; }
@@ -131,6 +141,25 @@
       background-color: var(--chat-wallpaper-bg);
       background-image: radial-gradient(var(--chat-wallpaper-dot) 1px, transparent 1px);
       background-size: 16px 16px;
+    }
+
+    /* Contenedor responsivo centrado para iPhone y pantallas grandes */
+    .app-shell {
+      width: 100%;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+      position: relative;
+    }
+
+    /* Asistente dinámico ajustado al viewport real de iPhone */
+    #tab-assistant {
+      height: 100vh;
+      height: 100dvh;
+      height: -webkit-fill-available;
+      max-width: 480px;
+      left: 50% !important;
+      transform: translateX(-50%);
     }
 
     /* ESTILO DE BOTONES DE ILUMINACIÓN */
@@ -147,12 +176,12 @@
     }
   </style>
 </head>
-<body class="bg-surface text-on-surface flex flex-col min-h-screen antialiased select-none">
+<body class="bg-surface text-on-surface flex flex-col min-h-screen min-h-[100dvh] antialiased">
 
   <!-- ========================================================================
        TOP APP HEADER ESTÁNDAR (VISIBLE EN DASHBOARD Y SERVICIOS)
        ======================================================================== -->
-  <header id="main-header" class="fixed top-0 w-full z-30 pt-[44px] bg-surface/95 backdrop-blur-xl border-b border-surface-container shadow-sm transition-colors">
+  <header id="main-header" class="fixed top-0 w-full max-w-[480px] left-1/2 -translate-x-1/2 z-30 pt-safe bg-surface/95 backdrop-blur-xl border-b border-surface-container shadow-sm transition-colors">
     <div class="px-3 pb-2 flex flex-col gap-1.5">
       <!-- Fila Superior: Botón Volver, Logo Oficial, Iluminación, Telemetría y Badge 4GMAX -->
       <div class="flex items-center justify-between h-9 gap-1">
@@ -226,7 +255,7 @@
   <!-- ========================================================================
        BANNER DE INSTALACIÓN PWA
        ======================================================================== -->
-  <div id="pwa-install-banner" class="w-full px-3.5 pt-32 pb-1">
+  <div id="pwa-install-banner" class="w-full max-w-[480px] mx-auto px-3.5 pt-32 pb-1">
     <div class="w-full rounded-xl bg-surface-container-lowest border border-surface-container p-2.5 flex items-center justify-between gap-2 shadow-sm">
       <div class="flex items-center gap-2 min-w-0">
         <div class="w-9 h-9 rounded-lg bg-orange-100 flex items-center justify-center shrink-0">
@@ -246,7 +275,7 @@
   <!-- ========================================================================
        CONTENIDO PRINCIPAL (3 PESTAÑAS REACTIVAS SPA)
        ======================================================================== -->
-  <main class="flex-1 w-full flex flex-col">
+  <main class="flex-1 w-full max-w-[480px] mx-auto flex flex-col">
 
     <!-- ======================================================================
          PESTAÑA 1: DASHBOARD O(1) TELEMETRÍA TMF678 (VENTANA 1 STITCH)
@@ -517,10 +546,10 @@
     <!-- ======================================================================
          PESTAÑA 3: ASISTENTE COGNITIVO IA VÍA B (CHAT FULL-SCREEN TELEGRAM/WHATSAPP)
          ====================================================================== -->
-    <section id="tab-assistant" class="tab-content flex-col w-full h-[100vh] fixed inset-0 z-40 bg-surface">
+    <section id="tab-assistant" class="tab-content flex-col w-full max-w-[480px] h-[100dvh] fixed inset-x-0 mx-auto top-0 bottom-0 z-40 bg-surface shadow-2xl">
       
       <!-- Top Chat App Bar (Estilo WhatsApp / Telegram con presencia en vivo) -->
-      <div class="w-full pt-[44px] pb-2.5 px-3 bg-surface-container-lowest border-b border-surface-container text-on-surface flex items-center justify-between shadow-md z-10 shrink-0">
+      <div class="w-full pt-safe pb-2.5 px-3 bg-surface-container-lowest border-b border-surface-container text-on-surface flex items-center justify-between shadow-md z-10 shrink-0">
         <div class="flex items-center gap-2">
           <!-- BOTÓN VOLVER AL DASHBOARD -->
           <button onclick="goToTab('dashboard')" class="h-8 px-2 rounded-lg bg-surface-container-high hover:bg-surface-container text-on-surface flex items-center gap-1 active:scale-90 transition-transform" title="Regresar al Dashboard">
@@ -611,13 +640,13 @@
       </div>
 
       <!-- Barra de Entrada Inferior (Estilo WhatsApp con botón circular de enviar) -->
-      <div class="w-full bg-surface-container-lowest border-t border-surface-container px-3 py-2 pb-safe flex items-center gap-2 shrink-0">
+      <div id="chat-input-bar" class="w-full bg-surface-container-lowest border-t border-surface-container px-3 py-2 pb-safe flex items-center gap-2 shrink-0 z-50">
         <button type="button" onclick="document.getElementById('chat-input').focus()" class="w-9 h-9 rounded-full text-secondary hover:text-on-surface flex items-center justify-center shrink-0">
           <span class="material-symbols-outlined text-[22px]">attach_file</span>
         </button>
 
         <form id="chat-form" onsubmit="sendChatMessage(event)" class="flex-1 flex items-center gap-2">
-          <input id="chat-input" type="text" placeholder="Escribe un mensaje al Asistente..." autocomplete="off" class="flex-1 bg-surface-container-low border border-surface-container rounded-full px-4 py-2 text-xs outline-none text-on-surface focus:border-primary transition-colors"/>
+          <input id="chat-input" type="text" placeholder="Escribe un mensaje al Asistente..." autocomplete="off" autocorrect="on" autocapitalize="sentences" class="flex-1 bg-surface-container-low border border-surface-container rounded-full px-4 py-2 text-[16px] outline-none text-on-surface focus:border-primary transition-colors select-text"/>
           <button id="chat-submit-btn" type="submit" class="w-10 h-10 rounded-full bg-primary hover:bg-primary-dark text-white flex items-center justify-center shrink-0 shadow-md active:scale-90 transition-transform">
             <span class="material-symbols-outlined text-[20px]">send</span>
           </button>
@@ -631,7 +660,7 @@
   <!-- ========================================================================
        BARRA INFERIOR DE NAVEGACIÓN FIJA (VISIBLE EN DASHBOARD Y SERVICIOS)
        ======================================================================== -->
-  <nav id="bottom-nav" class="fixed bottom-0 w-full z-30 pb-safe bg-surface/95 backdrop-blur-xl border-t border-surface-container shadow-lg">
+  <nav id="bottom-nav" class="fixed bottom-0 w-full max-w-[480px] left-1/2 -translate-x-1/2 z-30 pb-safe bg-surface/95 backdrop-blur-xl border-t border-surface-container shadow-lg">
     <div class="flex justify-around items-center h-14 px-2">
       <button onclick="goToTab('dashboard')" id="nav-dashboard" class="nav-btn active flex flex-col items-center justify-center min-w-[54px] min-h-[44px] text-secondary transition-colors">
         <span class="material-symbols-outlined text-[22px]">speed</span>
@@ -1424,8 +1453,36 @@
         } catch (e) {
           loadSubscriberData(currentMsisdn);
         }
-      }
       loadCatalogPlans();
+
+      // Soporte Activo de Teclado Virtual para iPhone (iOS Safari)
+      if (window.visualViewport) {
+        function adjustChatForKeyboard() {
+          const assistant = document.getElementById('tab-assistant');
+          if (assistant && assistant.classList.contains('active')) {
+            const vv = window.visualViewport;
+            assistant.style.height = `${vv.height}px`;
+            assistant.style.top = `${vv.offsetTop}px`;
+            const chatBox = document.getElementById('chat-messages');
+            if (chatBox) {
+              chatBox.scrollTop = chatBox.scrollHeight;
+            }
+          }
+        }
+        window.visualViewport.addEventListener('resize', adjustChatForKeyboard);
+        window.visualViewport.addEventListener('scroll', adjustChatForKeyboard);
+      }
+
+      const chatInputEl = document.getElementById('chat-input');
+      if (chatInputEl) {
+        chatInputEl.addEventListener('focus', () => {
+          setTimeout(() => {
+            const chatBox = document.getElementById('chat-messages');
+            if (chatBox) chatBox.scrollTop = chatBox.scrollHeight;
+            chatInputEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }, 300);
+        });
+      }
     });
   </script>
 </body>
