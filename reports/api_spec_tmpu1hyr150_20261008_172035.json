@@ -1,0 +1,72 @@
+{
+  "spec_path": "/var/folders/9g/hf1_s7g15k196tkbs02304hh0000gn/T/tmpu1hyr150.json",
+  "format": "OpenAPI 3.x",
+  "timestamp": "2026-10-08T17:20:35.758588",
+  "api_title": "Movilnet Telco API",
+  "api_version": "1.0.0",
+  "base_url": "https://api.movilnet.com.ve/v1",
+  "auth_schemes": [
+    {
+      "name": "ApiKeyAuth",
+      "type": "apiKey",
+      "flow": null,
+      "description": null
+    }
+  ],
+  "endpoints": [
+    {
+      "method": "GET",
+      "path": "/subscriber/{phone}",
+      "summary": "Obtener abonado por teléfono",
+      "tags": [],
+      "parameters": 1,
+      "responses": [
+        "200"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/subscriber/{phone}/balance",
+      "summary": "Consultar saldo del abonado",
+      "tags": [],
+      "parameters": 0,
+      "responses": [
+        "200"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/plans",
+      "summary": "Catálogo de planes comerciales",
+      "tags": [],
+      "parameters": 0,
+      "responses": [
+        "200"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/payment/recharge",
+      "summary": "Procesar recarga/pago",
+      "tags": [],
+      "parameters": 0,
+      "responses": [
+        "200",
+        "400"
+      ]
+    }
+  ],
+  "schemas_count": 2,
+  "telco_coverage": {
+    "subscriber_endpoints": 2,
+    "balance_endpoints": 1,
+    "plan_endpoints": 1,
+    "payment_endpoints": 1,
+    "auth_endpoints": 0,
+    "coverage_percentage": 80.0
+  },
+  "recommendations": [
+    "⚠️ Endpoints Telco faltantes en la especificación: auth. Verificar si existen como servicios internos no documentados.",
+    "✅ Cobertura Telco del 80.0%. Buena base para integración. Revisar esquemas de respuesta en detalle."
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "db_path": "/var/folders/9g/hf1_s7g15k196tkbs02304hh0000gn/T/tmpnx8uveuo.db",
+  "timestamp": "2026-10-07T07:20:21.366075",
+  "tables": {
+    "contracts": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "TEXT",
+          "not_null": false,
+          "primary_key": true,
+          "default": null
+        },
+        {
+          "name": "subscriber_id",
+          "type": "TEXT",
+          "not_null": false,
+          "primary_key": false,
+          "default": null
+        },
+        {
+          "name": "phone_number",
+          "type": "TEXT",
+          "not_null": true,
+          "primary_key": false,
+          "default": null
+        },
+        {
+          "name": "modality",
+          "type": "TEXT",
+          "not_null": false,
+          "primary_key": false,
+          "default": null
+        }
+      ],
+      "column_count": 4,
+      "row_count": 1
+    },
+    "subscribers": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "TEXT",
+          "not_null": false,
+          "primary_key": true,
+          "default": null
+        },
+        {
+          "name": "cedula_rif",
+          "type": "TEXT",
+          "not_null": true,
+          "primary_key": false,
+          "default": null
+        },
+        {
+          "name": "full_name",
+          "type": "TEXT",
+          "not_null": false,
+          "primary_key": false,
+          "default": null
+        },
+        {
+          "name": "status",
+          "type": "TEXT",
+          "not_null": false,
+          "primary_key": false,
+          "default": "'ACTIVA'"
+        }
+      ],
+      "column_count": 4,
+      "row_count": 1
+    }
+  },
+  "foreign_keys": [
+    {
+      "from_table": "contracts",
+      "from_col": "subscriber_id",
+      "to_table": "subscribers",
+      "to_col": "id",
+      "on_delete": "NO ACTION"
+    }
+  ],
+  "indexes": [
+    {
+      "name": "idx_phone",
+      "table": "contracts",
+      "definition": "CREATE INDEX idx_phone ON contracts(phone_number)"
+    }
+  ],
+  "total_rows_estimate": {
+    "contracts": 1,
+    "subscribers": 1
+  },
+  "recommendations": [
+    "✅ 1 índices detectados. Validar cobertura en campos phone_number y cedula_rif.",
+    "✅ Esquema inspeccionado. Alimentar MAPPING_MANIFESTO.md con estos metadatos reales."
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "status": "BLOQUEADO 🚫",
+  "authorized": false,
+  "verdict": "Verificaciones críticas insuficientes. NO proceder a Fase 1 hasta completar el levantamiento.",
+  "timestamp": "2026-10-09T06:57:33.563493",
+  "mandatory_checks": {
+    "Billing Engine identificado": false,
+    "Mecanismo de autenticación KYC definido": false,
+    "Catálogo de planes documentado": false,
+    "Modelo de exposición de datos clarificado": false
+  },
+  "optional_checks": {
+    "Canales de pago identificados": false,
+    "Marco regulatorio CONATEL mapeado": false,
+    "Entorno sandbox disponible": false
+  },
+  "mandatory_score": "0/4",
+  "optional_score": "0/3",
+  "missing_mandatory": [
+    "Billing Engine identificado",
+    "Mecanismo de autenticación KYC definido",
+    "Catálogo de planes documentado",
+    "Modelo de exposición de datos clarificado"
+  ],
+  "missing_optional": [
+    "Canales de pago identificados",
+    "Marco regulatorio CONATEL mapeado",
+    "Entorno sandbox disponible"
+  ],
+  "next_action": "Completar las preguntas críticas faltantes con el equipo TI del cliente antes de continuar."
+}

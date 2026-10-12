@@ -1,0 +1,52 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtualenv
+.venv/
+
+# Testing & Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Logs & OS Temporary files
+*.log
+.DS_Store
+.loop_lock.json
+*.tmp
+*.bak
+*.backup_test
+
+# Excluir paquetes de respaldo pesados
+*.tar.gz
+*.zip
+respaldos/
+backups/
+
+# Variables de entorno y secretos de producción (Zero-PII / Zero-Leak)
+.env
+.env.*
+!.env.example
