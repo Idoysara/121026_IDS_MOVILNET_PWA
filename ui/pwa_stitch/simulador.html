@@ -90,6 +90,22 @@
         <span class="text-emerald-400 font-bold ml-1">0.8ms</span>
       </div>
 
+      <!-- Selector Rápido de Iluminación en Header -->
+      <div class="flex items-center bg-slate-900/90 rounded-lg p-0.5 border border-slate-700/60 font-mono text-xs" title="Intensidad de Iluminación">
+        <button onclick="setSimulatorTheme('light')" id="hdr-theme-light" class="px-2 py-1 rounded text-amber-300 hover:bg-slate-800 text-[11px] font-bold flex items-center gap-1 active:scale-95 transition-all" title="Modo Claro">
+          <span class="material-symbols-outlined text-[14px]">light_mode</span>
+          <span class="hidden md:inline">Claro</span>
+        </button>
+        <button onclick="setSimulatorTheme('medium')" id="hdr-theme-medium" class="px-2 py-1 rounded text-sky-300 hover:bg-slate-800 text-[11px] font-bold flex items-center gap-1 active:scale-95 transition-all" title="Modo Medio">
+          <span class="material-symbols-outlined text-[14px]">tonality</span>
+          <span class="hidden md:inline">Medio</span>
+        </button>
+        <button onclick="setSimulatorTheme('dark')" id="hdr-theme-dark" class="px-2 py-1 rounded text-purple-300 hover:bg-slate-800 text-[11px] font-bold flex items-center gap-1 active:scale-95 transition-all" title="Modo Oscuro">
+          <span class="material-symbols-outlined text-[14px]">dark_mode</span>
+          <span class="hidden md:inline">Oscuro</span>
+        </button>
+      </div>
+
       <img src="/ui/assets/logos/boton_4gmax_oficial.svg" alt="4GMAX" class="h-7 w-auto object-contain cursor-pointer hidden md:block" />
     </div>
   </header>
@@ -155,6 +171,38 @@
               Toca abajo en <strong>"Asistente IA"</strong>: la vista se expande a <strong>pantalla completa inmersiva</strong> estilo WhatsApp con botón Volver, chips de preguntas rápidas (Telegram), cápsulas de tiempo RTT y widgets interactivos.
             </p>
           </div>
+        </div>
+      </div>
+
+      <!-- Tarjeta: Modo de Iluminación de Pantalla (Light / Medium / Dark) -->
+      <div class="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 shadow-xl flex flex-col gap-2.5">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2 text-white font-bold text-sm">
+            <span class="material-symbols-outlined text-[18px] text-amber-400">light_mode</span>
+            <span>Intensidad de Iluminación (Pantalla)</span>
+          </div>
+          <span id="theme-active-badge" class="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">Claro (Light)</span>
+        </div>
+        <p class="text-[11px] text-slate-400">
+          Ajusta la luminosidad del dispositivo para verificar legibilidad en sol intenso o modo noche:
+        </p>
+
+        <div class="grid grid-cols-3 gap-2 text-center">
+          <button id="sim-theme-light" onclick="setSimulatorTheme('light')" class="py-2.5 px-1.5 rounded-xl bg-slate-800/80 hover:bg-amber-500/20 text-amber-300 border border-slate-700 hover:border-amber-500/40 font-bold text-xs flex flex-col items-center gap-1 active:scale-95 transition-all shadow-sm">
+            <span class="material-symbols-outlined text-[22px]">light_mode</span>
+            <span class="text-[11px]">☀️ Claro</span>
+            <span class="text-[9px] text-slate-400 font-normal">Lighting / Sol</span>
+          </button>
+          <button id="sim-theme-medium" onclick="setSimulatorTheme('medium')" class="py-2.5 px-1.5 rounded-xl bg-slate-800/80 hover:bg-sky-500/20 text-sky-300 border border-slate-700 hover:border-sky-500/40 font-bold text-xs flex flex-col items-center gap-1 active:scale-95 transition-all shadow-sm">
+            <span class="material-symbols-outlined text-[22px]">tonality</span>
+            <span class="text-[11px]">🌓 Medio</span>
+            <span class="text-[9px] text-slate-400 font-normal">Medium / Relax</span>
+          </button>
+          <button id="sim-theme-dark" onclick="setSimulatorTheme('dark')" class="py-2.5 px-1.5 rounded-xl bg-slate-800/80 hover:bg-purple-500/20 text-purple-300 border border-slate-700 hover:border-purple-500/40 font-bold text-xs flex flex-col items-center gap-1 active:scale-95 transition-all shadow-sm">
+            <span class="material-symbols-outlined text-[22px]">dark_mode</span>
+            <span class="text-[11px]">🌙 Oscuro</span>
+            <span class="text-[9px] text-slate-400 font-normal">Dark / Noche</span>
+          </button>
         </div>
       </div>
 
@@ -265,6 +313,72 @@
   </main>
 
   <script>
+    // Control de Iluminación de 3 Niveles (Light / Medium / Dark)
+    let currentTheme = localStorage.getItem('movilnet_sim_theme') || 'light';
+
+    function setSimulatorTheme(mode) {
+      currentTheme = mode;
+      try {
+        localStorage.setItem('movilnet_sim_theme', mode);
+      } catch(e) {}
+      updateSimulatorThemeUI(mode);
+
+      // Enviar comando al iframe de la PWA
+      const iframe = document.getElementById('pwa-iframe');
+      if (iframe && iframe.contentWindow) {
+        iframe.contentWindow.postMessage({ type: 'SET_PWA_THEME', theme: mode }, '*');
+      }
+    }
+
+    function updateSimulatorThemeUI(mode) {
+      // 1. Selector rápido en Header y Tarjeta de Control
+      ['light', 'medium', 'dark'].forEach(t => {
+        const hdrBtn = document.getElementById(`hdr-theme-${t}`);
+        if (hdrBtn) {
+          if (t === mode) {
+            hdrBtn.classList.add('bg-slate-700', 'ring-1', t === 'light' ? 'ring-amber-400' : (t === 'medium' ? 'ring-sky-400' : 'ring-purple-400'));
+          } else {
+            hdrBtn.classList.remove('bg-slate-700', 'ring-1', 'ring-amber-400', 'ring-sky-400', 'ring-purple-400');
+          }
+        }
+
+        const cardBtn = document.getElementById(`sim-theme-${t}`);
+        if (cardBtn) {
+          if (t === mode) {
+            cardBtn.classList.add('ring-2', t === 'light' ? 'ring-amber-500' : (t === 'medium' ? 'ring-sky-500' : 'ring-purple-500'), 'bg-slate-700/90');
+          } else {
+            cardBtn.classList.remove('ring-2', 'ring-amber-500', 'ring-sky-500', 'ring-purple-500', 'bg-slate-700/90');
+          }
+        }
+      });
+
+      // 2. Badge de estado activo
+      const badge = document.getElementById('theme-active-badge');
+      if (badge) {
+        if (mode === 'light') {
+          badge.className = 'text-[10px] font-mono px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30';
+          badge.textContent = '☀️ Claro (Light)';
+        } else if (mode === 'medium') {
+          badge.className = 'text-[10px] font-mono px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 border border-sky-500/30';
+          badge.textContent = '🌓 Medio (Medium)';
+        } else {
+          badge.className = 'text-[10px] font-mono px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/30';
+          badge.textContent = '🌙 Oscuro (Dark)';
+        }
+      }
+    }
+
+    // Escuchar cambios de tema originados dentro de la PWA
+    window.addEventListener('message', (e) => {
+      if (e.data && e.data.type === 'PWA_THEME_CHANGED' && e.data.theme) {
+        currentTheme = e.data.theme;
+        try {
+          localStorage.setItem('movilnet_sim_theme', currentTheme);
+        } catch(err) {}
+        updateSimulatorThemeUI(currentTheme);
+      }
+    });
+
     function reloadPwa() {
       const iframe = document.getElementById('pwa-iframe');
       iframe.src = '/ui/pwa_stitch/index.html?v=' + Date.now();
@@ -441,6 +555,18 @@
     window.addEventListener('DOMContentLoaded', () => {
       updatePwaUrl('https://movilnet-core.onrender.com');
       checkRenderDeployStatus();
+      updateSimulatorThemeUI(currentTheme);
+
+      const iframe = document.getElementById('pwa-iframe');
+      if (iframe) {
+        iframe.addEventListener('load', () => {
+          setTimeout(() => {
+            if (iframe.contentWindow) {
+              iframe.contentWindow.postMessage({ type: 'SET_PWA_THEME', theme: currentTheme }, '*');
+            }
+          }, 300);
+        });
+      }
     });
   </script>
 </body>

@@ -416,7 +416,7 @@
     <!-- ======================================================================
          PESTAÑA 2: SERVICIOS, C2P SUDEBAN & CATÁLOGO TMF620 (VENTANA 2 STITCH)
          ====================================================================== -->
-    <section id="tab-c2p" class="tab-content flex-col gap-3 w-full px-3.5 pb-24">
+    <section id="tab-c2p" class="tab-content flex-col gap-3 w-full px-3.5 pt-28 pb-24">
 
       <!-- Ticker de Estado SUDEBAN -->
       <div class="flex items-center justify-between px-3 py-1.5 rounded-lg bg-sky-100/70 border border-sky-200 text-xs text-sky-950 font-medium">
@@ -552,7 +552,7 @@
     <!-- ======================================================================
          PESTAÑA 3: ASISTENTE COGNITIVO IA VÍA B (CHAT FULL-SCREEN TELEGRAM/WHATSAPP)
          ====================================================================== -->
-    <section id="tab-assistant" class="tab-content flex-col w-full max-w-[480px] h-[100dvh] fixed inset-x-0 mx-auto top-0 bottom-0 z-40 bg-surface shadow-2xl">
+    <section id="tab-assistant" class="tab-content flex-col w-full max-w-[480px] fixed inset-0 mx-auto z-40 bg-surface shadow-2xl h-full max-h-[100dvh] overflow-hidden">
       
       <!-- Top Chat App Bar (Estilo WhatsApp / Telegram con presencia en vivo) -->
       <div class="w-full pt-safe pb-2.5 px-3 bg-surface-container-lowest border-b border-surface-container text-on-surface flex items-center justify-between shadow-md z-10 shrink-0">
@@ -581,7 +581,7 @@
 
         <div class="flex items-center gap-1.5">
           <!-- Mini Selector de Iluminación dentro del Chat -->
-          <div class="illumination-box flex items-center bg-surface-container-high rounded-full p-0.5 border border-surface-container shadow-inner">
+          <div class="illumination-box flex items-center bg-surface-container-high rounded-full p-0.5 border border-surface-container shadow-inner" title="Intensidad de Iluminación">
             <button onclick="setIllumination('light')" data-theme-btn="light" class="theme-btn-pwa px-1.5 py-0.5 rounded-full text-[10px] font-bold" title="Modo Claro">
               <span class="material-symbols-outlined text-[13px]">light_mode</span>
             </button>
@@ -593,11 +593,16 @@
             </button>
           </div>
 
-          <span id="ai-rtt-badge" class="px-2 py-0.5 rounded-full bg-surface-container text-emerald-500 font-mono text-[10px] font-bold border border-surface-container">
-            142ms RTT
+          <!-- Voz / Altavoz de Síntesis -->
+          <button id="btn-voice-speaker" onclick="toggleSpeechAudio()" title="Activar/Silenciar Audio de Voz del Asistente" class="w-8 h-8 rounded-full hover:bg-surface-container flex items-center justify-center text-secondary active:scale-90 transition-transform">
+            <span id="speaker-icon" class="material-symbols-outlined text-[18px]">volume_up</span>
+          </button>
+
+          <span id="ai-rtt-badge" class="hidden xs:inline-block px-1.5 py-0.5 rounded-full bg-surface-container text-emerald-500 font-mono text-[9px] font-bold border border-surface-container">
+            142ms
           </span>
-          <button onclick="clearChatHistory()" title="Limpiar conversación" class="w-8 h-8 rounded-full hover:bg-surface-container flex items-center justify-center text-secondary">
-            <span class="material-symbols-outlined text-[20px]">delete_sweep</span>
+          <button onclick="clearChatHistory()" title="Limpiar conversación" class="w-8 h-8 rounded-full hover:bg-surface-container flex items-center justify-center text-secondary active:scale-90 transition-transform">
+            <span class="material-symbols-outlined text-[18px]">delete_sweep</span>
           </button>
         </div>
       </div>
@@ -611,8 +616,8 @@
         <span class="font-mono text-primary font-bold">Strict Lock</span>
       </div>
 
-      <!-- Lienzo de Mensajes del Chat (Scrollable con wallpaper sutil) -->
-      <div id="chat-messages" class="flex-1 overflow-y-auto p-3 chat-wallpaper flex flex-col gap-3">
+      <!-- Lienzo de Mensajes del Chat (Scrollable con min-h-0 para flex shrink garantizado) -->
+      <div id="chat-messages" class="flex-1 min-h-0 overflow-y-auto p-3 chat-wallpaper flex flex-col gap-3 overscroll-contain">
         <!-- Mensaje de Bienvenida del Asistente -->
         <div class="self-start max-w-[85%] bg-surface-container-lowest rounded-2xl rounded-tl-xs p-3 shadow-sm border border-surface-container text-xs text-on-surface flex flex-col gap-1.5">
           <div class="flex items-center justify-between text-[10px] text-secondary font-medium">
@@ -645,15 +650,22 @@
         </button>
       </div>
 
-      <!-- Barra de Entrada Inferior (Estilo WhatsApp con botón circular de enviar) -->
-      <div id="chat-input-bar" class="w-full bg-surface-container-lowest border-t border-surface-container px-3 py-2 pb-safe flex items-center gap-2 shrink-0 z-50">
-        <button type="button" onclick="document.getElementById('chat-input').focus()" class="w-9 h-9 rounded-full text-secondary hover:text-on-surface flex items-center justify-center shrink-0">
-          <span class="material-symbols-outlined text-[22px]">attach_file</span>
+      <!-- Barra de Entrada Inferior (Estilo WhatsApp con micrófono de voz y botón circular de enviar) -->
+      <div id="chat-input-bar" class="w-full bg-surface-container-lowest border-t border-surface-container px-2.5 py-2 pb-safe flex items-center gap-1.5 shrink-0 z-50 shadow-lg">
+        <button type="button" onclick="document.getElementById('chat-input').focus()" class="w-9 h-9 rounded-full text-secondary hover:text-on-surface flex items-center justify-center shrink-0" title="Adjuntar">
+          <span class="material-symbols-outlined text-[20px]">attach_file</span>
         </button>
 
-        <form id="chat-form" onsubmit="sendChatMessage(event)" class="flex-1 flex items-center gap-2">
-          <input id="chat-input" type="text" placeholder="Escribe un mensaje al Asistente..." autocomplete="off" autocorrect="on" autocapitalize="sentences" class="flex-1 bg-surface-container-low border border-surface-container rounded-full px-4 py-2 text-[16px] outline-none text-on-surface focus:border-primary transition-colors select-text"/>
-          <button id="chat-submit-btn" type="submit" class="w-10 h-10 rounded-full bg-primary hover:bg-primary-dark text-white flex items-center justify-center shrink-0 shadow-md active:scale-90 transition-transform">
+        <form id="chat-form" onsubmit="sendChatMessage(event)" class="flex-1 flex items-center gap-1.5 min-w-0">
+          <input id="chat-input" type="text" placeholder="Escribe un mensaje o usa el micrófono..." autocomplete="off" autocorrect="on" autocapitalize="sentences" class="flex-1 min-w-0 bg-surface-container-low border border-surface-container rounded-full px-3.5 py-2 text-[16px] outline-none text-on-surface focus:border-primary transition-colors select-text"/>
+          
+          <!-- BOTÓN DE MICRÓFONO / VOZ -->
+          <button type="button" id="btn-voice-mic" onclick="toggleVoiceRecording()" class="w-10 h-10 rounded-full bg-surface-container-high hover:bg-primary/20 text-on-surface flex items-center justify-center shrink-0 shadow-sm active:scale-90 transition-all" title="Hablar por Micrófono (Reconocimiento de Voz)">
+            <span id="mic-icon" class="material-symbols-outlined text-[20px]">mic</span>
+          </button>
+
+          <!-- BOTÓN ENVIAR MENSAJE -->
+          <button id="chat-submit-btn" type="submit" class="w-10 h-10 rounded-full bg-primary hover:bg-primary-dark text-white flex items-center justify-center shrink-0 shadow-md active:scale-90 transition-transform" title="Enviar Mensaje">
             <span class="material-symbols-outlined text-[20px]">send</span>
           </button>
         </form>
@@ -689,8 +701,8 @@
        VENTANA MODAL 1: DETALLE DE "MIS CONSUMOS" (TMF678 CDRs)
        ======================================================================== -->
   <div id="modal-usage" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4">
-    <div class="w-full sm:max-w-md bg-surface-container-lowest border border-surface-container rounded-t-2xl sm:rounded-2xl p-4 flex flex-col gap-3 shadow-2xl animate-in slide-in-from-bottom duration-200">
-      <div class="flex items-center justify-between border-b border-surface-container pb-2">
+    <div class="w-full sm:max-w-md max-h-[88dvh] overflow-y-auto overscroll-contain bg-surface-container-lowest border border-surface-container rounded-t-2xl sm:rounded-2xl p-4 pb-safe flex flex-col gap-3 shadow-2xl animate-in slide-in-from-bottom duration-200">
+      <div class="flex items-center justify-between border-b border-surface-container pb-2 shrink-0">
         <div class="flex items-center gap-2">
           <span class="material-symbols-outlined text-primary text-[22px]">query_stats</span>
           <h3 class="font-bold text-sm text-on-surface">Mis Consumos TMF678 (CDRs en Vivo)</h3>
@@ -699,7 +711,7 @@
       </div>
 
       <!-- Resumen de Ciclo -->
-      <div class="bg-surface-container-low border border-surface-container rounded-xl p-3 flex flex-col gap-1.5">
+      <div class="bg-surface-container-low border border-surface-container rounded-xl p-3 flex flex-col gap-1.5 shrink-0">
         <div class="flex justify-between text-xs font-semibold">
           <span class="text-on-surface">Datos 4GMAX Consumidos</span>
           <span class="text-primary font-mono font-bold">4.6 GB / 35.0 GB</span>
@@ -714,7 +726,7 @@
       </div>
 
       <!-- Desglose por Aplicación -->
-      <div class="flex flex-col gap-1 text-xs">
+      <div class="flex flex-col gap-1 text-xs shrink-0">
         <span class="font-bold text-secondary text-[11px] uppercase tracking-wider">Desglose Estimado de Tráfico</span>
         <div class="flex items-center justify-between p-2 rounded-lg bg-surface-container-low border border-surface-container">
           <span class="flex items-center gap-1.5"><span class="text-red-500 font-bold">▶</span> Video Streaming & YouTube</span>
@@ -731,7 +743,7 @@
       </div>
 
       <!-- Lista de CDRs Recientes de SQLite -->
-      <div class="flex flex-col gap-1 text-xs">
+      <div class="flex flex-col gap-1 text-xs shrink-0">
         <span class="font-bold text-secondary text-[11px] uppercase tracking-wider">Últimos Registros CDR de Red</span>
         <div class="p-2 rounded-lg bg-slate-950 text-white font-mono text-[10px] space-y-1 border border-surface-container">
           <div class="flex justify-between text-emerald-400">
@@ -749,7 +761,7 @@
         </div>
       </div>
 
-      <button onclick="closeUsageModal()" class="w-full py-2 bg-surface-container-high hover:bg-surface-container text-on-surface font-bold rounded-lg text-xs mt-1 border border-surface-container">
+      <button onclick="closeUsageModal()" class="w-full py-2.5 bg-surface-container-high hover:bg-surface-container text-on-surface font-bold rounded-lg text-xs mt-1 border border-surface-container shrink-0 active:scale-95 transition-transform">
         Cerrar Detalle
       </button>
     </div>
@@ -759,8 +771,8 @@
        VENTANA MODAL 2: CONFIRMACIÓN DE CAMBIO DE PLAN (TMF622)
        ======================================================================== -->
   <div id="modal-plan-order" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-    <div class="w-full max-w-sm bg-surface-container-lowest border border-surface-container rounded-2xl p-4 flex flex-col gap-3 shadow-2xl animate-in zoom-in-95 duration-150">
-      <div class="flex items-center justify-between border-b border-surface-container pb-2">
+    <div class="w-full max-w-sm max-h-[88dvh] overflow-y-auto overscroll-contain bg-surface-container-lowest border border-surface-container rounded-2xl p-4 pb-safe flex flex-col gap-3 shadow-2xl animate-in zoom-in-95 duration-150">
+      <div class="flex items-center justify-between border-b border-surface-container pb-2 shrink-0">
         <div class="flex items-center gap-1.5">
           <span class="material-symbols-outlined text-primary text-[22px]">swap_horiz</span>
           <h3 class="font-bold text-sm text-on-surface">Confirmar Cambio de Plan</h3>
@@ -768,19 +780,19 @@
         <button onclick="closePlanModal()" class="w-7 h-7 rounded-full bg-surface-container-high flex items-center justify-center text-secondary hover:text-on-surface">✕</button>
       </div>
 
-      <div class="p-3 rounded-xl bg-surface-container-low border border-surface-container flex flex-col gap-1 text-xs">
+      <div class="p-3 rounded-xl bg-surface-container-low border border-surface-container flex flex-col gap-1 text-xs shrink-0">
         <span class="text-secondary text-[11px]">Nuevo Plan Seleccionado:</span>
         <span id="modal-plan-target-name" class="font-bold text-sm text-primary">Inteliplan 20GB 4GMAX</span>
         <span id="modal-plan-target-price" class="font-mono text-xs text-on-surface font-bold">$12.00 USD / mes</span>
       </div>
 
-      <div class="text-[11px] text-secondary bg-surface-container-low p-2.5 rounded-lg border border-surface-container leading-relaxed">
+      <div class="text-[11px] text-secondary bg-surface-container-low p-2.5 rounded-lg border border-surface-container leading-relaxed shrink-0">
         • La activación del nuevo plan se aplicará de inmediato en el Core.<br/>
         • Línea a actualizar: <strong id="modal-plan-target-phone" class="font-mono text-on-surface">04160000001</strong><br/>
         • Los datos restantes del plan anterior se mantendrán durante el ciclo activo.
       </div>
 
-      <div class="grid grid-cols-2 gap-2 mt-1">
+      <div class="grid grid-cols-2 gap-2 mt-1 shrink-0">
         <button onclick="closePlanModal()" class="py-2.5 bg-surface-container-high hover:bg-surface-container text-on-surface font-bold rounded-lg text-xs active:scale-95 transition-transform border border-surface-container">
           Cancelar
         </button>
@@ -789,6 +801,28 @@
           <span>Confirmar Orden</span>
         </button>
       </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       VENTANA MODAL 3: DIÁLOGO UNIVERSAL DE ACCIONES Y MÓDULOS DE RED (EN LUGAR DE ALERTS)
+       ======================================================================== -->
+  <div id="modal-action-info" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="w-full max-w-sm max-h-[88dvh] overflow-y-auto overscroll-contain bg-surface-container-lowest border border-surface-container rounded-2xl p-4.5 pb-safe flex flex-col gap-3 shadow-2xl animate-in zoom-in-95 duration-150">
+      <div class="flex items-center justify-between border-b border-surface-container pb-2 shrink-0">
+        <div class="flex items-center gap-2">
+          <span id="modal-info-icon" class="material-symbols-outlined text-primary text-[24px]">info</span>
+          <h3 id="modal-info-title" class="font-bold text-sm text-on-surface">Módulo</h3>
+        </div>
+        <button onclick="closeActionModal()" class="w-7 h-7 rounded-full bg-surface-container-high flex items-center justify-center text-secondary hover:text-on-surface">✕</button>
+      </div>
+      <div id="modal-info-body" class="text-xs text-on-surface leading-relaxed p-1 shrink-0">
+        Contenido del módulo
+      </div>
+      <button onclick="closeActionModal()" class="w-full py-2.5 bg-primary hover:bg-primary-dark text-white font-bold rounded-lg text-xs shadow-md active:scale-95 transition-transform flex items-center justify-center gap-1 shrink-0">
+        <span class="material-symbols-outlined text-[16px]">check</span>
+        <span>Aceptar y Continuar</span>
+      </button>
     </div>
   </div>
 
@@ -837,9 +871,12 @@
         bottomNav.style.display = 'none';
         document.getElementById('tab-assistant').classList.add('active');
         document.getElementById('nav-assistant').classList.add('active');
+        if (typeof window.adjustChatForKeyboard === 'function') {
+          window.adjustChatForKeyboard();
+        }
         // Scroll al final del chat
         const chatBox = document.getElementById('chat-messages');
-        setTimeout(() => { chatBox.scrollTop = chatBox.scrollHeight; }, 50);
+        setTimeout(() => { if (chatBox) chatBox.scrollTop = chatBox.scrollHeight; }, 60);
       }
     }
 
@@ -863,7 +900,7 @@
     // 2.2 Gestión de Intensidad de Iluminación (Light / Medium / Dark)
     function setIllumination(theme) {
       document.documentElement.setAttribute('data-theme', theme);
-      if (theme === 'dark') {
+      if (theme === 'dark' || theme === 'medium') {
         document.documentElement.classList.add('dark');
       } else {
         document.documentElement.classList.remove('dark');
@@ -887,7 +924,21 @@
       document.querySelectorAll('[data-theme-btn]').forEach(btn => {
         btn.classList.toggle('active', btn.getAttribute('data-theme-btn') === theme);
       });
+
+      // Notificar al simulador padre si se ejecuta dentro de un iframe
+      try {
+        if (window.parent && window.parent !== window) {
+          window.parent.postMessage({ type: 'PWA_THEME_CHANGED', theme: theme }, '*');
+        }
+      } catch(e) {}
     }
+
+    // Escuchar cambios de tema enviados desde el simulador padre
+    window.addEventListener('message', (e) => {
+      if (e.data && e.data.type === 'SET_PWA_THEME' && e.data.theme) {
+        setIllumination(e.data.theme);
+      }
+    });
 
     // Inicializar iluminación guardada o por defecto light
     const savedTheme = localStorage.getItem('movilnet_illumination') || 'light';
@@ -1013,6 +1064,149 @@
       document.getElementById('modal-plan-order').classList.add('hidden');
     }
 
+    // 4.1 Modal Universal de Acciones y Notificaciones (Sin alerts bloqueantes)
+    function showActionModal(title, bodyHtml, icon = 'info') {
+      const modal = document.getElementById('modal-action-info');
+      if (!modal) return;
+      document.getElementById('modal-info-title').textContent = title;
+      document.getElementById('modal-info-body').innerHTML = bodyHtml;
+      const iconEl = document.getElementById('modal-info-icon');
+      if (iconEl) iconEl.textContent = icon;
+      modal.classList.remove('hidden');
+    }
+
+    function closeActionModal() {
+      const modal = document.getElementById('modal-action-info');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    // 4.2 Módulo de Voz, Altavoz y Micrófono (Web Speech API)
+    let speechEnabled = true;
+    let voiceRecognition = null;
+    let isRecordingVoice = false;
+
+    function toggleSpeechAudio() {
+      speechEnabled = !speechEnabled;
+      const icon = document.getElementById('speaker-icon');
+      if (icon) {
+        icon.textContent = speechEnabled ? 'volume_up' : 'volume_off';
+      }
+      if (!speechEnabled && window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+      }
+      showActionModal(
+        speechEnabled ? "🔊 Voz del Asistente Activada" : "🔇 Voz del Asistente Silenciada",
+        speechEnabled 
+          ? "El Asistente leerá sus respuestas con síntesis de voz en tiempo real." 
+          : "Las respuestas del Asistente se mostrarán únicamente en texto visual.",
+        speechEnabled ? "volume_up" : "volume_off"
+      );
+    }
+
+    function speakText(text) {
+      if (!speechEnabled || !('speechSynthesis' in window)) return;
+      try {
+        window.speechSynthesis.cancel();
+        const cleanText = text.replace(/<[^>]*>/g, '').replace(/[*_#`]/g, '').trim();
+        const utter = new SpeechSynthesisUtterance(cleanText);
+        utter.lang = 'es-VE';
+        utter.rate = 1.05;
+        window.speechSynthesis.speak(utter);
+      } catch (e) {
+        console.warn('SpeechSynthesis error:', e);
+      }
+    }
+
+    function initVoiceRecognition() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) return null;
+      const rec = new SpeechRecognition();
+      rec.lang = 'es-VE';
+      rec.continuous = false;
+      rec.interimResults = true;
+
+      rec.onstart = () => {
+        isRecordingVoice = true;
+        const btn = document.getElementById('btn-voice-mic');
+        const icon = document.getElementById('mic-icon');
+        if (btn) {
+          btn.className = 'w-10 h-10 rounded-full bg-red-600 text-white flex items-center justify-center shrink-0 shadow-md animate-pulse';
+        }
+        if (icon) icon.textContent = 'graphic_eq';
+        const input = document.getElementById('chat-input');
+        if (input) input.placeholder = '🎙️ Escuchando... Di tu consulta ahora';
+      };
+
+      rec.onresult = (e) => {
+        let transcript = '';
+        for (let i = e.resultIndex; i < e.results.length; i++) {
+          transcript += e.results[i][0].transcript;
+        }
+        const input = document.getElementById('chat-input');
+        if (input && transcript) {
+          input.value = transcript;
+        }
+      };
+
+      rec.onerror = (e) => {
+        console.warn('SpeechRecognition error:', e.error);
+        stopVoiceRecording();
+      };
+
+      rec.onend = () => {
+        stopVoiceRecording();
+        const input = document.getElementById('chat-input');
+        if (input && input.value.trim().length > 0) {
+          document.getElementById('chat-form').dispatchEvent(new Event('submit'));
+        }
+      };
+
+      return rec;
+    }
+
+    function toggleVoiceRecording() {
+      if (isRecordingVoice) {
+        stopVoiceRecording();
+        return;
+      }
+      if (!voiceRecognition) {
+        voiceRecognition = initVoiceRecognition();
+      }
+      if (voiceRecognition) {
+        try {
+          voiceRecognition.start();
+        } catch (e) {
+          try { voiceRecognition.stop(); } catch(err) {}
+          setTimeout(() => { try { voiceRecognition.start(); } catch(err) {} }, 150);
+        }
+      } else {
+        const input = document.getElementById('chat-input');
+        if (input) {
+          input.focus();
+          showActionModal(
+            "🎙️ Dictado por Voz en Celular",
+            "Puedes hablar directamente tocando el <strong>ícono de micrófono</strong> en el teclado virtual de tu celular.<br/><br/>El sistema escribirá automáticamente tus palabras para el Asistente.",
+            "mic"
+          );
+        }
+      }
+    }
+
+    function stopVoiceRecording() {
+      isRecordingVoice = false;
+      if (voiceRecognition) {
+        try { voiceRecognition.stop(); } catch (e) {}
+      }
+      const btn = document.getElementById('btn-voice-mic');
+      const icon = document.getElementById('mic-icon');
+      if (btn) {
+        btn.className = 'w-10 h-10 rounded-full bg-surface-container-high hover:bg-primary/20 text-on-surface flex items-center justify-center shrink-0 shadow-sm active:scale-90 transition-all';
+      }
+      if (icon) icon.textContent = 'mic';
+      const input = document.getElementById('chat-input');
+      if (input) input.placeholder = 'Escribe un mensaje o usa el micrófono...';
+    }
+
     function executePlanChange() {
       const btn = document.getElementById('btn-confirm-plan-change');
       btn.innerHTML = '<span class="material-symbols-outlined text-[16px] animate-spin">sync</span> Activando...';
@@ -1023,7 +1217,15 @@
         btn.disabled = false;
         closePlanModal();
         document.getElementById('sub-plan').textContent = selectedPlanName;
-        alert(`✅ Orden Comercial TMF622 Exitosa:\n• Plan Activado: ${selectedPlanName}\n• Línea: ${currentMsisdn}\n• Registrado en caliente en Movilnet Core.`);
+        showActionModal(
+          "✅ Orden Comercial TMF622",
+          `<div class="space-y-1">
+            <p><strong>Plan Activado:</strong> ${selectedPlanName}</p>
+            <p><strong>Línea:</strong> ${currentMsisdn}</p>
+            <p class="text-emerald-600 font-semibold mt-1">Registrado en caliente en Movilnet Core :8010</p>
+          </div>`,
+          "check_circle"
+        );
         goToTab('dashboard');
       }, 700);
     }
@@ -1058,7 +1260,25 @@
       await loadSubscriberData(currentMsisdn);
       const end = performance.now();
       const latency = (end - start).toFixed(1);
-      alert(`⚡ Consulta Flash O(1) Sincronizada con Movilnet Core:\n• Latencia de Red: ${latency} ms\n• Línea: ${currentMsisdn}\n• Motor de Datos: SQLite WAL :8010`);
+      showActionModal(
+        "⚡ Consulta Flash O(1)",
+        `<div class="space-y-1.5 font-mono text-[11px]">
+          <div class="flex justify-between border-b border-surface-container pb-1">
+            <span>Línea Consultada:</span>
+            <strong>${currentMsisdn}</strong>
+          </div>
+          <div class="flex justify-between border-b border-surface-container pb-1">
+            <span>Latencia de Red:</span>
+            <span class="text-emerald-500 font-bold">${latency} ms</span>
+          </div>
+          <div class="flex justify-between border-b border-surface-container pb-1">
+            <span>Motor de Datos:</span>
+            <span>SQLite WAL :8010</span>
+          </div>
+          <p class="text-secondary text-[10px] mt-1">Sincronización O(1) memoria/disco en alta velocidad.</p>
+        </div>`,
+        "bolt"
+      );
     }
 
     // 8. Montos Rápidos C2P
@@ -1157,7 +1377,16 @@
           })
         });
         if (resp.ok) {
-          alert(`🔒 Candado SIM Antifraude:\n• Estado: ${isChecked ? 'ACTIVADO' : 'DESACTIVADO'}\n• Protección IMSI Check sincronizada en Core.`);
+          showActionModal(
+            "🔒 Candado SIM Antifraude",
+            `<div class="space-y-1 text-xs">
+              <p><strong>Estado:</strong> <span class="${isChecked ? 'text-emerald-600' : 'text-amber-600'} font-bold">${isChecked ? 'ACTIVADO' : 'DESACTIVADO'}</span></p>
+              <p>• Línea protegida: <strong>${currentMsisdn}</strong></p>
+              <p>• Algoritmo Antifraude: Verificación de IMSI / ICCID en tiempo real.</p>
+              <p class="text-[10px] text-secondary mt-1">Sincronizado con Core Telecomunicaciones Movilnet C.A.</p>
+            </div>`,
+            isChecked ? "lock" : "lock_open"
+          );
         }
       } catch (e) {
         console.log('Toggle SIM lock:', isChecked);
@@ -1165,7 +1394,15 @@
     }
 
     function toggleVoLTE(isChecked) {
-      alert(`📡 VoLTE HD Voice:\n• Estado: ${isChecked ? 'HABILITADO' : 'DESHABILITADO'}\n• Parámetro QoS registrado en la red 4GMAX.`);
+      showActionModal(
+        "📡 VoLTE HD Voice 4GMAX",
+        `<div class="space-y-1 text-xs">
+          <p><strong>Estado:</strong> <span class="${isChecked ? 'text-emerald-600' : 'text-slate-500'} font-bold">${isChecked ? 'HABILITADO' : 'DESHABILITADO'}</span></p>
+          <p>• Parámetro QoS registrado en la red LTE 4GMAX.</p>
+          <p>• Códec de audio HD: AMR-WB 23.85 kbps activo.</p>
+        </div>`,
+        "cell_tower"
+      );
     }
 
     // 11. Chips de Pregunta Rápida del Chat
@@ -1391,20 +1628,23 @@
           </div>
         `;
         container.appendChild(aiBubble);
+        speakText(replyText);
       } catch (err) {
         const typingEl = document.getElementById('typing-indicator');
         if (typingEl) typingEl.remove();
 
         const aiBubble = document.createElement('div');
         aiBubble.className = 'self-start max-w-[90%] bg-surface-container-lowest rounded-2xl rounded-tl-xs p-3 shadow-sm border border-surface-container text-xs text-on-surface flex flex-col gap-1.5';
+        const fallbackTxt = getIntelligentFallback(msg, currentMsisdn);
         aiBubble.innerHTML = `
           <div class="flex items-center justify-between text-[10px] text-secondary font-medium">
             <span class="text-primary font-bold">Movilnet Core AI</span>
             <span>Ahora</span>
           </div>
-          <p>${getIntelligentFallback(msg, currentMsisdn)}</p>
+          <p>${fallbackTxt}</p>
         `;
         container.appendChild(aiBubble);
+        speakText(fallbackTxt);
       } finally {
         submitBtn.disabled = false;
         container.scrollTop = container.scrollHeight;
@@ -1459,9 +1699,10 @@
         } catch (e) {
           loadSubscriberData(currentMsisdn);
         }
+      }
       loadCatalogPlans();
 
-      // Soporte Activo de Teclado Virtual para iPhone (iOS Safari)
+      // Soporte Activo de Teclado Virtual y Viewport para Celulares (iOS Safari / Android Chrome)
       if (window.visualViewport) {
         function adjustChatForKeyboard() {
           const assistant = document.getElementById('tab-assistant');
@@ -1477,6 +1718,7 @@
         }
         window.visualViewport.addEventListener('resize', adjustChatForKeyboard);
         window.visualViewport.addEventListener('scroll', adjustChatForKeyboard);
+        window.adjustChatForKeyboard = adjustChatForKeyboard;
       }
 
       const chatInputEl = document.getElementById('chat-input');
@@ -1490,6 +1732,31 @@
         });
       }
     });
+
+    // =========================================================================
+    // ENLACE GLOBAL DE FUNCIONES A WINDOW (PREVENCIÓN TOTAL DE SCOPE ERRORS)
+    // =========================================================================
+    window.goToTab = goToTab;
+    window.handleGoBack = handleGoBack;
+    window.setIllumination = setIllumination;
+    window.onCarrierChange = onCarrierChange;
+    window.openUsageModal = openUsageModal;
+    window.closeUsageModal = closeUsageModal;
+    window.openPlanModal = openPlanModal;
+    window.closePlanModal = closePlanModal;
+    window.executePlanChange = executePlanChange;
+    window.executeFlashQuery = executeFlashQuery;
+    window.setC2PAmount = setC2PAmount;
+    window.processC2P = processC2P;
+    window.toggleSimLock = toggleSimLock;
+    window.toggleVoLTE = toggleVoLTE;
+    window.sendQuickPrompt = sendQuickPrompt;
+    window.clearChatHistory = clearChatHistory;
+    window.sendChatMessage = sendChatMessage;
+    window.executeQuickC2PFromChat = executeQuickC2PFromChat;
+    window.showActionModal = showActionModal;
+    window.closeActionModal = closeActionModal;
+    window.toggleVoiceRecording = toggleVoiceRecording;
   </script>
 </body>
 </html>
