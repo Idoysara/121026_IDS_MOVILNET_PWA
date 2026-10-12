@@ -1,7 +1,7 @@
 # PUNTO DE CONTROL — SESIÓN ACTIVA (MOVILNET ↔ PROTOCOLO DECAGONAL CERO ERRORES)
-- **Fecha/Hora:** 2026-10-12 12:10 VET | **Capítulo Bitácora:** 165 (Certificación BOOST: Enlaces de Acción, Modo 3 Iluminaciones y Responsividad Móvil Total)
+- **Fecha/Hora:** 2026-10-12 15:37 VET | **Capítulo Bitácora:** 166 (Certificación Safari Móvil Real: Solapamiento Viewport, Safe-Area Superior, Tema Dinámico y Despliegue Render)
 - **Declaración Estratégica Ratificada:**
-  > *"En Resumen: Resolución 100% auditada y certificada de los 3 puntos solicitados: (1) Enlaces y botones de acción reactivados con modales no bloqueantes; (2) Selector de Iluminación 3 Niveles (Claro/Medio/Oscuro) plenamente visible en panel y sincronizado bidireccionalmente; (3) Responsividad móvil móvil total comprobada en iPhone X (375x812) con caja de chat accesible, micrófono de voz funcional y ajuste dinámico en iOS/Android. Commit 65b70e5 desplegado en GitHub y sincronizado."*
+  > *"En Resumen: Ejecución 100% completada y auditada de las correcciones de diseño en celular real vs simulador: (1) Eliminación de solapamiento de la barra de navegación de Safari móvil sobre la caja de chat y micrófono (+76px padding-bottom en modo navegador); (2) Ajuste de safe-area superior (48px) evitando colisión con barra de estado iOS y Dynamic Island; (3) Sincronización dinámica de <meta name="theme-color"> eliminando barras anaranjadas; (4) Simulador actualizado con entorno dual 'Safari Móvil (Real)' y 'PWA Standalone' con réplica visual exacta de iOS; (5) Commit 6c69086 subido a GitHub y compilando automáticamente en Render (dep-db6jdk0473hc73dj7ri0)."*
 - **Estado de Calidad:** 16 / 16 tests de despliegue/PWA aprobados (100% PASS, 0 fallos), 10/10 Fases Decagonales APROBADAS.
 - **Módulos del Núcleo y Despliegue Nube Activos:**
   1. `Dockerfile` (Multi-stage hardened, usuario non-root 1001 movilnet, core/ incluido, healthcheck dinámico por $PORT).
