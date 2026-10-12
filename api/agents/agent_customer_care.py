@@ -799,10 +799,13 @@ BARRERAS Y REGLAS DE SEGURIDAD (ANTI-ALUCINACIÓN):
         2. Google AI Studio (Gemini 2.5 / 3.7 Flash) si está disponible.
         3. Motor Semántico Contextual Local (Fallback Carrier-Grade).
         """
+        # 0. Construir contexto enriquecido con telemetría de hora, día, fecha y dispositivo
+        system_context = self._build_system_context(latitude, longitude, device_info)
+
         # 1. Intentar proveedor directo Google AI Studio (Gemini 3.5 / 2.5)
         if self.gemini_api_key:
             try:
-                text, tokens, cost = self._call_gemini_api(message, session_history)
+                text, tokens, cost = self._call_gemini_api(message, session_history, system_context)
                 return text, tokens, cost
             except Exception as e:
                 logger.warning(f"Fallback desde Google AI Studio hacia siguiente capa: {e}")
@@ -810,7 +813,7 @@ BARRERAS Y REGLAS DE SEGURIDAD (ANTI-ALUCINACIÓN):
         # 2. Intentar proveedor OpenRouter (Google Gemini / Qwen / DeepSeek Pool)
         if self.openrouter_api_key:
             try:
-                text, tokens, cost = self._call_openrouter_api(message, session_history, latitude, longitude, device_info)
+                text, tokens, cost = self._call_openrouter_api(message, session_history, latitude, longitude, device_info, system_context)
                 return text, tokens, cost
             except Exception as e:
                 logger.warning(f"Fallback desde OpenRouter hacia siguiente capa: {e}")
@@ -818,27 +821,21 @@ BARRERAS Y REGLAS DE SEGURIDAD (ANTI-ALUCINACIÓN):
         # 3. Razonador Semántico Determinista Local (Zero-Token Fallback)
         return self._semantic_fallback_reasoner(message, session_history, msisdn, latitude, longitude)
 
-    def _call_openrouter_api(
+    def _build_system_context(
         self,
-        message: str,
-        session_history: List[Dict[str, Any]],
         latitude: Optional[float] = None,
         longitude: Optional[float] = None,
         device_info: Optional[Dict[str, Any]] = None
-    ) -> Tuple[str, int, float]:
-        """Llamada a OpenRouter API con fallback automático entre modelos de alto rendimiento."""
-        import urllib.request
-        import urllib.error
-
-        url = "https://openrouter.ai/api/v1/chat/completions"
-        
-        # Obtener fecha y hora actual en Venezuela (UTC-4)
+    ) -> str:
+        """Construye el prompt de sistema con telemetría estricta de hora, día, fecha oficial en Venezuela y dispositivo."""
         now_utc = datetime.now(timezone.utc)
         now_venezuela = now_utc - timedelta(hours=4)
         current_time_str = now_venezuela.strftime("%I:%M %p")
+        dias_semana = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"]
+        day_of_week = dias_semana[now_venezuela.weekday()].capitalize()
         spanish_months = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"]
-        current_date_str = f"{now_venezuela.day} de {spanish_months[now_venezuela.month - 1]} de {now_venezuela.year}"
-        
+        current_date_str = f"{day_of_week}, {now_venezuela.day} de {spanish_months[now_venezuela.month - 1]} de {now_venezuela.year}"
+
         geo_weather_info = self._get_location_and_weather(latitude, longitude)
 
         # Telemetría de Dispositivo W3C
@@ -852,13 +849,33 @@ BARRERAS Y REGLAS DE SEGURIDAD (ANTI-ALUCINACIÓN):
 
         system_with_context = (
             f"{self.SYSTEM_PROMPT}\n"
-            f"Contexto técnico, geográfico y temporal de referencia:\n"
+            f"Contexto técnico, geográfico y temporal de referencia obligatoria del sistema:\n"
             f"- Dispositivo del usuario (Telemetría PWA): {dev_desc}\n"
-            f"- Hora oficial Venezuela: {current_time_str} | Fecha: {current_date_str}\n"
+            f"- Fecha oficial actual en Venezuela (UTC-4): {current_date_str}\n"
+            f"- Día de la semana actual en Venezuela: {day_of_week}\n"
+            f"- Hora oficial actual en Venezuela: {current_time_str}\n"
             f"{geo_weather_info}\n"
+            f"*Regla Inviolable de Temporalidad*: Cuando el usuario pregunte por la fecha, el día actual o la hora (o haga alusión al momento del día), DEBES responder con EXACTITUD matemática basándote en esta telemetría oficial ({current_date_str}, {current_time_str}). Queda ESTRICTAMENTE PROHIBIDO inventar o cambiar el día de la semana.\n"
             f"*Instrucción sobre telemetría de dispositivo*: Si el usuario pregunta cómo sabes qué dispositivo está usando (celular, laptop o tablet), responde con total transparencia y cortesía técnica explicando qué tipo de dispositivo es ({dev_desc}) y aclara que al abrir la aplicación web (PWA), el navegador comparte de forma estándar parámetros básicos de pantalla y sistema operativo para adaptar la interfaz visualmente a su equipo.\n"
-            f"*Instrucción sobre telemetría temporal*: Usa los datos de hora y clima ÚNICAMENTE si el usuario pregunta expresamente por la hora, fecha o el clima.\n"
+            f"*Instrucción sobre telemetría temporal*: Usa los datos de hora y clima ÚNICAMENTE si el usuario pregunta expresamente por la hora, fecha o el clima, o alude al momento del día.\n"
         )
+        return system_with_context
+
+    def _call_openrouter_api(
+        self,
+        message: str,
+        session_history: List[Dict[str, Any]],
+        latitude: Optional[float] = None,
+        longitude: Optional[float] = None,
+        device_info: Optional[Dict[str, Any]] = None,
+        system_context: Optional[str] = None
+    ) -> Tuple[str, int, float]:
+        """Llamada a OpenRouter API con fallback automático entre modelos de alto rendimiento."""
+        import urllib.request
+        import urllib.error
+
+        url = "https://openrouter.ai/api/v1/chat/completions"
+        system_with_context = system_context or self._build_system_context(latitude, longitude, device_info)
 
         messages = [
             {"role": "system", "content": system_with_context}
@@ -918,7 +935,8 @@ BARRERAS Y REGLAS DE SEGURIDAD (ANTI-ALUCINACIÓN):
     def _call_gemini_api(
         self,
         message: str,
-        session_history: List[Dict[str, Any]]
+        session_history: List[Dict[str, Any]],
+        system_context: Optional[str] = None
     ) -> Tuple[str, int, float]:
         """Llamada a la API de Gemini usando urllib sin dependencias externas pesadas."""
         import urllib.request
@@ -938,9 +956,10 @@ BARRERAS Y REGLAS DE SEGURIDAD (ANTI-ALUCINACIÓN):
             "parts": [{"text": message}]
         })
 
+        active_system_prompt = system_context or self.SYSTEM_PROMPT
         payload = {
             "systemInstruction": {
-                "parts": [{"text": self.SYSTEM_PROMPT}]
+                "parts": [{"text": active_system_prompt}]
             },
             "contents": contents,
             "generationConfig": {
@@ -1144,14 +1163,16 @@ BARRERAS Y REGLAS DE SEGURIDAD (ANTI-ALUCINACIÓN):
             )
 
         # 13. Consultas de Hora y Fecha en Fallback
-        elif any(w in msg_clean for w in ["que hora es", "la hora", "que fecha es", "que dia es", "hora actual"]):
+        elif any(w in msg_clean for w in ["que hora es", "la hora", "que fecha es", "que dia es", "dia es hoy", "hora actual", "hora de ir"]):
             now_utc = datetime.now(timezone.utc)
             now_venezuela = now_utc - timedelta(hours=4)
+            dias_semana = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"]
+            day_name = dias_semana[now_venezuela.weekday()].capitalize()
             time_str = now_venezuela.strftime("%I:%M %p")
             spanish_months = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"]
-            date_str = f"{now_venezuela.day} de {spanish_months[now_venezuela.month - 1]} de {now_venezuela.year}"
+            date_str = f"{day_name}, {now_venezuela.day} de {spanish_months[now_venezuela.month - 1]} de {now_venezuela.year}"
             reply = (
-                f"🕐 En este momento son las *{time_str}* (hora de Venezuela, {date_str}).\n\n"
+                f"📅 Hoy es *{date_str}* y en este momento son las *{time_str}* (hora oficial de Venezuela, UTC-4).\n\n"
                 "¿En qué más te puedo colaborar el día de hoy con tu línea Movilnet 4GMAX?"
             )
 

@@ -622,13 +622,13 @@
         <div class="self-start max-w-[85%] bg-surface-container-lowest rounded-2xl rounded-tl-xs p-3 shadow-sm border border-surface-container text-xs text-on-surface flex flex-col gap-1.5">
           <div class="flex items-center justify-between text-[10px] text-secondary font-medium">
             <span class="text-primary font-bold">Movilnet Core AI</span>
-            <span>10:40 AM</span>
+            <span id="welcome-msg-time-top" class="font-mono text-[10px]">10:40 AM</span>
           </div>
           <p class="leading-relaxed">
             ¡Hola! Soy tu asistente virtual de <strong>Telecomunicaciones Movilnet C.A.</strong> Estoy conectado en tiempo real al Core N→1. Puedes consultar tu saldo O(1), preparar órdenes de recarga C2P o cambiar de plan.
           </p>
-          <div class="self-end text-[9px] text-secondary flex items-center gap-0.5">
-            <span>10:40 AM</span>
+          <div class="self-end text-[9px] text-secondary flex items-center gap-0.5 font-mono">
+            <span id="welcome-msg-time-bot">10:40 AM</span>
             <span class="material-symbols-outlined text-[12px] text-sky-500">done_all</span>
           </div>
         </div>
@@ -1475,6 +1475,15 @@
     // 13. Chat del Asistente IA (POST /api/v1/agents/customer-care/process)
     function getIntelligentFallback(msg, msisdn) {
       const lower = msg.toLowerCase().trim();
+      if (lower.includes('que dia es') || lower.includes('qué día es') || lower.includes('dia es hoy') || lower.includes('día es hoy') || lower.includes('que fecha') || lower.includes('qué fecha') || lower.includes('que hora') || lower.includes('qué hora') || lower.includes('hora actual') || lower.includes('hora de ir')) {
+        const now = new Date();
+        const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+        const meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+        const diaSemana = dias[now.getDay()];
+        const fechaStr = `${diaSemana}, ${now.getDate()} de ${meses[now.getMonth()]} de ${now.getFullYear()}`;
+        const horaStr = now.toLocaleTimeString('es-VE', { hour: 'numeric', minute: '2-digit', hour12: true });
+        return `📅 Hoy es <strong>${fechaStr}</strong> y en este momento son las <strong>${horaStr}</strong> (hora oficial en Venezuela).<br/><br/>Espero que tengas un excelente resto de jornada. ¿En qué más te puedo colaborar el día de hoy con tu línea Movilnet 4GMAX?`;
+      }
       if (lower.includes('hola') || lower.includes('buenas') || lower.includes('buenos') || lower.includes('saludos') || lower.includes('como estas') || lower.includes('cómo estás')) {
         return `👋 ¡Hola! Es un gusto saludarte. Soy tu asistente virtual de <strong>Movilnet 4GMAX</strong>.<br/><br/>Estoy conectado en tiempo real al Core N→1 para tu línea <strong class="font-mono">${msisdn}</strong>. ¿En qué te puedo colaborar el día de hoy? Puedo ayudarte a consultar tu saldo, verificar tus megas, conocer nuestros planes 4GMAX o gestionar tu Pago Móvil C2P.`;
       }
@@ -1701,6 +1710,14 @@
         }
       }
       loadCatalogPlans();
+
+      // Sincronizar marcas de tiempo del mensaje de bienvenida con la hora actual del sistema
+      const nowTime = new Date();
+      const currentWelcomeTime = nowTime.toLocaleTimeString('es-VE', { hour: 'numeric', minute: '2-digit', hour12: true });
+      const welcomeTop = document.getElementById('welcome-msg-time-top');
+      if (welcomeTop) welcomeTop.textContent = currentWelcomeTime;
+      const welcomeBot = document.getElementById('welcome-msg-time-bot');
+      if (welcomeBot) welcomeBot.textContent = currentWelcomeTime;
 
       // Soporte Activo de Teclado Virtual y Viewport para Celulares (iOS Safari / Android Chrome)
       if (window.visualViewport) {
