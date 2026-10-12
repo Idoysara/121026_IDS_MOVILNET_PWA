@@ -2,8 +2,11 @@
 <html lang="es">
 <head>
   <meta charset="utf-8"/>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+  <meta http-equiv="Pragma" content="no-cache"/>
+  <meta http-equiv="Expires" content="0"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content"/>
-  <meta name="theme-color" content="#FF6600"/>
+  <meta name="theme-color" id="meta-theme-color" content="#0F172A"/>
   <meta name="apple-mobile-web-app-capable" content="yes"/>
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
   <title>Movilnet Core — PWA 4GMAX</title>
@@ -128,23 +131,67 @@
       .pt-safe {
         padding-top: max(env(safe-area-inset-top, 0px), 12px);
       }
+      .pt-safe {
+        padding-top: max(env(safe-area-inset-top, 0px), 12px);
+      }
       .pt-safe-top {
-        padding-top: max(env(safe-area-inset-top, 0px), 48px);
+        padding-top: calc(max(env(safe-area-inset-top, 0px), 52px) + var(--browser-top-offset, 0px)) !important;
       }
       .pb-safe {
         padding-bottom: max(env(safe-area-inset-bottom, 0px), 10px);
       }
-      /* Modo Navegador Safari Móvil: Espacio de resguardo inferior para que la barra de Safari jamás tape el chat ni la navegación */
-      .browser-mode-safari #chat-input-bar {
-        padding-bottom: calc(max(env(safe-area-inset-bottom, 0px), 12px) + 76px) !important;
+      /* Variables Dinámicas Universales de Viewport y Resguardo por Navegador */
+      :root {
+        --vvh: 100vh;
+        --vvt: 0px;
+        --browser-top-offset: 0px;
+        --browser-bottom-offset: 92px; /* Margen de resguardo universal por defecto para móviles */
+        --composer-dock-elevation: 0px;
       }
-      .browser-mode-safari #bottom-nav {
-        padding-bottom: calc(max(env(safe-area-inset-bottom, 0px), 10px) + 76px) !important;
+      /* =========================================================================
+         CONFIGURACIÓN DE RESGUARDO MULTI-NAVEGADOR (SAFARI, CHROME, OPERA, BRAVE, YAHOO, SAMSUNG)
+         ========================================================================= */
+      .browser-mode-safari {
+        --browser-top-offset: 0px;
+        --browser-bottom-offset: 94px; /* Barra flotante AA + controles de iOS Safari */
       }
-      .browser-mode-safari #tab-dashboard,
-      .browser-mode-safari #tab-c2p {
-        padding-bottom: calc(96px + 76px) !important;
+      .browser-mode-chrome {
+        --browser-top-offset: 52px;    /* Omnibox superior de Chrome */
+        --browser-bottom-offset: 28px; /* Barra inferior de navegación gestual */
       }
+      .browser-mode-opera {
+        --browser-top-offset: 0px;
+        --browser-bottom-offset: 88px; /* Barra Fast-Action con botón O de Opera */
+      }
+      .browser-mode-brave {
+        --browser-top-offset: 0px;
+        --browser-bottom-offset: 86px; /* Barra de herramientas Brave Shields */
+      }
+      .browser-mode-yahoo {
+        --browser-top-offset: 46px;    /* Cabecera morada de búsqueda Yahoo! */
+        --browser-bottom-offset: 80px; /* Barra de lectura y herramientas Yahoo! */
+      }
+      .browser-mode-samsung {
+        --browser-top-offset: 44px;    /* Barra de navegación Samsung Internet */
+        --browser-bottom-offset: 82px; /* Barra inferior de herramientas Samsung */
+      }
+      .browser-mode-standalone {
+        --browser-top-offset: 0px;
+        --browser-bottom-offset: 8px;  /* Pantalla completa pura instalada */
+      }
+
+      /* Ajuste dinámico de los contenedores para nunca ser tapados por barras de navegación */
+      #chat-input-bar {
+        padding-bottom: calc(max(env(safe-area-inset-bottom, 0px), 12px) + var(--browser-bottom-offset, 0px) + var(--composer-dock-elevation, 0px)) !important;
+      }
+      #bottom-nav {
+        padding-bottom: calc(max(env(safe-area-inset-bottom, 0px), 10px) + var(--browser-bottom-offset, 0px)) !important;
+      }
+      #tab-dashboard,
+      #tab-c2p {
+        padding-bottom: calc(96px + var(--browser-bottom-offset, 0px)) !important;
+      }
+
       /* Habilitar selección de texto y evitar zoom automático de iOS en inputs */
       input, textarea, select {
         -webkit-user-select: text !important;
@@ -172,14 +219,51 @@
       position: relative;
     }
 
-    /* Asistente dinámico ajustado al viewport real de iPhone */
+    /* =========================================================================
+       DISEÑO ÚNICO DE CONVERSACIÓN DE MENSAJERÍA MOVILNET AI (OMNI-CHAT ADAPTATIVO)
+       ========================================================================= */
     #tab-assistant {
-      height: 100vh;
-      height: 100dvh;
-      height: -webkit-fill-available;
-      max-width: 480px;
+      position: fixed;
+      top: var(--vvt, 0px);
       left: 50% !important;
       transform: translateX(-50%);
+      width: 100%;
+      max-width: 480px;
+      height: var(--vvh, 100dvh);
+      max-height: var(--vvh, 100dvh);
+      bottom: auto !important;
+      overflow: hidden;
+      display: none;
+      flex-direction: column;
+      z-index: 40;
+      transition: height 0.15s ease-out;
+    }
+    #tab-assistant.active {
+      display: flex;
+    }
+
+    /* Cápsula Flotante Ergonómica de Escritura (Anti-Bloqueo Universal) */
+    .omni-composer-dock {
+      background: var(--color-surface-container-lowest);
+      border-top: 1px solid var(--color-surface-container);
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+      transition: all 0.25s ease;
+      z-index: 50;
+      flex-shrink: 0;
+    }
+
+    /* Modo Escritura Superior (Top Docking para acceso instantáneo anti-bloqueo) */
+    .composer-dock-top #chat-dock-wrapper {
+      order: 1 !important;
+      border-top: none;
+      border-bottom: 1.5px solid var(--color-surface-container);
+    }
+    .composer-dock-top #chat-input-bar {
+      padding-bottom: 10px !important;
+    }
+    .composer-dock-top #chat-messages {
+      order: 2 !important;
+      padding-bottom: calc(max(env(safe-area-inset-bottom, 0px), 16px) + var(--browser-bottom-offset, 0px)) !important;
     }
 
     /* ESTILO DE BOTONES DE ILUMINACIÓN */
@@ -566,34 +650,34 @@
     <!-- ======================================================================
          PESTAÑA 3: ASISTENTE COGNITIVO IA VÍA B (CHAT FULL-SCREEN TELEGRAM/WHATSAPP)
          ====================================================================== -->
-    <section id="tab-assistant" class="tab-content flex-col w-full max-w-[480px] fixed inset-0 mx-auto z-40 bg-surface shadow-2xl h-full max-h-[100dvh] overflow-hidden">
+    <section id="tab-assistant" class="tab-content flex-col w-full max-w-[480px] mx-auto z-40 bg-surface shadow-2xl overflow-hidden">
       
-      <!-- Top Chat App Bar (Estilo WhatsApp / Telegram con presencia en vivo) -->
+      <!-- Top Chat App Bar (Diseño Único Omni-Chat Movilnet AI con Resguardo Anti-Notificaciones) -->
       <div class="w-full pt-safe-top pb-2.5 px-3 bg-surface-container-lowest border-b border-surface-container text-on-surface flex items-center justify-between shadow-md z-10 shrink-0">
         <div class="flex items-center gap-2">
           <!-- BOTÓN VOLVER AL DASHBOARD -->
-          <button onclick="goToTab('dashboard')" class="h-8 px-2 rounded-lg bg-surface-container-high hover:bg-surface-container text-on-surface flex items-center gap-1 active:scale-90 transition-transform" title="Regresar al Dashboard">
-            <span class="material-symbols-outlined text-[20px]">arrow_back</span>
+          <button onclick="goToTab('dashboard')" class="h-8 px-2.5 rounded-xl bg-surface-container-high hover:bg-surface-container text-on-surface flex items-center gap-1 active:scale-90 transition-transform border border-surface-container shadow-2xs" title="Regresar al Dashboard">
+            <span class="material-symbols-outlined text-[18px]">arrow_back</span>
             <span class="text-[11px] font-bold">Volver</span>
           </button>
           
           <div class="relative">
-            <div class="w-9 h-9 rounded-full bg-primary text-white flex items-center justify-center font-bold shadow">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-orange-600 text-white flex items-center justify-center font-bold shadow-md">
               <span class="material-symbols-outlined text-[20px]">smart_toy</span>
             </div>
-            <span class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-surface"></span>
+            <span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-surface"></span>
           </div>
 
           <div class="flex flex-col">
-            <div class="flex items-center gap-1.5">
-              <span class="font-bold text-xs tracking-tight leading-tight text-on-surface">Asistente Movilnet</span>
+            <div class="flex items-center gap-1">
+              <span class="font-bold text-xs tracking-tight leading-tight text-on-surface">Movilnet Omni-AI</span>
               <span class="text-[8px] bg-primary/15 text-primary border border-primary/30 px-1 rounded font-mono font-bold">VÍA B</span>
             </div>
-            <span class="text-[10px] text-emerald-500 font-medium leading-tight">● en línea • Core N→1 :8010</span>
+            <span class="text-[10px] text-emerald-500 font-medium leading-tight">● En línea • Core N→1</span>
           </div>
         </div>
 
-        <div class="flex items-center gap-1.5">
+        <div class="flex items-center gap-1">
           <!-- Mini Selector de Iluminación dentro del Chat -->
           <div class="illumination-box flex items-center bg-surface-container-high rounded-full p-0.5 border border-surface-container shadow-inner" title="Intensidad de Iluminación">
             <button onclick="setIllumination('light')" data-theme-btn="light" class="theme-btn-pwa px-1.5 py-0.5 rounded-full text-[10px] font-bold" title="Modo Claro">
@@ -607,82 +691,117 @@
             </button>
           </div>
 
-          <!-- Voz / Altavoz de Síntesis -->
-          <button id="btn-voice-speaker" onclick="toggleSpeechAudio()" title="Activar/Silenciar Audio de Voz del Asistente" class="w-8 h-8 rounded-full hover:bg-surface-container flex items-center justify-center text-secondary active:scale-90 transition-transform">
-            <span id="speaker-icon" class="material-symbols-outlined text-[18px]">volume_up</span>
+          <!-- Conmutador de Posición de Escritura (Arriba / Abajo) -->
+          <button id="btn-dock-pos" onclick="toggleComposerDockPosition()" title="Alternar Caja de Escritura: Arriba / Abajo" class="h-7 px-1.5 rounded-lg bg-primary/15 hover:bg-primary/25 text-primary border border-primary/30 flex items-center gap-0.5 text-[9px] font-bold active:scale-90 transition-transform">
+            <span id="dock-pos-icon" class="material-symbols-outlined text-[14px]">vertical_align_top</span>
+            <span id="dock-pos-label" class="hidden xs:inline">Arriba</span>
           </button>
 
-          <span id="ai-rtt-badge" class="hidden xs:inline-block px-1.5 py-0.5 rounded-full bg-surface-container text-emerald-500 font-mono text-[9px] font-bold border border-surface-container">
+          <!-- Voz / Altavoz de Síntesis -->
+          <button id="btn-voice-speaker" onclick="toggleSpeechAudio()" title="Activar/Silenciar Audio de Voz del Asistente" class="w-7 h-7 rounded-full hover:bg-surface-container flex items-center justify-center text-secondary active:scale-90 transition-transform">
+            <span id="speaker-icon" class="material-symbols-outlined text-[17px]">volume_up</span>
+          </button>
+
+          <span id="ai-rtt-badge" class="hidden sm:inline-block px-1.5 py-0.5 rounded-full bg-surface-container text-emerald-500 font-mono text-[9px] font-bold border border-surface-container">
             142ms
           </span>
-          <button onclick="clearChatHistory()" title="Limpiar conversación" class="w-8 h-8 rounded-full hover:bg-surface-container flex items-center justify-center text-secondary active:scale-90 transition-transform">
-            <span class="material-symbols-outlined text-[18px]">delete_sweep</span>
+          <button onclick="clearChatHistory()" title="Limpiar conversación" class="w-7 h-7 rounded-full hover:bg-surface-container flex items-center justify-center text-secondary active:scale-90 transition-transform">
+            <span class="material-symbols-outlined text-[17px]">delete_sweep</span>
           </button>
         </div>
       </div>
 
-      <!-- Guardarraíl Visual ZH-MHEP -->
+      <!-- Guardarraíl Visual ZH-MHEP + Sincronización Temporal Venezuela -->
       <div class="w-full bg-surface-container-low border-b border-surface-container px-3 py-1 flex items-center justify-between text-[10px] text-secondary shrink-0">
-        <span class="flex items-center gap-1">
-          <span class="material-symbols-outlined text-primary text-[14px]">verified_user</span>
-          <span>Protocolo ZH-MHEP Activo: Cero Alucinación • Anclaje 1:1 OCS</span>
+        <span class="flex items-center gap-1 truncate">
+          <span class="material-symbols-outlined text-primary text-[13px]">verified_user</span>
+          <span class="truncate">Protocolo ZH-MHEP • Anclaje 1:1 OCS</span>
         </span>
-        <span class="font-mono text-primary font-bold">Strict Lock</span>
+        <span class="font-mono text-primary font-bold shrink-0 ml-1">Strict Lock</span>
       </div>
 
       <!-- Lienzo de Mensajes del Chat (Scrollable con min-h-0 para flex shrink garantizado) -->
-      <div id="chat-messages" class="flex-1 min-h-0 overflow-y-auto p-3 chat-wallpaper flex flex-col gap-3 overscroll-contain">
+      <div id="chat-messages" class="flex-1 min-h-0 overflow-y-auto px-3 py-2.5 chat-wallpaper flex flex-col gap-2.5 overscroll-contain">
         <!-- Mensaje de Bienvenida del Asistente -->
-        <div class="self-start max-w-[85%] bg-surface-container-lowest rounded-2xl rounded-tl-xs p-3 shadow-sm border border-surface-container text-xs text-on-surface flex flex-col gap-1.5">
+        <div class="self-start max-w-[88%] bg-surface-container-lowest rounded-2xl rounded-tl-xs p-3 shadow-sm border border-surface-container text-xs text-on-surface flex flex-col gap-1">
           <div class="flex items-center justify-between text-[10px] text-secondary font-medium">
             <span class="text-primary font-bold">Movilnet Core AI</span>
-            <span id="welcome-msg-time-top" class="font-mono text-[10px]">10:40 AM</span>
+            <span id="welcome-msg-time-top" class="font-mono text-[10px]">Ahora</span>
           </div>
           <p class="leading-relaxed">
             ¡Hola! Soy tu asistente virtual de <strong>Telecomunicaciones Movilnet C.A.</strong> Estoy conectado en tiempo real al Core N→1. Puedes consultar tu saldo O(1), preparar órdenes de recarga C2P o cambiar de plan.
           </p>
           <div class="self-end text-[9px] text-secondary flex items-center gap-0.5 font-mono">
-            <span id="welcome-msg-time-bot">10:40 AM</span>
+            <span id="welcome-msg-time-bot">Ahora</span>
             <span class="material-symbols-outlined text-[12px] text-sky-500">done_all</span>
           </div>
         </div>
       </div>
 
-      <!-- Chips de Sugerencia / Pregunta Rápida Flotantes (Telegram Quick Buttons) -->
-      <div class="w-full bg-surface-container-lowest/90 backdrop-blur-md border-t border-surface-container px-2 py-1.5 flex items-center gap-1.5 overflow-x-auto shrink-0 no-scrollbar">
-        <button onclick="sendQuickPrompt('¿Cuál es mi saldo actual y cuántos megas me quedan?')" class="px-2.5 py-1 rounded-full bg-surface-container-high hover:bg-primary/15 text-on-surface text-[11px] font-medium border border-surface-container shrink-0 active:scale-95 transition-all flex items-center gap-1">
-          <span>💰 Mi Saldo y Megas</span>
-        </button>
-        <button onclick="sendQuickPrompt('Necesito recargar 300 Bs por C2P con Banco de Venezuela.')" class="px-2.5 py-1 rounded-full bg-surface-container-high hover:bg-primary/15 text-on-surface text-[11px] font-medium border border-surface-container shrink-0 active:scale-95 transition-all flex items-center gap-1">
-          <span>⚡ Recargar C2P BDV</span>
-        </button>
-        <button onclick="sendQuickPrompt('Muéstrame los planes 4GMAX comerciales disponibles.')" class="px-2.5 py-1 rounded-full bg-surface-container-high hover:bg-primary/15 text-on-surface text-[11px] font-medium border border-surface-container shrink-0 active:scale-95 transition-all flex items-center gap-1">
-          <span>📦 Ver Planes 4GMAX</span>
-        </button>
-        <button onclick="sendQuickPrompt('Quiero información sobre portabilidad numérica desde Movistar o Digitel.')" class="px-2.5 py-1 rounded-full bg-surface-container-high hover:bg-primary/15 text-on-surface text-[11px] font-medium border border-surface-container shrink-0 active:scale-95 transition-all flex items-center gap-1">
-          <span>🔄 Portabilidad Numérica</span>
-        </button>
-      </div>
+      <!-- ====================================================================
+           CÁPSULA ÚNICA UNIVERSAL DE MENSAJERÍA (OMNI-COMPOSER ANTI-BLOQUEO)
+           Flota sobre cualquier barra de Safari, Chrome, Opera, Brave o Yahoo
+           ==================================================================== -->
+      <div id="chat-dock-wrapper" class="omni-composer-dock flex flex-col w-full">
+        
+        <!-- Micro-Barra de Ajuste Ergonómico Universal Anti-Navegador -->
+        <div class="w-full bg-surface-container-low/90 border-b border-surface-container px-2.5 py-1 flex items-center justify-between text-[10px] text-secondary">
+          <span class="flex items-center gap-1 font-medium text-on-surface/80">
+            <span class="material-symbols-outlined text-[13px] text-emerald-500">shield_moon</span>
+            <span>Omni-Dock Universal:</span>
+            <strong id="active-browser-badge" class="text-primary font-mono text-[9px] uppercase">Auto-Safe</strong>
+          </span>
+          <div class="flex items-center gap-1">
+            <button type="button" onclick="adjustComposerElevation(25)" class="px-1.5 py-0.5 rounded bg-surface-container-high hover:bg-primary/20 text-on-surface font-bold text-[9px] border border-surface-container active:scale-95 transition-all" title="Elevar caja +25px por encima del navegador">
+              ⬆️ Subir Caja
+            </button>
+            <button type="button" onclick="resetComposerElevation()" class="px-1.5 py-0.5 rounded bg-surface-container-high hover:bg-surface-container text-secondary font-semibold text-[9px] border border-surface-container active:scale-95 transition-all" title="Restaurar altura estándar">
+              ⬇️ Normal
+            </button>
+            <button type="button" onclick="toggleComposerDockPosition()" class="px-1.5 py-0.5 rounded bg-primary/15 hover:bg-primary/25 text-primary font-bold text-[9px] border border-primary/30 active:scale-95 transition-all" title="Pasar la caja de escritura a la parte superior">
+              🔝 Fijar Arriba
+            </button>
+          </div>
+        </div>
 
-      <!-- Barra de Entrada Inferior (Estilo WhatsApp con micrófono de voz y botón circular de enviar) -->
-      <div id="chat-input-bar" class="w-full bg-surface-container-lowest border-t border-surface-container px-2.5 py-2 pb-safe flex items-center gap-1.5 shrink-0 z-50 shadow-lg">
-        <button type="button" onclick="document.getElementById('chat-input').focus()" class="w-9 h-9 rounded-full text-secondary hover:text-on-surface flex items-center justify-center shrink-0" title="Adjuntar">
-          <span class="material-symbols-outlined text-[20px]">attach_file</span>
-        </button>
-
-        <form id="chat-form" onsubmit="sendChatMessage(event)" class="flex-1 flex items-center gap-1.5 min-w-0">
-          <input id="chat-input" type="text" placeholder="Escribe un mensaje o usa el micrófono..." autocomplete="off" autocorrect="on" autocapitalize="sentences" class="flex-1 min-w-0 bg-surface-container-low border border-surface-container rounded-full px-3.5 py-2 text-[16px] outline-none text-on-surface focus:border-primary transition-colors select-text"/>
-          
-          <!-- BOTÓN DE MICRÓFONO / VOZ -->
-          <button type="button" id="btn-voice-mic" onclick="toggleVoiceRecording()" class="w-10 h-10 rounded-full bg-surface-container-high hover:bg-primary/20 text-on-surface flex items-center justify-center shrink-0 shadow-sm active:scale-90 transition-all" title="Hablar por Micrófono (Reconocimiento de Voz)">
-            <span id="mic-icon" class="material-symbols-outlined text-[20px]">mic</span>
+        <!-- Chips de Sugerencia / Pregunta Rápida Flotantes -->
+        <div class="w-full bg-surface-container-lowest/95 px-2.5 pt-2 pb-1 flex items-center gap-1.5 overflow-x-auto shrink-0 no-scrollbar">
+          <button type="button" onclick="sendQuickPrompt('¿Cuál es mi saldo actual y cuántos megas me quedan?')" class="px-2.5 py-1 rounded-full bg-surface-container-high hover:bg-primary/15 text-on-surface text-[11px] font-semibold border border-surface-container shrink-0 active:scale-95 transition-all flex items-center gap-1 shadow-2xs">
+            <span>💰 Mi Saldo y Megas</span>
           </button>
-
-          <!-- BOTÓN ENVIAR MENSAJE -->
-          <button id="chat-submit-btn" type="submit" class="w-10 h-10 rounded-full bg-primary hover:bg-primary-dark text-white flex items-center justify-center shrink-0 shadow-md active:scale-90 transition-transform" title="Enviar Mensaje">
-            <span class="material-symbols-outlined text-[20px]">send</span>
+          <button type="button" onclick="sendQuickPrompt('Necesito recargar 300 Bs por C2P con Banco de Venezuela.')" class="px-2.5 py-1 rounded-full bg-surface-container-high hover:bg-primary/15 text-on-surface text-[11px] font-semibold border border-surface-container shrink-0 active:scale-95 transition-all flex items-center gap-1 shadow-2xs">
+            <span>⚡ Recargar C2P BDV</span>
           </button>
-        </form>
+          <button type="button" onclick="sendQuickPrompt('Muéstrame los planes 4GMAX comerciales disponibles.')" class="px-2.5 py-1 rounded-full bg-surface-container-high hover:bg-primary/15 text-on-surface text-[11px] font-semibold border border-surface-container shrink-0 active:scale-95 transition-all flex items-center gap-1 shadow-2xs">
+            <span>📦 Ver Planes 4GMAX</span>
+          </button>
+          <button type="button" onclick="sendQuickPrompt('¿Qué día y hora es hoy en Venezuela?')" class="px-2.5 py-1 rounded-full bg-surface-container-high hover:bg-primary/15 text-on-surface text-[11px] font-semibold border border-surface-container shrink-0 active:scale-95 transition-all flex items-center gap-1 shadow-2xs">
+            <span>🕒 Hora y Día VE</span>
+          </button>
+        </div>
+
+        <!-- Barra de Entrada Encapsulada (Con resguardo dinámico garantizado) -->
+        <div id="chat-input-bar" class="w-full bg-surface-container-lowest px-2.5 pt-1.5 pb-safe flex items-center gap-1.5 shrink-0 z-50">
+          <div class="w-full flex items-center gap-1.5 p-1.5 rounded-2xl bg-surface-container-low border-2 border-primary/40 shadow-md">
+            <button type="button" onclick="document.getElementById('chat-input').focus()" class="w-9 h-9 rounded-xl text-primary hover:bg-primary/10 flex items-center justify-center shrink-0 transition-colors" title="Enfocar y escribir mensaje">
+              <span class="material-symbols-outlined text-[20px]">edit_square</span>
+            </button>
+
+            <form id="chat-form" onsubmit="sendChatMessage(event)" class="flex-1 flex items-center gap-1.5 min-w-0">
+              <input id="chat-input" type="text" placeholder="Escribe aquí tu mensaje a Movilnet..." autocomplete="off" autocorrect="on" autocapitalize="sentences" class="flex-1 min-w-0 bg-transparent px-2 py-1.5 text-[16px] font-medium outline-none text-on-surface placeholder:text-secondary/80 select-text"/>
+              
+              <!-- BOTÓN DE MICRÓFONO / VOZ -->
+              <button type="button" id="btn-voice-mic" onclick="toggleVoiceRecording()" class="w-10 h-10 rounded-xl bg-surface-container-high hover:bg-primary/20 text-on-surface flex items-center justify-center shrink-0 shadow-xs active:scale-90 transition-all border border-surface-container" title="Hablar por Micrófono (Reconocimiento de Voz)">
+                <span id="mic-icon" class="material-symbols-outlined text-[20px]">mic</span>
+              </button>
+
+              <!-- BOTÓN ENVIAR MENSAJE -->
+              <button id="chat-submit-btn" type="submit" class="w-10 h-10 rounded-xl bg-primary hover:bg-primary-dark text-white flex items-center justify-center shrink-0 shadow-md active:scale-90 transition-transform" title="Enviar Mensaje">
+                <span class="material-symbols-outlined text-[20px]">send</span>
+              </button>
+            </form>
+          </div>
+        </div>
       </div>
 
     </section>
@@ -847,12 +966,93 @@
     let currentMsisdn = "04160000001";
     let selectedPlanId = null;
     let selectedPlanName = null;
+    let currentComposerElevation = 0;
+    let isComposerTopDocked = false;
 
-    // 1. Registro PWA Service Worker
+    // 1. Registro PWA Service Worker con Auto-Purga de Caché Obsoleto (Zero-Stale-Cache)
+    if ('caches' in window) {
+      caches.keys().then(keys => {
+        keys.forEach(k => {
+          if (k !== 'movilnet-pwa-v167-network-first') {
+            caches.delete(k);
+          }
+        });
+      }).catch(() => {});
+    }
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/ui/pwa_stitch/sw.js').catch(e => console.warn(e));
+        navigator.serviceWorker.register('/ui/pwa_stitch/sw.js?v=167').then(reg => {
+          reg.update();
+        }).catch(e => console.warn(e));
       });
+    }
+
+    // 1.1 Motor Universal de Viewport Dinámico (Previene ocultamiento en Safari/Chrome/Opera/Brave/Yahoo)
+    function syncUniversalViewport() {
+      const vv = window.visualViewport;
+      const vHeight = vv ? vv.height : window.innerHeight;
+      const vOffsetTop = vv ? vv.offsetTop : 0;
+      document.documentElement.style.setProperty('--vvh', `${vHeight}px`);
+      document.documentElement.style.setProperty('--vvt', `${vOffsetTop}px`);
+
+      const assistant = document.getElementById('tab-assistant');
+      if (assistant && assistant.classList.contains('active')) {
+        assistant.style.height = `${vHeight}px`;
+        assistant.style.maxHeight = `${vHeight}px`;
+        assistant.style.top = `${vOffsetTop}px`;
+        assistant.style.bottom = 'auto';
+        const chatBox = document.getElementById('chat-messages');
+        if (chatBox) {
+          chatBox.scrollTop = chatBox.scrollHeight;
+        }
+      }
+    }
+
+    // 1.2 Controles del Diseño Único Omni-Chat (Elevación y Posición Superior/Inferior)
+    function adjustComposerElevation(delta) {
+      currentComposerElevation = Math.min(Math.max(currentComposerElevation + delta, 0), 150);
+      document.documentElement.style.setProperty('--composer-dock-elevation', `${currentComposerElevation}px`);
+      const badge = document.getElementById('active-browser-badge');
+      if (badge) badge.textContent = `Elevado +${currentComposerElevation}px`;
+      const chatBox = document.getElementById('chat-messages');
+      setTimeout(() => { if (chatBox) chatBox.scrollTop = chatBox.scrollHeight; }, 60);
+    }
+
+    function resetComposerElevation() {
+      currentComposerElevation = 0;
+      isComposerTopDocked = false;
+      document.documentElement.style.setProperty('--composer-dock-elevation', '0px');
+      const assistant = document.getElementById('tab-assistant');
+      if (assistant) assistant.classList.remove('composer-dock-top');
+      const icon = document.getElementById('dock-pos-icon');
+      const label = document.getElementById('dock-pos-label');
+      if (icon) icon.textContent = 'vertical_align_top';
+      if (label) label.textContent = 'Arriba';
+      const badge = document.getElementById('active-browser-badge');
+      if (badge) badge.textContent = 'Auto-Safe';
+      const chatBox = document.getElementById('chat-messages');
+      setTimeout(() => { if (chatBox) chatBox.scrollTop = chatBox.scrollHeight; }, 60);
+    }
+
+    function toggleComposerDockPosition() {
+      const assistant = document.getElementById('tab-assistant');
+      if (!assistant) return;
+      isComposerTopDocked = !isComposerTopDocked;
+      assistant.classList.toggle('composer-dock-top', isComposerTopDocked);
+      const icon = document.getElementById('dock-pos-icon');
+      const label = document.getElementById('dock-pos-label');
+      const badge = document.getElementById('active-browser-badge');
+      if (isComposerTopDocked) {
+        if (icon) icon.textContent = 'vertical_align_bottom';
+        if (label) label.textContent = 'Abajo';
+        if (badge) badge.textContent = 'Fijado Arriba';
+      } else {
+        if (icon) icon.textContent = 'vertical_align_top';
+        if (label) label.textContent = 'Arriba';
+        if (badge) badge.textContent = 'Auto-Safe';
+      }
+      const chatInput = document.getElementById('chat-input');
+      if (chatInput) chatInput.focus();
     }
 
     // 2. Conmutador de Pestañas SPA
@@ -879,18 +1079,19 @@
         document.getElementById('nav-c2p').classList.add('active');
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else if (tabName === 'assistant') {
-        // Modo Chat Completo Estilo WhatsApp/Telegram
+        // Modo Chat Completo Omni-Chat Universal
         mainHeader.style.display = 'none';
         pwaBanner.style.display = 'none';
         bottomNav.style.display = 'none';
         document.getElementById('tab-assistant').classList.add('active');
         document.getElementById('nav-assistant').classList.add('active');
-        if (typeof window.adjustChatForKeyboard === 'function') {
-          window.adjustChatForKeyboard();
-        }
+        syncUniversalViewport();
         // Scroll al final del chat
         const chatBox = document.getElementById('chat-messages');
-        setTimeout(() => { if (chatBox) chatBox.scrollTop = chatBox.scrollHeight; }, 60);
+        setTimeout(() => {
+          syncUniversalViewport();
+          if (chatBox) chatBox.scrollTop = chatBox.scrollHeight;
+        }, 60);
       }
     }
 
@@ -959,31 +1160,77 @@
       } catch(e) {}
     }
 
+    // Aplicar clase de entorno de navegador móvil (Safari, Chrome, Opera, Brave, Yahoo, Samsung, Standalone)
+    const ALL_BROWSER_CLASSES = [
+      'browser-mode-safari',
+      'browser-mode-chrome',
+      'browser-mode-opera',
+      'browser-mode-brave',
+      'browser-mode-yahoo',
+      'browser-mode-samsung',
+      'browser-mode-standalone'
+    ];
+
+    function setBrowserEnvironment(mode) {
+      const cleanMode = (mode || 'safari').toLowerCase();
+      ALL_BROWSER_CLASSES.forEach(cls => document.documentElement.classList.remove(cls));
+      document.documentElement.classList.add(`browser-mode-${cleanMode}`);
+
+      const badge = document.getElementById('active-browser-badge');
+      if (badge) {
+        const labels = {
+          safari: 'Safari iOS Safe',
+          chrome: 'Chrome Safe',
+          opera: 'Opera Safe',
+          brave: 'Brave Safe',
+          yahoo: 'Yahoo! Safe',
+          samsung: 'Samsung Safe',
+          standalone: 'PWA Fullscreen'
+        };
+        badge.textContent = labels[cleanMode] || 'Auto-Safe';
+      }
+      syncUniversalViewport();
+    }
+
     // Escuchar mensajes enviados desde el simulador padre
     window.addEventListener('message', (e) => {
       if (e.data && e.data.type === 'SET_PWA_THEME' && e.data.theme) {
         setIllumination(e.data.theme);
       }
-      if (e.data && e.data.type === 'SET_BROWSER_MODE') {
-        if (e.data.mode === 'safari') {
-          document.documentElement.classList.add('browser-mode-safari');
-        } else {
-          document.documentElement.classList.remove('browser-mode-safari');
-        }
+      if (e.data && e.data.type === 'SET_BROWSER_MODE' && e.data.mode) {
+        setBrowserEnvironment(e.data.mode);
       }
     });
 
-    // Auto-detección de Navegador Móvil (Safari en iOS / Chrome en Android)
+    // Auto-detección de Navegador Móvil Real (Safari, Chrome, Opera, Brave, Yahoo, Samsung)
     function detectBrowserMode() {
       const urlParams = new URLSearchParams(window.location.search);
       const forcedMode = urlParams.get('mode');
-      const isStandalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
-      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth <= 500;
+      if (forcedMode) {
+        setBrowserEnvironment(forcedMode);
+        return;
+      }
 
-      if (forcedMode === 'standalone') {
-        document.documentElement.classList.remove('browser-mode-safari');
-      } else if (forcedMode === 'safari' || (!isStandalone && isMobile)) {
-        document.documentElement.classList.add('browser-mode-safari');
+      const isStandalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
+      if (isStandalone) {
+        setBrowserEnvironment('standalone');
+        return;
+      }
+
+      const ua = navigator.userAgent || '';
+      if (/OPR|Opera|OPT/i.test(ua)) {
+        setBrowserEnvironment('opera');
+      } else if (/Brave/i.test(ua) || (navigator.brave && typeof navigator.brave.isBrave === 'function')) {
+        setBrowserEnvironment('brave');
+      } else if (/Yahoo|YJApp/i.test(ua)) {
+        setBrowserEnvironment('yahoo');
+      } else if (/SamsungBrowser/i.test(ua)) {
+        setBrowserEnvironment('samsung');
+      } else if (/CriOS|Chrome/i.test(ua) && !/Edg/i.test(ua) && !/iPhone|iPad/i.test(ua)) {
+        setBrowserEnvironment('chrome');
+      } else {
+        // Por defecto en iPhone/iOS y móviles usa el resguardo máximo de Safari iOS (94px)
+        setBrowserEnvironment('safari');
       }
     }
     detectBrowserMode();
@@ -1767,33 +2014,25 @@
       const welcomeBot = document.getElementById('welcome-msg-time-bot');
       if (welcomeBot) welcomeBot.textContent = currentWelcomeTime;
 
-      // Soporte Activo de Teclado Virtual y Viewport para Celulares (iOS Safari / Android Chrome)
+      // Soporte Activo Universal de Viewport y Teclado Virtual para todos los navegadores móviles
+      syncUniversalViewport();
+      window.addEventListener('resize', syncUniversalViewport);
+      window.addEventListener('orientationchange', () => setTimeout(syncUniversalViewport, 150));
       if (window.visualViewport) {
-        function adjustChatForKeyboard() {
-          const assistant = document.getElementById('tab-assistant');
-          if (assistant && assistant.classList.contains('active')) {
-            const vv = window.visualViewport;
-            assistant.style.height = `${vv.height}px`;
-            assistant.style.top = `${vv.offsetTop}px`;
-            const chatBox = document.getElementById('chat-messages');
-            if (chatBox) {
-              chatBox.scrollTop = chatBox.scrollHeight;
-            }
-          }
-        }
-        window.visualViewport.addEventListener('resize', adjustChatForKeyboard);
-        window.visualViewport.addEventListener('scroll', adjustChatForKeyboard);
-        window.adjustChatForKeyboard = adjustChatForKeyboard;
+        window.visualViewport.addEventListener('resize', syncUniversalViewport);
+        window.visualViewport.addEventListener('scroll', syncUniversalViewport);
+        window.adjustChatForKeyboard = syncUniversalViewport;
       }
 
       const chatInputEl = document.getElementById('chat-input');
       if (chatInputEl) {
         chatInputEl.addEventListener('focus', () => {
           setTimeout(() => {
+            syncUniversalViewport();
             const chatBox = document.getElementById('chat-messages');
             if (chatBox) chatBox.scrollTop = chatBox.scrollHeight;
             chatInputEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-          }, 300);
+          }, 250);
         });
       }
     });
@@ -1804,6 +2043,11 @@
     window.goToTab = goToTab;
     window.handleGoBack = handleGoBack;
     window.setIllumination = setIllumination;
+    window.setBrowserEnvironment = setBrowserEnvironment;
+    window.syncUniversalViewport = syncUniversalViewport;
+    window.adjustComposerElevation = adjustComposerElevation;
+    window.resetComposerElevation = resetComposerElevation;
+    window.toggleComposerDockPosition = toggleComposerDockPosition;
     window.onCarrierChange = onCarrierChange;
     window.openUsageModal = openUsageModal;
     window.closeUsageModal = closeUsageModal;

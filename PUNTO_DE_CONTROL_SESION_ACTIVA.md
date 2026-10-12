@@ -1,7 +1,7 @@
 # PUNTO DE CONTROL — SESIÓN ACTIVA (MOVILNET ↔ PROTOCOLO DECAGONAL CERO ERRORES)
-- **Fecha/Hora:** 2026-10-12 15:37 VET | **Capítulo Bitácora:** 166 (Certificación Safari Móvil Real: Solapamiento Viewport, Safe-Area Superior, Tema Dinámico y Despliegue Render)
+- **Fecha/Hora:** 2026-10-12 16:33 VET | **Capítulo Bitácora:** 167 (Diseño Único Omni-Chat Universal, Simulador de 7 Navegadores Móviles y Purga de Caché SW v167)
 - **Declaración Estratégica Ratificada:**
-  > *"En Resumen: Ejecución 100% completada y auditada de las correcciones de diseño en celular real vs simulador: (1) Eliminación de solapamiento de la barra de navegación de Safari móvil sobre la caja de chat y micrófono (+76px padding-bottom en modo navegador); (2) Ajuste de safe-area superior (48px) evitando colisión con barra de estado iOS y Dynamic Island; (3) Sincronización dinámica de <meta name="theme-color"> eliminando barras anaranjadas; (4) Simulador actualizado con entorno dual 'Safari Móvil (Real)' y 'PWA Standalone' con réplica visual exacta de iOS; (5) Commit 6c69086 subido a GitHub y compilando automáticamente en Render (dep-db6jdk0473hc73dj7ri0)."*
+  > *"En Resumen: Implementación, auditoría y despliegue del Diseño Único de Conversación Movilnet Omni-AI (Cápsula Flotante Anti-Bloqueo con ajuste de altura +25px y modo Fijar Arriba), Simulador de 7 Navegadores Móviles con separación visual holgada (Safari, Chrome, Opera, Brave, Yahoo!, Samsung y PWA Standalone) y actualización del Service Worker a Network-First (v167) con auto-purga de caché obsoleto para destrabar el iPhone real."*
 - **Estado de Calidad:** 16 / 16 tests de despliegue/PWA aprobados (100% PASS, 0 fallos), 10/10 Fases Decagonales APROBADAS.
 - **Módulos del Núcleo y Despliegue Nube Activos:**
   1. `Dockerfile` (Multi-stage hardened, usuario non-root 1001 movilnet, core/ incluido, healthcheck dinámico por $PORT).

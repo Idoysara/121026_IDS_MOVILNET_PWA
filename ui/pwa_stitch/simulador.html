@@ -116,29 +116,55 @@
     <!-- COLUMNA 1: Chasis del Teléfono Móvil (7 Columnas) -->
     <div class="lg:col-span-7 flex flex-col items-center justify-center">
       
-      <!-- Selector de Modo de Visualización: Safari Móvil Real vs PWA Standalone -->
-      <div class="mb-2 flex items-center justify-between w-full max-w-[385px] text-xs px-1">
-        <span class="text-slate-400 font-semibold text-[11px] flex items-center gap-1">
-          <span class="material-symbols-outlined text-[15px] text-orange-400">devices</span>
-          <span>Entorno Celular:</span>
-        </span>
-        <div class="flex items-center bg-slate-900 rounded-lg p-0.5 border border-slate-700">
-          <button id="btn-mode-safari" onclick="setSimulatorBrowserMode('safari')" class="px-2 py-0.5 rounded text-[10px] font-bold bg-orange-600 text-white shadow-xs transition-all flex items-center gap-1" title="Simula Safari con barra de direcciones y navegación real de iOS">
-            <span class="material-symbols-outlined text-[12px]">public</span>
-            <span>Safari Móvil (Real)</span>
+      <!-- Panel Selector de Navegadores Móviles (7 Formatos Oficiales con Separación Amplia) -->
+      <div class="mb-8 w-full max-w-[435px] bg-slate-900/95 rounded-2xl p-3 border border-slate-700/80 shadow-xl flex flex-col gap-2">
+        <div class="flex items-center justify-between text-xs px-1">
+          <span class="text-slate-200 font-bold text-[11px] flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[16px] text-orange-400">devices</span>
+            <span>Simulador de Navegadores Móviles:</span>
+          </span>
+          <span id="active-sim-browser-label" class="text-[10px] font-mono px-2 py-0.5 rounded bg-orange-500/20 text-orange-300 border border-orange-500/30 font-bold">
+            🍎 Safari iOS (Real)
+          </span>
+        </div>
+
+        <div class="grid grid-cols-4 sm:grid-cols-7 gap-1.5 text-center">
+          <button id="btn-mode-safari" onclick="setSimulatorBrowserMode('safari')" class="sim-browser-btn px-1.5 py-1.5 rounded-xl text-[10px] font-bold bg-orange-600 text-white shadow-sm transition-all flex flex-col items-center gap-0.5 border border-orange-400/50" title="Apple Safari iOS (iPhone)">
+            <span class="text-xs">🍎</span>
+            <span>Safari</span>
           </button>
-          <button id="btn-mode-standalone" onclick="setSimulatorBrowserMode('standalone')" class="px-2 py-0.5 rounded text-[10px] font-bold text-slate-400 hover:text-white transition-all flex items-center gap-1" title="Simula PWA instalada a pantalla completa">
-            <span class="material-symbols-outlined text-[12px]">fullscreen</span>
-            <span>PWA Standalone</span>
+          <button id="btn-mode-chrome" onclick="setSimulatorBrowserMode('chrome')" class="sim-browser-btn px-1.5 py-1.5 rounded-xl text-[10px] font-bold bg-slate-800 text-slate-300 hover:text-white transition-all flex flex-col items-center gap-0.5 border border-slate-700" title="Google Chrome Móvil">
+            <span class="text-xs">🌐</span>
+            <span>Chrome</span>
+          </button>
+          <button id="btn-mode-opera" onclick="setSimulatorBrowserMode('opera')" class="sim-browser-btn px-1.5 py-1.5 rounded-xl text-[10px] font-bold bg-slate-800 text-slate-300 hover:text-white transition-all flex flex-col items-center gap-0.5 border border-slate-700" title="Opera Mobile Browser (Fast-Action)">
+            <span class="text-xs">🔴</span>
+            <span>Opera</span>
+          </button>
+          <button id="btn-mode-brave" onclick="setSimulatorBrowserMode('brave')" class="sim-browser-btn px-1.5 py-1.5 rounded-xl text-[10px] font-bold bg-slate-800 text-slate-300 hover:text-white transition-all flex flex-col items-center gap-0.5 border border-slate-700" title="Brave Privacy Browser (Shields)">
+            <span class="text-xs">🦁</span>
+            <span>Brave</span>
+          </button>
+          <button id="btn-mode-yahoo" onclick="setSimulatorBrowserMode('yahoo')" class="sim-browser-btn px-1.5 py-1.5 rounded-xl text-[10px] font-bold bg-slate-800 text-slate-300 hover:text-white transition-all flex flex-col items-center gap-0.5 border border-slate-700" title="Yahoo! Mobile Search Browser">
+            <span class="text-xs">🟣</span>
+            <span>Yahoo!</span>
+          </button>
+          <button id="btn-mode-samsung" onclick="setSimulatorBrowserMode('samsung')" class="sim-browser-btn px-1.5 py-1.5 rounded-xl text-[10px] font-bold bg-slate-800 text-slate-300 hover:text-white transition-all flex flex-col items-center gap-0.5 border border-slate-700" title="Samsung Internet (Android)">
+            <span class="text-xs">🌌</span>
+            <span>Samsung</span>
+          </button>
+          <button id="btn-mode-standalone" onclick="setSimulatorBrowserMode('standalone')" class="sim-browser-btn px-1.5 py-1.5 rounded-xl text-[10px] font-bold bg-slate-800 text-slate-300 hover:text-white transition-all flex flex-col items-center gap-0.5 border border-slate-700" title="PWA Instalada a Pantalla Completa">
+            <span class="text-xs">📱</span>
+            <span>PWA</span>
           </button>
         </div>
       </div>
 
-      <!-- Smartphone Frame -->
-      <div id="phone-wrapper" class="phone-chassis relative bg-black rounded-[48px] overflow-hidden w-[385px] h-[780px]">
+      <!-- Smartphone Frame (Con margen superior/inferior despejado) -->
+      <div id="phone-wrapper" class="phone-chassis relative bg-black rounded-[48px] overflow-hidden w-[395px] h-[820px] my-2">
         
-        <!-- Barra de Estado Superior iOS (Reloj, Señal, Batería) -->
-        <div id="sim-ios-statusbar" class="absolute top-0 left-0 right-0 h-11 px-7 flex items-center justify-between text-white text-[12px] font-bold z-30 pointer-events-none">
+        <!-- Barra de Estado Superior Celular (Reloj, Señal, Batería) -->
+        <div id="sim-ios-statusbar" class="absolute top-0 left-0 right-0 h-10 px-7 flex items-center justify-between text-white text-[12px] font-bold z-30 pointer-events-none">
           <span>12:30</span>
           <div class="flex items-center gap-1.5 text-[11px]">
             <span>LTE</span>
@@ -155,15 +181,58 @@
           <div class="w-1.5 h-1.5 rounded-full bg-emerald-500/80 animate-pulse"></div>
         </div>
 
-        <!-- Iframe con la PWA Real (Cache-Busted) -->
-        <iframe id="pwa-iframe" src="/ui/pwa_stitch/index.html?mode=safari&v=17915010" class="w-full h-full border-none rounded-[44px] bg-[#f8f9ff]"></iframe>
+        <!-- ==================================================================
+             BARRAS SUPERIORES ESPECÍFICAS POR NAVEGADOR (CHROME, YAHOO, SAMSUNG)
+             ================================================================== -->
+        <!-- 1. Top Omnibox de Google Chrome -->
+        <div id="sim-top-chrome" class="hidden absolute top-9 left-0 right-0 h-11 bg-slate-900/95 backdrop-blur-md border-b border-slate-700/80 px-3 flex items-center justify-between gap-2 z-30 text-slate-200">
+          <span class="material-symbols-outlined text-[17px] text-slate-400">home</span>
+          <div class="flex-1 bg-slate-800 rounded-full px-3 py-1 flex items-center justify-between text-[11px] border border-slate-700">
+            <div class="flex items-center gap-1.5 truncate">
+              <span class="material-symbols-outlined text-[13px] text-emerald-400">lock</span>
+              <span class="font-mono truncate">movilnet-core.onrender.com</span>
+            </div>
+            <span class="material-symbols-outlined text-[14px] text-slate-400 cursor-pointer" onclick="reloadPwa()">refresh</span>
+          </div>
+          <span class="px-1.5 py-0.5 rounded border border-slate-500 text-[10px] font-bold">4</span>
+          <span class="material-symbols-outlined text-[17px] text-slate-400">more_vert</span>
+        </div>
 
-        <!-- Barra de Navegación Inferior Safari iOS (Floating URL Pill + Controles) -->
-        <div id="sim-safari-bar" class="absolute bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-md border-t border-slate-800 text-slate-300 z-30 px-3 pt-2 pb-4 flex flex-col gap-1.5 shadow-2xl transition-all">
+        <!-- 2. Top Search Bar de Yahoo! Browser -->
+        <div id="sim-top-yahoo" class="hidden absolute top-9 left-0 right-0 h-11 bg-purple-950/95 backdrop-blur-md border-b border-purple-700/80 px-3 flex items-center justify-between gap-2 z-30 text-white">
+          <span class="font-extrabold text-xs tracking-tighter text-purple-300 italic">Y!</span>
+          <div class="flex-1 bg-purple-900/80 rounded-full px-3 py-1 flex items-center justify-between text-[11px] border border-purple-600/60">
+            <div class="flex items-center gap-1 truncate">
+              <span class="material-symbols-outlined text-[13px] text-purple-300">search</span>
+              <span class="font-mono truncate text-purple-100">movilnet-core.onrender.com</span>
+            </div>
+            <span class="material-symbols-outlined text-[14px] text-purple-300 cursor-pointer" onclick="reloadPwa()">refresh</span>
+          </div>
+          <span class="material-symbols-outlined text-[17px] text-purple-300">mail</span>
+        </div>
+
+        <!-- 3. Top URL Bar de Samsung Internet -->
+        <div id="sim-top-samsung" class="hidden absolute top-9 left-0 right-0 h-10 bg-slate-900/95 backdrop-blur-md border-b border-slate-800 px-3 flex items-center justify-between gap-2 z-30 text-slate-200">
+          <span class="material-symbols-outlined text-[15px] text-sky-400">shield</span>
+          <div class="flex-1 bg-slate-800/90 rounded-lg px-2.5 py-1 flex items-center justify-between text-[11px]">
+            <span class="font-mono truncate">movilnet-core.onrender.com</span>
+            <span class="material-symbols-outlined text-[14px] text-slate-400 cursor-pointer" onclick="reloadPwa()">refresh</span>
+          </div>
+          <span class="material-symbols-outlined text-[16px] text-amber-400">star</span>
+        </div>
+
+        <!-- Iframe con la PWA Real (Cache-Busted) -->
+        <iframe id="pwa-iframe" src="/ui/pwa_stitch/index.html?mode=safari&v=167" class="w-full h-full border-none rounded-[44px] bg-[#0F172A]"></iframe>
+
+        <!-- ==================================================================
+             BARRAS INFERIORES ESPECÍFICAS POR NAVEGADOR (7 FORMATOS)
+             ================================================================== -->
+        <!-- 1. Barra Inferior Safari iOS (Floating URL Pill + Controles) -->
+        <div id="sim-bar-safari" class="absolute bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-md border-t border-slate-800 text-slate-300 z-30 px-3 pt-2 pb-4 flex flex-col gap-1.5 shadow-2xl transition-all">
           <div class="w-full bg-slate-800/90 rounded-xl px-3 py-1.5 flex items-center justify-between text-xs border border-slate-700/60 shadow-inner">
             <span class="text-slate-400 text-[11px] font-serif">AA</span>
             <div class="flex items-center gap-1 font-mono text-[11px] text-slate-200 truncate">
-              <span class="material-symbols-outlined text-[13px] text-slate-400">lock</span>
+              <span class="material-symbols-outlined text-[13px] text-emerald-400">lock</span>
               <span id="sim-safari-url-text">movilnet-core.onrender.com</span>
             </div>
             <span class="material-symbols-outlined text-[14px] text-slate-400 cursor-pointer" onclick="reloadPwa()" title="Recargar">refresh</span>
@@ -171,10 +240,71 @@
           <div class="flex items-center justify-between px-3 text-slate-400 pt-0.5 text-sm">
             <button class="material-symbols-outlined text-[18px] opacity-60">arrow_back_ios</button>
             <button class="material-symbols-outlined text-[18px] opacity-60">arrow_forward_ios</button>
-            <button class="material-symbols-outlined text-[18px] hover:text-white">share</button>
+            <button class="material-symbols-outlined text-[18px] hover:text-white">ios_share</button>
             <button class="material-symbols-outlined text-[18px] hover:text-white">menu_book</button>
-            <button class="material-symbols-outlined text-[18px] hover:text-white">tab</button>
+            <button class="material-symbols-outlined text-[18px] hover:text-white">filter_none</button>
           </div>
+        </div>
+
+        <!-- 2. Barra Inferior Google Chrome (Gesture Pill) -->
+        <div id="sim-bar-chrome" class="hidden absolute bottom-0 left-0 right-0 h-6 bg-slate-950/90 border-t border-slate-800/80 z-30 flex items-center justify-center">
+          <div class="w-32 h-1 rounded-full bg-slate-400/80"></div>
+        </div>
+
+        <!-- 3. Barra Inferior Opera Mobile (Fast-Action con Botón Central Rojo O) -->
+        <div id="sim-bar-opera" class="hidden absolute bottom-0 left-0 right-0 bg-slate-950/95 backdrop-blur-md border-t border-red-900/50 text-slate-300 z-30 px-3 pt-1.5 pb-3.5 flex flex-col gap-1.5 shadow-2xl">
+          <div class="w-full bg-slate-900 rounded-full px-3 py-1 flex items-center justify-between text-[11px] border border-slate-800">
+            <span class="text-red-500 font-extrabold">O</span>
+            <span class="font-mono text-slate-300 truncate">movilnet-core.onrender.com</span>
+            <span class="material-symbols-outlined text-[14px] text-slate-400 cursor-pointer" onclick="reloadPwa()">refresh</span>
+          </div>
+          <div class="flex items-center justify-around text-slate-400 pt-0.5">
+            <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+            <span class="material-symbols-outlined text-[18px]">search</span>
+            <div class="w-7 h-7 rounded-full bg-red-600 text-white font-black text-xs flex items-center justify-center shadow-md border border-red-400">O</div>
+            <span class="material-symbols-outlined text-[18px]">filter_none</span>
+            <span class="material-symbols-outlined text-[18px]">menu</span>
+          </div>
+        </div>
+
+        <!-- 4. Barra Inferior Brave Browser (Brave Lion Shields) -->
+        <div id="sim-bar-brave" class="hidden absolute bottom-0 left-0 right-0 bg-zinc-900/95 backdrop-blur-md border-t border-orange-900/50 text-slate-200 z-30 px-3 pt-1.5 pb-3.5 flex flex-col gap-1.5 shadow-2xl">
+          <div class="w-full bg-zinc-800 rounded-full px-3 py-1 flex items-center justify-between text-[11px] border border-zinc-700">
+            <span class="text-orange-400 font-bold flex items-center gap-1">🦁 <span class="text-[9px] bg-orange-500/20 px-1 rounded">Shields UP</span></span>
+            <span class="font-mono text-slate-200 truncate">movilnet-core.onrender.com</span>
+            <span class="material-symbols-outlined text-[14px] text-orange-400 cursor-pointer" onclick="reloadPwa()">refresh</span>
+          </div>
+          <div class="flex items-center justify-between px-3 text-slate-400 pt-0.5">
+            <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+            <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+            <span class="material-symbols-outlined text-[18px] text-orange-400">shield</span>
+            <span class="px-1.5 py-0.2 rounded border border-slate-500 text-[10px] font-bold">3</span>
+            <span class="material-symbols-outlined text-[18px]">more_horiz</span>
+          </div>
+        </div>
+
+        <!-- 5. Barra Inferior Yahoo! Browser -->
+        <div id="sim-bar-yahoo" class="hidden absolute bottom-0 left-0 right-0 bg-purple-950/95 backdrop-blur-md border-t border-purple-800 text-purple-200 z-30 px-3 py-2.5 flex items-center justify-around text-[10px] font-semibold shadow-2xl">
+          <span class="flex flex-col items-center"><span class="material-symbols-outlined text-[17px]">arrow_back</span>Atrás</span>
+          <span class="flex flex-col items-center text-purple-300 font-bold"><span class="material-symbols-outlined text-[17px]">home</span>Yahoo!</span>
+          <span class="flex flex-col items-center"><span class="material-symbols-outlined text-[17px]">mail</span>Buzón</span>
+          <span class="flex flex-col items-center"><span class="material-symbols-outlined text-[17px]">newspaper</span>Noticias</span>
+          <span class="flex flex-col items-center"><span class="material-symbols-outlined text-[17px]">menu</span>Menú</span>
+        </div>
+
+        <!-- 6. Barra Inferior Samsung Internet -->
+        <div id="sim-bar-samsung" class="hidden absolute bottom-0 left-0 right-0 bg-slate-950/95 backdrop-blur-md border-t border-slate-800 text-slate-300 z-30 px-4 py-3 flex items-center justify-between shadow-2xl">
+          <span class="material-symbols-outlined text-[19px]">arrow_back_ios</span>
+          <span class="material-symbols-outlined text-[19px] opacity-50">arrow_forward_ios</span>
+          <span class="material-symbols-outlined text-[19px]">home</span>
+          <span class="material-symbols-outlined text-[19px]">bookmarks</span>
+          <span class="px-1.5 py-0.2 rounded border border-slate-400 text-[10px] font-bold">5</span>
+          <span class="material-symbols-outlined text-[19px]">menu</span>
+        </div>
+
+        <!-- 7. Barra Inferior PWA Standalone (Indicador Nativo Limpio) -->
+        <div id="sim-bar-standalone" class="hidden absolute bottom-1.5 left-0 right-0 z-30 flex items-center justify-center pointer-events-none">
+          <div class="w-32 h-1 rounded-full bg-white/40"></div>
         </div>
 
       </div>
@@ -419,36 +549,58 @@
       }
     });
 
-    // Control de Modo de Entorno: Safari Móvil (Real) vs PWA Standalone
+    // Control de Simulador Multi-Navegador (Safari, Chrome, Opera, Brave, Yahoo, Samsung, PWA Standalone)
     let currentBrowserMode = 'safari';
+    const ALL_SIM_BROWSERS = ['safari', 'chrome', 'opera', 'brave', 'yahoo', 'samsung', 'standalone'];
 
     function setSimulatorBrowserMode(mode) {
       currentBrowserMode = mode;
-      const statusbar = document.getElementById('sim-ios-statusbar');
-      const safaribar = document.getElementById('sim-safari-bar');
-      const btnSafari = document.getElementById('btn-mode-safari');
-      const btnStandalone = document.getElementById('btn-mode-standalone');
 
-      if (mode === 'safari') {
-        if (statusbar) statusbar.classList.remove('hidden');
-        if (safaribar) safaribar.classList.remove('hidden');
-        if (btnSafari) {
-          btnSafari.className = 'px-2 py-0.5 rounded text-[10px] font-bold bg-orange-600 text-white shadow-xs transition-all flex items-center gap-1';
+      // 1. Ocultar todas las barras superiores e inferiores de navegadores
+      ['chrome', 'yahoo', 'samsung'].forEach(topB => {
+        const el = document.getElementById(`sim-top-${topB}`);
+        if (el) el.classList.add('hidden');
+      });
+      ALL_SIM_BROWSERS.forEach(botB => {
+        const el = document.getElementById(`sim-bar-${botB}`);
+        if (el) el.classList.add('hidden');
+      });
+
+      // 2. Activar las barras correspondientes al navegador seleccionado
+      const activeTop = document.getElementById(`sim-top-${mode}`);
+      if (activeTop) activeTop.classList.remove('hidden');
+
+      const activeBot = document.getElementById(`sim-bar-${mode}`);
+      if (activeBot) activeBot.classList.remove('hidden');
+
+      // 3. Actualizar estado visual de los botones del selector
+      ALL_SIM_BROWSERS.forEach(b => {
+        const btn = document.getElementById(`btn-mode-${b}`);
+        if (btn) {
+          if (b === mode) {
+            btn.className = 'sim-browser-btn px-1.5 py-1.5 rounded-xl text-[10px] font-bold bg-orange-600 text-white shadow-sm transition-all flex flex-col items-center gap-0.5 border border-orange-400/50 scale-105';
+          } else {
+            btn.className = 'sim-browser-btn px-1.5 py-1.5 rounded-xl text-[10px] font-bold bg-slate-800 text-slate-300 hover:text-white transition-all flex flex-col items-center gap-0.5 border border-slate-700';
+          }
         }
-        if (btnStandalone) {
-          btnStandalone.className = 'px-2 py-0.5 rounded text-[10px] font-bold text-slate-400 hover:text-white transition-all flex items-center gap-1';
-        }
-      } else {
-        if (statusbar) statusbar.classList.add('hidden');
-        if (safaribar) safaribar.classList.add('hidden');
-        if (btnStandalone) {
-          btnStandalone.className = 'px-2 py-0.5 rounded text-[10px] font-bold bg-orange-600 text-white shadow-xs transition-all flex items-center gap-1';
-        }
-        if (btnSafari) {
-          btnSafari.className = 'px-2 py-0.5 rounded text-[10px] font-bold text-slate-400 hover:text-white transition-all flex items-center gap-1';
-        }
+      });
+
+      // 4. Actualizar etiqueta descriptiva
+      const labelEl = document.getElementById('active-sim-browser-label');
+      if (labelEl) {
+        const names = {
+          safari: '🍎 Safari iOS (Real)',
+          chrome: '🌐 Google Chrome Móvil',
+          opera: '🔴 Opera Fast-Action',
+          brave: '🦁 Brave Shields',
+          yahoo: '🟣 Yahoo! Mobile',
+          samsung: '🌌 Samsung Internet',
+          standalone: '📱 PWA Pantalla Completa'
+        };
+        labelEl.textContent = names[mode] || mode;
       }
 
+      // 5. Notificar en caliente al iframe de la PWA
       const iframe = document.getElementById('pwa-iframe');
       if (iframe && iframe.contentWindow) {
         iframe.contentWindow.postMessage({ type: 'SET_BROWSER_MODE', mode: mode }, '*');
@@ -464,11 +616,11 @@
       const phoneInput = document.getElementById('whatsapp-phone-input');
       const phone = (phoneInput && phoneInput.value.trim()) ? phoneInput.value.trim() : '04142554590';
       const iframe = document.getElementById('pwa-iframe');
-      const targetUrl = `/ui/pwa_stitch/index.html?phone=${encodeURIComponent(phone)}&v=${Date.now()}`;
+      const targetUrl = `/ui/pwa_stitch/index.html?phone=${encodeURIComponent(phone)}&mode=${currentBrowserMode}&v=${Date.now()}`;
       iframe.src = targetUrl;
       const preview = document.getElementById('whatsapp-link-preview');
       if (preview) {
-        preview.textContent = `Enlace generado: ${currentHost.startsWith('http') ? currentHost : 'http://' + currentHost}/ui/pwa_stitch/index.html?phone=${encodeURIComponent(phone)}`;
+        preview.textContent = `Enlace generado: ${currentHost.startsWith('http') ? currentHost : 'http://' + currentHost}/ui/pwa_stitch/index.html?phone=${encodeURIComponent(phone)}&v=167`;
       }
     }
 
@@ -488,15 +640,15 @@
       if (host.startsWith('http://') || host.startsWith('https://')) {
         let clean = host.replace(/\/+$/, '');
         if (clean.includes('/ui/pwa_stitch/index.html')) {
-          pwaUrl = clean;
+          pwaUrl = clean.includes('?') ? clean : `${clean}?v=167`;
         } else {
-          pwaUrl = `${clean}/ui/pwa_stitch/index.html`;
+          pwaUrl = `${clean}/ui/pwa_stitch/index.html?v=167`;
         }
       } else if (host.includes('onrender.com') || host.includes('movilnet.com.ve')) {
-        pwaUrl = `https://${host}/ui/pwa_stitch/index.html`;
+        pwaUrl = `https://${host}/ui/pwa_stitch/index.html?v=167`;
       } else {
         const port = window.location.port || '8010';
-        pwaUrl = `http://${host}:${port}/ui/pwa_stitch/index.html`;
+        pwaUrl = `http://${host}:${port}/ui/pwa_stitch/index.html?v=167`;
       }
 
       const localUrlEl = document.getElementById('local-url');
