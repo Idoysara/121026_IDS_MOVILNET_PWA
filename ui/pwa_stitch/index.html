@@ -128,8 +128,22 @@
       .pt-safe {
         padding-top: max(env(safe-area-inset-top, 0px), 12px);
       }
+      .pt-safe-top {
+        padding-top: max(env(safe-area-inset-top, 0px), 48px);
+      }
       .pb-safe {
         padding-bottom: max(env(safe-area-inset-bottom, 0px), 10px);
+      }
+      /* Modo Navegador Safari Móvil: Espacio de resguardo inferior para que la barra de Safari jamás tape el chat ni la navegación */
+      .browser-mode-safari #chat-input-bar {
+        padding-bottom: calc(max(env(safe-area-inset-bottom, 0px), 12px) + 76px) !important;
+      }
+      .browser-mode-safari #bottom-nav {
+        padding-bottom: calc(max(env(safe-area-inset-bottom, 0px), 10px) + 76px) !important;
+      }
+      .browser-mode-safari #tab-dashboard,
+      .browser-mode-safari #tab-c2p {
+        padding-bottom: calc(96px + 76px) !important;
       }
       /* Habilitar selección de texto y evitar zoom automático de iOS en inputs */
       input, textarea, select {
@@ -555,7 +569,7 @@
     <section id="tab-assistant" class="tab-content flex-col w-full max-w-[480px] fixed inset-0 mx-auto z-40 bg-surface shadow-2xl h-full max-h-[100dvh] overflow-hidden">
       
       <!-- Top Chat App Bar (Estilo WhatsApp / Telegram con presencia en vivo) -->
-      <div class="w-full pt-safe pb-2.5 px-3 bg-surface-container-lowest border-b border-surface-container text-on-surface flex items-center justify-between shadow-md z-10 shrink-0">
+      <div class="w-full pt-safe-top pb-2.5 px-3 bg-surface-container-lowest border-b border-surface-container text-on-surface flex items-center justify-between shadow-md z-10 shrink-0">
         <div class="flex items-center gap-2">
           <!-- BOTÓN VOLVER AL DASHBOARD -->
           <button onclick="goToTab('dashboard')" class="h-8 px-2 rounded-lg bg-surface-container-high hover:bg-surface-container text-on-surface flex items-center gap-1 active:scale-90 transition-transform" title="Regresar al Dashboard">
@@ -906,6 +920,18 @@
         document.documentElement.classList.remove('dark');
       }
 
+      // Sincronizar dinámicamente el meta theme-color para eliminar las franjas naranjas en Safari
+      const metaTheme = document.querySelector('meta[name="theme-color"]');
+      if (metaTheme) {
+        if (theme === 'dark') {
+          metaTheme.setAttribute('content', '#060B14');
+        } else if (theme === 'medium') {
+          metaTheme.setAttribute('content', '#0F172A');
+        } else {
+          metaTheme.setAttribute('content', '#f8f9ff');
+        }
+      }
+
       try {
         localStorage.setItem('movilnet_illumination', theme);
       } catch(e) {}
@@ -933,12 +959,34 @@
       } catch(e) {}
     }
 
-    // Escuchar cambios de tema enviados desde el simulador padre
+    // Escuchar mensajes enviados desde el simulador padre
     window.addEventListener('message', (e) => {
       if (e.data && e.data.type === 'SET_PWA_THEME' && e.data.theme) {
         setIllumination(e.data.theme);
       }
+      if (e.data && e.data.type === 'SET_BROWSER_MODE') {
+        if (e.data.mode === 'safari') {
+          document.documentElement.classList.add('browser-mode-safari');
+        } else {
+          document.documentElement.classList.remove('browser-mode-safari');
+        }
+      }
     });
+
+    // Auto-detección de Navegador Móvil (Safari en iOS / Chrome en Android)
+    function detectBrowserMode() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const forcedMode = urlParams.get('mode');
+      const isStandalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth <= 500;
+
+      if (forcedMode === 'standalone') {
+        document.documentElement.classList.remove('browser-mode-safari');
+      } else if (forcedMode === 'safari' || (!isStandalone && isMobile)) {
+        document.documentElement.classList.add('browser-mode-safari');
+      }
+    }
+    detectBrowserMode();
 
     // Inicializar iluminación guardada o por defecto light
     const savedTheme = localStorage.getItem('movilnet_illumination') || 'light';
