@@ -61,6 +61,11 @@
 
     <!-- Barra Rápida de Acciones y Telemetría -->
     <div class="flex items-center gap-2">
+      <button onclick="triggerRenderDeployUI()" id="btn-render-deploy" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm active:scale-95 transition-all" title="Actualizar Servidor en Render con 1 Clic">
+        <span class="material-symbols-outlined text-[16px]">cloud_sync</span>
+        <span>Actualizar Render (1 Clic)</span>
+      </button>
+
       <a href="/ui/monitor/conversatorio.html" class="px-3 py-1.5 rounded-lg bg-red-700/80 hover:bg-red-600 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm active:scale-95 transition-all" title="Ir al Conversatorio Webhook">
         <span class="material-symbols-outlined text-[16px]">forum</span>
         <span>Conversatorio Webhook</span>
@@ -231,6 +236,30 @@
         </p>
       </div>
 
+      <!-- Tarjeta 4: Despliegue Inmediato en Render (1 Clic) -->
+      <div class="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 shadow-xl flex flex-col gap-2.5">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2 text-emerald-400 font-bold text-sm">
+            <span class="material-symbols-outlined text-[18px]">cloud_sync</span>
+            <span>Actualización en la Nube Render</span>
+          </div>
+          <span id="render-deploy-badge" class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">Verificando...</span>
+        </div>
+        <p class="text-[11px] text-slate-400">
+          Compila y despliega el último commit de GitHub en tu servidor cloud 24/7 sin entrar al panel web:
+        </p>
+        <div class="flex items-center gap-2">
+          <button onclick="triggerRenderDeployUI()" class="flex-1 px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold shadow-md active:scale-95 transition-all flex items-center justify-center gap-1.5">
+            <span class="material-symbols-outlined text-[16px]">rocket_launch</span>
+            <span>Desplegar en Render Ahora (1 Clic)</span>
+          </button>
+          <button onclick="configureRenderHookUI()" class="px-2.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-semibold border border-slate-700 active:scale-95 transition-all" title="Configurar Deploy Hook URL">
+            <span class="material-symbols-outlined text-[16px]">settings</span>
+          </button>
+        </div>
+        <div id="render-deploy-feedback" class="hidden text-[11px] p-2.5 rounded-lg font-mono"></div>
+      </div>
+
     </div>
 
   </main>
@@ -313,9 +342,105 @@
       }
     }
 
+    async function checkRenderDeployStatus() {
+      const badge = document.getElementById('render-deploy-badge');
+      try {
+        const res = await fetch('/api/v1/ops/render-deploy');
+        if (res.ok) {
+          const data = await res.json();
+          if (data.configured) {
+            if (badge) {
+              badge.className = 'text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30';
+              badge.textContent = '1-Clic Listo';
+            }
+          } else {
+            if (badge) {
+              badge.className = 'text-[10px] font-mono px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 border border-amber-500/30';
+              badge.textContent = 'Configurar Hook';
+            }
+          }
+        }
+      } catch (e) {
+        if (badge) badge.textContent = 'Local :8010';
+      }
+    }
+
+    async function triggerRenderDeployUI() {
+      const feedback = document.getElementById('render-deploy-feedback');
+      if (feedback) {
+        feedback.className = 'text-[11px] p-2.5 rounded-lg font-mono bg-blue-950/70 border border-blue-800 text-blue-300 flex items-center gap-2';
+        feedback.innerHTML = '<span class="animate-spin material-symbols-outlined text-[16px]">progress_activity</span> Activando compilación en Render...';
+        feedback.classList.remove('hidden');
+      }
+
+      try {
+        const res = await fetch('/api/v1/ops/render-deploy', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({})
+        });
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          if (feedback) {
+            feedback.className = 'text-[11px] p-2.5 rounded-lg font-mono bg-emerald-950/70 border border-emerald-800 text-emerald-300';
+            feedback.innerHTML = '🚀 <strong>¡Despliegue Activado con Éxito!</strong><br/>Render está compilando el último commit. Tu PWA estará lista en la nube en ~60 seg.';
+          }
+          checkRenderDeployStatus();
+        } else if (data.status === 'MISSING_HOOK_URL') {
+          if (feedback) {
+            feedback.className = 'text-[11px] p-2.5 rounded-lg font-mono bg-amber-950/70 border border-amber-800 text-amber-300';
+            feedback.innerHTML = '⚠️ Se requiere la URL de Deploy Hook de Render.<br/>Pégala a continuación en 1 paso:';
+          }
+          configureRenderHookUI();
+        } else {
+          if (feedback) {
+            feedback.className = 'text-[11px] p-2.5 rounded-lg font-mono bg-rose-950/70 border border-rose-800 text-rose-300';
+            feedback.innerHTML = `❌ Error: ${data.message || data.error || 'Respuesta inesperada de Render'}`;
+          }
+        }
+      } catch (err) {
+        if (feedback) {
+          feedback.className = 'text-[11px] p-2.5 rounded-lg font-mono bg-rose-950/70 border border-rose-800 text-rose-300';
+          feedback.innerHTML = `❌ Error de conexión: ${err.message}`;
+        }
+      }
+    }
+
+    async function configureRenderHookUI() {
+      const current = prompt(
+        "Ingresa la URL del Deploy Hook de Render:\n(Obtenla en Render -> Servicio movilnet-core -> Settings -> Deploy Hook)\nEjemplo: https://api.render.com/deploy/srv-xxxx?key=yyyy"
+      );
+      if (!current || !current.trim()) return;
+
+      const hook = current.trim();
+      const feedback = document.getElementById('render-deploy-feedback');
+      try {
+        const res = await fetch('/api/v1/ops/render-deploy', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ hook_url: hook, save: true })
+        });
+        const data = await res.json();
+        if (res.ok && data.success) {
+          if (feedback) {
+            feedback.className = 'text-[11px] p-2.5 rounded-lg font-mono bg-emerald-950/70 border border-emerald-800 text-emerald-300';
+            feedback.innerHTML = '✅ <strong>¡Deploy Hook guardado y activado!</strong><br/>Render comenzó a compilar el último commit.';
+            feedback.classList.remove('hidden');
+          }
+          checkRenderDeployStatus();
+        } else {
+          alert("⚠️ El Deploy Hook se guardó pero Render reportó: " + (data.message || data.error || 'Verifica los permisos del hook'));
+        }
+      } catch (e) {
+        alert("Error de conexión al guardar el Hook: " + e.message);
+      }
+    }
+
     // Auto-detección dinámica: Por defecto apunta a la Nube Render para compatibilidad global con celulares
     window.addEventListener('DOMContentLoaded', () => {
       updatePwaUrl('https://movilnet-core.onrender.com');
+      checkRenderDeployStatus();
     });
   </script>
 </body>

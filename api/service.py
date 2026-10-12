@@ -2807,6 +2807,18 @@ class MovilnetAPIService:
                 stats = semantic_cache.get_stats()
                 return 200, resp_headers, json.dumps(stats).encode("utf-8")
 
+            if clean_path in ["/api/v1/ops/render-deploy", "/ops/render-deploy"]:
+                from scripts.trigger_render_deploy import load_deploy_hook_url
+                hook_url = load_deploy_hook_url()
+                has_hook = bool(hook_url)
+                masked_hook = (hook_url[:28] + "..." + hook_url[-6:]) if (hook_url and len(hook_url) > 34) else ("Configurado" if hook_url else "No configurado")
+                return 200, resp_headers, json.dumps({
+                    "configured": has_hook,
+                    "masked_url": masked_hook,
+                    "service": "movilnet-core",
+                    "render_url": "https://movilnet-core.onrender.com"
+                }).encode("utf-8")
+
 
         # 2. Rutas POST que requieren body JSON
         elif method == "POST":
@@ -2987,6 +2999,17 @@ class MovilnetAPIService:
                     latency_ms=dur_in * 1000.0
                 )
                 return 200, resp_headers, json.dumps({"success": True, "trace": tr.to_dict()}).encode("utf-8")
+
+            if clean_path in ["/api/v1/ops/render-deploy", "/ops/render-deploy"]:
+                from scripts.trigger_render_deploy import trigger_render_deploy, save_deploy_hook_url
+                hook_in = json_body.get("hook_url") or json_body.get("render_deploy_hook_url")
+                save_hook = json_body.get("save", False)
+                if hook_in and save_hook:
+                    save_deploy_hook_url(hook_in)
+
+                result = trigger_render_deploy(hook_url=hook_in)
+                status_code = 200 if result.get("success") else (400 if result.get("status") == "MISSING_HOOK_URL" else 502)
+                return status_code, resp_headers, json.dumps(result).encode("utf-8")
 
 
 

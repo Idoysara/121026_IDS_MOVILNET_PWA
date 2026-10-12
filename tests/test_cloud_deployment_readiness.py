@@ -66,3 +66,23 @@ def test_full_cloud_deployment_audit_pass():
     assert report.summary["readiness_status"] == "READY_FOR_24_7_CLOUD_DEPLOYMENT"
     assert report.summary["passed_checks"] == report.summary["total_checks"]
     assert report.sha256_seal.startswith("SHA256:")
+
+
+def test_render_deploy_endpoint_and_ops_routing():
+    """Valida el endpoint de operaciones /api/v1/ops/render-deploy (GET y POST)."""
+    import json
+    from api.service import MovilnetAPIService
+    service = MovilnetAPIService()
+
+    # 1. Probar GET de estado de Render Deploy
+    status, headers, body = service.dispatch("GET", "/api/v1/ops/render-deploy", {}, b"")
+    assert status == 200
+    data = json.loads(body.decode("utf-8"))
+    assert "configured" in data
+    assert "render_url" in data
+    assert data["render_url"] == "https://movilnet-core.onrender.com"
+
+    # 2. Probar POST con despacho estructurado
+    status_post, _, body_post = service.dispatch("POST", "/api/v1/ops/render-deploy", {}, json.dumps({}).encode("utf-8"))
+    data_post = json.loads(body_post.decode("utf-8"))
+    assert "success" in data_post
