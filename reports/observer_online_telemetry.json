@@ -1,6 +1,6 @@
 {
-  "report_id": "OBS-E2E-D79E9557981C",
-  "timestamp_iso": "2026-10-12T13:26:36.743895+00:00",
+  "report_id": "OBS-E2E-4F1E92A78733",
+  "timestamp_iso": "2026-10-13T21:48:16.361197+00:00",
   "ecosystem_health": "DEGRADACION_PROVEEDOR_IA_EXTERNO",
   "bot_webhook_line": "+58 424 153 3712",
   "total_hops_evaluated": 5,
@@ -15,7 +15,7 @@
       "latency_ms": 1.1,
       "status_label": "🟢 ACTIVO / RECIBIENDO",
       "diagnostic_details": "Webhook WhatsApp activo. Múltiples números (0414-2554590, 0414-2650088) recibidos.",
-      "timestamp_utc": "2026-10-12T13:26:36.711582+00:00"
+      "timestamp_utc": "2026-10-13T21:48:16.313707+00:00"
     },
     {
       "hop_number": 2,
@@ -26,7 +26,7 @@
       "latency_ms": 2.4,
       "status_label": "🟢 ACTIVO (Flujo Producción)",
       "diagnostic_details": "Workflow sNMbtiEiTkuQ9OCY activo. Router de 10 salidas deterministas operativo.",
-      "timestamp_utc": "2026-10-12T13:26:36.711600+00:00"
+      "timestamp_utc": "2026-10-13T21:48:16.313729+00:00"
     },
     {
       "hop_number": 3,
@@ -34,10 +34,10 @@
       "from_endpoint": "n8n Cloud (Nodo Movilnet Core - Fast-Path ODA)",
       "to_endpoint": "MacBook Pro (100.87.72.93:8010 / Tailscale utun1)",
       "is_online": true,
-      "latency_ms": 31.97,
+      "latency_ms": 46.76,
       "status_label": "🟢 ENLACE CONECTADO",
       "diagnostic_details": "Túnel Tailscale VPN asignado a IP 100.87.72.93. Endpoint /api/v1/n8n/webhook-ingest.",
-      "timestamp_utc": "2026-10-12T13:26:36.743470+00:00"
+      "timestamp_utc": "2026-10-13T21:48:16.360445+00:00"
     },
     {
       "hop_number": 4,
@@ -45,10 +45,10 @@
       "from_endpoint": "api/service.py (:8010)",
       "to_endpoint": "db/local_movilnet.db (11 Tablas ODA + HMAC-SHA256)",
       "is_online": true,
-      "latency_ms": 0.291,
+      "latency_ms": 0.539,
       "status_label": "🟢 RESUELTO (<0.15ms • 0 Tokens)",
       "diagnostic_details": "Subagente N8nDispatcherAgent responde consultas telco deterministas en <0.15ms.",
-      "timestamp_utc": "2026-10-12T13:26:36.743828+00:00"
+      "timestamp_utc": "2026-10-13T21:48:16.361059+00:00"
     },
     {
       "hop_number": 5,
@@ -59,7 +59,7 @@
       "latency_ms": 280.0,
       "status_label": "🟢 ENTREGA CONFIRMADA (DELIVERY_ACK)",
       "diagnostic_details": "Paquetes HTTP entregados a terminales celulares con acuse de recibo de red.",
-      "timestamp_utc": "2026-10-12T13:26:36.743848+00:00"
+      "timestamp_utc": "2026-10-13T21:48:16.361098+00:00"
     }
   ],
   "recent_executions": [
@@ -174,5 +174,5 @@
       "error_reason": null
     }
   ],
-  "sha256_cryptographic_seal": "SEAL-OBS-CDE90E74715A5FB1AD2D701C"
+  "sha256_cryptographic_seal": "SEAL-OBS-6829A75615A35412884DDE01"
 }

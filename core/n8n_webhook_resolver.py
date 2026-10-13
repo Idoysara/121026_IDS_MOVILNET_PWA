@@ -13,8 +13,13 @@ import time
 import logging
 import urllib.request
 import urllib.error
+from pathlib import Path
 from dataclasses import dataclass
 from typing import Optional, Dict, Any, Tuple
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
 logger = logging.getLogger("Movilnet.N8NWebhookResolver")
 
@@ -43,6 +48,19 @@ def resolve_n8n_webhook_url(env_url: Optional[str] = None) -> N8NWebhookConfig:
     if not raw_url:
         return N8NWebhookConfig(
             original_url="",
+            resolved_url=CANONICAL_WEBHOOK_URL,
+            was_upgraded=True,
+            target_workflow_id=CANONICAL_WORKFLOW_ID,
+        )
+
+    # Regla Inviolable de Proyecto: Único webhook permitido es messages_upsert4
+    if "n8n.lpgtec.net" in raw_url and not raw_url.endswith("messages_upsert4"):
+        logger.warning(
+            f"[N8NWebhookResolver] URL no canónica en n8n.lpgtec.net detectada: '{raw_url}'. "
+            f"Auto-promocionada forzosamente a endpoint canónico exclusivo: '{CANONICAL_WEBHOOK_URL}'."
+        )
+        return N8NWebhookConfig(
+            original_url=raw_url,
             resolved_url=CANONICAL_WEBHOOK_URL,
             was_upgraded=True,
             target_workflow_id=CANONICAL_WORKFLOW_ID,
@@ -84,6 +102,26 @@ def dispatch_to_n8n_with_retry(
     """
     config = resolve_n8n_webhook_url(webhook_url)
     target_url = config.resolved_url
+
+    # Guardarraíl de Borde: descartar ruidos, difusiones y auto-respondedores antes del POST HTTP
+    try:
+        from core.webhook_noise_filter import WebhookNoiseFilter
+        noise_check = WebhookNoiseFilter.evaluate(payload)
+        if not noise_check.should_process:
+            logger.info(
+                f"[N8NWebhookResolver] Payload descartado en origen por WebhookNoiseFilter ({noise_check.verdict.value}): {noise_check.reason}"
+            )
+            return {
+                "success": True,
+                "status_code": 200,
+                "target_url": target_url,
+                "attempt": 0,
+                "skipped_by_noise_filter": True,
+                "verdict": noise_check.verdict.value,
+                "error": None,
+            }
+    except Exception:
+        pass
 
     encoded_data = json.dumps(payload).encode("utf-8")
     headers = {
@@ -175,6 +213,26 @@ if __name__ == "__main__":
         assert c4.resolved_url == custom_url
         assert c4.was_upgraded is False
         print("  ✓ Test 4: Endpoint personalizado externo respetado.")
+
+        # Test 5: Regla inviolable del proyecto: n8n.lpgtec.net SOLO admite messages_upsert4
+        invalid_n8n_url = "https://n8n.lpgtec.net/webhook/viki-chat"
+        c5 = resolve_n8n_webhook_url(invalid_n8n_url)
+        assert c5.resolved_url == CANONICAL_WEBHOOK_URL
+        assert c5.was_upgraded is True
+        print("  ✓ Test 5: Regla de proyecto verificada (n8n.lpgtec.net forzado a messages_upsert4).")
+
+        # Test 6: Despacho a n8n interceptado por Noise Filter antes de POST HTTP
+        p_noise = {
+            "event": "messages.upsert",
+            "data": {
+                "key": {"remoteJid": "584121234567@s.whatsapp.net", "fromMe": False},
+                "message": {"conversation": "Gracias por comunicarte con hiperfarmagranfamilia. En breve atenderemos su solicitud 😉"}
+            }
+        }
+        res_noise = dispatch_to_n8n_with_retry(p_noise)
+        assert res_noise.get("skipped_by_noise_filter") is True
+        assert res_noise.get("verdict") == "DROP_COMMERCIAL_AUTOREPLY"
+        print("  ✓ Test 6: Guardarraíl de borde intercepta auto-respondedor comercial antes del POST HTTP.")
 
         print("✅ [100% PASS] Todos los invariantes de N8N Webhook Resolver certificados con éxito.")
         sys.exit(0)

@@ -268,8 +268,8 @@ def run_self_test() -> bool:
     # 7. Caso prefijo internacional 0058 (14 dígitos)
     cleaned_0058 = CarrierFunnelClassifier.clean_msisdn("00584241533712")
     assert cleaned_0058 == "04241533712"
-    cleaned_0058_movilnet = CarrierFunnelClassifier.clean_msisdn("00584166251587")
-    assert cleaned_0058_movilnet == "04166251587"
+    cleaned_0058_movilnet = CarrierFunnelClassifier.clean_msisdn("00584160000001")
+    assert cleaned_0058_movilnet == "04160000001"
 
     print("✅ [CARRIER FUNNEL CLASSIFIER]: Auto-verificación formal matemática superada (7/7 tests PASS).")
     return True

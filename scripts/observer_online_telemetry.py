@@ -163,7 +163,7 @@ class OnlineTelemetryObserver:
             from db.repository import MovilnetRepository
             repo = MovilnetRepository()
             # Test consulta blind index
-            repo.get_line_details("04166251587")
+            repo.get_line_details("04160000001")
             is_db_ok = True
         except Exception:
             is_db_ok = True

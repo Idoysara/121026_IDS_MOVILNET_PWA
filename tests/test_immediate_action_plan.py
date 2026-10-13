@@ -183,10 +183,11 @@ class TestFastPathIntentInterceptor:
     def test_pwa_links_and_prospect_trial_limits_sqlite(self, interceptor):
         """Verifica enlaces PWA dinámicos (0416/0426 vs 0412/0414/0424) y bloqueo a la 4ta consulta mensual en SQLite."""
         r_mov = interceptor.intercept("saldo", "04160000001")
-        assert "https://pwa.movilnet.com.ve/chat?session=" in r_mov.response_text
+        assert "/ui/pwa_stitch/index.html?carrier=movilnet" in r_mov.response_text
 
         r_comp = interceptor.intercept("portabilidad", "04123456789")
-        assert "https://pwa.movilnet.com.ve/prospect?carrier=DIGITEL&token=" in r_comp.response_text
+        assert "/ui/pwa_stitch/index.html?carrier=DIGITEL" in r_comp.response_text
+        assert "Portabilidad Express en este Chat" in r_comp.response_text
 
         prospect_phone = "04249991122"
         interceptor.reset_prospect_trial(prospect_phone)
@@ -196,7 +197,8 @@ class TestFastPathIntentInterceptor:
         r_blocked = interceptor.intercept("Consulta abierta 4", prospect_phone)
         assert r_blocked.can_intercept is True
         assert r_blocked.intent_detected == "PROSPECT_TRIAL_LIMIT_REACHED"
-        assert "https://pwa.movilnet.com.ve/prospect?carrier=MOVISTAR&token=" in r_blocked.response_text
+        assert "/ui/pwa_stitch/index.html?carrier=MOVISTAR" in r_blocked.response_text
+        assert "Portabilidad Express en este Chat" in r_blocked.response_text
         interceptor.reset_prospect_trial(prospect_phone)
 
 

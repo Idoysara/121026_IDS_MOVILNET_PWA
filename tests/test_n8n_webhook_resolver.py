@@ -3,7 +3,10 @@
 # Pruebas unitarias de resolución canónica de webhook n8n
 """
 
-import pytest
+try:
+    import pytest
+except ImportError:
+    pytest = None
 from core.n8n_webhook_resolver import (
     resolve_n8n_webhook_url,
     CANONICAL_WEBHOOK_URL,
@@ -36,3 +39,11 @@ def test_resolve_external_url():
     cfg = resolve_n8n_webhook_url(ext)
     assert cfg.resolved_url == ext
     assert cfg.was_upgraded is False
+
+
+def test_resolve_invalid_n8n_subpath():
+    invalid = "https://n8n.lpgtec.net/webhook/viki-chat"
+    cfg = resolve_n8n_webhook_url(invalid)
+    assert cfg.resolved_url == CANONICAL_WEBHOOK_URL
+    assert cfg.was_upgraded is True
+

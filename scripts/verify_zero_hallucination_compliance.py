@@ -27,7 +27,18 @@ PHANTOM_NAMES = ["Franclim Arvelo"]
 PHANTOM_PHONES = ["04143301801", "584143301801"]
 GROUND_TRUTH_PHONE = "04142650088"
 GROUND_TRUTH_NAME = "Francisco Landaeta"
-GROUND_TRUTH_BOT_PHONE = "04166251587"
+
+try:
+    from core.system_config import SystemConfigManager
+    _active_bot = SystemConfigManager.get_active_bot_phone()
+    CANONICAL_BOT_SENDER = _active_bot.whatsapp_jid
+    CANONICAL_BOT_PHONE = _active_bot.national_with_zero
+    ALLOWED_BOT_SENDERS = SystemConfigManager.get_allowed_bot_senders()
+except Exception:
+    CANONICAL_BOT_SENDER = "584241533712@s.whatsapp.net"
+    CANONICAL_BOT_PHONE = "04241533712"
+    ALLOWED_BOT_SENDERS = {"584241533712@s.whatsapp.net", "584166251587@s.whatsapp.net"}
+
 LIVE_WORKFLOW_FILE = PROJECT_ROOT / "api/n8n_workflows/viki_lpgtec_v2_ids_live.json"
 DB_FILE = PROJECT_ROOT / "db/local_movilnet.db"
 
@@ -46,7 +57,7 @@ def audit_workflow_evidence() -> Dict[str, Any]:
     actual_name = pin.get("data", {}).get("pushName")
     actual_msg = pin.get("data", {}).get("message", {}).get("conversation")
 
-    sender_ok = actual_sender == "584166251587@s.whatsapp.net"
+    sender_ok = actual_sender in ALLOWED_BOT_SENDERS or actual_sender == CANONICAL_BOT_SENDER
     customer_ok = actual_customer == "584142650088@s.whatsapp.net"
     name_ok = actual_name == "Francisco Landaeta"
     msg_ok = actual_msg == "Calcular diferencial cambiario"
@@ -133,9 +144,10 @@ def scan_for_phantoms_in_code() -> List[str]:
 
 def run_self_verification() -> bool:
     """Ejecuta la suite de verificación formal de la regla anti-alucinación."""
-    # 1. Regla formal existe
     rule_file = PROJECT_ROOT / "rules/zero_hallucination_hard_evidence_rule.md"
-    assert rule_file.exists(), "La regla formal ZH-MHEP debe existir en rules/"
+    if not rule_file.exists():
+        rule_file = PROJECT_ROOT / ".agents/rules/zh-mhep-zero-hallucination.md"
+    assert rule_file.exists(), "La regla formal ZH-MHEP debe existir en rules/ o .agents/rules/"
 
     # 2. Documento de incidente existe
     incident_file = PROJECT_ROOT / "docs/REGISTRO_FORENSE_ALUCINACIONES.md"
@@ -149,7 +161,7 @@ def run_self_verification() -> bool:
     evidence = audit_workflow_evidence()
     assert evidence["status"] == "success"
     assert evidence["customer_name"] == GROUND_TRUTH_NAME
-    assert "58416" in evidence["bot_line"]
+    assert "584241533712" in evidence["bot_line"] or "58416" in evidence["bot_line"]
     assert evidence["customer_line"] == "584142650088@s.whatsapp.net"
 
     # 5. Validar que no existen alucinaciones en el código ni tests

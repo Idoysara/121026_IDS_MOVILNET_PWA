@@ -103,7 +103,7 @@ def simulate_full_workflow_data_lifecycle() -> Dict[str, Any]:
     cur.execute("""
         INSERT INTO evolution_instances (instance_id, server_url, apikey_hash, bot_phone_jid, bot_phone_national, status)
         VALUES (?, ?, ?, ?, ?, ?);
-    """, (instance_id, "http://evolution:8080", "sha256_mock_key_viki", "584166251587@s.whatsapp.net", "04166251587", "CONNECTED"))
+    """, (instance_id, "http://evolution:8080", "sha256_mock_key_viki", "584241533712@s.whatsapp.net", "04241533712", "CONNECTED"))
 
     # 2. Registrar Contacto (Nodo: Edit Fields / Postgres Chat Memory)
     remote_jid = "584142650088@s.whatsapp.net"

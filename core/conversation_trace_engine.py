@@ -637,7 +637,7 @@ class ConversationTraceEngine:
         )
 
     def _build_trace_movilnet_sample(self) -> ConversationTrace:
-        """Traza de referencia para el abonado Movilnet 4GMAX (0416-6251587)."""
+        """Traza de referencia para el abonado Movilnet 4GMAX (0416-0000001)."""
         return ConversationTrace(
             trace_id="TRACE-FASTPATH-01",
             execution_id="FAST-01",
@@ -646,14 +646,14 @@ class ConversationTraceEngine:
             stopped_at="2026-10-07T16:50:00.001Z",
             total_duration_sec=0.001,
             status="SUCCESS",
-            bot_number="+58 416 625 1587",
-            user_phone="04166251587",
+            bot_number="+58 424 153 3712",
+            user_phone="04160000001",
             user_push_name="Pedro Pérez",
             carrier="MOVILNET",
             carrier_label="Movilnet 4GMAX",
             is_competitor=False,
             user_message="Consulta mi saldo y megas",
-            bot_reply="Estimado abonado 0416-6251587: Su saldo disponible es Bs. 1.650,00. Datos 4GMAX: 11.9 GB de 5 GB. Corte: 15 del mes.",
+            bot_reply="Estimado abonado 0416-0000001: Su saldo disponible es Bs. 1.650,00. Datos 4GMAX: 11.9 GB de 5 GB. Corte: 15 del mes.",
             intent_detected="BALANCE_INQUIRY",
             pipeline_route="FAST_PATH_TELCO_ODA",
             steps=[]
@@ -2195,13 +2195,9 @@ class ConversationTraceEngine:
                 ).union(self._processed_exec_ids)
             new_synced = 0
 
-            # Flujos autorizados de mensajería y webhooks de telefonía (Workflow certificado sNMbtiEiTkuQ9OCY)
+            # Flujo canónico autorizado exclusivo (Workflow certificado sNMbtiEiTkuQ9OCY / messages_upsert4)
             allowed_wfs = {
                 "sNMbtiEiTkuQ9OCY",
-                "Vk60uZDJaKiGv4aJ",
-                "6PiecMKSmpLLTyxI",
-                "apM2l8DN1nQSocXv",
-                "1xcXxHsgN20LTenq",
                 self.workflow_id
             }
 
@@ -2214,9 +2210,8 @@ class ConversationTraceEngine:
                             continue
 
                     item_wf = str(item.get("workflowId", ""))
-                    item_mode = str(item.get("mode", ""))
-                    # Filtrar solo ejecuciones pertinentes al bot WhatsApp / webhooks
-                    if item_wf not in allowed_wfs and item_mode != "webhook":
+                    # Filtrar estrictamente: solo ejecuciones del workflow canónico sNMbtiEiTkuQ9OCY
+                    if item_wf not in allowed_wfs:
                         self._processed_exec_ids.add(exec_id)
                         continue
 
@@ -2598,7 +2593,7 @@ class ConversationTraceEngine:
                     "• 💵 *Ahorro Garantizado:* Ahorra hasta un 60% en tu renta mensual frente a las tarifas de Digitel.\n\n"
                     "🎁 *Acceso Freemium al Asistente Virtual:*\n"
                     "Tienes a tu disposición 1,000 tokens de prueba (máx. 3 consultas/mes) para interactuar con nuestra IA: "
-                    "https://pwa.movilnet.com.ve/prospect?carrier=digitel&token=2f6840f8"
+                    "https://movilnet-core.onrender.com/ui/pwa_stitch/index.html?carrier=digitel&token=2f6840f8"
                 )
                 t.pipeline_route = "FUNNEL_MARKETING_PORTABILIDAD"
                 t.status = "SUCCESS"
@@ -2658,7 +2653,7 @@ class ConversationTraceEngine:
                     "• 💵 *Ahorro Garantizado:* Ahorra hasta un 60% en tu renta mensual frente a las tarifas de Movistar.\n\n"
                     "🎁 *Acceso Freemium al Asistente Virtual:*\n"
                     "Tienes a tu disposición 1,000 tokens de prueba (máx. 3 consultas/mes) para interactuar con nuestra IA: "
-                    "https://pwa.movilnet.com.ve/prospect?carrier=movistar&token=5ca59f2e"
+                    "https://movilnet-core.onrender.com/ui/pwa_stitch/index.html?carrier=movistar&token=5ca59f2e"
                 )
                 t.pipeline_route = "FUNNEL_MARKETING_PORTABILIDAD"
             elif msg_clean in ["porque", "por que"]:

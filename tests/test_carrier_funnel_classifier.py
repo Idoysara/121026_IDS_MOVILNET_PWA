@@ -6,7 +6,17 @@ Proyecto: AI_Movilnet_300926 — Telecomunicaciones Movilnet C.A.
 Gobernanza: Universal Best Practices Engineering Rule (Pilar V: Regla del 100% Pass)
 """
 
-import pytest
+import sys
+from pathlib import Path
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+try:
+    import pytest
+except ImportError:
+    pytest = None
 from core.carrier_funnel_classifier import (
     CarrierFunnelClassifier,
     Carrier,
@@ -82,12 +92,12 @@ def test_phone_cleaner_e164_variations():
     """Validación exhaustiva de variantes numéricas venezolanas."""
     clean = CarrierFunnelClassifier.clean_msisdn
     assert clean("584142554590@s.whatsapp.net") == "04142554590"
-    assert clean("584166251587:1@s.whatsapp.net") == "04166251587"
+    assert clean("584160000001:1@s.whatsapp.net") == "04160000001"
     assert clean("04121234567") == "04121234567"
     assert clean("4141234567") == "04141234567"
     assert clean("00584241533712") == "04241533712"
     assert clean("00584142554590@s.whatsapp.net") == "04142554590"
-    assert clean("00584166251587") == "04166251587"
+    assert clean("00584160000001") == "04160000001"
 
 
 def test_webhook_live_feed_recording_and_metrics():
@@ -108,3 +118,23 @@ def test_webhook_live_feed_recording_and_metrics():
     assert metrics["total_inbound_messages"] >= initial_total + 1
     assert metrics["competitors_leads"] >= 1
     assert metrics["server_port"] == 8010
+
+
+def test_audited_real_subscriber_numbers():
+    """Líneas reales de otras operadoras auditadas en la ventana de observación E2E (Capítulo 154)."""
+    assert CarrierFunnelClassifier.clean_msisdn("04141241044") == "04141241044"
+    assert CarrierFunnelClassifier.clean_msisdn("04123001155") == "04123001155"
+    assert CarrierFunnelClassifier.clean_msisdn("04145920871") == "04145920871"
+
+
+if __name__ == "__main__":
+    test_movilnet_subscriber_detection_fastpath()
+    test_movistar_competitor_funnel_trigger()
+    test_digitel_competitor_funnel_trigger()
+    test_portability_intent_conversion_stage()
+    test_cantv_fija_trigger()
+    test_voip_isp_special_services_trigger()
+    test_phone_cleaner_e164_variations()
+    test_webhook_live_feed_recording_and_metrics()
+    test_audited_real_subscriber_numbers()
+    print("✅ [TEST PASS]: Todas las pruebas de test_carrier_funnel_classifier.py aprobadas al 100%.")

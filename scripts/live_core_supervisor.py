@@ -253,7 +253,7 @@ live_supervisor = LiveCoreSupervisor()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Supervisor Online Core Movilnet")
-    parser.add_argument("--test", action="store_true", help="Auto-verificación matemática formal (100% PASS)")
+    parser.add_argument("--test", action="store_true", help="Auto-verificación matemática formal (100%% PASS)")
     parser.add_argument("--audit", action="store_true", help="Auditoría forense de interacciones en vivo")
     parser.add_argument("--daemon", action="store_true", help="Ejecutar en modo observador continuo online")
     args = parser.parse_args()

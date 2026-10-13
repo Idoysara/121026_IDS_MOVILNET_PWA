@@ -25,6 +25,22 @@
         "PYTHONPATH": "/Users/ismael/Desktop/Movilnet_051026/AI_Movilnet_300926-main"
       },
       "description": "Servidor MCP de seguridad y antimalware homologado con NVIDIA SkillSpector (71 patrones, 17 categorías)"
+    },
+    "phone-migration-guardian": {
+      "command": "python3",
+      "args": ["mcp/phone_migration_mcp.py"],
+      "env": {
+        "PYTHONPATH": "."
+      },
+      "description": "Servidor MCP militar para la migración atómica universal de líneas telefónicas en Movilnet Core con rollback y validación AST"
+    },
+    "pwa-protocol-guardian": {
+      "command": "python3",
+      "args": ["mcp/pwa_protocol_mcp.py"],
+      "env": {
+        "PYTHONPATH": "."
+      },
+      "description": "Servidor MCP militar de auditoría, sincronización, Service Worker y validación Zero-Token del protocolo PWA en Movilnet Core"
     }
   }
 }

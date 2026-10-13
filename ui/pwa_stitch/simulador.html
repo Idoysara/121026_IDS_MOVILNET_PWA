@@ -386,68 +386,83 @@
           <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">PUERTO 8010</span>
         </div>
         <p class="text-[11px] text-slate-400">
-          Escanea con la cámara de tu smartphone para abrir la PWA en caliente:
+          Selecciona el canal para generar el código QR dinámico e interactuar desde tu smartphone:
         </p>
 
-        <!-- Botones Selectores de Entorno / IP -->
-        <div class="grid grid-cols-2 gap-1.5 text-[10px] font-medium">
-          <button type="button" onclick="setHostIp('https://movilnet-core.onrender.com')" class="col-span-2 px-2.5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold border border-emerald-400/40 flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition-all text-center">
-            <span class="material-symbols-outlined text-[15px]">cloud_done</span>
-            <span>☁️ Nube Render (Funciona Fuera de Wi-Fi / Datos 4G)</span>
+        <!-- Conmutador de Canal QR (WhatsApp vs PWA Web) -->
+        <div class="flex items-center gap-1 bg-slate-950/80 p-1 rounded-xl border border-slate-800 text-[11px]">
+          <button id="btn-qr-mode-wa" type="button" onclick="setQrMode('whatsapp')" class="flex-1 py-1.5 px-2 rounded-lg font-bold text-center transition-all bg-emerald-600 text-white flex items-center justify-center gap-1.5 shadow-sm active:scale-95">
+            <span class="material-symbols-outlined text-[15px]">chat</span>
+            <span>1. WhatsApp Directo (+58 424 153 3712)</span>
           </button>
-          <button type="button" onclick="setHostIp('172.16.0.6')" class="px-2 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center justify-center gap-1 active:scale-95 transition-all text-center" title="Solo dentro de tu Wi-Fi">
-            <span>🏠 Wi-Fi Local</span>
-          </button>
-          <button type="button" onclick="setHostIp('100.87.72.93')" class="px-2 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-emerald-500/30 flex items-center justify-center gap-1 active:scale-95 transition-all text-center" title="Tailscale VPN Global">
-            <span>🔒 Tailscale (Global)</span>
-          </button>
-          <button type="button" onclick="setHostIp('172.20.10.1')" class="px-2 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-sky-300 border border-sky-500/30 flex items-center justify-center gap-1 active:scale-95 transition-all text-center" title="Hotspot / Compartir Internet">
-            <span>📶 Hotspot iPhone</span>
-          </button>
-          <button type="button" onclick="setHostIp('localhost')" class="px-2 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 flex items-center justify-center gap-1 active:scale-95 transition-all text-center">
-            <span>💻 Localhost (MBP)</span>
+          <button id="btn-qr-mode-pwa" type="button" onclick="setQrMode('pwa')" class="flex-1 py-1.5 px-2 rounded-lg font-medium text-center transition-all bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center gap-1.5 active:scale-95">
+            <span class="material-symbols-outlined text-[15px]">language</span>
+            <span>2. PWA Web Móvil</span>
           </button>
         </div>
 
-        <!-- Selector de Línea / Teléfono para el QR Dinámico -->
-        <div class="flex flex-col gap-1 text-[11px] bg-slate-950/60 p-2 rounded-xl border border-slate-800/80">
-          <div class="flex items-center justify-between">
-            <span class="text-slate-300 font-semibold flex items-center gap-1">
-              <span class="material-symbols-outlined text-[14px] text-orange-400">phone_iphone</span>
-              <span>Línea a Vincular en el QR:</span>
-            </span>
-            <span id="qr-phone-badge" class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-sky-500/20 text-sky-300 border border-sky-500/30">0414-2554590 (Ids)</span>
+        <!-- Controles exclusivos para PWA Web (Ocultos por defecto en modo WhatsApp) -->
+        <div id="pwa-qr-controls" class="hidden flex flex-col gap-2">
+          <!-- Botones Selectores de Entorno / IP -->
+          <div class="grid grid-cols-2 gap-1.5 text-[10px] font-medium">
+            <button type="button" onclick="setHostIp('https://movilnet-core.onrender.com')" class="col-span-2 px-2.5 py-1.5 rounded-lg bg-emerald-600/90 hover:bg-emerald-500 text-white font-bold border border-emerald-400/40 flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition-all text-center">
+              <span class="material-symbols-outlined text-[14px]">cloud_done</span>
+              <span>☁️ Nube Render (Funciona Fuera de Wi-Fi / Datos 4G)</span>
+            </button>
+            <button type="button" onclick="setHostIp('172.16.0.6')" class="px-2 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center justify-center gap-1 active:scale-95 transition-all text-center" title="Solo dentro de tu Wi-Fi">
+              <span>🏠 Wi-Fi Local</span>
+            </button>
+            <button type="button" onclick="setHostIp('100.87.72.93')" class="px-2 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-emerald-500/30 flex items-center justify-center gap-1 active:scale-95 transition-all text-center" title="Tailscale VPN Global">
+              <span>🔒 Tailscale</span>
+            </button>
+            <button type="button" onclick="setHostIp('172.20.10.1')" class="px-2 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-sky-300 border border-sky-500/30 flex items-center justify-center gap-1 active:scale-95 transition-all text-center" title="Hotspot / Compartir Internet">
+              <span>📶 Hotspot</span>
+            </button>
+            <button type="button" onclick="setHostIp('localhost')" class="px-2 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 flex items-center justify-center gap-1 active:scale-95 transition-all text-center">
+              <span>💻 Localhost</span>
+            </button>
           </div>
-          <div class="flex items-center gap-1.5 mt-0.5">
-            <select id="qr-phone-preset" onchange="onQrPhonePresetChange(this.value)" class="bg-slate-900 border border-slate-700 rounded-lg px-2 py-1 text-[11px] text-slate-100 focus:outline-none focus:border-orange-500 flex-1">
-              <option value="04142554590" selected>👤 Ids (0414-2554590 — Movistar / Tu Celular)</option>
-              <option value="04123456789">📱 Móvil Externo (0412-3456789 — Digitel)</option>
-              <option value="04160000001">👤 Carlos Perez (0416-0000001 — Movilnet)</option>
-              <option value="04260000002">👤 María Gómez (0426-0000002 — Movilnet)</option>
-              <option value="custom">✏️ Otro número manual...</option>
-            </select>
-            <input id="qr-custom-phone-input" type="text" placeholder="0414..." class="hidden w-28 bg-slate-900 border border-slate-700 rounded-lg px-2 py-1 text-[11px] font-mono text-slate-100 focus:outline-none focus:border-orange-500" oninput="onCustomPhoneInput(this.value)" />
+
+          <!-- Selector de Línea / Teléfono para el QR Dinámico -->
+          <div class="flex flex-col gap-1 text-[11px] bg-slate-950/60 p-2 rounded-xl border border-slate-800/80">
+            <div class="flex items-center justify-between">
+              <span class="text-slate-300 font-semibold flex items-center gap-1">
+                <span class="material-symbols-outlined text-[14px] text-orange-400">phone_iphone</span>
+                <span>Línea a Vincular en la PWA:</span>
+              </span>
+              <span id="qr-phone-badge" class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-sky-500/20 text-sky-300 border border-sky-500/30">0414-2554590 (Ids)</span>
+            </div>
+            <div class="flex items-center gap-1.5 mt-0.5">
+              <select id="qr-phone-preset" onchange="onQrPhonePresetChange(this.value)" class="bg-slate-900 border border-slate-700 rounded-lg px-2 py-1 text-[11px] text-slate-100 focus:outline-none focus:border-orange-500 flex-1">
+                <option value="04142554590" selected>👤 Ids (0414-2554590 — Movistar / Tu Celular)</option>
+                <option value="04123456789">📱 Móvil Externo (0412-3456789 — Digitel)</option>
+                <option value="04160000001">👤 Carlos Perez (0416-0000001 — Movilnet)</option>
+                <option value="04260000002">👤 María Gómez (0426-0000002 — Movilnet)</option>
+                <option value="custom">✏️ Otro número manual...</option>
+              </select>
+              <input id="qr-custom-phone-input" type="text" placeholder="0414..." class="hidden w-28 bg-slate-900 border border-slate-700 rounded-lg px-2 py-1 text-[11px] font-mono text-slate-100 focus:outline-none focus:border-orange-500" oninput="onCustomPhoneInput(this.value)" />
+            </div>
           </div>
         </div>
 
         <!-- Código QR Dinámico -->
         <div class="bg-white p-2.5 rounded-xl flex flex-col items-center justify-center self-center shadow-lg my-1">
-          <img id="qr-code-img" src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://movilnet-core.onrender.com/ui/pwa_stitch/index.html?phone=04142554590&qr=1&v=168" alt="QR Code PWA" class="w-40 h-40 object-contain"/>
+          <img id="qr-code-img" src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https%3A%2F%2Fwa.me%2F584241533712%3Ftext%3DHola%2520Movilnet" alt="QR Code" class="w-40 h-40 object-contain"/>
         </div>
         <p id="qr-net-hint" class="text-[10px] text-center font-semibold text-emerald-400">
-          🌐 Enlace Público Global: Escanéalo con tu celular con Datos Móviles (4G/5G) o cualquier red.
+          💬 QR WhatsApp Oficial: Escanéalo con la cámara de tu celular para abrir WhatsApp y chatear directo con +58 424 153 3712. Recibirás respuesta directa en tu propio WhatsApp en tiempo real.
         </p>
 
-        <!-- Entrada IP Personalizada y URL Directa -->
+        <!-- Entrada URL Directa y Botón Copiar -->
         <div class="flex items-center gap-1.5">
-          <input id="custom-ip-input" type="text" placeholder="IP o Dominio manual..." class="flex-1 bg-slate-950 border border-slate-800 rounded-lg px-2 py-1 text-[11px] font-mono text-slate-200 focus:outline-none focus:border-orange-500" oninput="onCustomIpChange(this.value)" />
+          <input id="custom-ip-input" type="text" placeholder="URL o IP manual..." class="flex-1 bg-slate-950 border border-slate-800 rounded-lg px-2 py-1 text-[11px] font-mono text-slate-200 focus:outline-none focus:border-orange-500" oninput="onCustomIpChange(this.value)" />
           <button onclick="copyUrl()" class="px-2.5 py-1 bg-orange-600 hover:bg-orange-500 text-white rounded-lg text-[10px] font-sans font-semibold shrink-0 shadow-sm active:scale-95 transition-all">
             Copiar URL
           </button>
         </div>
 
         <div class="bg-slate-950/80 p-2 rounded-lg border border-slate-800 flex items-center justify-between text-xs font-mono">
-          <span id="local-url" class="text-orange-400 truncate select-all text-[11px]">https://movilnet-core.onrender.com/ui/pwa_stitch/index.html</span>
+          <span id="local-url" class="text-emerald-400 truncate select-all text-[11px]">https://wa.me/584241533712?text=Hola%20Movilnet</span>
         </div>
       </div>
 
@@ -682,8 +697,42 @@
       });
     }
 
+    let currentQrMode = 'whatsapp';
     let currentHost = 'https://movilnet-core.onrender.com';
     let currentQrPhone = '04142554590';
+
+    function setQrMode(mode) {
+      currentQrMode = mode;
+      const btnWa = document.getElementById('btn-qr-mode-wa');
+      const btnPwa = document.getElementById('btn-qr-mode-pwa');
+      const pwaControls = document.getElementById('pwa-qr-controls');
+      const qrImg = document.getElementById('qr-code-img');
+      const hintEl = document.getElementById('qr-net-hint');
+      const localUrlEl = document.getElementById('local-url');
+
+      if (mode === 'whatsapp') {
+        if (btnWa) btnWa.className = 'flex-1 py-1.5 px-2 rounded-lg font-bold text-center transition-all bg-emerald-600 text-white flex items-center justify-center gap-1.5 shadow-sm active:scale-95';
+        if (btnPwa) btnPwa.className = 'flex-1 py-1.5 px-2 rounded-lg font-medium text-center transition-all bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center gap-1.5 active:scale-95';
+        if (pwaControls) pwaControls.classList.add('hidden');
+
+        const waUrl = 'https://wa.me/584241533712?text=Hola%20Movilnet';
+        if (localUrlEl) {
+          localUrlEl.textContent = waUrl;
+          localUrlEl.className = 'text-emerald-400 truncate select-all text-[11px]';
+        }
+        if (qrImg) qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(waUrl)}`;
+        if (hintEl) {
+          hintEl.className = 'text-[10px] text-center font-semibold text-emerald-400';
+          hintEl.textContent = '💬 QR WhatsApp Oficial: Escanéalo con la cámara de tu celular para abrir WhatsApp y chatear directo con +58 424 153 3712. Recibirás respuesta directa en tu propio WhatsApp en tiempo real.';
+        }
+      } else {
+        if (btnWa) btnWa.className = 'flex-1 py-1.5 px-2 rounded-lg font-medium text-center transition-all bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center gap-1.5 active:scale-95';
+        if (btnPwa) btnPwa.className = 'flex-1 py-1.5 px-2 rounded-lg font-bold text-center transition-all bg-orange-600 text-white flex items-center justify-center gap-1.5 shadow-sm active:scale-95';
+        if (pwaControls) pwaControls.classList.remove('hidden');
+        if (localUrlEl) localUrlEl.className = 'text-orange-400 truncate select-all text-[11px]';
+        updatePwaUrl(currentHost);
+      }
+    }
 
     function onQrPhonePresetChange(val) {
       const customInput = document.getElementById('qr-custom-phone-input');

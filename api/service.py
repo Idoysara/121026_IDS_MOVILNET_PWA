@@ -2119,6 +2119,7 @@ class MovilnetAPIService:
             # Despacho en segundo plano a n8n Cloud (Workflow sNMbtiEiTkuQ9OCY con auto-upgrade y reintentos)
             def _dispatch_to_n8n():
                 try:
+                    from core.webhook_noise_filter import WebhookNoiseFilter
                     from core.n8n_webhook_resolver import dispatch_to_n8n_with_retry
                     phone_val_n8n = phone_val or "04160000001"
                     remote_jid = f"58{phone_val_n8n[1:]}@s.whatsapp.net" if phone_val_n8n.startswith("0") else f"{phone_val_n8n}@s.whatsapp.net"
@@ -2140,6 +2141,14 @@ class MovilnetAPIService:
                             }
                         }
                     }
+                    noise_res = WebhookNoiseFilter.evaluate(n8n_payload)
+                    if not noise_res.should_process:
+                        logger.info(
+                            f"[Service] Despacho a n8n Cloud omitido por WebhookNoiseFilter: "
+                            f"{noise_res.verdict.value} ({noise_res.reason})"
+                        )
+                        return
+
                     res = dispatch_to_n8n_with_retry(n8n_payload, max_retries=2)
                     if not res.get("success"):
                         logger.warning(f"[Service] Despacho a n8n Cloud advirtió: {res.get('error')}")
@@ -2672,6 +2681,9 @@ class MovilnetAPIService:
 
             if clean_path == "/ui" or clean_path.startswith("/ui/"):
                 return self._serve_static_ui(clean_path)
+
+            if clean_path in ["/prospect", "/chat", "/pwa", "/app", "/stitch"]:
+                return self._serve_static_ui("/ui/pwa_stitch/index.html")
 
             if clean_path in ["/health", "/api/v1/health"]:
                 status, payload = self.handle_health()

@@ -87,6 +87,23 @@ class FastPathIntentInterceptor:
         re.IGNORECASE,
     )
 
+    COMMERCIAL_AUTOREPLY_REGEX = re.compile(
+        r"("
+        r"gracias por comunicarte|"
+        r"gracias por escribirnos|"
+        r"gracias por contactar(nos)?|"
+        r"en breve (te )?atenderemos|"
+        r"un asesor te atender[aá]|"
+        r"horario de atenci[oó]n|"
+        r"bienvenido a nuestro canal|"
+        r"mensaje autom[aá]tico|"
+        r"auto-?respuesta|"
+        r"automated message|"
+        r"te responderemos lo antes posible"
+        r")",
+        re.IGNORECASE,
+    )
+
     PROSPECT_DDL = """
     CREATE TABLE IF NOT EXISTS prospect_trial_limits (
         msisdn TEXT PRIMARY KEY,
@@ -138,29 +155,31 @@ class FastPathIntentInterceptor:
         clean_phone = CarrierFunnelClassifier.clean_msisdn(phone) or "04160000001"
         carrier_enum, _, is_competitor = CarrierFunnelClassifier.identify_carrier(clean_phone)
         token = cls.generate_session_token(clean_phone)
+        base_url = os.environ.get("MOVILNET_PUBLIC_PWA_URL", "https://movilnet-core.onrender.com").rstrip("/")
 
         if not is_competitor and carrier_enum == Carrier.MOVILNET:
             return (
                 f"\n\n🌐 Si prefieres una experiencia visual o interactiva, continúa tu consulta en nuestra PWA oficial: "
-                f"https://pwa.movilnet.com.ve/chat?session={token}"
+                f"{base_url}/ui/pwa_stitch/index.html?carrier=movilnet&phone={clean_phone}&token={token}"
             )
         carrier_slug = carrier_enum.value.upper()
         return (
             f"\n\n🎁 Tienes acceso a 1,000 tokens de prueba (máx. 3 consultas/mes) para interactuar con nuestra IA "
             f"y descubrir por qué cambiarte a Movilnet 4GMAX: "
-            f"https://pwa.movilnet.com.ve/prospect?carrier={carrier_slug}&token={token}"
+            f"{base_url}/ui/pwa_stitch/index.html?carrier={carrier_slug}&phone={clean_phone}&token={token}"
+            f"\n\n📲 *Portabilidad Express en este Chat:* Responde *Portabilidad* por aquí para tramitar tu eSIM Digital gratis con 10GB de bienvenida sin salir de WhatsApp."
         )
 
     @classmethod
     def detect_propaganda_or_invitation(cls, text: str) -> bool:
         """
-        Detecta patrones léxicos de eventos, meetups, difusiones y convocatorias no solicitadas
-        (ej. Traza #13585 'Caracas Tech Meetup').
+        Detecta patrones léxicos de eventos, meetups, difusiones y auto-respondedores comerciales no solicitados
+        (ej. Traza #13585 'Tech Meetup' y Traza #13852 'HiperFarma').
         Se evalúa con prioridad máxima antes de intenciones de saldo, megas o planes.
         """
         if not text:
             return False
-        return bool(cls.PROPAGANDA_INVITATION_REGEX.search(text))
+        return bool(cls.PROPAGANDA_INVITATION_REGEX.search(text) or cls.COMMERCIAL_AUTOREPLY_REGEX.search(text))
 
     @classmethod
     def detect_telco_intent(cls, message_text: str) -> Optional[str]:
@@ -628,14 +647,14 @@ def main():
         assert r1.tokens_consumed == 0
         assert r1.intent_detected == "SALDO_CUPO"
         assert "Movilnet 4GMAX" in r1.response_text
-        assert "https://pwa.movilnet.com.ve/chat?session=" in r1.response_text
+        assert "/ui/pwa_stitch/index.html?carrier=movilnet" in r1.response_text
 
         # Test 2: Catálogo de planes debe interceptarse con 0 tokens e incluir enlace PWA
         r2 = interceptor.intercept("Quiero conocer los planes activos", "04160000001")
         assert r2.can_intercept is True
         assert r2.intent_detected == "CATALOGO_PLANES"
         assert r2.tokens_consumed == 0
-        assert "https://pwa.movilnet.com.ve/chat?session=" in r2.response_text
+        assert "/ui/pwa_stitch/index.html?carrier=movilnet" in r2.response_text
 
         # Test 3: Pregunta abierta o de cultura general NO debe interceptarse en la 1ra consulta (debe pasar al AI Agent)
         interceptor.reset_prospect_trial("04142650088")
@@ -647,7 +666,7 @@ def main():
         r4 = interceptor.intercept("Quiero información sobre portabilidad a Movilnet", "04142554590")
         assert r4.can_intercept is True
         assert r4.intent_detected == "OFERTA_PORTABILIDAD"
-        assert "https://pwa.movilnet.com.ve/prospect?carrier=MOVISTAR&token=" in r4.response_text
+        assert "/ui/pwa_stitch/index.html?carrier=MOVISTAR" in r4.response_text
 
         # Test 5: Guardarraíl NON_SOLICITED_PROPAGANDA_GUARD (Traza #13585 Caracas Tech Meetup)
         trace_13585_msg = (
@@ -679,10 +698,19 @@ def main():
         assert q4.can_intercept is True, "ERROR: La 4ta consulta mensual del prospecto debió bloquearse!"
         assert q4.intent_detected == PROSPECT_TRIAL_LIMIT_REACHED
         assert "Límite Mensual de Prueba Alcanzado" in q4.response_text
-        assert "https://pwa.movilnet.com.ve/prospect?carrier=DIGITEL&token=" in q4.response_text
+        assert "/ui/pwa_stitch/index.html?carrier=DIGITEL" in q4.response_text
         interceptor.reset_prospect_trial(test_prospect)
 
-        print("✅ [TEST PASS] Todos los invariantes de FastPathIntentInterceptor (incluyendo #13585 y Freemium SQLite) aprobados con 100% de éxito.")
+        # Test 7: Auto-respondedor comercial WhatsApp Business (Traza #13852 HiperFarma)
+        trace_13852_msg = "Gracias por comunicarte con hiperfarmagranfamilia. ¿Cómo podemos ayudarte? En breve  atenderemos su solicitud 😉"
+        assert FastPathIntentInterceptor.detect_propaganda_or_invitation(trace_13852_msg) is True
+        r7 = interceptor.intercept(trace_13852_msg, "04121234567")
+        assert r7.can_intercept is True, "ERROR: El auto-respondedor comercial #13852 debió interceptarse en 0 tokens!"
+        assert r7.intent_detected == NON_SOLICITED_PROPAGANDA_GUARD
+        assert r7.tokens_consumed == 0
+        assert "Movilnet 4GMAX" in r7.response_text
+
+        print("✅ [TEST PASS] Todos los invariantes de FastPathIntentInterceptor (incluyendo #13585, #13852 y Freemium SQLite) aprobados con 100% de éxito.")
         return
 
     if args.demo or args.msg:

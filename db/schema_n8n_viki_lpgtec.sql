@@ -22,8 +22,8 @@ CREATE TABLE IF NOT EXISTS evolution_instances (
     instance_id         VARCHAR(64) PRIMARY KEY,       -- Nombre de la instancia (ej: 'Viki LPGTEC')
     server_url          VARCHAR(255) NOT NULL,         -- URL base del gateway (ej: 'http://evolution:8080')
     apikey_hash         VARCHAR(128) NOT NULL,         -- Hash de la apikey para autenticación de headers
-    bot_phone_jid       VARCHAR(64) NOT NULL,          -- JID de WhatsApp de la línea bot (ej: '584166251587@s.whatsapp.net')
-    bot_phone_national  VARCHAR(20) NOT NULL,          -- Formato canónico nacional ('04166251587')
+    bot_phone_jid       VARCHAR(64) NOT NULL,          -- JID de WhatsApp de la línea bot (ej: '584241533712@s.whatsapp.net')
+    bot_phone_national  VARCHAR(20) NOT NULL,          -- Formato canónico nacional ('04241533712')
     status              VARCHAR(20) DEFAULT 'CONNECTED' CHECK(status IN ('CONNECTED', 'DISCONNECTED', 'CONNECTING', 'QRCODE')),
     created_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP

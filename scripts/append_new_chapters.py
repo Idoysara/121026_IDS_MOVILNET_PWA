@@ -201,7 +201,7 @@ PUNTO_CONTROL_TEXT = """# PUNTO DE CONTROL — SESIÓN ACTIVA (MOVILNET ↔ PROT
 - **Modelo de IA y Credenciales:** `models/gemini-3.8-flash` con credencial `Google Gemini PrePaid` (`2LyFhAKm2IiUM6aT`) en nodos cognitivos y de percepción.
 - **Árbol de Decisión Semántico (Vía 1):** Conexión directa `If1` [1] ➔ `AI Agent` (Cero peaje de palabras clave rígidas). 5 herramientas Telco de Function Calling activas (`ConsultarSaldo`, `Portabilidad`, `CatalogoPlanes`, `PagoC2P`, `BloqueoIMEI`).
 - **Clasificador Carrier-Grade CONATEL (`core/carrier_funnel_classifier.py`):** Cobertura exhaustiva: Celulares Movilnet (`0416`/`0426`), Movistar (`0414`/`0424`), Digitel (`0412`), Fija CANTV/ISPs (`0212` y `02xx` regionales) y VoIP Especial (`0500`, `0501`, `0800`, `0900`).
-- **Línea del Servidor / Webhook Bot:** `+58 416 625 1587` (`584166251587@s.whatsapp.net`).
+- **Línea del Servidor / Webhook Bot:** `+58 424 153 3712` (`584241533712@s.whatsapp.net`).
 - **Líneas de Prueba Auditadas:** `+58 414 255 4590` (Movistar Venezuela, remitente `Ids`), `+58 424 153 3712` (Movistar, remitente `Ids`) y `+58 414 265 0088` (remitente `Francisco Landaeta`).
 - **Servicios Activos en Background:**
   * Movilnet Core Activo en puerto dedicado 8010.

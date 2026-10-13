@@ -42,6 +42,7 @@ class FilterVerdict(str, Enum):
     DROP_UNKNOWN_EVENT = "DROP_UNKNOWN_EVENT"
     DROP_SYSTEM_SECURITY_NOTICE = "DROP_SYSTEM_SECURITY_NOTICE"
     DROP_SPAM_INVITATION = "DROP_SPAM_INVITATION"
+    DROP_COMMERCIAL_AUTOREPLY = "DROP_COMMERCIAL_AUTOREPLY"
 
 
 @dataclass
@@ -79,6 +80,23 @@ class WebhookNoiseFilter:
         re.IGNORECASE,
     )
 
+    COMMERCIAL_AUTOREPLY_REGEX = re.compile(
+        r"("
+        r"gracias por comunicarte|"
+        r"gracias por escribirnos|"
+        r"gracias por contactar(nos)?|"
+        r"en breve (te )?atenderemos|"
+        r"un asesor te atender[aá]|"
+        r"horario de atenci[oó]n|"
+        r"bienvenido a nuestro canal|"
+        r"mensaje autom[aá]tico|"
+        r"auto-?respuesta|"
+        r"automated message|"
+        r"te responderemos lo antes posible"
+        r")",
+        re.IGNORECASE,
+    )
+
     @classmethod
     def is_system_security_notice(cls, text: str) -> bool:
         """Evalúa si el texto corresponde a una notificación técnica de cifrado o seguridad de WhatsApp."""
@@ -92,6 +110,13 @@ class WebhookNoiseFilter:
         if not text:
             return False
         return bool(cls.SPAM_INVITATION_REGEX.search(text))
+
+    @classmethod
+    def is_commercial_autoreply(cls, text: str) -> bool:
+        """Evalúa si el texto corresponde a un auto-respondedor comercial o mensaje corporativo automático."""
+        if not text:
+            return False
+        return bool(cls.COMMERCIAL_AUTOREPLY_REGEX.search(text))
 
     @classmethod
     def evaluate(cls, raw_payload: Dict[str, Any], check_spam_invitation: bool = False) -> FilterResult:
@@ -214,6 +239,17 @@ class WebhookNoiseFilter:
                 extracted_text=text
             )
 
+        # 7. Descarte de auto-respondedores comerciales de WhatsApp Business (Traza #13852 HiperFarma)
+        if text and cls.is_commercial_autoreply(text):
+            return FilterResult(
+                should_process=False,
+                verdict=FilterVerdict.DROP_COMMERCIAL_AUTOREPLY,
+                reason="Auto-respondedor comercial o mensaje corporativo automático descartado en la frontera para proteger n8n Cloud",
+                event_type=event or "messages.upsert",
+                sender_jid=sender_jid,
+                extracted_text=text
+            )
+
         return FilterResult(
             should_process=True,
             verdict=FilterVerdict.PASS_MESSAGE,
@@ -309,7 +345,21 @@ def main():
         assert r7.should_process is False
         assert r7.verdict == FilterVerdict.DROP_SPAM_INVITATION
 
-        print("✅ [TEST PASS] Todos los invariantes de WebhookNoiseFilter (incluyendo #13368) aprobados con 100% de éxito.")
+        # Test 7: Descarte de auto-respondedor comercial WhatsApp Business (Traza #13852 HiperFarma)
+        p_commercial = {
+            "event": "messages.upsert",
+            "data": {
+                "key": {"remoteJid": "584121234567@s.whatsapp.net", "fromMe": False},
+                "message": {
+                    "conversation": "Gracias por comunicarte con hiperfarmagranfamilia. ¿Cómo podemos ayudarte? En breve  atenderemos su solicitud 😉"
+                }
+            }
+        }
+        r8 = WebhookNoiseFilter.evaluate(p_commercial)
+        assert r8.should_process is False, "ERROR: El auto-respondedor comercial debió descartarse en frontera!"
+        assert r8.verdict == FilterVerdict.DROP_COMMERCIAL_AUTOREPLY
+
+        print("✅ [TEST PASS] Todos los invariantes de WebhookNoiseFilter (incluyendo #13368 y #13852) aprobados con 100% de éxito.")
         return
 
     if args.demo:
