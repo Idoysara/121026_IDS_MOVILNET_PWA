@@ -1,131 +1,46 @@
 {
   "supervisor_status": "ONLINE_SUPERVISING",
-  "started_at_utc": "2026-10-11T22:54:41.122109+00:00",
-  "last_check_utc": "2026-10-12T04:27:17.054167+00:00",
-  "total_interactions_audited": 59,
-  "sla_compliance_rate": 88.14,
-  "avg_latency_sec": 2.668,
+  "started_at_utc": "2026-10-13T12:09:41.001350+00:00",
+  "last_check_utc": "2026-10-13T12:22:47.649942+00:00",
+  "total_interactions_audited": 150,
+  "sla_compliance_rate": 89.33,
+  "avg_latency_sec": 6.101,
   "carrier_distribution": {
-    "MOVISTAR": 43,
-    "MOVILNET": 15,
-    "DIGITEL": 1
+    "MOVILNET": 35,
+    "MOVISTAR": 101,
+    "DIGITEL": 14
   },
   "active_alerts": [
-    "7 interacciones excedieron el umbral SLA (>6.0s)."
+    "16 interacciones excedieron el umbral SLA (>6.0s)."
   ],
   "recent_interactions": [
     {
-      "interaction_id": "INT-13403-37053",
-      "execution_id": "13403",
-      "timestamp_utc": "2026-10-12T00:48:22.046Z",
-      "sender_phone": "04142554590",
-      "sender_name": "Ids",
-      "carrier_name": "MOVISTAR",
-      "message_text": "Ya estoy cansado. Me quiero ir a dormir pero de o esperar que funciones",
-      "bot_response": "¡Tranquilo, puedes irte a descansar con total confianza! 😴✨\nEl sistema ya está funcionando al 100%, respondiendo en tiempo real y sin ninguna falla. Si estás haciendo pruebas de funcionamiento del asistente, ¡puedes dar por hecho que la conexión y las respuestas están totalmente operativas! 📶🚀\nNo tienes que quedarte despierto esperando nada adicional:\nEl servicio queda activo las 24 horas del día.\nMañana o cuando gustes puedes escribir y aquí estaré para atenderte al instante.\n¡Que descanses y tengas una excelente noche! 🌙💤",
-      "latency_sec": 4.66,
-      "sla_status": "ACEPTABLE",
-      "is_action_executed": true,
-      "is_coherent": true,
-      "quality_score": 1.0,
-      "delivery_status": "SERVER_ACK",
-      "notes": "Evaluación de latencia y coherencia satisfactoria."
-    },
-    {
-      "interaction_id": "INT-13378-37282",
-      "execution_id": "13378",
-      "timestamp_utc": "2026-10-12T00:18:09.466Z",
-      "sender_phone": "04142554590",
-      "sender_name": "Ids",
-      "carrier_name": "MOVISTAR",
-      "message_text": "Saldo",
-      "bot_response": "Estimado abonado Movilnet (+58 414 2554590):\n💰 Tu saldo disponible es: Bs. 450,00\n📶 Datos 4GMAX: 10.0 GB de 10.0 GB\n📋 Plan activo: Inteliplan 10GB 4GMAX\n📅 Fecha de corte: 31 del mes.\nPara recargar tu saldo vía Pago Móvil C2P, escribe 'Recarga'.",
-      "latency_sec": 0.54,
-      "sla_status": "OPTIMO",
-      "is_action_executed": true,
-      "is_coherent": true,
-      "quality_score": 1.0,
-      "delivery_status": "SERVER_ACK",
-      "notes": "Evaluación de latencia y coherencia satisfactoria."
-    },
-    {
-      "interaction_id": "INT-13368-53833",
-      "execution_id": "13368",
-      "timestamp_utc": "2026-10-12T00:17:52.824Z",
-      "sender_phone": "04142554590",
-      "sender_name": "Ids",
-      "carrier_name": "MOVISTAR",
-      "message_text": "Información sobre \"Esperando el mensaje. Esto puede tomar tiempo.\"\nEn ocasiones, es posible que veas \"Esperando el mensaje. Esto puede tomar tiempo\" en lugar de un mensaje.\nWhatsApp protege tus llamadas y mensajes personales con cifrado de extremo a extremo. Esto significa que solo tú y la persona con la que te comunicas pueden leer, escuchar o compartir los mensajes que se envían.\nHay algunos problemas que podrían ocasionar que se reemplace un mensaje entrante por la leyenda \"Esperando el mensaje. Esto puede tomar tiempo.\"\nNo se pudo entregar el mensaje.\nTú o el remitente reinstalaron WhatsApp recientemente.\nAlguno de los dos no está usando la versión más reciente de WhatsApp.\nReemplazaste tu dispositivo principal e instalaste WhatsApp en un dispositivo nuevo con el mismo número.\nSi recibes este mensaje, puedes intentar algunos pasos para solucionar el problema.",
-      "bot_response": "Estimado usuario (+58 414 2554590):\nBienvenido al Centro de Atención Digital Movilnet 4GMAX.\n• Escribe 'Saldo' para consultar tu balance disponible.\n• Escribe 'Planes' para conocer los planes disponibles.\n• Escribe 'Recarga' para recargar con Pago Móvil C2P.\n• Escribe 'Portabilidad' para cambiarte gratis a Movilnet con eSIM.",
-      "latency_sec": 0.51,
-      "sla_status": "OPTIMO",
-      "is_action_executed": true,
-      "is_coherent": true,
-      "quality_score": 1.0,
-      "delivery_status": "SERVER_ACK",
-      "notes": "Evaluación de latencia y coherencia satisfactoria."
-    },
-    {
-      "interaction_id": "INT-13348-83403",
-      "execution_id": "13348",
-      "timestamp_utc": "2026-10-12T00:16:06.877Z",
-      "sender_phone": "04142554590",
-      "sender_name": "Ids",
-      "carrier_name": "MOVISTAR",
-      "message_text": "Sigo esperando mensaje",
-      "bot_response": "¡Hola! Te comento con total sinceridad: como asistente virtual automatizado, no tengo la capacidad de enviar mensajes programados o alarmas a una hora específica por mi cuenta; únicamente respondo de manera inmediata cada vez que tú me escribes por acá 🤖📲.\nLamento si hubo alguna confusión con el aviso de la reunión de las 6:30 p.m. \nSi estabas esperando algún mensaje o información sobre tu línea Movilnet (como saldo, recarga, plan o estatus), ¡indícamelo directamente y con todo gusto te doy la información al instante! 😊📶",
-      "latency_sec": 4.3,
-      "sla_status": "ACEPTABLE",
-      "is_action_executed": true,
-      "is_coherent": true,
-      "quality_score": 1.0,
-      "delivery_status": "SERVER_ACK",
-      "notes": "Evaluación de latencia y coherencia satisfactoria."
-    },
-    {
-      "interaction_id": "INT-13339-76449",
-      "execution_id": "13339",
-      "timestamp_utc": "2026-10-12T00:09:52.925Z",
-      "sender_phone": "04142554590",
-      "sender_name": "Ids",
-      "carrier_name": "MOVISTAR",
-      "message_text": "Estas funcionando",
-      "bot_response": "¡Totalmente activo y operativo al 100%! 📶💪\nSoy VIKI, tu asistente virtual de Movilnet 4GMAX, y estoy listo para ayudarte las 24 horas del día.\n¿En qué te puedo colaborar en este momento?\n📲 Consultar saldo, megas o fecha de corte\n📋 Planes y tarifas de navegación\n💳 Recargar saldo con Pago Móvil C2P\n🔄 Portabilidad a Movilnet (eSIM gratis + 10 GB de bienvenida)\n* 🔒 Bloqueo de línea / equipo por robo o extravío\n¡Dime qué necesitas y lo resolvemos de una vez! 😊",
-      "latency_sec": 3.38,
-      "sla_status": "OPTIMO",
-      "is_action_executed": true,
-      "is_coherent": true,
-      "quality_score": 1.0,
-      "delivery_status": "SERVER_ACK",
-      "notes": "Evaluación de latencia y coherencia satisfactoria."
-    },
-    {
-      "interaction_id": "INT-13358-61156",
-      "execution_id": "13358",
-      "timestamp_utc": "2026-10-12T00:17:08.609Z",
-      "sender_phone": "04142554590",
-      "sender_name": "Ids",
-      "carrier_name": "MOVISTAR",
-      "message_text": "Otro mensaje más",
-      "bot_response": "¡Aquí estoy, al pie del cañón y respondiendo al instante! ⚡📲\nVeo que estás probando el canal. Como ves, la conexión va volando con la velocidad de Movilnet 4GMAX 📶🚀.\nDime, ¿hay alguna consulta o gestión específica que quieras realizar hoy con tu línea (saldo, megas, recarga, planes o portabilidad)? ¡Aprovechemos y lo dejamos listo! 😊",
-      "latency_sec": 3.56,
-      "sla_status": "ACEPTABLE",
-      "is_action_executed": true,
-      "is_coherent": true,
-      "quality_score": 1.0,
-      "delivery_status": "SERVER_ACK",
-      "notes": "Evaluación de latencia y coherencia satisfactoria."
-    },
-    {
-      "interaction_id": "INT-SIM-1791763977-83829",
-      "execution_id": "SIM-1791763977",
-      "timestamp_utc": "2026-10-12T00:12:57.395686+00:00",
+      "interaction_id": "INT-13725-67649",
+      "execution_id": "13725",
+      "timestamp_utc": "2026-10-13T12:21:39.414Z",
       "sender_phone": "04160000001",
-      "sender_name": "Carlos Perez",
+      "sender_name": "Abonado 04160000001",
       "carrier_name": "MOVILNET",
-      "message_text": "saldo",
-      "bot_response": "Estimado abonado 04160000001: Su saldo disponible es Bs. 1.650,00. Datos 4GMAX: 11.9 GB disponibles de 5 GB. Corte: 15 del mes.",
-      "latency_sec": 0.18,
+      "message_text": "Cómo esta el día se hoy el clima y que hora es",
+      "bot_response": "Son las 8:21 a.m. y el clima en Caracas es de 20°C a 27°C.",
+      "latency_sec": 67.36,
+      "sla_status": "DEMORADO",
+      "is_action_executed": true,
+      "is_coherent": true,
+      "quality_score": 1.0,
+      "delivery_status": "SERVER_ACK",
+      "notes": "Evaluación de latencia y coherencia satisfactoria."
+    },
+    {
+      "interaction_id": "INT-SIM-1791894119-44552",
+      "execution_id": "SIM-1791894119",
+      "timestamp_utc": "2026-10-13T12:21:59.426871+00:00",
+      "sender_phone": "04142554590",
+      "sender_name": "Ids",
+      "carrier_name": "MOVISTAR",
+      "message_text": "Está lloviendo en caracas",
+      "bot_response": "Te entiendo perfectamente. Como tu asistente virtual de Movilnet puedo resolver tus dudas sobre tu línea móvil, verificar tu saldo O(1), consultar tus megas 4GMAX o ayudarte con recargas C2P. Cuéntame con confianza qué necesitas en este momento.",
+      "latency_sec": 0.22,
       "sla_status": "OPTIMO",
       "is_action_executed": true,
       "is_coherent": true,
@@ -134,33 +49,67 @@
       "notes": "Evaluación de latencia y coherencia satisfactoria."
     },
     {
-      "interaction_id": "INT-13316-56851",
-      "execution_id": "13316",
-      "timestamp_utc": "2026-10-11T22:49:37.846Z",
+      "interaction_id": "INT-13726-31612",
+      "execution_id": "13726",
+      "timestamp_utc": "2026-10-13T12:21:59.589Z",
+      "sender_phone": "04160000001",
+      "sender_name": "Abonado 04160000001",
+      "carrier_name": "MOVILNET",
+      "message_text": "Está lloviendo en caracas",
+      "bot_response": "⚠️ [Fallo n8n Cloud]: Service unavailable - try again later or consider setting this node to retry automatically (in the node settings)",
+      "latency_sec": 9.29,
+      "sla_status": "DEMORADO",
+      "is_action_executed": true,
+      "is_coherent": true,
+      "quality_score": 1.0,
+      "delivery_status": "SERVER_ACK",
+      "notes": "Evaluación de latencia y coherencia satisfactoria."
+    },
+    {
+      "interaction_id": "INT-SIM-1791894099-4727",
+      "execution_id": "SIM-1791894099",
+      "timestamp_utc": "2026-10-13T12:21:39.210395+00:00",
       "sender_phone": "04142554590",
       "sender_name": "Ids",
       "carrier_name": "MOVISTAR",
-      "message_text": "Otra prueba de mi movilnet. Cual es el código de ese operador de sus números de celulares",
-      "bot_response": "Estimado usuario (+58 414 2554590):\nBienvenido al Centro de Atención Digital Movilnet 4GMAX.\n• Escribe 'Saldo' para consultar tu balance disponible.\n• Escribe 'Planes' para conocer los planes disponibles.\n• Escribe 'Recarga' para recargar con Pago Móvil C2P.\n• Escribe 'Portabilidad' para cambiarte gratis a Movilnet con eSIM.",
-      "latency_sec": 0.58,
+      "message_text": "Cómo esta el día se hoy el clima y que hora es",
+      "bot_response": "📅 Hoy es *Martes, 13 de octubre de 2026* y en este momento son las *08:21 AM* (hora oficial de Venezuela, UTC-4).\n\n¿En qué más te puedo colaborar el día de hoy con tu línea Movilnet 4GMAX?",
+      "latency_sec": 0.22,
       "sla_status": "OPTIMO",
       "is_action_executed": true,
       "is_coherent": true,
       "quality_score": 1.0,
-      "delivery_status": "SERVER_ACK",
+      "delivery_status": "DELIVERY_ACK",
       "notes": "Evaluación de latencia y coherencia satisfactoria."
     },
     {
-      "interaction_id": "INT-13290-30877",
-      "execution_id": "13290",
-      "timestamp_utc": "2026-10-11T22:22:41.050Z",
-      "sender_phone": "04142554590",
-      "sender_name": "Ids",
-      "carrier_name": "MOVISTAR",
-      "message_text": "Ya que te go una reunión",
-      "bot_response": "¡Entendido! Mucho éxito en tu reunión 💼🤝. \nAquí quedo atenta por si luego necesitas cualquier gestión o consulta con tu línea Movilnet 4GMAX 📶. \n¡Que tengas una excelente jornada!",
-      "latency_sec": 3.83,
-      "sla_status": "ACEPTABLE",
+      "interaction_id": "INT-SIM-1791894050-52931",
+      "execution_id": "SIM-1791894050",
+      "timestamp_utc": "2026-10-13T12:20:50.429836+00:00",
+      "sender_phone": "04160000001",
+      "sender_name": "Abonado 04160000001",
+      "carrier_name": "MOVILNET",
+      "message_text": "saldo",
+      "bot_response": "Estimado abonado 04160000001: Su saldo disponible es Bs. 1680.00. Datos 4GMAX: 70.4 GB disponibles. Plan: Plan Básico Conecta 5GB.",
+      "latency_sec": 0.22,
+      "sla_status": "OPTIMO",
+      "is_action_executed": true,
+      "is_coherent": true,
+      "quality_score": 1.0,
+      "delivery_status": "DELIVERY_ACK",
+      "notes": "Evaluación de latencia y coherencia satisfactoria."
+    },
+    {
+      "interaction_id": "INT-13724-72252",
+      "execution_id": "13724",
+      "timestamp_utc": "2026-10-13T12:19:20.695Z",
+      "sender_phone": "04160000001",
+      "sender_name": "Abonado 04160000001",
+      "carrier_name": "MOVILNET",
+      "message_text": "Es posible cómo está el clima",
+      "bot_response": "⚠️ [Fallo n8n Cloud]: Service unavailable - try again later or consider setting this node to retry automatically (in the node settings)",
+      "latency_sec": 9.16,
+      "sla_status": "DEMORADO",
       "is_action_executed": true,
       "is_coherent": true,
       "quality_score": 1.0,
@@ -168,7 +117,24 @@
       "notes": "Evaluación de latencia y coherencia satisfactoria."
     },
     {
-      "interaction_id": "INT-9839-81143",
+      "interaction_id": "INT-SIM-1791893960-65319",
+      "execution_id": "SIM-1791893960",
+      "timestamp_utc": "2026-10-13T12:19:20.508430+00:00",
+      "sender_phone": "04123456789",
+      "sender_name": "Abonado 04123456789",
+      "carrier_name": "DIGITEL",
+      "message_text": "Es posible cómo está el clima",
+      "bot_response": "Te entiendo perfectamente. Como tu asistente virtual de Movilnet puedo resolver tus dudas sobre tu línea móvil, verificar tu saldo O(1), consultar tus megas 4GMAX o ayudarte con recargas C2P. Cuéntame con confianza qué necesitas en este momento.",
+      "latency_sec": 0.22,
+      "sla_status": "OPTIMO",
+      "is_action_executed": true,
+      "is_coherent": true,
+      "quality_score": 1.0,
+      "delivery_status": "DELIVERY_ACK",
+      "notes": "Evaluación de latencia y coherencia satisfactoria."
+    },
+    {
+      "interaction_id": "INT-9839-81049",
       "execution_id": "9839",
       "timestamp_utc": "2026-10-09T16:13:48.146Z",
       "sender_phone": "04142650088",
@@ -185,7 +151,7 @@
       "notes": "Evaluación de latencia y coherencia satisfactoria."
     },
     {
-      "interaction_id": "INT-9840-81143",
+      "interaction_id": "INT-9840-81049",
       "execution_id": "9840",
       "timestamp_utc": "2026-10-09T16:14:05.462Z",
       "sender_phone": "04142650088",
@@ -202,7 +168,7 @@
       "notes": "Evaluación de latencia y coherencia satisfactoria."
     },
     {
-      "interaction_id": "INT-9841-81143",
+      "interaction_id": "INT-9841-81049",
       "execution_id": "9841",
       "timestamp_utc": "2026-10-09T16:21:01.614Z",
       "sender_phone": "04160000001",
@@ -219,7 +185,7 @@
       "notes": "Evaluación de latencia y coherencia satisfactoria."
     },
     {
-      "interaction_id": "INT-9842-81142",
+      "interaction_id": "INT-9842-81049",
       "execution_id": "9842",
       "timestamp_utc": "2026-10-09T16:23:15.875Z",
       "sender_phone": "04160000001",
@@ -236,7 +202,7 @@
       "notes": "Evaluación de latencia y coherencia satisfactoria."
     },
     {
-      "interaction_id": "INT-9843-81142",
+      "interaction_id": "INT-9843-81049",
       "execution_id": "9843",
       "timestamp_utc": "2026-10-09T16:48:14.745Z",
       "sender_phone": "04160000001",
@@ -253,7 +219,7 @@
       "notes": "Evaluación de latencia y coherencia satisfactoria."
     },
     {
-      "interaction_id": "INT-9844-81142",
+      "interaction_id": "INT-9844-81049",
       "execution_id": "9844",
       "timestamp_utc": "2026-10-09T16:49:18.737Z",
       "sender_phone": "04160000001",
@@ -270,7 +236,7 @@
       "notes": "Evaluación de latencia y coherencia satisfactoria."
     },
     {
-      "interaction_id": "INT-9845-81142",
+      "interaction_id": "INT-9845-81049",
       "execution_id": "9845",
       "timestamp_utc": "2026-10-09T16:49:45.264Z",
       "sender_phone": "04160000001",
@@ -287,7 +253,7 @@
       "notes": "Evaluación de latencia y coherencia satisfactoria."
     },
     {
-      "interaction_id": "INT-9846-81142",
+      "interaction_id": "INT-9846-81049",
       "execution_id": "9846",
       "timestamp_utc": "2026-10-09T16:49:48.561Z",
       "sender_phone": "04160000001",
@@ -304,7 +270,7 @@
       "notes": "Evaluación de latencia y coherencia satisfactoria."
     },
     {
-      "interaction_id": "INT-9847-81142",
+      "interaction_id": "INT-9847-81048",
       "execution_id": "9847",
       "timestamp_utc": "2026-10-09T16:49:51.696Z",
       "sender_phone": "04160000001",
@@ -321,7 +287,7 @@
       "notes": "Evaluación de latencia y coherencia satisfactoria."
     },
     {
-      "interaction_id": "INT-9848-81142",
+      "interaction_id": "INT-9848-81048",
       "execution_id": "9848",
       "timestamp_utc": "2026-10-09T16:51:29.717Z",
       "sender_phone": "04160000001",
@@ -338,7 +304,7 @@
       "notes": "Evaluación de latencia y coherencia satisfactoria."
     },
     {
-      "interaction_id": "INT-9849-81142",
+      "interaction_id": "INT-9849-81048",
       "execution_id": "9849",
       "timestamp_utc": "2026-10-09T16:51:52.611Z",
       "sender_phone": "04160000001",
@@ -355,7 +321,7 @@
       "notes": "Evaluación de latencia y coherencia satisfactoria."
     },
     {
-      "interaction_id": "INT-9850-81141",
+      "interaction_id": "INT-9850-81048",
       "execution_id": "9850",
       "timestamp_utc": "2026-10-09T16:53:02.503Z",
       "sender_phone": "04160000001",
@@ -372,7 +338,7 @@
       "notes": "Evaluación de latencia y coherencia satisfactoria."
     },
     {
-      "interaction_id": "INT-9851-81141",
+      "interaction_id": "INT-9851-81048",
       "execution_id": "9851",
       "timestamp_utc": "2026-10-09T16:53:27.245Z",
       "sender_phone": "04160000001",
@@ -389,7 +355,7 @@
       "notes": "Evaluación de latencia y coherencia satisfactoria."
     },
     {
-      "interaction_id": "INT-9852-81141",
+      "interaction_id": "INT-9852-81048",
       "execution_id": "9852",
       "timestamp_utc": "2026-10-09T16:53:51.307Z",
       "sender_phone": "04160000001",
@@ -406,7 +372,7 @@
       "notes": "Evaluación de latencia y coherencia satisfactoria."
     },
     {
-      "interaction_id": "INT-9853-81141",
+      "interaction_id": "INT-9853-81048",
       "execution_id": "9853",
       "timestamp_utc": "2026-10-09T16:55:42.178Z",
       "sender_phone": "04142650088",
@@ -423,7 +389,7 @@
       "notes": "Evaluación de latencia y coherencia satisfactoria."
     },
     {
-      "interaction_id": "INT-9854-81141",
+      "interaction_id": "INT-9854-81048",
       "execution_id": "9854",
       "timestamp_utc": "2026-10-09T16:58:04.879Z",
       "sender_phone": "04142650088",
@@ -438,7 +404,41 @@
       "quality_score": 1.0,
       "delivery_status": "SERVER_ACK",
       "notes": "Evaluación de latencia y coherencia satisfactoria."
+    },
+    {
+      "interaction_id": "INT-9856-81047",
+      "execution_id": "9856",
+      "timestamp_utc": "2026-10-09T17:03:36.820Z",
+      "sender_phone": "04142650088",
+      "sender_name": "Francisco Landaeta",
+      "carrier_name": "MOVISTAR",
+      "message_text": "Estoy en Los Palos Grandes, me puedes decir que farmacias tengo cerca?",
+      "bot_response": "⚠️ [Aviso de Capacidad]: Límite de cuota API temporal en n8n Cloud (HTTP 429 Too Many Requests).",
+      "latency_sec": 0.59,
+      "sla_status": "OPTIMO",
+      "is_action_executed": true,
+      "is_coherent": true,
+      "quality_score": 1.0,
+      "delivery_status": "SERVER_ACK",
+      "notes": "Evaluación de latencia y coherencia satisfactoria."
+    },
+    {
+      "interaction_id": "INT-9857-81047",
+      "execution_id": "9857",
+      "timestamp_utc": "2026-10-09T17:05:03.896Z",
+      "sender_phone": "04142650088",
+      "sender_name": "Francisco Landaeta",
+      "carrier_name": "MOVISTAR",
+      "message_text": "Eh, ¿por qué países va a pasar la onda del superniño y cómo lo afectaría económicamente?",
+      "bot_response": "⚠️ [Fallo n8n Cloud]: The resource you are requesting could not be found",
+      "latency_sec": 4.15,
+      "sla_status": "ACEPTABLE",
+      "is_action_executed": true,
+      "is_coherent": true,
+      "quality_score": 1.0,
+      "delivery_status": "SERVER_ACK",
+      "notes": "Evaluación de latencia y coherencia satisfactoria."
     }
   ],
-  "sha256_seal": "6f0d1ffcd5e3f0dfaa29d141edf68a51fd77e579b85ba97c9c2543d148e26434"
+  "sha256_seal": "04cb80008ac049832a3db73227d6d6a825895ecd447496e24fd6c54afe513cf2"
 }

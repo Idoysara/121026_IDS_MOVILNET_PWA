@@ -325,3 +325,17 @@ INSERT INTO product_plans (plan_id, name, commercial_code, category, data_quota_
     ('PLAN_ROAMING_LATAM', 'Roaming Movilnet Andino/Latam', 'MOV-ROAM-LAT', 'EXTRA_DATOS', 3072, 60, 60, 15.00, TRUE),
     ('PLAN_M2M_TELEMETRIA', 'Telemetría IoT M2M Industrial', 'MOV-IOT-M2M', 'CORPORATIVO', 512, 10, 50, 0.80, TRUE)
 ON CONFLICT (plan_id) DO NOTHING;
+
+-- =============================================================================
+-- 13. CONTROL DE LÍMITES FREEMIUM PARA PROSPECTOS DE OTRAS OPERADORAS (0412/0414/0424)
+-- =============================================================================
+CREATE TABLE IF NOT EXISTS prospect_trial_limits (
+    msisdn TEXT PRIMARY KEY,
+    carrier TEXT NOT NULL,
+    tokens_used INTEGER NOT NULL DEFAULT 0,
+    monthly_queries INTEGER NOT NULL DEFAULT 0,
+    last_query_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_prospect_trial_carrier ON prospect_trial_limits(carrier);
+

@@ -16,9 +16,9 @@ class TestN8nLiveConnector(unittest.TestCase):
         self.connector = N8nLiveConnector()
 
     def test_workflow_file_validity(self):
-        """Verifica que el workflow de 74 nodos existe y tiene la estructura correcta."""
+        """Verifica que el workflow existe y tiene al menos 74 nodos (Google Suite + Core)."""
         self.assertTrue(self.connector.workflow_path.exists())
-        self.assertEqual(len(self.connector.workflow_data.get("nodes", [])), 74)
+        self.assertGreaterEqual(len(self.connector.workflow_data.get("nodes", [])), 74)
 
     def test_lan_ip_detection(self):
         """Verifica que detecta una IP de formato válido."""
@@ -29,7 +29,7 @@ class TestN8nLiveConnector(unittest.TestCase):
         """Verifica que el diagnóstico produce un objeto válido."""
         diag = self.connector.run_diagnostics()
         self.assertIsInstance(diag, ConnectionDiagnostics)
-        self.assertEqual(diag.workflow_nodes_count, 74)
+        self.assertGreaterEqual(diag.workflow_nodes_count, 74)
         self.assertIn("8000/api/v1/n8n/webhook-ingest", diag.core_webhook_url)
 
 

@@ -24,6 +24,7 @@ Solución de Ingeniería:
 
 from __future__ import annotations
 
+import re
 import sys
 import argparse
 from typing import Dict, Any, Tuple, Optional
@@ -39,6 +40,8 @@ class FilterVerdict(str, Enum):
     DROP_CHATS_UPDATE = "DROP_CHATS_UPDATE"
     DROP_EMPTY_CONTENT = "DROP_EMPTY_CONTENT"
     DROP_UNKNOWN_EVENT = "DROP_UNKNOWN_EVENT"
+    DROP_SYSTEM_SECURITY_NOTICE = "DROP_SYSTEM_SECURITY_NOTICE"
+    DROP_SPAM_INVITATION = "DROP_SPAM_INVITATION"
 
 
 @dataclass
@@ -59,8 +62,39 @@ class WebhookNoiseFilter:
 
     ALLOWED_EVENTS = {"messages.upsert", "messages.update"}
 
+    SYSTEM_SECURITY_NOTICE_REGEX = re.compile(
+        r"(mensajes y llamadas est[aá]n cifrados|"
+        r"llamadas y mensajes est[aá]n cifrados|"
+        r"llamadas y mensajes personales con cifrado|"
+        r"esperando el mensaje\.?\s*esto puede tomar tiempo|"
+        r"c[oó]digo de seguridad cambi[oó]|"
+        r"cifrado de extremo a extremo|"
+        r"end-to-end encrypted)",
+        re.IGNORECASE,
+    )
+
+    SPAM_INVITATION_REGEX = re.compile(
+        r"\b(meetup|conferencia|entrada libre|te invitamos a|registro en luma|luma\.com|"
+        r"patrocinado por|comunidad tech|hackathon|taller gratuito|after office|startup pitches)\b",
+        re.IGNORECASE,
+    )
+
     @classmethod
-    def evaluate(cls, raw_payload: Dict[str, Any]) -> FilterResult:
+    def is_system_security_notice(cls, text: str) -> bool:
+        """Evalúa si el texto corresponde a una notificación técnica de cifrado o seguridad de WhatsApp."""
+        if not text:
+            return False
+        return bool(cls.SYSTEM_SECURITY_NOTICE_REGEX.search(text))
+
+    @classmethod
+    def is_spam_invitation(cls, text: str) -> bool:
+        """Evalúa si el texto corresponde a una difusión o convocatoria externa no solicitada."""
+        if not text:
+            return False
+        return bool(cls.SPAM_INVITATION_REGEX.search(text))
+
+    @classmethod
+    def evaluate(cls, raw_payload: Dict[str, Any], check_spam_invitation: bool = False) -> FilterResult:
         """
         Evalúa de forma determinista el payload recibido del webhook.
         Retorna FilterResult indicando si debe procesarse o descartarse en el borde.
@@ -157,6 +191,29 @@ class WebhookNoiseFilter:
                 sender_jid=sender_jid
             )
 
+        # 5. Inspección semántica temprana: Avisos de seguridad/cifrado de WhatsApp (Traza #13368)
+        if text and cls.is_system_security_notice(text):
+            return FilterResult(
+                should_process=False,
+                verdict=FilterVerdict.DROP_SYSTEM_SECURITY_NOTICE,
+                reason="Aviso automático del sistema de seguridad/cifrado de WhatsApp descartado en la frontera",
+                event_type=event or "messages.upsert",
+                sender_jid=sender_jid,
+                extracted_text=text
+            )
+
+        # 6. Descarte de difusiones masivas o convocatorias no solicitadas en frontera si procede
+        is_broadcast_jid = bool(sender_jid and (str(sender_jid).endswith("@broadcast") or str(sender_jid).endswith("@newsletter")))
+        if text and (check_spam_invitation or is_broadcast_jid) and cls.is_spam_invitation(text):
+            return FilterResult(
+                should_process=False,
+                verdict=FilterVerdict.DROP_SPAM_INVITATION,
+                reason="Difusión o convocatoria no solicitada descartada en la frontera",
+                event_type=event or "messages.upsert",
+                sender_jid=sender_jid,
+                extracted_text=text
+            )
+
         return FilterResult(
             should_process=True,
             verdict=FilterVerdict.PASS_MESSAGE,
@@ -212,11 +269,58 @@ def main():
         assert r4.verdict == FilterVerdict.PASS_MESSAGE
         assert r4.extracted_text == "Hola, cuál es mi saldo?"
 
-        print("✅ [TEST PASS] Todos los invariantes de WebhookNoiseFilter aprobados con 100% de éxito.")
+        # Test 5: Descarte de aviso del sistema de WhatsApp (Traza #13368)
+        p_trace_13368 = {
+            "event": "messages.upsert",
+            "data": {
+                "key": {"remoteJid": "584142554590@s.whatsapp.net", "fromMe": False},
+                "message": {
+                    "conversation": (
+                        'Información sobre "Esperando el mensaje. Esto puede tomar tiempo."\n'
+                        "WhatsApp protege tus llamadas y mensajes personales con cifrado de extremo a extremo."
+                    )
+                }
+            }
+        }
+        r5 = WebhookNoiseFilter.evaluate(p_trace_13368)
+        assert r5.should_process is False, "ERROR: La traza #13368 debió descartarse como aviso de sistema!"
+        assert r5.verdict == FilterVerdict.DROP_SYSTEM_SECURITY_NOTICE
+
+        p_e2e_notice = {
+            "event": "messages.upsert",
+            "data": {
+                "key": {"remoteJid": "584142554590@s.whatsapp.net", "fromMe": False},
+                "message": {"conversation": "Los mensajes y llamadas están cifrados de extremo a extremo. Código de seguridad cambió."}
+            }
+        }
+        r6 = WebhookNoiseFilter.evaluate(p_e2e_notice)
+        assert r6.should_process is False
+        assert r6.verdict == FilterVerdict.DROP_SYSTEM_SECURITY_NOTICE
+
+        # Test 6: Descarte de difusión no solicitada en lista broadcast (DROP_SPAM_INVITATION)
+        p_spam_bcast = {
+            "event": "messages.upsert",
+            "data": {
+                "key": {"remoteJid": "status@broadcast", "fromMe": False},
+                "message": {"conversation": "Te invitamos a nuestra conferencia y meetup con entrada libre. Registro en luma.com"}
+            }
+        }
+        r7 = WebhookNoiseFilter.evaluate(p_spam_bcast)
+        assert r7.should_process is False
+        assert r7.verdict == FilterVerdict.DROP_SPAM_INVITATION
+
+        print("✅ [TEST PASS] Todos los invariantes de WebhookNoiseFilter (incluyendo #13368) aprobados con 100% de éxito.")
         return
 
     if args.demo:
         sample_presence = {"event": "presence.update", "data": {"id": "188364414275735@lid"}}
+        sample_notice = {
+            "event": "messages.upsert",
+            "data": {
+                "key": {"remoteJid": "584142554590@s.whatsapp.net", "fromMe": False},
+                "message": {"conversation": "Los mensajes y llamadas están cifrados de extremo a extremo."}
+            }
+        }
         sample_msg = {
             "event": "messages.upsert",
             "data": {
@@ -225,10 +329,12 @@ def main():
             }
         }
         res_p = WebhookNoiseFilter.evaluate(sample_presence)
+        res_n = WebhookNoiseFilter.evaluate(sample_notice)
         res_m = WebhookNoiseFilter.evaluate(sample_msg)
         print("\n🔬 Demostración de Filtrado de Frontera:")
-        print(f"   Evento 1 (presence.update):   ¿Procesar?: {res_p.should_process} | Veredicto: {res_p.verdict.value}")
-        print(f"   Evento 2 (Mensaje de texto):   ¿Procesar?: {res_m.should_process}  | Veredicto: {res_m.verdict.value} | Texto: '{res_m.extracted_text}'\n")
+        print(f"   Evento 1 (presence.update):      ¿Procesar?: {res_p.should_process} | Veredicto: {res_p.verdict.value}")
+        print(f"   Evento 2 (Aviso Cifrado #13368): ¿Procesar?: {res_n.should_process} | Veredicto: {res_n.verdict.value}")
+        print(f"   Evento 3 (Mensaje de texto):     ¿Procesar?: {res_m.should_process}  | Veredicto: {res_m.verdict.value} | Texto: '{res_m.extracted_text}'\n")
         return
 
     parser.print_help()

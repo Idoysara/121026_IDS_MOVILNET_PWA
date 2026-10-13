@@ -1470,7 +1470,7 @@ class MovilnetAPIService:
 
     def handle_subscriber_balance(self, data: Dict[str, Any]) -> Tuple[int, Dict[str, Any]]:
         """Resuelve saldo O(1) por MSISDN o por Cédula con Blind Index."""
-        raw_phone = data.get("msisdn")
+        raw_phone = data.get("msisdn") or data.get("phone")
         raw_cid = data.get("cid")
 
         if not raw_phone and not raw_cid:
@@ -2024,6 +2024,14 @@ class MovilnetAPIService:
 
         msisdn_raw = body.get("msisdn") or body.get("phone")
         normalized_phone = InputValidator.normalize_msisdn(msisdn_raw) if msisdn_raw else None
+        if not normalized_phone and msisdn_raw:
+            try:
+                from core.carrier_funnel_classifier import CarrierFunnelClassifier
+                cleaned_ext = CarrierFunnelClassifier.clean_msisdn(str(msisdn_raw))
+                if cleaned_ext and len(cleaned_ext) >= 10:
+                    normalized_phone = cleaned_ext
+            except Exception:
+                pass
         cid_raw = body.get("cid")
         normalized_cid = InputValidator.normalize_cid(cid_raw) if cid_raw else None
 
@@ -2049,12 +2057,39 @@ class MovilnetAPIService:
             longitude=parsed_lon,
             device_info=device_info
         )
-        response = self.customer_care_agent.process_message(agent_msg)
+        from core.webhook_noise_filter import WebhookNoiseFilter
+        from core.fastpath_intent_interceptor import FastPathIntentInterceptor, fastpath_interceptor
+
+        clean_text_in = str(text).strip()
+        phone_for_guard = normalized_phone or (str(msisdn_raw).strip() if msisdn_raw else "04160000001")
+
+        if WebhookNoiseFilter.is_system_security_notice(clean_text_in):
+            response = self.customer_care_agent.process_message(agent_msg)
+            response.response_text = (
+                "🛡️ [DROP_SYSTEM_SECURITY_NOTICE]: Aviso automático de cifrado/seguridad de WhatsApp "
+                "interceptado y descartado en la frontera (0 tokens LLM)."
+            )
+            response.tokens_consumed = 0
+            response.cost_usd = 0.0
+        elif FastPathIntentInterceptor.detect_propaganda_or_invitation(clean_text_in):
+            fp_guard = fastpath_interceptor.intercept(clean_text_in, phone_for_guard)
+            response = self.customer_care_agent.process_message(agent_msg)
+            response.response_text = fp_guard.response_text
+            response.tokens_consumed = 0
+            response.cost_usd = 0.0
+            response.metadata["guardrail"] = "NON_SOLICITED_PROPAGANDA_GUARD"
+        else:
+            response = self.customer_care_agent.process_message(agent_msg)
+            pwa_suffix = FastPathIntentInterceptor.build_pwa_link_suffix(phone_for_guard)
+            if "https://pwa.movilnet.com.ve/" not in response.response_text:
+                response.response_text = f"{response.response_text}{pwa_suffix}"
 
         # Registro en vivo para Monitores y Dashboard NOC (:8010 y :8012)
         if not os.environ.get("PYTEST_CURRENT_TEST"):
-            phone_val = normalized_phone or (msisdn_raw if msisdn_raw else "04160000001")
-            sender_val = body.get("sender_name") or body.get("name") or f"Abonado {phone_val}"
+            phone_val = normalized_phone or (str(msisdn_raw).strip() if msisdn_raw else "04160000001")
+            sender_val = body.get("sender_name") or body.get("name") or (
+                "WhatsApp Asignado (00584241533712)" if "4241533712" in phone_val else f"Abonado {phone_val}"
+            )
             device_val = body.get("channel") or body.get("device_type") or "PWA Móvil"
             try:
                 from core.conversation_trace_engine import conversation_trace_engine
@@ -2085,12 +2120,13 @@ class MovilnetAPIService:
             def _dispatch_to_n8n():
                 try:
                     import urllib.request
-                    n8n_url = os.environ.get("N8N_WEBHOOK_URL", "https://n8n.lpgtec.net/webhook/messages_upsert")
-                    phone_val_n8n = normalized_phone or "04160000001"
+                    n8n_url = os.environ.get("N8N_WEBHOOK_URL", "https://n8n.lpgtec.net/webhook/messages_upsert4")
+                    phone_val_n8n = phone_val or "04160000001"
                     remote_jid = f"58{phone_val_n8n[1:]}@s.whatsapp.net" if phone_val_n8n.startswith("0") else f"{phone_val_n8n}@s.whatsapp.net"
                     n8n_payload = {
                         "event": "messages.upsert",
                         "instance": os.environ.get("EVOLUTION_INSTANCE", "Viki LPGTEC"),
+                        "sender": "584241533712@s.whatsapp.net",
                         "server_url": os.environ.get("EVOLUTION_SERVER_URL", "http://evolution:8080"),
                         "apikey": os.environ.get("EVOLUTION_APIKEY", "957EEABBC570-4C60-8EDB-949655A34113"),
                         "date_time": datetime.now(timezone.utc).isoformat(),
@@ -2099,7 +2135,7 @@ class MovilnetAPIService:
                                 "remoteJid": remote_jid,
                                 "id": f"PWA-MSG-{uuid.uuid4().hex[:8].upper()}"
                             },
-                            "pushName": f"Abonado {phone_val_n8n}",
+                            "pushName": sender_val,
                             "message": {
                                 "conversation": str(text).strip()
                             }

@@ -1,5 +1,5 @@
 {
-  "deployment_timestamp": "2026-10-12T13:26:37Z",
+  "deployment_timestamp": "2026-10-13T12:36:42Z",
   "overall_status": "SUCCESS",
   "target_environment": "DOCKER_N8N_5678",
   "total_workflows_scanned": 10,
@@ -79,8 +79,8 @@
       "active": true,
       "nodes_count": 80,
       "connections_count": 73,
-      "sha256_hash": "a5500d08d14611f5bc24b1109aa6ec8f07881521fd896f9ad09a2c36db05bd0f",
-      "assigned_id": "WFL-LOCAL-A5500D08",
+      "sha256_hash": "4fde05dc023939bc52d45cb644e368509781b37b99686318c2d4a58975bc83bc",
+      "assigned_id": "WFL-LOCAL-4FDE05DC",
       "webhook_path": "messages_upsert4"
     },
     {
@@ -99,11 +99,11 @@
       "workflow_name": "Viki_LPGTEC_v2_ids_Movilnet_Google_Suite_Full",
       "status": "DEPLOYED_READY_CERTIFIED",
       "active": true,
-      "nodes_count": 74,
-      "connections_count": 67,
-      "sha256_hash": "d13976e5f6de099650b9dca48cd9c104f815e139cdde7ea0499a2473ddda7cdd",
-      "assigned_id": "WFL-LOCAL-D13976E5",
-      "webhook_path": "messages_upsert"
+      "nodes_count": 80,
+      "connections_count": 73,
+      "sha256_hash": "e7cde78073c452961230f4b50389f0c7506f5687288d7397b85235192c44370f",
+      "assigned_id": "WFL-LOCAL-E7CDE780",
+      "webhook_path": "messages_upsert4"
     },
     {
       "filename": "viki_lpgtec_v2_ids_with_movilnet.json",

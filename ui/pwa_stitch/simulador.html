@@ -409,9 +409,30 @@
           </button>
         </div>
 
+        <!-- Selector de Línea / Teléfono para el QR Dinámico -->
+        <div class="flex flex-col gap-1 text-[11px] bg-slate-950/60 p-2 rounded-xl border border-slate-800/80">
+          <div class="flex items-center justify-between">
+            <span class="text-slate-300 font-semibold flex items-center gap-1">
+              <span class="material-symbols-outlined text-[14px] text-orange-400">phone_iphone</span>
+              <span>Línea a Vincular en el QR:</span>
+            </span>
+            <span id="qr-phone-badge" class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-sky-500/20 text-sky-300 border border-sky-500/30">0414-2554590 (Ids)</span>
+          </div>
+          <div class="flex items-center gap-1.5 mt-0.5">
+            <select id="qr-phone-preset" onchange="onQrPhonePresetChange(this.value)" class="bg-slate-900 border border-slate-700 rounded-lg px-2 py-1 text-[11px] text-slate-100 focus:outline-none focus:border-orange-500 flex-1">
+              <option value="04142554590" selected>👤 Ids (0414-2554590 — Movistar / Tu Celular)</option>
+              <option value="04123456789">📱 Móvil Externo (0412-3456789 — Digitel)</option>
+              <option value="04160000001">👤 Carlos Perez (0416-0000001 — Movilnet)</option>
+              <option value="04260000002">👤 María Gómez (0426-0000002 — Movilnet)</option>
+              <option value="custom">✏️ Otro número manual...</option>
+            </select>
+            <input id="qr-custom-phone-input" type="text" placeholder="0414..." class="hidden w-28 bg-slate-900 border border-slate-700 rounded-lg px-2 py-1 text-[11px] font-mono text-slate-100 focus:outline-none focus:border-orange-500" oninput="onCustomPhoneInput(this.value)" />
+          </div>
+        </div>
+
         <!-- Código QR Dinámico -->
         <div class="bg-white p-2.5 rounded-xl flex flex-col items-center justify-center self-center shadow-lg my-1">
-          <img id="qr-code-img" src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://movilnet-core.onrender.com/ui/pwa_stitch/index.html" alt="QR Code PWA" class="w-40 h-40 object-contain"/>
+          <img id="qr-code-img" src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://movilnet-core.onrender.com/ui/pwa_stitch/index.html?phone=04142554590&qr=1&v=168" alt="QR Code PWA" class="w-40 h-40 object-contain"/>
         </div>
         <p id="qr-net-hint" class="text-[10px] text-center font-semibold text-emerald-400">
           🌐 Enlace Público Global: Escanéalo con tu celular con Datos Móviles (4G/5G) o cualquier red.
@@ -442,15 +463,19 @@
         <p class="text-[11px] text-slate-400">
           Prueba cómo el abonado pasa de su chat de WhatsApp a la PWA con su línea ya autenticada en 1 clic:
         </p>
+        <div class="flex flex-wrap gap-1">
+          <button type="button" onclick="document.getElementById('whatsapp-phone-input').value='00584241533712'; simulateWhatsAppActivation();" class="px-2 py-1 rounded bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-700/50 text-[10px] font-mono text-emerald-300">📱 00584241533712 (WA Asignado)</button>
+          <button type="button" onclick="document.getElementById('whatsapp-phone-input').value='04142554590'; simulateWhatsAppActivation();" class="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 border border-slate-700 text-[10px] font-mono text-slate-300">📱 04142554590 (Ids)</button>
+        </div>
         <div class="flex items-center gap-1.5">
-          <input id="whatsapp-phone-input" type="text" value="04142554590" placeholder="0414XXXXXXX..." class="flex-1 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs font-mono text-slate-200 focus:outline-none focus:border-emerald-500" />
+          <input id="whatsapp-phone-input" type="text" value="00584241533712" placeholder="00584241533712 o celular externo..." class="flex-1 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs font-mono text-slate-200 focus:outline-none focus:border-emerald-500" />
           <button onclick="simulateWhatsAppActivation()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold shrink-0 shadow-sm active:scale-95 transition-all flex items-center gap-1">
             <span class="material-symbols-outlined text-[14px]">touch_app</span>
-            <span>Simular Clic</span>
+            <span>Registrar y Abrir</span>
           </button>
         </div>
         <p id="whatsapp-link-preview" class="text-[10px] font-mono text-slate-500 truncate">
-          Enlace generado: https://movilnet-core.onrender.com/ui/pwa_stitch/index.html?phone=04142554590
+          Enlace generado: https://movilnet-core.onrender.com/ui/pwa_stitch/index.html?phone=00584241533712&amp;qr=1&amp;v=168
         </p>
       </div>
 
@@ -614,14 +639,40 @@
 
     function simulateWhatsAppActivation() {
       const phoneInput = document.getElementById('whatsapp-phone-input');
-      const phone = (phoneInput && phoneInput.value.trim()) ? phoneInput.value.trim() : '04142554590';
+      const phone = (phoneInput && phoneInput.value.trim()) ? phoneInput.value.trim() : '00584241533712';
       const iframe = document.getElementById('pwa-iframe');
-      const targetUrl = `/ui/pwa_stitch/index.html?phone=${encodeURIComponent(phone)}&mode=${currentBrowserMode}&v=${Date.now()}`;
+      const targetUrl = `/ui/pwa_stitch/index.html?phone=${encodeURIComponent(phone)}&qr=1&mode=${currentBrowserMode}&v=${Date.now()}`;
       iframe.src = targetUrl;
+
+      const baseHost = currentHost.startsWith('http') ? currentHost.replace(/\/+$/, '') : 'https://' + currentHost;
+      const qrFullUrl = `${baseHost}/ui/pwa_stitch/index.html?phone=${encodeURIComponent(phone)}&qr=1&v=168`;
       const preview = document.getElementById('whatsapp-link-preview');
       if (preview) {
-        preview.textContent = `Enlace generado: ${currentHost.startsWith('http') ? currentHost : 'http://' + currentHost}/ui/pwa_stitch/index.html?phone=${encodeURIComponent(phone)}&v=167`;
+        preview.textContent = `Enlace QR / WA activo: ${qrFullUrl}`;
       }
+      const localUrlEl = document.getElementById('local-url');
+      if (localUrlEl) localUrlEl.textContent = qrFullUrl;
+      const qrImg = document.getElementById('qr-code-img');
+      if (qrImg) {
+        qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(qrFullUrl)}`;
+      }
+
+      // Registrar acceso inmediato en el Monitor de Conversaciones (:8010)
+      const isAssigned = phone.includes('4241533712');
+      fetch('/api/v1/monitor/record-live-trace', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          execution_id: 'WA-QR-' + Date.now(),
+          phone: phone,
+          message: `📲 [Acceso Directo WhatsApp / QR]: Activación de sesión móvil para ${phone}`,
+          reply: `✅ Enlace directo WhatsApp/QR autenticado y sincronizado en el Monitor de Conversaciones (:8010) para la línea ${phone}.`,
+          sender_name: isAssigned ? 'WhatsApp Asignado (00584241533712)' : `Móvil QR (${phone})`,
+          route: 'FAST_PATH_TELCO_ODA',
+          duration_sec: 0.08,
+          status: 'SUCCESS'
+        })
+      }).catch(() => {});
     }
 
     function copyUrl() {
@@ -632,23 +683,60 @@
     }
 
     let currentHost = 'https://movilnet-core.onrender.com';
+    let currentQrPhone = '04142554590';
+
+    function onQrPhonePresetChange(val) {
+      const customInput = document.getElementById('qr-custom-phone-input');
+      const badge = document.getElementById('qr-phone-badge');
+      if (val === 'custom') {
+        if (customInput) customInput.classList.remove('hidden');
+        if (customInput && customInput.value) {
+          currentQrPhone = customInput.value.trim();
+        }
+      } else {
+        if (customInput) customInput.classList.add('hidden');
+        currentQrPhone = val;
+        if (badge) {
+          let label = val;
+          if (val === '04142554590') label = '0414-2554590 (Ids)';
+          else if (val === '04123456789') label = '0412-3456789 (Digitel)';
+          else if (val === '04160000001') label = '0416-0000001 (Carlos Perez)';
+          badge.textContent = label;
+        }
+        updatePwaUrl(currentHost);
+      }
+    }
+
+    function onCustomPhoneInput(val) {
+      if (val && val.trim()) {
+        currentQrPhone = val.trim();
+        const badge = document.getElementById('qr-phone-badge');
+        if (badge) badge.textContent = currentQrPhone;
+        updatePwaUrl(currentHost);
+      }
+    }
 
     function updatePwaUrl(host) {
       currentHost = host;
+      let cleanPhone = (currentQrPhone || '04142554590').replace(/[^\d]/g, '');
+      if (cleanPhone.startsWith('58') && cleanPhone.length === 12) cleanPhone = '0' + cleanPhone.slice(2);
+      if (cleanPhone.startsWith('0058') && cleanPhone.length === 14) cleanPhone = '0' + cleanPhone.slice(4);
+
+      const queryParams = `phone=${encodeURIComponent(cleanPhone)}&qr=1&v=168`;
       let pwaUrl = '';
 
       if (host.startsWith('http://') || host.startsWith('https://')) {
         let clean = host.replace(/\/+$/, '');
         if (clean.includes('/ui/pwa_stitch/index.html')) {
-          pwaUrl = clean.includes('?') ? clean : `${clean}?v=167`;
+          pwaUrl = clean.includes('?') ? `${clean}&${queryParams}` : `${clean}?${queryParams}`;
         } else {
-          pwaUrl = `${clean}/ui/pwa_stitch/index.html?v=167`;
+          pwaUrl = `${clean}/ui/pwa_stitch/index.html?${queryParams}`;
         }
       } else if (host.includes('onrender.com') || host.includes('movilnet.com.ve')) {
-        pwaUrl = `https://${host}/ui/pwa_stitch/index.html?v=167`;
+        pwaUrl = `https://${host}/ui/pwa_stitch/index.html?${queryParams}`;
       } else {
         const port = window.location.port || '8010';
-        pwaUrl = `http://${host}:${port}/ui/pwa_stitch/index.html?v=167`;
+        pwaUrl = `http://${host}:${port}/ui/pwa_stitch/index.html?${queryParams}`;
       }
 
       const localUrlEl = document.getElementById('local-url');
@@ -666,10 +754,10 @@
       if (hintEl) {
         if (pwaUrl.startsWith('https://') || pwaUrl.includes('100.')) {
           hintEl.className = 'text-[10px] text-center font-semibold text-emerald-400';
-          hintEl.textContent = '🌐 Enlace Global / Nube: Escanéalo con tu celular con Datos Móviles (4G/5G) o cualquier red.';
+          hintEl.textContent = `🌐 Enlace Global / Nube vinculado a ${cleanPhone}: Escanéalo con tu celular con Datos Móviles (4G/5G) o cualquier red.`;
         } else {
           hintEl.className = 'text-[10px] text-center font-semibold text-amber-400';
-          hintEl.textContent = '🏠 Enlace Wi-Fi Local: Requiere que el celular esté conectado a la MISMA red Wi-Fi de esta Mac.';
+          hintEl.textContent = `🏠 Enlace Wi-Fi Local vinculado a ${cleanPhone}: Requiere que el celular esté conectado a la MISMA red Wi-Fi de esta Mac.`;
         }
       }
     }

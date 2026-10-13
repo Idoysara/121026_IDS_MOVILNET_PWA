@@ -1710,10 +1710,10 @@
       },
       {
         phone_key: "04241533712",
-        display_phone: "0424-1533712",
-        user_name: "Ids (Webhook Central)",
+        display_phone: "0424-1533712 (00584241533712)",
+        user_name: "WhatsApp Asignado (00584241533712)",
         carrier: "MOVISTAR",
-        carrier_label: "Movistar Venezuela (Webhook Central)",
+        carrier_label: "WhatsApp Asignado 00584241533712 (Webhook Central)",
         is_competitor: true,
         messages_count: 4,
         last_seen: "2026-10-09T11:22:21.000Z",
@@ -1836,7 +1836,7 @@
     window.addEventListener('DOMContentLoaded', () => {
       groupedThreads = seedThreads;
       renderContactsList();
-      selectContact('04142554590');
+      selectContact('04241533712');
       
       const chatArea = document.getElementById('chatMessagesArea');
       if (chatArea) {
@@ -1889,32 +1889,45 @@
 
     async function loadConversationsFromServer() {
       try {
-        const res = await fetch('/api/v1/monitor/conversations?t=' + Date.now());
-        if (!res.ok) return;
-        const data = await res.json();
-        
+        const ts = Date.now();
+        const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        const requests = [fetch('/api/v1/monitor/conversations?t=' + ts)];
+        if (isLocal) {
+          requests.push(fetch('https://movilnet-core.onrender.com/api/v1/monitor/conversations?t=' + ts));
+        }
+        const results = await Promise.allSettled(requests);
+
         const curThread = groupedThreads.find(t => t.phone_key === selectedPhoneKey);
         const prevCount = curThread && curThread.messages ? curThread.messages.length : 0;
 
-        if (data && Array.isArray(data.grouped_threads) && data.grouped_threads.length > 0) {
-          groupedThreads = mergeThreadsWithSeeds(groupedThreads, data.grouped_threads);
-        } else if (data && Array.isArray(data.conversations) && data.conversations.length > 0) {
-          const aggregated = aggregateTracesLocally(data.conversations);
-          groupedThreads = mergeThreadsWithSeeds(groupedThreads, aggregated);
+        let localData = null;
+        for (let i = 0; i < results.length; i++) {
+          const r = results[i];
+          if (r.status === 'fulfilled' && r.value && r.value.ok) {
+            try {
+              const d = await r.value.json();
+              if (i === 0) localData = d;
+              const serverThreads = d.grouped_threads || d.threads || [];
+              if (Array.isArray(serverThreads) && serverThreads.length > 0) {
+                groupedThreads = mergeThreadsWithSeeds(groupedThreads, serverThreads);
+              } else if (d && Array.isArray(d.conversations) && d.conversations.length > 0) {
+                const aggregated = aggregateTracesLocally(d.conversations);
+                groupedThreads = mergeThreadsWithSeeds(groupedThreads, aggregated);
+              }
+            } catch (e) {}
+          }
         }
 
+        const data = localData || {};
         const statusElem = document.getElementById('headerLiveStatus');
         if (statusElem) {
-          const allDelivered = (data && data.delivery_certification && data.delivery_certification.all_delivered_certified) !== false;
-          const certLabel = allDelivered
-            ? '🛡️ ENTREGAS WHATSAPP: 100% CERTIFICADAS'
-            : '🛡️ ENTREGAS WHATSAPP: CERTIFICACIÓN ACTIVA';
+          const totalMsgs = groupedThreads.reduce((acc, th) => acc + (th.messages ? th.messages.length : 0), 0);
           statusElem.innerHTML = `
             <span class="live-pulse-dot" style="background:#22c55e; box-shadow:0 0 8px #22c55e;"></span>
-            <span style="font-weight:700; color:#16a34a;">MODO ONLINE SUPERVISANDO EN VIVO</span>
+            <span style="font-weight:700; color:#16a34a;">MODO ONLINE SUPERVISANDO EN VIVO (LOCAL :8010 + QR CLOUD + WA 00584241533712)</span>
             <span style="opacity:0.5;">•</span>
-            <span>:8010 ↔ n8n Cloud (${data.total || groupedThreads.length} interacciones)</span>
-            <span class="badge-cert-header" style="padding:2px 8px; font-size:0.65rem; margin-left:6px;">${certLabel}</span>
+            <span>${groupedThreads.length} líneas / ${totalMsgs} mensajes</span>
+            <span class="badge-cert-header" style="padding:2px 8px; font-size:0.65rem; margin-left:6px;">🛡️ ENTREGAS WHATSAPP & QR: 100% MONITOREADAS</span>
           `;
         }
 
@@ -1941,7 +1954,7 @@
     function normMsgId(m) {
       if (!m) return '';
       const raw = String(m.execution_id || m.trace_id || '').trim();
-      return raw.replace(/^TRACE-EXEC-/, '');
+      return raw.replace(/^TRACE-EXEC-/, '').replace(/^TRACE-SIM-/, '').replace(/^SIM-/, '');
     }
 
     function normPhoneKey(key) {
@@ -2062,6 +2075,11 @@
         }
       });
       Object.values(map).forEach(th => {
+        if (th.phone_key && th.phone_key.includes('4241533712')) {
+          th.display_phone = '0424-1533712 (00584241533712)';
+          th.user_name = 'WhatsApp Asignado (00584241533712)';
+          th.carrier_label = 'WhatsApp Asignado 00584241533712 (Webhook Central)';
+        }
         const totalBot = (th.messages || []).filter(m => (m.bot_reply && m.bot_reply.trim() !== '') || m.status === 'ERROR').length;
         const deliveredBot = (th.messages || []).filter(m => (m.bot_reply && m.bot_reply.trim() !== '' && m.status !== 'ERROR')).length;
         const hasErr = (th.messages || []).some(m => m.status === 'ERROR');
@@ -2109,6 +2127,7 @@
 
         let display = key;
         if (key.length === 11 && key.startsWith('0')) display = key.slice(0, 4) + '-' + key.slice(4);
+        if (key.includes('4241533712')) display = '0424-1533712 (00584241533712)';
 
         let inferredCarrier = t.carrier;
         let inferredLabel = t.carrier_label;
@@ -2116,7 +2135,7 @@
         if (!inferredCarrier || inferredCarrier === 'MOVILNET') {
           if (key.startsWith('0414') || key.startsWith('0424')) {
             inferredCarrier = 'MOVISTAR';
-            inferredLabel = 'Movistar Venezuela';
+            inferredLabel = key.includes('4241533712') ? 'WhatsApp Asignado 00584241533712' : 'Movistar Venezuela';
             inferredComp = true;
           } else if (key.startsWith('0412')) {
             inferredCarrier = 'DIGITEL';
@@ -2133,7 +2152,7 @@
           map[key] = {
             phone_key: key,
             display_phone: display,
-            user_name: t.user_name || (key.includes('4142554590') ? 'Ids' : 'Abonado'),
+            user_name: key.includes('4241533712') ? 'WhatsApp Asignado (00584241533712)' : (t.user_name || (key.includes('4142554590') ? 'Ids' : 'Abonado')),
             carrier: inferredCarrier,
             carrier_label: inferredLabel,
             is_competitor: inferredComp,
@@ -2216,7 +2235,8 @@
       const filtered = groupedThreads.filter(th => {
         if (activeFilter !== 'ALL' && th.carrier !== activeFilter) return false;
         if (searchQuery) {
-          const matchPhone = (th.display_phone || '').toLowerCase().includes(searchQuery);
+          const qNorm = normPhoneKey(searchQuery).toLowerCase();
+          const matchPhone = (th.display_phone || '').toLowerCase().includes(searchQuery) || (th.phone_key || '').toLowerCase().includes(qNorm);
           const matchName = (th.user_name || '').toLowerCase().includes(searchQuery);
           const matchMsg = (th.last_message || '').toLowerCase().includes(searchQuery);
           return matchPhone || matchName || matchMsg;

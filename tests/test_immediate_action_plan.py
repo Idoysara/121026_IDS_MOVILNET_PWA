@@ -14,8 +14,24 @@ Cubre formalmente:
 """
 
 import json
-import pytest
+import sys
+import tempfile
+import shutil
 from pathlib import Path
+
+# Asegurar path raíz del proyecto
+ROOT_DIR = Path(__file__).resolve().parent.parent
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
+try:
+    import pytest
+except ImportError:
+    class _PytestMock:
+        @staticmethod
+        def fixture(func):
+            return func
+    pytest = _PytestMock()
 
 from core.session_identity_isolator import SessionIdentityIsolator, SessionIdentity
 from core.semantic_response_cache import SemanticResponseCache, CacheEntry
@@ -144,10 +160,44 @@ class TestFastPathIntentInterceptor:
 
     def test_open_ended_conversation_passes_to_ai_agent(self, interceptor):
         """Verifica que consultas libres o complejas pasen al AI Agent de Gemini."""
+        interceptor.reset_prospect_trial("04142554590")
         res = interceptor.intercept("Dame una receta de cocina para dos personas esta noche", "04142554590")
         assert res.can_intercept is False
         assert res.intent_detected == "CONVERSACION_LIBRE"
         assert res.response_text == ""
+
+    def test_propaganda_guard_interception_13585(self, interceptor):
+        """Verifica que invitaciones o difusiones (#13585 Caracas Tech Meetup) se intercepten sin emitir saldo ni megas."""
+        meetup_msg = (
+            "Este 15 de octubre volvemos con una nueva edición del Caracas Tech Meetup 🥂. "
+            "Regístrate en https://luma.com/snugy0r7 • Evento con cupos limitados."
+        )
+        assert FastPathIntentInterceptor.detect_propaganda_or_invitation(meetup_msg) is True
+        res = interceptor.intercept(meetup_msg, "04142554590")
+        assert res.can_intercept is True
+        assert res.intent_detected == "NON_SOLICITED_PROPAGANDA_GUARD"
+        assert res.tokens_consumed == 0
+        assert "Saldo Disponible" not in res.response_text
+        assert "10.0 GB disponibles" not in res.response_text
+
+    def test_pwa_links_and_prospect_trial_limits_sqlite(self, interceptor):
+        """Verifica enlaces PWA dinámicos (0416/0426 vs 0412/0414/0424) y bloqueo a la 4ta consulta mensual en SQLite."""
+        r_mov = interceptor.intercept("saldo", "04160000001")
+        assert "https://pwa.movilnet.com.ve/chat?session=" in r_mov.response_text
+
+        r_comp = interceptor.intercept("portabilidad", "04123456789")
+        assert "https://pwa.movilnet.com.ve/prospect?carrier=DIGITEL&token=" in r_comp.response_text
+
+        prospect_phone = "04249991122"
+        interceptor.reset_prospect_trial(prospect_phone)
+        assert interceptor.intercept("Consulta abierta 1", prospect_phone).can_intercept is False
+        assert interceptor.intercept("Consulta abierta 2", prospect_phone).can_intercept is False
+        assert interceptor.intercept("Consulta abierta 3", prospect_phone).can_intercept is False
+        r_blocked = interceptor.intercept("Consulta abierta 4", prospect_phone)
+        assert r_blocked.can_intercept is True
+        assert r_blocked.intent_detected == "PROSPECT_TRIAL_LIMIT_REACHED"
+        assert "https://pwa.movilnet.com.ve/prospect?carrier=MOVISTAR&token=" in r_blocked.response_text
+        interceptor.reset_prospect_trial(prospect_phone)
 
 
 # =====================================================================
@@ -195,6 +245,24 @@ class TestWebhookNoiseFilter:
         assert res.should_process is True
         assert res.verdict == FilterVerdict.PASS_MESSAGE
         assert res.extracted_text == "Hola, buenas tardes"
+
+    def test_drop_whatsapp_security_notice_13368(self):
+        """Verifica que avisos del sistema de cifrado de WhatsApp (#13368) se descarten con DROP_SYSTEM_SECURITY_NOTICE."""
+        payload = {
+            "event": "messages.upsert",
+            "data": {
+                "key": {"remoteJid": "584142554590@s.whatsapp.net", "fromMe": False},
+                "message": {
+                    "conversation": (
+                        'Información sobre "Esperando el mensaje. Esto puede tomar tiempo."\n'
+                        "WhatsApp protege tus llamadas y mensajes personales con cifrado de extremo a extremo."
+                    )
+                }
+            }
+        }
+        res = WebhookNoiseFilter.evaluate(payload)
+        assert res.should_process is False
+        assert res.verdict == FilterVerdict.DROP_SYSTEM_SECURITY_NOTICE
 
 
 # =====================================================================
@@ -264,3 +332,60 @@ class TestServiceEndpointsIntegration:
         data = json.loads(body.decode("utf-8"))
         assert data["canonical_session_key"] == "SESSION:E164:584142554590"
         assert data["operator"] == "MOVISTAR"
+
+
+if __name__ == "__main__":
+    import tempfile
+    import shutil
+    print("🧪 Ejecutando suite test_immediate_action_plan...")
+    
+    # 1. TestSessionIdentityIsolator
+    t1 = TestSessionIdentityIsolator()
+    t1.test_cross_contamination_prevention_same_pushname()
+    t1.test_phone_sanitization_and_e164_formatting()
+    t1.test_carrier_prefix_detection()
+    print("  ✅ TestSessionIdentityIsolator: PASS")
+    
+    # 2. TestSemanticResponseCache
+    td = tempfile.mkdtemp()
+    try:
+        t2 = TestSemanticResponseCache()
+        c = t2.temp_cache(Path(td))
+        t2.test_normalization_and_sha256_key_consistency(c)
+        t2.test_cache_hit_and_token_saving(c)
+        t2.test_volatile_queries_never_cached(c)
+        print("  ✅ TestSemanticResponseCache: PASS")
+    finally:
+        shutil.rmtree(td, ignore_errors=True)
+        
+    # 3. TestFastPathIntentInterceptor
+    t3 = TestFastPathIntentInterceptor()
+    inter = t3.interceptor()
+    t3.test_balance_interception_zero_token(inter)
+    t3.test_plans_catalog_interception(inter)
+    t3.test_portability_promo_interception(inter)
+    t3.test_open_ended_conversation_passes_to_ai_agent(inter)
+    t3.test_propaganda_guard_interception_13585(inter)
+    t3.test_pwa_links_and_prospect_trial_limits_sqlite(inter)
+    print("  ✅ TestFastPathIntentInterceptor: PASS")
+    
+    # 4. TestWebhookNoiseFilter
+    t4 = TestWebhookNoiseFilter()
+    t4.test_drop_presence_events()
+    t4.test_drop_contacts_events()
+    t4.test_drop_outgoing_bot_echo()
+    t4.test_pass_valid_incoming_subscriber_message()
+    t4.test_drop_whatsapp_security_notice_13368()
+    print("  ✅ TestWebhookNoiseFilter: PASS")
+    
+    # 5. TestServiceEndpointsIntegration
+    t5 = TestServiceEndpointsIntegration()
+    srv = t5.service()
+    t5.test_get_cache_stats_endpoint(srv)
+    t5.test_post_fastpath_evaluate_handled(srv)
+    t5.test_post_fastpath_evaluate_delegated(srv)
+    t5.test_post_session_isolate_endpoint(srv)
+    print("  ✅ TestServiceEndpointsIntegration: PASS")
+    
+    print("🎉 [100% PASS] Todas las pruebas del Plan de Acción Inmediato aprobadas exitosamente.")
+

@@ -1,9 +1,9 @@
 {
-  "deployment_id": "DEPLOY-PROD-1791818100-0CF7BD",
+  "deployment_id": "DEPLOY-PROD-1791895006-EA5F75",
   "project": "AI_Movilnet_300926",
   "organization": "Telecomunicaciones Movilnet C.A.",
   "target_scale": "4.000.000 de Abonados (0416 / 0426)",
-  "timestamp": "2026-10-12T15:15:00.167116+00:00",
+  "timestamp": "2026-10-13T12:36:46.923856+00:00",
   "stages": {
     "stage_1_certificates": {
       "passed": true,
@@ -20,12 +20,12 @@
         },
         "CERTIFICATION_FASE2_GATEKEEPER.json": {
           "exists": true,
-          "seal": "9d44c4df44260c14c4192fbe30dd819de4791c41d53f67a175167e68210dc663",
+          "seal": "d1e461b6bb360f1e3a083d856d9c98057759d487e79833742c724a8ecfc9889b",
           "valid": true
         },
         "CERTIFICATION_FASE3_GATEKEEPER.json": {
           "exists": true,
-          "seal": "55896a40afccde6a9f498c5b13121bc5f381a0fa049981148a664b90e3b15c2b",
+          "seal": "d0cfa8ce9999b3ca283ab7ed2857a290923acadf418dd1ff133420d0f4a750f6",
           "valid": true
         },
         "CERTIFICATION_FASE4_GATEKEEPER.json": {
@@ -62,11 +62,11 @@
       "passed": true,
       "total_requests": 50,
       "success_rate_pct": 100.0,
-      "throughput_tps": 519.11,
-      "p95_latency_ms": 23.081
+      "throughput_tps": 318.02,
+      "p95_latency_ms": 64.364
     }
   },
   "status": "SUCCESS",
   "verdict": "Despliegue a Producci\u00f3n Carrier-Grade completado con \u00e9xito total en sus 6 etapas. El sistema AI_Movilnet_300926 se encuentra operativo al 100% y en servicio para los 4.000.000 de abonados de Telecomunicaciones Movilnet C.A.",
-  "sha256_cryptographic_seal": "68e217cd2db71c5c66ce0ac33788f5e013776fdbcd79f02926b1ba29ddb4de93"
+  "sha256_cryptographic_seal": "e69c5b124f25a0d140a734ad6b6fdefb1ca7fd78bc3a6a544a36dec61fcbf0c0"
 }
