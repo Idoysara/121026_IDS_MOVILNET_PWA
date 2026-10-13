@@ -117,69 +117,81 @@ def compute_process_timers(
     dt_t3 = dt_t2 + timedelta(seconds=round(total_proc_sec * 0.85, 3))
     t3_core_resolved_ts = dt_t3.isoformat()
 
-    # T5: Encolado en Evolution API /sendText
-    dt_t5 = dt_t4 + timedelta(seconds=0.02)
-    t5_evolution_queued_ts = dt_t5.isoformat()
-
-    # T6: Acuse de Servidor Meta WhatsApp (SERVER_ACK - Un check gris)
-    dt_t6 = dt_t5 + timedelta(seconds=0.18)
-    t6_meta_server_ack_ts = dt_t6.isoformat()
-
-    # Determinar si existe confirmación física de entrega (DELIVERY_ACK / doble check)
-    if is_delivered is None:
-        has_delivery_ack = False
-        if steps:
-            for s in steps:
-                out = getattr(s, "output_summary", {}) or {}
-                if out.get("status") == "DELIVERY_ACK" or out.get("delivery_status") == "DELIVERY_ACK":
-                    has_delivery_ack = True
-                    break
-        is_delivered = has_delivery_ack
-
-    # T7: Entrega Física en Teléfono del Usuario (DELIVERY_ACK - Doble check gris)
-    if is_delivered or t7_delivered_ts:
-        if t7_delivered_ts:
-            try:
-                dt_t7 = datetime.fromisoformat(t7_delivered_ts.replace("Z", "+00:00"))
-            except Exception:
-                dt_t7 = dt_t6 + timedelta(seconds=0.35)
-        else:
-            dt_t7 = dt_t6 + timedelta(seconds=0.35)
-        t7_phone_delivered_ts = dt_t7.isoformat()
-    else:
-        dt_t7 = None
+    # Si la ejecución de n8n falló (status == "ERROR"), el flujo se abortó antes de llegar
+    # a la pasarela de salida (/sendText). Cumple ZH-MHEP: Cero inferencia de timestamps ficticios.
+    if status == "ERROR":
+        t5_evolution_queued_ts = None
+        t6_meta_server_ack_ts = None
         t7_phone_delivered_ts = None
-
-    # T8: Lectura por el Usuario en Pantalla (READ_ACK - Doble check azul)
-    if t8_read_ts:
-        t8_user_read_ts = t8_read_ts
-    elif is_delivered and dt_t7:
-        t8_user_read_ts = (dt_t7 + timedelta(seconds=1.20)).isoformat()
-    else:
         t8_user_read_ts = None
-
-    # Cálculo formal de Deltas
-    delta_inbound_sec = round(max(0.0, (dt_t2 - dt_t1).total_seconds()), 3)
-    delta_processing_sec = round(max(0.0, (dt_t4 - dt_t2).total_seconds()), 3)
-
-    if t7_phone_delivered_ts and dt_t7:
-        delta_outbound_queue_sec = round(max(0.0, (dt_t6 - dt_t4).total_seconds()), 3)
-        delta_delivery_sec = round(max(0.0, (dt_t7 - dt_t6).total_seconds()), 3)
-        delta_e2e_total_sec = round(max(0.0, (dt_t7 - dt_t1).total_seconds()), 3)
-        delivery_state = "DELIVERY_ACK"
-        net_sec = round(delta_inbound_sec + delta_delivery_sec + delta_outbound_queue_sec, 2)
-        delivery_badge = f"✓✓ Entregado (E2E: {delta_e2e_total_sec}s | n8n: {delta_processing_sec}s | Red: {net_sec}s)"
-        queue_wait_sec = 0.0
-    else:
+        delta_inbound_sec = round(max(0.0, (dt_t2 - dt_t1).total_seconds()), 3)
+        delta_processing_sec = round(max(0.0, (dt_t4 - dt_t2).total_seconds()), 3)
+        delta_outbound_queue_sec = None
         delta_delivery_sec = None
-        now_utc = datetime.now(timezone.utc)
-        queue_wait_sec = round(max(0.0, (now_utc - dt_t4).total_seconds()), 2)
-        delta_outbound_queue_sec = queue_wait_sec
         delta_e2e_total_sec = None
-        if status == "ERROR":
-            delivery_state = "ERROR_RECURSO"
-            delivery_badge = "⚠️ Fallo n8n Cloud"
+        delivery_state = "ERROR_RECURSO"
+        delivery_badge = "⚠️ Fallo n8n Cloud (No enviado a WhatsApp)"
+        queue_wait_sec = None
+    else:
+        # T5: Encolado en Evolution API /sendText
+        dt_t5 = dt_t4 + timedelta(seconds=0.02)
+        t5_evolution_queued_ts = dt_t5.isoformat()
+
+        # T6: Acuse de Servidor Meta WhatsApp (SERVER_ACK - Un check gris)
+        dt_t6 = dt_t5 + timedelta(seconds=0.18)
+        t6_meta_server_ack_ts = dt_t6.isoformat()
+
+        # Determinar si existe confirmación física de entrega (DELIVERY_ACK / doble check)
+        if is_delivered is None:
+            has_delivery_ack = False
+            if steps:
+                for s in steps:
+                    out = getattr(s, "output_summary", {}) or {}
+                    if out.get("status") == "DELIVERY_ACK" or out.get("delivery_status") == "DELIVERY_ACK":
+                        has_delivery_ack = True
+                        break
+            is_delivered = has_delivery_ack
+
+        # T7: Entrega Física en Teléfono del Usuario (DELIVERY_ACK - Doble check gris)
+        if is_delivered or t7_delivered_ts:
+            if t7_delivered_ts:
+                try:
+                    dt_t7 = datetime.fromisoformat(t7_delivered_ts.replace("Z", "+00:00"))
+                except Exception:
+                    dt_t7 = dt_t6 + timedelta(seconds=0.35)
+            else:
+                dt_t7 = dt_t6 + timedelta(seconds=0.35)
+            t7_phone_delivered_ts = dt_t7.isoformat()
         else:
+            dt_t7 = None
+            t7_phone_delivered_ts = None
+
+        # T8: Lectura por el Usuario en Pantalla (READ_ACK - Doble check azul)
+        if t8_read_ts:
+            t8_user_read_ts = t8_read_ts
+        elif is_delivered and dt_t7:
+            t8_user_read_ts = (dt_t7 + timedelta(seconds=1.20)).isoformat()
+        else:
+            t8_user_read_ts = None
+
+        # Cálculo formal de Deltas
+        delta_inbound_sec = round(max(0.0, (dt_t2 - dt_t1).total_seconds()), 3)
+        delta_processing_sec = round(max(0.0, (dt_t4 - dt_t2).total_seconds()), 3)
+
+        if t7_phone_delivered_ts and dt_t7:
+            delta_outbound_queue_sec = round(max(0.0, (dt_t6 - dt_t4).total_seconds()), 3)
+            delta_delivery_sec = round(max(0.0, (dt_t7 - dt_t6).total_seconds()), 3)
+            delta_e2e_total_sec = round(max(0.0, (dt_t7 - dt_t1).total_seconds()), 3)
+            delivery_state = "DELIVERY_ACK"
+            net_sec = round(delta_inbound_sec + delta_delivery_sec + delta_outbound_queue_sec, 2)
+            delivery_badge = f"✓✓ Entregado (E2E: {delta_e2e_total_sec}s | n8n: {delta_processing_sec}s | Red: {net_sec}s)"
+            queue_wait_sec = 0.0
+        else:
+            delta_delivery_sec = None
+            now_utc = datetime.now(timezone.utc)
+            queue_wait_sec = round(max(0.0, (now_utc - dt_t4).total_seconds()), 2)
+            delta_outbound_queue_sec = queue_wait_sec
+            delta_e2e_total_sec = None
             delivery_state = "EN_COLA_WHATSAPP"
             delivery_badge = f"⏳ En cola WhatsApp ({queue_wait_sec}s) (Esperando entrega al móvil)"
 

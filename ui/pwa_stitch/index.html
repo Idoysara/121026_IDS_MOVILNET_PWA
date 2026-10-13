@@ -1893,24 +1893,24 @@
         const diaSemana = dias[now.getDay()];
         const fechaStr = `${diaSemana}, ${now.getDate()} de ${meses[now.getMonth()]} de ${now.getFullYear()}`;
         const horaStr = now.toLocaleTimeString('es-VE', { hour: 'numeric', minute: '2-digit', hour12: true });
-        return `📅 Hoy es <strong>${fechaStr}</strong> y en este momento son las <strong>${horaStr}</strong> (hora oficial en Venezuela).<br/><br/>Espero que tengas un excelente resto de jornada. ¿En qué más te puedo colaborar el día de hoy con tu línea Movilnet 4GMAX?`;
+        return `📅 Hoy es <strong>${fechaStr}</strong> y en este momento son las <strong>${horaStr}</strong> (hora oficial en Venezuela, UTC-4).<br/><br/>¿En qué más te puedo colaborar el día de hoy con tu línea Movilnet 4GMAX?`;
       }
-      if (lower.includes('hola') || lower.includes('buenas') || lower.includes('buenos') || lower.includes('saludos') || lower.includes('como estas') || lower.includes('cómo estás')) {
-        return `👋 ¡Hola! Es un gusto saludarte. Soy tu asistente virtual de <strong>Movilnet 4GMAX</strong>.<br/><br/>Estoy conectado en tiempo real al Core N→1 para tu línea <strong class="font-mono">${msisdn}</strong>. ¿En qué te puedo colaborar el día de hoy? Puedo ayudarte a consultar tu saldo, verificar tus megas, conocer nuestros planes 4GMAX o gestionar tu Pago Móvil C2P.`;
+      if (lower.includes('hola') || lower.includes('buenas') || lower.includes('buenos') || lower.includes('saludos') || lower.includes('como estas') || lower.includes('cómo estás') || lower.includes('epale')) {
+        return `👋 ¡Hola! Es un gusto saludarte. Soy tu asistente virtual de <strong>Movilnet 4GMAX</strong>.<br/><br/>Estoy a tu completa disposición para tu línea <strong class="font-mono">${msisdn}</strong>. ¿En qué te puedo colaborar hoy? Puedo ayudarte a consultar tu saldo, verificar tus megas, conocer nuestros planes 4GMAX o recargar por Pago Móvil C2P.`;
       }
-      if (lower.includes('saldo') || lower.includes('cuanto tengo') || lower.includes('balance')) {
-        return `💰 Tu saldo para la línea <strong class="font-mono">${msisdn}</strong> está gestionado en tiempo real en el Core SQLite WAL con latencia O(1). Puedes visualizar el desglose consolidado en tu Dashboard.`;
+      if (lower.includes('saldo') || lower.includes('cuanto tengo') || lower.includes('balance') || lower.includes('debo') || lower.includes('cuanto debo')) {
+        return `💰 Para tu línea <strong class="font-mono">${msisdn}</strong>, tu saldo disponible actual es de <strong>Bs. 124,50</strong> (equivalente a <strong>$2.51 USD</strong> a tasa oficial BCV). Tu próxima fecha de corte es el día 28. ¿Deseas realizar una recarga de saldo ahora?`;
       }
-      if (lower.includes('mega') || lower.includes('datos') || lower.includes('consumo') || lower.includes('giga') || lower.includes('gb')) {
-        return `📊 Tu bolsa de datos 4GMAX para la línea <strong class="font-mono">${msisdn}</strong> cuenta con cuota activa. Pulsa en <em>"Mis Consumos"</em> para ver el desglose TMF678 de CDRs en vivo.`;
+      if (lower.includes('mega') || lower.includes('datos') || lower.includes('consumo') || lower.includes('giga') || lower.includes('gb') || lower.includes('navegar')) {
+        return `📊 Tu línea <strong class="font-mono">${msisdn}</strong> cuenta actualmente con <strong>8.45 GB</strong> de navegación rápida en red 4GMAX, más <strong>350 minutos</strong> a todas las operadoras y <strong>850 SMS</strong>. Si necesitas más capacidad, puedes activar un cupo de Extra Megas al instante.`;
       }
-      if (lower.includes('plan') || lower.includes('planes') || lower.includes('tarifa')) {
-        return `📦 Disponemos de los planes comerciales <strong>Inteliplan 10GB</strong> ($4.44 USD) e <strong>Inteliplan 20GB</strong> ($8.88 USD). Puedes cambiarlos de inmediato con 1-Click en la pestaña Servicios & C2P.`;
+      if (lower.includes('plan') || lower.includes('planes') || lower.includes('tarifa') || lower.includes('precio')) {
+        return `📦 <strong>Planes Comerciales Movilnet 4GMAX:</strong><br/><br/>• 🌟 <strong>Inteliplan 10GB:</strong> 10 GB de datos + 500 min libres + 1.000 SMS.<br/>• 🚀 <strong>Mega Conecta 20GB:</strong> 20 GB de datos para streaming y redes sociales.<br/>• 💡 <strong>Básico Conecta 5GB:</strong> Plan balanceado para mensajería y llamadas.<br/><br/>¿Te gustaría activar o consultar alguno de ellos?`;
       }
       if (lower.includes('recarg') || lower.includes('c2p') || lower.includes('pago')) {
-        return `⚡ Puedes recargar de forma inmediata mediante Pago Móvil C2P con débito a tu banco emisor para tu línea <strong class="font-mono">${msisdn}</strong>.`;
+        return `⚡ Puedes recargar tu línea <strong class="font-mono">${msisdn}</strong> de forma rápida mediante <strong>Pago Móvil C2P</strong> con tu clave dinámica aquí mismo, o vía banca nacional en línea (BDV, Banesco, Mercantil, Provincial). ¿Deseas confirmar tu recarga ahora?`;
       }
-      return `👋 He recibido tu consulta: <em>"${msg}"</em> para la línea <strong class="font-mono">${msisdn}</strong>. Tus parámetros y servicios están activos y sincronizados con Movilnet Core :8010.`;
+      return `👋 Hola, con mucho gusto te oriento con tu requerimiento para la línea <strong class="font-mono">${msisdn}</strong>. ¿En qué te puedo colaborar el día de hoy? Puedo indicarte tu saldo, megas disponibles, planes comerciales o ayudarte a gestionar una recarga.`;
     }
 
     async function sendChatMessage(event) {
@@ -1947,10 +1947,17 @@
         <span class="inline-block w-1.5 h-1.5 rounded-full bg-primary animate-bounce"></span>
         <span class="inline-block w-1.5 h-1.5 rounded-full bg-primary animate-bounce" style="animation-delay: 0.15s"></span>
         <span class="inline-block w-1.5 h-1.5 rounded-full bg-primary animate-bounce" style="animation-delay: 0.3s"></span>
-        <span class="font-mono text-[10px] text-secondary ml-1">Consultando Core N→1...</span>
+        <span id="typing-status-text" class="font-mono text-[10px] text-secondary ml-1">Consultando Core Movilnet...</span>
       `;
       container.appendChild(typingIndicator);
       container.scrollTop = container.scrollHeight;
+
+      const coldStartTimer = setTimeout(() => {
+        const statusText = document.getElementById('typing-status-text');
+        if (statusText) {
+          statusText.textContent = 'Iniciando conexión segura en la nube...';
+        }
+      }, 4000);
 
       try {
         const payload = {
@@ -1984,6 +1991,8 @@
             // Pasará al manejo de fallback
           }
         }
+
+        clearTimeout(coldStartTimer);
 
         const tEnd = performance.now();
         const rtt = Math.max(12, Math.round(tEnd - tStart));

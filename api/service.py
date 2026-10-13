@@ -2116,11 +2116,10 @@ class MovilnetAPIService:
             except Exception:
                 pass
 
-            # Despacho en segundo plano a n8n Cloud (Workflow sNMbtiEiTkuQ9OCY)
+            # Despacho en segundo plano a n8n Cloud (Workflow sNMbtiEiTkuQ9OCY con auto-upgrade y reintentos)
             def _dispatch_to_n8n():
                 try:
-                    import urllib.request
-                    n8n_url = os.environ.get("N8N_WEBHOOK_URL", "https://n8n.lpgtec.net/webhook/messages_upsert4")
+                    from core.n8n_webhook_resolver import dispatch_to_n8n_with_retry
                     phone_val_n8n = phone_val or "04160000001"
                     remote_jid = f"58{phone_val_n8n[1:]}@s.whatsapp.net" if phone_val_n8n.startswith("0") else f"{phone_val_n8n}@s.whatsapp.net"
                     n8n_payload = {
@@ -2141,19 +2140,11 @@ class MovilnetAPIService:
                             }
                         }
                     }
-                    req = urllib.request.Request(
-                        n8n_url,
-                        data=json.dumps(n8n_payload).encode("utf-8"),
-                        headers={
-                            "Content-Type": "application/json",
-                            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Movilnet/1.0"
-                        },
-                        method="POST"
-                    )
-                    with urllib.request.urlopen(req, timeout=3):
-                        pass
-                except Exception:
-                    pass
+                    res = dispatch_to_n8n_with_retry(n8n_payload, max_retries=2)
+                    if not res.get("success"):
+                        logger.warning(f"[Service] Despacho a n8n Cloud advirtió: {res.get('error')}")
+                except Exception as ex_dispatch:
+                    logger.error(f"[Service] Error al despachar webhook hacia n8n: {ex_dispatch}")
 
             threading.Thread(target=_dispatch_to_n8n, daemon=True).start()
 

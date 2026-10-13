@@ -212,5 +212,37 @@ class TestProcessTimersE2E:
         assert found["process_timers"]["delta_outbound_queue_sec"] >= 29.0
 
 
+    def test_compute_process_timers_error_state_zero_hallucination(self):
+        """Verifica que en estado ERROR no se alucinen acuses SERVER_ACK ni tiempos de cola saliente."""
+        t1_ts = "2026-10-13T15:30:00.000Z"
+        t2_ts = "2026-10-13T15:30:00.150Z"
+        t4_ts = "2026-10-13T15:30:01.200Z"
+
+        timers = compute_process_timers(
+            started_at=t2_ts,
+            stopped_at=t4_ts,
+            total_duration_sec=1.05,
+            status="ERROR",
+            message_timestamp=t1_ts,
+            is_delivered=False
+        )
+
+        assert timers["t1_user_sent_ts"] is not None
+        assert timers["t2_n8n_in_ts"] is not None
+        assert timers["t3_core_resolved_ts"] is not None
+        assert timers["t4_n8n_out_ts"] is not None
+        # Invariantes ZH-MHEP: T5, T6, T7, T8 deben ser None si el flujo falló antes de despachar
+        assert timers["t5_evolution_queued_ts"] is None
+        assert timers["t6_meta_server_ack_ts"] is None
+        assert timers["t7_phone_delivered_ts"] is None
+        assert timers["t8_user_read_ts"] is None
+        assert timers["delta_outbound_queue_sec"] is None
+        assert timers["queue_wait_sec"] is None
+        assert timers["delta_delivery_sec"] is None
+        assert timers["delta_e2e_total_sec"] is None
+        assert timers["delivery_state"] == "ERROR_RECURSO"
+        assert "Fallo n8n Cloud (No enviado a WhatsApp)" in timers["delivery_badge"]
+
+
 if __name__ == "__main__":
     pytest.main(["-v", __file__])

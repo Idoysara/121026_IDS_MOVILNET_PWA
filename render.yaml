@@ -18,6 +18,6 @@ services:
       - key: N8N_BASE_URL
         value: https://n8n.lpgtec.net
       - key: N8N_WEBHOOK_URL
-        value: https://n8n.lpgtec.net/webhook/messages_upsert
+        value: https://n8n.lpgtec.net/webhook/messages_upsert4
       - key: MOVILNET_PUBLIC_URL
         value: https://movilnet-core.onrender.com

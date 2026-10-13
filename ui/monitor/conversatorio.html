@@ -2655,15 +2655,15 @@
       if (!modal || !content) return;
 
       const isPending = !isDelivered && !isError;
-      const e2e = (isDelivered && timers.delta_e2e_total_sec !== undefined && timers.delta_e2e_total_sec !== null) 
+      const e2e = isError ? 'Fallo n8n' : ((isDelivered && timers.delta_e2e_total_sec !== undefined && timers.delta_e2e_total_sec !== null) 
         ? `${timers.delta_e2e_total_sec}s` 
-        : (isDelivered ? `${msg.duration_sec || 0.0}s` : 'En espera (Pendiente)');
+        : (isDelivered ? `${msg.duration_sec || 0.0}s` : 'En espera (Pendiente)'));
       const proc = timers.delta_processing_sec !== undefined ? timers.delta_processing_sec : (msg.duration_sec || 0.0);
       const inS = timers.delta_inbound_sec || 0.0;
-      const delS = (timers.delta_delivery_sec !== null && timers.delta_delivery_sec !== undefined) ? `${timers.delta_delivery_sec}s` : 'En espera';
-      const qS = isPending 
-        ? (timers.queue_wait_sec !== undefined && timers.queue_wait_sec !== null ? timers.queue_wait_sec : (timers.delta_outbound_queue_sec || 0.0))
-        : (timers.delta_outbound_queue_sec || 0.0);
+      const delS = isError ? 'No enviado' : ((timers.delta_delivery_sec !== null && timers.delta_delivery_sec !== undefined) ? `${timers.delta_delivery_sec}s` : 'En espera');
+      const qS = isError ? 'No enviado' : (isPending 
+        ? (timers.queue_wait_sec !== undefined && timers.queue_wait_sec !== null ? `${timers.queue_wait_sec}s` : `${timers.delta_outbound_queue_sec || 0.0}s`)
+        : `${timers.delta_outbound_queue_sec || 0.0}s`);
       const redS = isDelivered ? (inS + (timers.delta_delivery_sec || 0.0) + (timers.delta_outbound_queue_sec || 0.0)).toFixed(2) : 'En tránsito';
 
       let statusBadge = isError 
@@ -2673,15 +2673,32 @@
             : '<span style="background:rgba(245,158,11,0.15); color:#d97706; padding:3px 10px; border-radius:6px; font-weight:700; font-size:0.75rem;">⏳ EN COLA WHATSAPP (Esperando móvil)</span>');
 
       let rcaHtml = '';
-      if (!isDelivered && !isError) {
+      if (isError) {
+        rcaHtml = `
+          <div class="rca-alert-box error" style="background:rgba(239,68,68,0.1); border-left:4px solid #ef4444; padding:12px 14px; border-radius:8px; margin-bottom:14px;">
+            <div style="display:flex; gap:10px; align-items:flex-start;">
+              <span class="material-symbols-outlined" style="font-size:24px; color:#ef4444; flex-shrink:0;">error</span>
+              <div>
+                <div style="font-weight:800; color:#ef4444; margin-bottom:2px;">🚨 INTERRUPCIÓN EN FLUJO N8N CLOUD (MENSAJE NO ENVIADO)</div>
+                <div style="font-size:0.82rem; color:var(--text-primary); line-height:1.4;">
+                  El flujo de n8n Cloud se interrumpió antes de despachar a WhatsApp (por ejemplo, saturación 503 en el modelo LLM). <strong>El mensaje nunca salió hacia Evolution API ni Meta WhatsApp</strong>.
+                </div>
+                <div style="margin-top:6px; font-size:0.75rem; background:rgba(239,68,68,0.08); padding:6px 10px; border-radius:6px; font-family:'JetBrains Mono',monospace;">
+                  👉 <strong>Acción correctiva:</strong> Ruteo automático hacia endpoint canónico messages_upsert4 con blindaje O(1) de Fast-Path.
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      } else if (!isDelivered) {
         rcaHtml = `
           <div class="rca-alert-box warning">
             <span class="material-symbols-outlined" style="font-size:22px; flex-shrink:0;">warning</span>
             <div>
               <div style="font-weight:800; margin-bottom:2px;">🚨 LOCALIZACIÓN FORENSE DEL RETRASO (ROOT CAUSE ANALYSIS)</div>
-              <div>El mensaje fue resuelto internamente por Movilnet Core en <strong>${proc}s</strong>, pero la entrega física al terminal celular permanece <strong>EN COLA EXTERNA DE WHATSAPP / META</strong> tras <strong>${qS}s</strong>.</div>
+              <div>El mensaje fue resuelto internamente por Movilnet Core en <strong>${proc}s</strong>, pero la entrega física al terminal celular permanece <strong>EN COLA EXTERNA DE WHATSAPP / META</strong> tras <strong>${qS}</strong>.</div>
               <div style="margin-top:4px; font-size:0.75rem; opacity:0.9;">
-                👉 <strong>Conclusión:</strong> El retraso de 10-15 minutos reportado no se genera en el Core de Movilnet (:8010), sino en la pasarela externa de Evolution API / reconexión de sockets de Meta / entrega celular del operador móvil.
+                👉 <strong>Conclusión:</strong> El retraso reportado no se genera en el Core de Movilnet (:8010), sino en la pasarela externa de Evolution API / reconexión de sockets de Meta / entrega celular del operador móvil.
               </div>
             </div>
           </div>
@@ -2779,22 +2796,22 @@
               <div class="milestone-desc">Finalización del workflow en n8n y envío hacia el nodo HTTP Request / Evolution API.</div>
             </div>
 
-            <div class="milestone-item active">
+            <div class="milestone-item ${!isError && timers.t5_evolution_queued_ts ? 'active' : 'pending'}">
               <div class="milestone-dot"><span class="material-symbols-outlined" style="font-size:12px;">outbox</span></div>
               <div class="milestone-title">
                 <span>T5: Encolado en Pasarela Evolution API (/sendText)</span>
-                <span class="milestone-ts">${timers.t5_evolution_queued_ts || 'Registrado'}</span>
+                <span class="milestone-ts">${!isError && timers.t5_evolution_queued_ts ? timers.t5_evolution_queued_ts : (isError ? 'Interrumpido' : 'En espera')}</span>
               </div>
-              <div class="milestone-desc">Aceptación del paquete por el demonio Baileys de mensajería saliente.</div>
+              <div class="milestone-desc">${isError ? 'No alcanzado: el flujo se interrumpió en n8n antes de invocar la pasarela de salida.' : 'Aceptación del paquete por el demonio Baileys de mensajería saliente.'}</div>
             </div>
 
-            <div class="milestone-item ${timers.t6_meta_server_ack_ts ? 'active' : 'pending'}">
+            <div class="milestone-item ${!isError && timers.t6_meta_server_ack_ts ? 'active' : 'pending'}">
               <div class="milestone-dot"><span class="material-symbols-outlined" style="font-size:12px;">cloud_done</span></div>
               <div class="milestone-title">
                 <span>T6: Acuse de Servidor Meta WhatsApp (SERVER_ACK)</span>
-                <span class="milestone-ts">${timers.t6_meta_server_ack_ts || 'En cola'}</span>
+                <span class="milestone-ts">${!isError && timers.t6_meta_server_ack_ts ? timers.t6_meta_server_ack_ts : (isError ? 'No emitido' : 'En cola')}</span>
               </div>
-              <div class="milestone-desc">Confirmación de recepción por los servidores de WhatsApp Cloud (Check Gris simple ✓).</div>
+              <div class="milestone-desc">${isError ? 'No emitido: la orden nunca llegó a los servidores de Meta WhatsApp debido al error previo.' : 'Confirmación de recepción por los servidores de WhatsApp Cloud (Check Gris simple ✓).'}</div>
             </div>
 
             <div class="milestone-item ${isDelivered ? 'active' : 'pending'}">
