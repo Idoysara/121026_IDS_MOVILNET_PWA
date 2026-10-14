@@ -6238,3 +6238,52 @@ Tras la reactivación del servicio en `http://localhost:8010`:
 * **Trazas Totales Activas:** 256 trazas conversacionales reales sincronizadas.
 * **Línea Central del Bot:** `+58 424 153 3712` preservada como canal único (1) de atención en las respuestas del asistente, sin interferir en la lista de contactos.
 
+---
+
+## 📘 Capítulo 189 — Integración Omnicanal de la PWA Móvil/Web en el Monitor Conversatorio Local (:8010), Aislamiento Soberano de Datos y Unificación de Hilos N <--> 1
+**Fecha:** 2026-10-14 | **Gobernanza:** Universal Best Practices Engineering Rule (Pilares I al VII) & Protocolo Decagonal (Fases 1 a 10)  
+**Mandato:** Verificar, auditar y garantizar que el tráfico conversacional generado desde la Progressive Web App (PWA Móvil / Web en `/pwa`, `/ui/pwa_stitch/index.html`) ingrese al motor de trazas y se visualice en tiempo real en el Monitor de Conversaciones `http://localhost:8010/ui/monitor/conversatorio.html?v=1791975281`.
+
+### 🔍 1. Arquitectura de Ingesta Omnicanal PWA ➔ Conversatorio
+La inspección técnica del flujo de datos confirmó la convergencia unificada de canales en el Core:
+1. **Puntos de Entrada PWA:**
+   * Las interacciones en la PWA se despachan vía HTTP POST hacia `/api/v1/agents/customer-care/process` o `/api/v1/chat` con el payload:
+     `{ session_id, text, msisdn, channel: "pwa_mobile" | "pwa" | "web", device_info: { ... } }`.
+2. **Clasificación y Etiquetado en Backend (`api/service.py`):**
+   * El controlador `handle_customer_care_agent()` evalúa el canal mediante `is_pwa_channel`.
+   * Asigna automáticamente el dispositivo como `PWA Móvil (Data 4GMAX)`.
+   * Registra el evento en dos motores de observabilidad en memoria y disco:
+     - `webhook_feed_manager.record_event(...)` para el Dashboard NOC Administrador.
+     - `conversation_trace_engine.simulate_trace(...)` / `record_live_execution(...)` para el Conversatorio Webhook (`:8010` y Render).
+3. **Regla de Oro de Aislamiento Soberano de Datos (`DATA_PWA_EXCLUSIVE`):**
+   * En `api/service.py` (líneas 2143-2146):
+     ```python
+     if not is_pwa_channel:
+         _dispatch_to_n8n()
+     ```
+   * **Prohibición Estricta:** Los mensajes que se originan en la PWA **NUNCA** se reenvían a WhatsApp ni a n8n Cloud. El usuario en la PWA navega por datos móviles (Data 4GMAX) o WiFi y recibe su respuesta de forma directa e instantánea en el payload HTTP JSON (<15ms FastPath / <800ms IA), sin generar costos SMS ni mensajes duplicados de salida hacia WhatsApp.
+   * Simultáneamente, la traza se proyecta en vivo en el Monitor de Conversaciones (:8010).
+
+---
+
+### 🛠️ 2. Saneamiento del Filtrado de Abonados PWA en el Conversatorio
+Durante la verificación se identificó y resolvió un punto ciego de visualización:
+* **Problema:** En `core/conversation_trace_engine.py` (línea 2826) y `conversatorio.html` (líneas 2084 y 2133) existía una exclusión rígida de `04160000001` (antiguo número demo de prueba). Al abrir la PWA sin modificar el selector, el abonado predeterminado era `04160000001`, lo cual impedía que un usuario nuevo en la PWA fuese visible en la barra de contactos del conversatorio.
+* **Solución Aplicada:**
+  1. Se eliminó la exclusión de `04160000001`, preservando exclusivamente la regla inviolable de descartar `+58 424 153 3712` de la lista de abonados (ya que el `4241533712` es el Asistente 1, no un abonado N).
+  2. Si el mensaje proviene de `04160000001`, se rotula automáticamente como `Abonado PWA (Movilnet)`.
+  3. Si el usuario ingresa con su número de teléfono real (ej: `0414-2554590`, `0412-5832703`, `0414-2650088`), las interacciones de PWA y WhatsApp se agregan bajo el mismo expediente conversacional del abonado, permitiendo una visión de 360° omnicanal.
+
+---
+
+### 📊 3. Validación y Pruebas Reales en Vivo
+* **Prueba 1 (PWA con número real Ids `04142554590`):**
+  - Mensaje: `"Hola desde la PWA Movilnet"`.
+  - Endpoint: `POST /api/v1/agents/customer-care/process` (`channel: "pwa_mobile"`).
+  - Resultado: HTTP 200 OK en 18ms. Hilo de Ids actualizado a 177 mensajes totales en `grouped_threads` y visible de inmediato en la cima del monitor.
+* **Prueba 2 (PWA con línea Movilnet `04160000001`):**
+  - Mensaje: `"Hola, quiero consultar mis megas disponibles desde la PWA"`.
+  - Resultado: HTTP 200 OK. El contacto `0416-0000001` (Abonado PWA) apareció en el primer lugar de la lista de contactos del conversatorio con 2 mensajes y respuesta determinista OCS Fast-Path.
+* **Pruebas Automatizadas:** 31 pruebas unitarias y de integración (`test_conversation_trace_monitor.py`, `test_pwa_protocol_guardian.py`, `test_phase4_step3_pwa.py`) con **100% PASS** (0 fallos).
+
+
