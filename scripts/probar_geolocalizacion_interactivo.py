@@ -107,102 +107,141 @@ def imprimir_resultado_prueba(data: Dict[str, Any]):
 
 
 def modo_interactivo():
-    """Modo interactivo paso a paso desde terminal para el usuario."""
-    print("\033[1;36m" + "╔" + "═" * 76 + "╗")
-    print("║     SIMULADOR INTERACTIVO PRE-PRODUCCIÓN: GPS Y AGENCIA MOVILNET 4GMAX     ║")
-    print("║     Ambiente: develop | Dataset: 1,017 Agencias | Cero-Tokens (<20 ms)     ║")
-    print("╚" + "═" * 76 + "╝\033[0m")
+    """Modo interactivo paso a paso desde terminal para el usuario con auto-recuperación y bucle continuo."""
+    while True:
+        print("\033[1;36m" + "╔" + "═" * 76 + "╗")
+        print("║     SIMULADOR INTERACTIVO PRE-PRODUCCIÓN: GPS Y AGENCIA MOVILNET 4GMAX     ║")
+        print("║     Ambiente: develop | Dataset: 1,017 Agencias | Cero-Tokens (<20 ms)     ║")
+        print("╚" + "═" * 76 + "╝\033[0m")
 
-    # 1. Solicitar teléfono
-    print("\n📱 Paso 1: Ingresa el número de teléfono celular a simular:")
-    print("   (Ejemplos: 04161234567, 04269876543, 04142554590, 04128887766)")
-    raw_phone = input("👉 Número de teléfono [Default: 04161234567]: ").strip()
-    phone = raw_phone if raw_phone else "04161234567"
+        # 1. Solicitar teléfono
+        print("\n📱 Paso 1: Ingresa el número de teléfono celular a simular:")
+        print("   (Ejemplos: 04161234567, 04269876543, 04142554590, 04128887766)")
+        raw_phone = input("👉 Número de teléfono [Default: 04161234567]: ").strip()
+        phone = raw_phone if raw_phone else "04161234567"
 
-    # 2. Seleccionar tipo de entrada
-    print("\n📍 Paso 2: ¿Qué tipo de información deseas enviar?")
-    print("   1) Ingresar Coordenadas GPS Físicas Manuales (Latitud y Longitud exactas)")
-    print("   2) Seleccionar una Ciudad / Zona de Venezuela predefinida")
-    print("   3) Escribir un Mensaje Textual con Ciudad (ej. 'Oficinas en Barquisimeto')")
-    print("   4) Mensaje sin Ubicación ni Ciudad (Prueba Regla Cero Adivinación)")
-    print("   5) Inyección de Webhook Real de WhatsApp (Payload Evolution API JSON)")
-    
-    opcion = input("👉 Selecciona una opción (1-5) [Default: 2]: ").strip() or "2"
+        # 2. Seleccionar tipo de entrada o escribir directamente
+        print("\n📍 Paso 2: ¿Qué tipo de información deseas enviar?")
+        print("   1) Ingresar Coordenadas GPS Físicas Manuales (Latitud y Longitud exactas)")
+        print("   2) Seleccionar una Ciudad / Zona de Venezuela predefinida")
+        print("   3) Escribir un Mensaje Textual con Ciudad (ej. 'Oficinas en Barquisimeto')")
+        print("   4) Mensaje sin Ubicación ni Ciudad (Prueba Regla Cero Adivinación)")
+        print("   5) Inyección de Webhook Real de WhatsApp (Payload Evolution API JSON)")
+        print("   💡 [Tip inteligente]: También puedes escribir directamente el nombre de una ciudad (ej. 'Caracas')")
+        
+        opcion = input("👉 Selecciona una opción (1-5) o escribe tu consulta [Default: 2]: ").strip()
+        if not opcion:
+            opcion = "2"
 
-    if opcion == "1":
-        print("\n✏️  Ingresa las coordenadas WGS84:")
-        lat_in = input("   Latitud (ej. 10.4960): ").strip()
-        lon_in = input("   Longitud (ej. -66.8530): ").strip()
-        try:
-            lat = float(lat_in)
-            lon = float(lon_in)
-            res = ejecutar_evaluacion(phone, message_text="Ubicación actual", latitude=lat, longitude=lon)
+        # Detección inteligente si el usuario escribe directamente una ciudad o consulta textual
+        if not opcion.isdigit() and any(c.isalpha() for c in opcion):
+            query_text = opcion if any(w in opcion.lower() for w in ["oficina", "agencia", "donde", "sucursal"]) else f"Oficinas en {opcion}"
+            print(f"\n⚡ [Auto-Detección]: Interpretando '{opcion}' como consulta de ubicación...")
+            res = ejecutar_evaluacion(phone, message_text=query_text)
             imprimir_resultado_prueba(res)
-        except ValueError:
-            print("❌ Error: Las coordenadas deben ser números decimales válidos.")
 
-    elif opcion == "2":
-        print("\n🏙️  Selecciona una zona de prueba:")
-        for k, v in CIUDADES_PREDEFINIDAS.items():
-            print(f"   {k}) {v[0]}")
-        sub_opc = input("👉 Elige la ciudad (1-10) [Default: 1]: ").strip() or "1"
-        if sub_opc in CIUDADES_PREDEFINIDAS:
-            ciudad_nombre, lat, lon = CIUDADES_PREDEFINIDAS[sub_opc]
-            print(f"\n⚡ Simulando GPS en: {ciudad_nombre}...")
-            res = ejecutar_evaluacion(phone, message_text=f"Pin GPS en {ciudad_nombre}", latitude=lat, longitude=lon)
+        # Detección si el usuario escribe coordenadas separadas por coma (ej. 10.49, -66.85)
+        elif "," in opcion and any(c.isdigit() for c in opcion):
+            try:
+                parts = [float(p.strip()) for p in opcion.split(",")]
+                if len(parts) >= 2:
+                    lat, lon = parts[0], parts[1]
+                    print(f"\n⚡ [Auto-Detección]: Interpretando coordenadas Lat {lat}, Lon {lon}...")
+                    res = ejecutar_evaluacion(phone, message_text="Ubicación actual", latitude=lat, longitude=lon)
+                    imprimir_resultado_prueba(res)
+                else:
+                    print("❌ Formato de coordenadas inválido. Debe ser: latitud, longitud")
+            except ValueError:
+                print("❌ No se pudieron convertir los valores a números decimales.")
+
+        elif opcion == "1":
+            print("\n✏️  Ingresa las coordenadas WGS84:")
+            lat_in = input("   Latitud (ej. 10.4960): ").strip()
+            lon_in = input("   Longitud (ej. -66.8530): ").strip()
+            try:
+                lat = float(lat_in)
+                lon = float(lon_in)
+                res = ejecutar_evaluacion(phone, message_text="Ubicación actual", latitude=lat, longitude=lon)
+                imprimir_resultado_prueba(res)
+            except ValueError:
+                print("❌ Error: Las coordenadas deben ser números decimales válidos.")
+
+        elif opcion == "2":
+            print("\n🏙️  Selecciona una zona de prueba:")
+            for k, v in CIUDADES_PREDEFINIDAS.items():
+                print(f"   {k}) {v[0]}")
+            sub_opc = input("👉 Elige la ciudad (1-10) [Default: 1]: ").strip() or "1"
+            if sub_opc in CIUDADES_PREDEFINIDAS:
+                ciudad_nombre, lat, lon = CIUDADES_PREDEFINIDAS[sub_opc]
+                print(f"\n⚡ Simulando GPS en: {ciudad_nombre}...")
+                res = ejecutar_evaluacion(phone, message_text=f"Pin GPS en {ciudad_nombre}", latitude=lat, longitude=lon)
+                imprimir_resultado_prueba(res)
+            elif sub_opc.lower() in [v[0].lower() for v in CIUDADES_PREDEFINIDAS.values()] or any(c.isalpha() for c in sub_opc):
+                # Si escribió el nombre de la ciudad
+                res = ejecutar_evaluacion(phone, message_text=f"Oficinas en {sub_opc}")
+                imprimir_resultado_prueba(res)
+            else:
+                print("❌ Opción inválida.")
+
+        elif opcion == "3":
+            print("\n✍️  Escribe tu consulta textual sobre agencias:")
+            msg = input("👉 Consulta [Default: ¿Dónde quedan las oficinas en Valencia?]: ").strip()
+            if not msg:
+                msg = "¿Dónde quedan las oficinas en Valencia?"
+            print(f"\n⚡ Procesando consulta textual: \"{msg}\"...")
+            res = ejecutar_evaluacion(phone, message_text=msg)
             imprimir_resultado_prueba(res)
-        else:
-            print("❌ Opción inválida.")
 
-    elif opcion == "3":
-        print("\n✍️  Escribe tu consulta textual sobre agencias:")
-        msg = input("👉 Consulta [Default: ¿Dónde quedan las oficinas en Valencia?]: ").strip()
-        if not msg:
-            msg = "¿Dónde quedan las oficinas en Valencia?"
-        print(f"\n⚡ Procesando consulta textual: \"{msg}\"...")
-        res = ejecutar_evaluacion(phone, message_text=msg)
-        imprimir_resultado_prueba(res)
+        elif opcion == "4":
+            msg = "¿Dónde puedo ir a reclamar o comprar un chip?"
+            print(f"\n⚡ Simulando consulta sin datos de ubicación: \"{msg}\"...")
+            res = ejecutar_evaluacion(phone, message_text=msg)
+            imprimir_resultado_prueba(res)
 
-    elif opcion == "4":
-        msg = "¿Dónde puedo ir a reclamar o comprar un chip?"
-        print(f"\n⚡ Simulando consulta sin datos de ubicación: \"{msg}\"...")
-        res = ejecutar_evaluacion(phone, message_text=msg)
-        imprimir_resultado_prueba(res)
-
-    elif opcion == "5":
-        print("\n📦 Inyectando Payload Oficial Evolution API ('messages.upsert' con 'locationMessage'):")
-        sample_evo = {
-            "event": "messages.upsert",
-            "instance": "Viki LPGTEC",
-            "data": {
-                "key": {"remoteJid": f"58{phone[1:]}@s.whatsapp.net", "id": "3EB0TESTING_PAYLOAD"},
-                "pushName": "Evaluador Pre-Producción",
-                "message": {
-                    "locationMessage": {
-                        "degreesLatitude": 10.4960,
-                        "degreesLongitude": -66.8530,
-                        "name": "Altamira Caracas"
-                    }
-                },
-                "source": "ios"
+        elif opcion == "5":
+            print("\n📦 Inyectando Payload Oficial Evolution API ('messages.upsert' con 'locationMessage'):")
+            sample_evo = {
+                "event": "messages.upsert",
+                "instance": "Viki LPGTEC",
+                "data": {
+                    "key": {"remoteJid": f"58{phone[1:]}@s.whatsapp.net", "id": "3EB0TESTING_PAYLOAD"},
+                    "pushName": "Evaluador Pre-Producción",
+                    "message": {
+                        "locationMessage": {
+                            "degreesLatitude": 10.4960,
+                            "degreesLongitude": -66.8530,
+                            "name": "Altamira Caracas"
+                        }
+                    },
+                    "source": "ios"
+                }
             }
-        }
-        print("📄 Payload JSON:")
-        print(json.dumps(sample_evo, indent=2))
-        
-        norm = N8nWebhookPayloadExtractor.extract_universal(sample_evo)
-        res_exec = N8nWebhookPayloadExtractor.execute_in_movilnet_core(norm)
-        
-        print("\n" + "═" * 78)
-        print("📊 RESPUESTA DEL NÚCLEO MOVILNET PARA EL EGRESS DE N8N:")
-        print("═" * 78)
-        print(f"Estado:              {res_exec['status']}")
-        print(f"Latencia:            {res_exec['latency_ms']:.2f} ms")
-        print(f"Tokens Consumidos:   {res_exec['tokens_cost_usd']} USD (Zero Cost)")
-        print(f"Intención:           {res_exec['intent']}")
-        print("\n📩 [TEXTO EGRESS WHATSAPP]:\n")
-        print(res_exec["reply_text"])
-        print("\n" + "═" * 78 + "\n")
+            norm = N8nWebhookPayloadExtractor.extract_universal(sample_evo)
+            res_exec = N8nWebhookPayloadExtractor.execute_in_movilnet_core(norm)
+            
+            print("\n" + "═" * 78)
+            print("📊 RESPUESTA DEL NÚCLEO MOVILNET PARA EL EGRESS DE N8N:")
+            print("═" * 78)
+            print(f"Estado:              {res_exec['status']}")
+            print(f"Latencia:            {res_exec['latency_ms']:.2f} ms")
+            print(f"Tokens Consumidos:   {res_exec['tokens_cost_usd']} USD (Zero Cost)")
+            print(f"Intención:           {res_exec['intent']}")
+            print("\n📩 [TEXTO EGRESS WHATSAPP]:\n")
+            print(res_exec["reply_text"])
+            print("\n" + "═" * 78 + "\n")
+        else:
+            print("❌ Opción no reconocida.")
+
+        # Preguntar si desea realizar otra prueba
+        try:
+            otro = input("🔄 ¿Deseas realizar otra prueba? (s/n) [Default: s]: ").strip().lower()
+            if otro in ("n", "no", "salir", "exit", "q"):
+                print("\n👋 ¡Gracias por realizar las pruebas pre-producción!")
+                break
+            print("\n" + "—" * 78 + "\n")
+        except (KeyboardInterrupt, EOFError):
+            print("\n👋 Saliendo del simulador...")
+            break
 
 
 def run_self_test():
