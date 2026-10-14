@@ -1,8 +1,8 @@
 # PUNTO DE CONTROL — SESIÓN ACTIVA (MOVILNET ↔ PROTOCOLO DECAGONAL CERO ERRORES)
 - **Fecha/Hora:** 2026-10-14 17:12 VET | **Capítulos Bitácora:** 183 al 196 (Desacoplamiento Celular Físico Zero-Phone, Regla Única Línea Central +58 424 153 3712, Supresión de Tarjetas Falsas `linkPreview`, Despliegue en Render, Centro de Monitoreo :8010, Blindaje Inmutable de Producción `v1.0.0-prod-sealed`, Diagnóstico Forense Estado 'PENDING' en Evolution API, Regla General de Cero Adivinación y Datos Faltantes, Clasificador "Saludo Puro" vs "Consulta Compuesta", Módulo Exclusivo NO_USUARIOS_MOVILNET, Erradicación Total de Secuestro Comercial Ciego, Release `v1.0.1-prod-sealed`, Blindaje Absoluto Contra Asunción de Abonado en Líneas No-Movilnet (0414/0424/0412), Promoción Oficial Release `v1.0.2-prod-sealed` e Implementación Perimetral del Firewall Booleano `IS_MOVILNET_SUBSCRIBER` 0416/0426 y Arquitectura `NO_USUARIOS_MOVILNET`).
-- **Estado de Producción:** 🔒 **PROD_LOCKED_AND_SHIELDED** (Rama `main` congelada bajo tag inmutable `v1.0.2-prod-sealed`, sincronizado en GitHub, Render Cloud y n8n Cloud).
+- **Estado de Producción:** 🔒 **PROD_LOCKED_AND_SHIELDED** (Rama `main` congelada bajo tag inmutable `v1.0.3-prod-sealed`, sincronizado en GitHub, Render Cloud y n8n Cloud).
 - **Entorno de Trabajo Activo:** 🛠️ Rama Git **`develop`** (Desarrollo y pruebas locales activas).
-- **Versión de Producción:** `v1.0.2-carrier-enterprise` (Tag `v1.0.2-prod-sealed`, Health 200 OK en Render).
+- **Versión de Producción:** `v1.0.3-carrier-enterprise` (Tag `v1.0.3-prod-sealed`, Health 200 OK en Render).
 - **Estado de Calidad:** 100% PASS en todas las suites de arquitectura, PWA, clasificación compuesta, firewall perimetral booleano, guardarraíles y reencuentros (0 fallos).
 - **Línea Oficial Única Auditada del Asistente (El '1' en N <-> 1):** `+58 424 153 3712` (`0424-1533712`, `584241533712@s.whatsapp.net`, identidad `MOVI`).
 - **Directiva Soberana Inviolable:** Erradicación total de números no oficiales. Segmentación absoluta:
