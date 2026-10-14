@@ -29,6 +29,9 @@ from core.geo_catalog import (
     DB_PATH,
     VENEZUELA_TERRITORIAL_DIVISIONS,
     haversine_distance_meters,
+    find_nearest_movilnet_agency,
+    find_agencies_by_city_or_state,
+    is_point_in_venezuela,
     init_geo_database
 )
 
@@ -410,6 +413,73 @@ def mcp_geo_validate_boundaries(
 
 
 # ============================================================================
+# 5. Herramienta MCP: Búsqueda de la Agencia Movilnet Más Cercana (GPS)
+# ============================================================================
+
+def mcp_geo_find_nearest_agency(
+    latitude: float,
+    longitude: float,
+    max_radius_km: float = 150.0
+) -> Dict[str, Any]:
+    """
+    [MCP Tool] Encuentra la Oficina Comercial o Agencia Movilnet más cercana
+    a las coordenadas GPS WGS84 proporcionadas (latitud, longitud).
+    Calcula distancia Haversine, tiempos de traslado y enlace de Google Maps.
+    """
+    start_time = time.time()
+    nearest = find_nearest_movilnet_agency(lat=latitude, lon=longitude, max_radius_km=max_radius_km)
+    exec_ms = round((time.time() - start_time) * 1000, 2)
+
+    if nearest and "error" in nearest:
+        return {
+            "success": False,
+            "error_code": nearest["error"],
+            "message": nearest["message"],
+            "execution_ms": exec_ms
+        }
+
+    if not nearest:
+        return {
+            "success": True,
+            "found": False,
+            "message": f"No se encontraron oficinas comerciales Movilnet en un radio de {max_radius_km} km.",
+            "agency": None,
+            "execution_ms": exec_ms
+        }
+
+    return {
+        "success": True,
+        "found": True,
+        "query_coordinates": {"latitude": latitude, "longitude": longitude},
+        "agency": nearest,
+        "execution_ms": exec_ms
+    }
+
+
+# ============================================================================
+# 6. Herramienta MCP: Búsqueda de Agencias Movilnet por Ciudad o Zona (Texto)
+# ============================================================================
+
+def mcp_geo_find_agencies_by_city(
+    query: str,
+    limit: int = 5
+) -> Dict[str, Any]:
+    """
+    [MCP Tool] Busca oficinas comerciales y agencias Movilnet por nombre de ciudad,
+    estado, municipio o palabra clave geográfica (ej: 'Maracaibo', 'Valencia', 'Caracas').
+    """
+    start_time = time.time()
+    results = find_agencies_by_city_or_state(query=query, limit=limit)
+    return {
+        "success": True,
+        "query": query,
+        "total_found": len(results),
+        "agencies": results,
+        "execution_ms": round((time.time() - start_time) * 1000, 2)
+    }
+
+
+# ============================================================================
 # Servidor MCP Despachador (GeoVenezuelaMcpServer)
 # ============================================================================
 
@@ -421,6 +491,8 @@ class GeoVenezuelaMcpServer:
         "mcp_geo_structured_query": mcp_geo_structured_query,
         "mcp_geo_ingest_feature": mcp_geo_ingest_feature,
         "mcp_geo_validate_boundaries": mcp_geo_validate_boundaries,
+        "mcp_geo_find_nearest_agency": mcp_geo_find_nearest_agency,
+        "mcp_geo_find_agencies_by_city": mcp_geo_find_agencies_by_city,
     }
 
     @classmethod
@@ -435,7 +507,7 @@ class GeoVenezuelaMcpServer:
                         "latitude": {"type": "number", "description": "Latitud WGS84"},
                         "longitude": {"type": "number", "description": "Longitud WGS84"},
                         "radius_meters": {"type": "integer", "description": "Radio en metros de búsqueda (ej. 2000)", "default": 2500},
-                        "category": {"type": "string", "description": "Filtro: 'farmacia', 'salud_clinica', 'comercio', 'edificio_corporativo', 'perros_calientes'"},
+                        "category": {"type": "string", "description": "Filtro: 'oficina_comercial_movilnet', 'farmacia', 'salud_clinica', 'comercio', 'edificio_corporativo', 'perros_calientes'"},
                         "limit": {"type": "integer", "description": "Número máximo de resultados", "default": 10}
                     },
                     "required": ["latitude", "longitude"]
@@ -482,6 +554,31 @@ class GeoVenezuelaMcpServer:
                     },
                     "required": ["latitude", "longitude", "declared_state", "declared_municipality"]
                 }
+            },
+            {
+                "name": "mcp_geo_find_nearest_agency",
+                "description": "Encuentra la Agencia u Oficina Comercial de Movilnet más cercana a partir de coordenadas GPS (latitud, longitud).",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "latitude": {"type": "number", "description": "Latitud WGS84 del usuario"},
+                        "longitude": {"type": "number", "description": "Longitud WGS84 del usuario"},
+                        "max_radius_km": {"type": "number", "description": "Radio máximo de búsqueda en kilómetros", "default": 150.0}
+                    },
+                    "required": ["latitude", "longitude"]
+                }
+            },
+            {
+                "name": "mcp_geo_find_agencies_by_city",
+                "description": "Busca oficinas comerciales de Movilnet por nombre de ciudad, estado o zona (ej: 'Maracaibo', 'Valencia', 'Caracas').",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "query": {"type": "string", "description": "Nombre de ciudad, estado o zona"},
+                        "limit": {"type": "integer", "description": "Máximo de resultados", "default": 5}
+                    },
+                    "required": ["query"]
+                }
             }
         ]
 
@@ -519,7 +616,25 @@ if __name__ == "__main__":
     args = parser.parse_args()
     if args.test:
         server = GeoVenezuelaMcpServer()
+        # Test 1: Búsqueda genérica espacial
         resp = server.handle_request("mcp_geo_spatial_search", {"latitude": 10.4958, "longitude": -66.8530, "radius_meters": 2000})
         assert resp["result"]["success"] is True, "Fallo en MCP Geo search"
-        print(f"✅ [MCP_GEO_TOOLS]: Auto-verificación superada ({len(resp['result']['results'])} POIs encontrados en {resp['execution_ms']} ms).")
+
+        # Test 2: Búsqueda de agencia Movilnet más cercana por GPS (Altamira)
+        resp_agency = server.handle_request("mcp_geo_find_nearest_agency", {"latitude": 10.4960, "longitude": -66.8530})
+        assert resp_agency["result"]["success"] is True, "Fallo en MCP find nearest agency"
+        assert resp_agency["result"]["found"] is True
+        assert "Centro Plaza" in resp_agency["result"]["agency"]["name"]
+
+        # Test 3: Búsqueda de agencias por texto de ciudad (Maracaibo)
+        resp_city = server.handle_request("mcp_geo_find_agencies_by_city", {"query": "Maracaibo"})
+        assert resp_city["result"]["success"] is True, "Fallo en MCP find agencies by city"
+        assert resp_city["result"]["total_found"] >= 2
+
+        # Test 4: Rechazo fuera de Venezuela
+        resp_out = server.handle_request("mcp_geo_find_nearest_agency", {"latitude": 40.7128, "longitude": -74.0060}) # NY
+        assert resp_out["result"]["success"] is False
+        assert resp_out["result"]["error_code"] == "ERR_OUTSIDE_VENEZUELA"
+
+        print(f"✅ [MCP_GEO_TOOLS]: Auto-verificación superada (4 pruebas superadas con éxito).")
 

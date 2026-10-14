@@ -45,6 +45,7 @@ if str(PROJECT_ROOT) not in sys.path:
 
 from core.carrier_funnel_classifier import CarrierFunnelClassifier, Carrier
 from core.greeting_compound_classifier import GreetingCompoundClassifier, MessageCategory
+from core.geo_catalog import find_nearest_movilnet_agency, find_agencies_by_city_or_state
 
 NON_SOLICITED_PROPAGANDA_GUARD = "NON_SOLICITED_PROPAGANDA_GUARD"
 PROSPECT_TRIAL_LIMIT_REACHED = "PROSPECT_TRIAL_LIMIT_REACHED"
@@ -215,15 +216,24 @@ class FastPathIntentInterceptor:
             return "GUIA_PAGO_C2P"
 
 
-        # 4. Consulta de saldo y cupos (Se evalúa ANTES de SALUDO_BIENVENIDA para que 'Hola cuál es mi saldo' sea SALDO_CUPO)
+        # 4. Localizador de Oficinas y Agencias Movilnet (Geoespacial)
+        if any(w in text or w in normalized_text for w in [
+            "oficina", "oficinas", "agencia", "agencias", "sucursal", "sucursales",
+            "sede comercial", "donde queda movilnet", "donde estan ubicados", "donde estan las oficinas",
+            "donde queda una oficina", "atencion presencial", "direccion de movilnet", "donde ir a movilnet",
+            "oficina mas cercana", "agencia mas cercana"
+        ]):
+            return "LOCALIZADOR_OFICINAS_TELCO"
+
+        # 5. Consulta de saldo y cupos (Se evalúa ANTES de SALUDO_BIENVENIDA para que 'Hola cuál es mi saldo' sea SALDO_CUPO)
         if any(w in text or w in normalized_text for w in ["saldo", "cuanto debo", "megas me quedan", "mis megas", "fecha de corte", "mi saldo", "consultar saldo", "balance"]):
             return "SALDO_CUPO"
 
-        # 5. Catálogo de planes
+        # 6. Catálogo de planes
         if any(w in text or w in normalized_text for w in ["plan", "planes", "plan activo", "inteliplan", "catalogo de planes", "que planes tienen", "tarifas de planes"]):
             return "CATALOGO_PLANES"
 
-        # 6. Saludos y Bienvenida:
+        # 7. Saludos y Bienvenida:
         # Se evalúa formalmente con GreetingCompoundClassifier.
         # ÚNICAMENTE si el mensaje es un saludo puro (sin dudas, preguntas o verbos adicionales)
         # se devuelve SALUDO_BIENVENIDA. Si es una consulta compuesta o libre, se devuelve None
@@ -580,11 +590,129 @@ class FastPathIntentInterceptor:
             "Tu línea quedará protegida inmediatamente contra consumos no autorizados. 🔒"
         )
 
-    def intercept(self, message_text: str, phone_number: str) -> FastPathResolution:
+    def _resolve_offices(
+        self,
+        phone: str,
+        message_text: str,
+        latitude: Optional[float] = None,
+        longitude: Optional[float] = None
+    ) -> str:
+        """
+        Resuelve la localización de oficinas comerciales y agencias de atención Movilnet:
+        - Si recibe coordenadas GPS WGS84: calcula la agencia más cercana, distancia, tiempos y Google Maps.
+        - Si el texto menciona una ciudad o estado: busca y lista las agencias de esa zona.
+        - Si no indica GPS ni ciudad: aplica la Regla Inviolable de Cero Adivinación y solicita ubicación o ciudad.
+        - Diferencia el copy comercial según is_movilnet_subscriber (autogestión abonado vs captación prospecto).
+        """
+        clean_phone = CarrierFunnelClassifier.clean_msisdn(phone) or phone
+        carrier_enum, display_name, is_comp = CarrierFunnelClassifier.identify_carrier(clean_phone)
+        is_movilnet = (not is_comp) and (carrier_enum == Carrier.MOVILNET)
+        pwa_suffix = self.build_pwa_link_suffix(clean_phone)
+
+        # 1. Caso Coordenadas GPS directas
+        if latitude is not None and longitude is not None:
+            agency_data = find_nearest_movilnet_agency(latitude, longitude)
+            if agency_data and agency_data.get("error") == "ERR_OUTSIDE_VENEZUELA":
+                return (
+                    "📍 **Localizador de Agencias Movilnet 4GMAX:**\n\n"
+                    "Detectamos que las coordenadas compartidas se encuentran fuera de la República Bolivariana de Venezuela. "
+                    "Nuestra red de atención presencial opera exclusivamente dentro del territorio nacional.\n\n"
+                    "Si te encuentras en Venezuela, por favor comparte nuevamente tu ubicación actual por WhatsApp o escribe el nombre de tu ciudad."
+                    f"{pwa_suffix}"
+                )
+
+            if agency_data and "name" in agency_data:
+                name = agency_data["name"]
+                addr = agency_data["address"]
+                hours = agency_data.get("opening_hours", "Lunes a Sábado 09:00 - 17:00")
+                dist_km = agency_data.get("distance_km", 0.0)
+                walk_min = agency_data.get("walking_minutes_est", 1)
+                drive_min = agency_data.get("driving_minutes_est", 1)
+                gmaps = agency_data.get("google_maps_url", "")
+
+                if is_movilnet:
+                    intro = f"📍 **Agencia Movilnet más cercana a tu ubicación ({dist_km} km):**\n\n"
+                    servicios = (
+                        "• **Trámites Disponibles:** Reposición de SIM 4GMAX, cambio de plan, soporte técnico, "
+                        "actualización de datos y recargas Pago Móvil C2P."
+                    )
+                else:
+                    intro = (
+                        f"📍 **Agencia Movilnet más cercana a tu ubicación ({dist_km} km):**\n"
+                        f"*(Abonado {display_name} - Portabilidad 4GMAX)*\n\n"
+                    )
+                    servicios = (
+                        "• **Trámites Disponibles:** Tramitación presencial de Portabilidad Numérica, "
+                        "entrega de chip SIM físico 4GMAX con 10 GB de bono de bienvenida y asesoría de ahorro."
+                    )
+
+                return (
+                    f"{intro}"
+                    f"🏢 **{name}**\n"
+                    f"📫 **Dirección:** {addr}\n"
+                    f"⏰ **Horario:** {hours}\n"
+                    f"🚶‍♂️ **A pie:** ~{walk_min} min | 🚗 **En vehículo:** ~{drive_min} min\n\n"
+                    f"{servicios}\n\n"
+                    f"🗺️ **Cómo llegar (Google Maps):**\n{gmaps}"
+                    f"{pwa_suffix}"
+                )
+
+        # 2. Caso Texto con Ciudad / Estado
+        text_lower = message_text.lower()
+        cleaned_query = re.sub(
+            r"\b(oficina|oficinas|agencia|agencias|sucursal|sucursales|sede|sedes|donde|queda|estan|ubicados|en|la|el|los|las|de|movilnet|atencion|presencial|quiero|ir|a|una|direccion|por|favor)\b",
+            " ",
+            text_lower
+        ).strip()
+
+        agencies = []
+        if cleaned_query:
+            agencies = find_agencies_by_city_or_state(cleaned_query, limit=3)
+        if not agencies:
+            for place in ["caracas", "chacao", "baruta", "maracaibo", "valencia", "barquisimeto", "puerto la cruz", "maracay", "san cristobal", "zulia", "carabobo", "lara", "anzoategui", "aragua", "tachira"]:
+                if place in text_lower:
+                    agencies = find_agencies_by_city_or_state(place, limit=3)
+                    if agencies:
+                        break
+
+        if agencies:
+            body = f"📍 **Oficinas Comerciales Movilnet encontradas en tu zona:**\n\n"
+            for idx, ag in enumerate(agencies, 1):
+                body += (
+                    f"{idx}. 🏢 **{ag['name']}**\n"
+                    f"   📫 {ag['address']}\n"
+                    f"   ⏰ {ag['opening_hours']}\n"
+                    f"   🗺️ Ruta: {ag['google_maps_url']}\n\n"
+                )
+            if is_movilnet:
+                body += "✨ Recuerda llevar tu Cédula laminada para reposición de chip o gestiones de contrato."
+            else:
+                body += "🎁 ¡Visítanos y activa tu Portabilidad a Movilnet 4GMAX con 10GB de bono de bienvenida gratis!"
+            body += pwa_suffix
+            return body
+
+        # 3. Caso Sin Ciudad ni Coordenadas: Regla Inviolable de Cero Adivinación
+        return (
+            "📍 **Localizador de Oficinas Comerciales y Agencias Movilnet 4GMAX**\n\n"
+            "Para indicarte con precisión la agencia más cercana a ti y su ruta en Google Maps, indícanos:\n\n"
+            "1. 📍 **Comparte tu ubicación actual por WhatsApp:** Presiona el botón de adjuntar (📎 o +) y selecciona *'Ubicación'* -> *'Enviar mi ubicación actual'*.\n"
+            "2. ✍️ **O dinos en qué ciudad o zona estás:** Ejemplos: *'Oficinas en Caracas'*, *'Agencias en Valencia'*, *'Maracaibo'*, *'Barquisimeto'*, *'Puerto La Cruz'*.\n\n"
+            "Te responderemos al instante con la dirección exacta, horarios y cómo llegar. 📶"
+            f"{pwa_suffix}"
+        )
+
+    def intercept(
+        self,
+        message_text: str,
+        phone_number: str,
+        latitude: Optional[float] = None,
+        longitude: Optional[float] = None
+    ) -> FastPathResolution:
         """
         Evalúa el mensaje y retorna FastPathResolution.
         Si can_intercept == True: Se resuelve con 0 tokens en <15ms.
         Si can_intercept == False: Debe continuar al AI Agent de Gemini (previa validación de cuota Freemium).
+        Soporta ubicación GPS directa (latitude, longitude) para LOCALIZADOR_OFICINAS_TELCO.
         """
         import time
         t0 = time.perf_counter()
@@ -593,7 +721,12 @@ class FastPathIntentInterceptor:
         is_movilnet = (not is_comp) and (carrier_enum == Carrier.MOVILNET)
         pipeline = "CORE_MOVILNET_AUTOGESTION" if is_movilnet else "NO_USUARIOS_MOVILNET"
 
-        intent = self.detect_telco_intent(message_text)
+        # Si el usuario envía pin GPS directo, la intención es obligatoriamente LOCALIZADOR_OFICINAS_TELCO
+        if latitude is not None and longitude is not None:
+            intent = "LOCALIZADOR_OFICINAS_TELCO"
+        else:
+            intent = self.detect_telco_intent(message_text)
+
         if not intent:
             # Validar límite mensual Freemium para prospectos No-Movilnet (máx. 3 consultas/mes o 1,000 tokens)
             allowed, queries_used, tokens_used = self.check_and_consume_prospect_trial(phone_number)
@@ -631,6 +764,9 @@ class FastPathIntentInterceptor:
             else:
                 source = "MOVILNET_SUBSCRIBER_MENU"
 
+        elif intent == "LOCALIZADOR_OFICINAS_TELCO":
+            resp = self._resolve_offices(phone_number, message_text, latitude, longitude)
+            source = "GEO_SPATIAL_MOVILNET_OFFICES"
         elif intent == "SALDO_CUPO":
             resp = self._resolve_balance(phone_number)
             source = "SQLITE_BALANCES_OCS"
@@ -673,6 +809,8 @@ def main():
     parser.add_argument("--demo", action="store_true", help="Demostración con casos de uso en vivo")
     parser.add_argument("--msg", type=str, help="Mensaje del usuario")
     parser.add_argument("--phone", type=str, default="04160000001", help="Número de teléfono")
+    parser.add_argument("--lat", type=float, help="Latitud GPS WGS84")
+    parser.add_argument("--lon", type=float, help="Longitud GPS WGS84")
     args = parser.parse_args()
 
     interceptor = FastPathIntentInterceptor()
@@ -748,16 +886,44 @@ def main():
         assert r7.tokens_consumed == 0
         assert "Movilnet 4GMAX" in r7.response_text
 
-        print("✅ [TEST PASS] Todos los invariantes de FastPathIntentInterceptor (incluyendo #13585, #13852 y Freemium SQLite) aprobados con 100% de éxito.")
+        # Test 8: Geoespacial GPS Pin en Altamira Caracas
+        r8 = interceptor.intercept("Ubicación compartida", "04160000001", latitude=10.4960, longitude=-66.8530)
+        assert r8.can_intercept is True, "Debe interceptar GPS pin"
+        assert r8.intent_detected == "LOCALIZADOR_OFICINAS_TELCO"
+        assert "Centro Plaza" in r8.response_text or "Torre El Rosal" in r8.response_text
+        assert "google.com/maps" in r8.response_text
+
+        # Test 9: Geoespacial por texto con ciudad (Valencia)
+        r9 = interceptor.intercept("¿Dónde quedan las oficinas en Valencia?", "04141234567")
+        assert r9.can_intercept is True
+        assert r9.intent_detected == "LOCALIZADOR_OFICINAS_TELCO"
+        assert "Metrópolis" in r9.response_text or "Sambil Valencia" in r9.response_text
+
+        # Test 10: Geoespacial Cero Adivinación (sin ciudad ni GPS)
+        r10 = interceptor.intercept("¿Dónde queda una oficina de atención?", "04160000001")
+        assert r10.can_intercept is True
+        assert r10.intent_detected == "LOCALIZADOR_OFICINAS_TELCO"
+        assert "Comparte tu ubicación actual por WhatsApp" in r10.response_text
+        assert "dinos en qué ciudad o zona estás" in r10.response_text
+
+        # Test 11: Geoespacial GPS fuera de Venezuela
+        r11 = interceptor.intercept("Ubicación compartida", "04160000001", latitude=4.7110, longitude=-74.0721) # Bogotá
+        assert r11.can_intercept is True
+        assert "fuera de la República Bolivariana de Venezuela" in r11.response_text
+
+        print("✅ [TEST PASS] Todos los 11 invariantes de FastPathIntentInterceptor (incluyendo Geoespacial y Cero Adivinación) aprobados con 100% de éxito.")
         return
 
     if args.demo or args.msg:
         msg = args.msg or "¿Cuál es mi saldo actual y cuántos megas me quedan?"
         phone = args.phone
-        res = interceptor.intercept(msg, phone)
+        lat = args.lat
+        lon = args.lon
+        res = interceptor.intercept(msg, phone, latitude=lat, longitude=lon)
         print(f"\n⚡ Resultado de Intercepción Fast-Path:")
         print(f"   Mensaje:          '{msg}'")
         print(f"   Teléfono:          {phone}")
+        print(f"   GPS:               lat={lat}, lon={lon}")
         print(f"   ¿Interceptado?:    {res.can_intercept}")
         print(f"   Intención:         {res.intent_detected}")
         print(f"   Tokens Consumidos: {res.tokens_consumed} tokens (Zero-Token)")
