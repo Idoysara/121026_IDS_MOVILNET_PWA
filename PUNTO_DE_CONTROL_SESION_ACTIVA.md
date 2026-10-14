@@ -1,5 +1,5 @@
 # PUNTO DE CONTROL — SESIÓN ACTIVA (MOVILNET ↔ PROTOCOLO DECAGONAL CERO ERRORES)
-- **Fecha/Hora:** 2026-10-14 13:46 VET | **Capítulos Bitácora:** 183 al 190 (Desacoplamiento Celular Físico Zero-Phone, Regla Única Línea Central +58 424 153 3712 y Erradicación Total de Números Ajenos, Auditoría de Caracteres WhatsApp y Supresión de Tarjetas Falsas `linkPreview`, Reset de Límites Freemium, Despliegue en Render `dep-db7qb57avr4c7396gv9g` en Commit `c74f5c0`, Verificación del Centro de Monitoreo :8010, Restauración de Visualización Omnicanal N <--> 1 en Conversatorio Web, Integración Omnicanal PWA Móvil/Web y Blindaje Inmutable de Producción bajo Tag `v1.0.0-prod-sealed`).
+- **Fecha/Hora:** 2026-10-14 14:40 VET | **Capítulos Bitácora:** 183 al 191 (Desacoplamiento Celular Físico Zero-Phone, Regla Única Línea Central +58 424 153 3712 y Erradicación Total de Números Ajenos, Auditoría de Caracteres WhatsApp y Supresión de Tarjetas Falsas `linkPreview`, Reset de Límites Freemium, Despliegue en Render `dep-db7qb57avr4c7396gv9g` en Commit `c74f5c0`, Verificación del Centro de Monitoreo :8010, Restauración de Visualización Omnicanal N <--> 1 en Conversatorio Web, Integración Omnicanal PWA Móvil/Web, Blindaje Inmutable de Producción bajo Tag `v1.0.0-prod-sealed` y Diagnóstico Forense Estado 'PENDING' en Evolution API / n8n Cloud con Sincronización en Vivo).
 - **Estado de Producción:** 🔒 **PROD_LOCKED_AND_SHIELDED** (Rama `main` congelada bajo tag `v1.0.0-prod-sealed`, Commit `c33a56e`, PROHIBIDO MODIFICAR).
 - **Entorno de Trabajo Activo:** 🛠️ Rama Git **`develop`** (Desarrollo y pruebas locales activas).
 - **Versión de Producción:** `v1.0.0-carrier-enterprise` (Tag `v1.0.0-prod-sealed`, Render Deploy `dep-db7qb57avr4c7396gv9g`, Health 200 OK).
@@ -11,7 +11,7 @@
   * **Servidor en la Nube Blindado (Render):** `https://movilnet-core.onrender.com` (`/health` responde `healthy`, DB `CONNECTED`, Uptime >950s).
   * **Portal PWA Móvil 24/7:** `https://movilnet-core.onrender.com/pwa` (HTTP 200 OK).
   * **Orquestador n8n Cloud:** `https://n8n.lpgtec.net/workflow/sNMbtiEiTkuQ9OCY` (Webhook activo en `/webhook/messages_upsert4`).
-  * **Centro de Monitoreo Conversacional Local (:8010):** `http://localhost:8010/ui/monitor/conversatorio.html` (Servidor activo en `develop` con demonio poller n8n cada 2.5s, 10 abonados reales indexados, 249 trazas en vivo).
+  * **Centro de Monitoreo Conversacional Local (:8010):** `http://localhost:8010/ui/monitor/conversatorio.html` (Servidor activo en `develop` con demonio poller n8n desconfinado cada 2.5s, 11 abonados indexados, 263 trazas en vivo).
   * **Aislamiento de Puertos (`agy-port-guardian`):** Puerto 8000 reservado para Docker DSS GPS. Movilnet Core en puerto dedicado 8010.
 
 - **Resolución Forense Omnicanal (Capítulos 188, 189 y 190):**
