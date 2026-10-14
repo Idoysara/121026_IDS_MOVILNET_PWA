@@ -2720,6 +2720,16 @@ class MovilnetAPIService:
                 status, payload = self.handle_get_banks()
                 return status, resp_headers, json.dumps(payload).encode("utf-8")
 
+            if clean_path in ["/api/v1/rules/status", "/rules/status"]:
+                from core.department_rule_engine import DepartmentRuleEngine
+                telemetry = DepartmentRuleEngine.get_instance().get_status_telemetry()
+                return 200, resp_headers, json.dumps(telemetry, ensure_ascii=False).encode("utf-8")
+
+            if clean_path in ["/api/v1/noc/bulletins", "/noc/bulletins"]:
+                from mcp.noc_tools import NocMcpServer
+                bulletins = NocMcpServer().get_proactive_bulletins()
+                return 200, resp_headers, json.dumps({"bulletins": bulletins, "status": "success"}, ensure_ascii=False).encode("utf-8")
+
             if clean_path in ["/api/v1/webhooks/deliveries", "/webhooks/deliveries"]:
                 status, payload = self.handle_webhook_deliveries()
                 return status, resp_headers, json.dumps(payload).encode("utf-8")
@@ -2891,6 +2901,18 @@ class MovilnetAPIService:
                             "timestamp": datetime.now(timezone.utc).isoformat()
                         }
                         return 400, resp_headers, json.dumps(err).encode("utf-8")
+
+            if clean_path in ["/api/v1/rules/reload", "/rules/reload"]:
+                from core.department_rule_engine import DepartmentRuleEngine
+                success, msg, metadata = DepartmentRuleEngine.get_instance().reload_rules()
+                status_code = 200 if success else 422
+                payload = {
+                    "success": success,
+                    "message": msg,
+                    "metadata": metadata,
+                    "timestamp": datetime.now(timezone.utc).isoformat()
+                }
+                return status_code, resp_headers, json.dumps(payload, ensure_ascii=False).encode("utf-8")
 
             if clean_path == "/api/v1/subscribers/balance":
                 status, payload = self.handle_subscriber_balance(json_body)

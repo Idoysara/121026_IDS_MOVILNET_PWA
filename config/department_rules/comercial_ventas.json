@@ -1,0 +1,79 @@
+{
+  "department": "Comercial, Ventas y Mercadeo",
+  "version": "1.0.0",
+  "last_updated": "2026-10-14T07:15:00Z",
+  "description": "Reglas de negocio comerciales, catálogo de planes 4GMAX, bonos promocionales y embudo de portabilidad",
+  "plans_catalog": [
+    {
+      "id": "inteliplan_10gb",
+      "name": "Inteliplan 10GB 4GMAX",
+      "data_quota_gb": 10,
+      "price_bs": 385.50,
+      "minutes_movilnet": "Ilimitados",
+      "minutes_other": 500,
+      "sms": 1000,
+      "description": "Ideal para navegación constante, redes sociales y mensajería en alta velocidad 4GMAX.",
+      "is_active": true
+    },
+    {
+      "id": "inteliplan_20gb",
+      "name": "Inteliplan 20GB 4GMAX Pro",
+      "data_quota_gb": 20,
+      "price_bs": 690.00,
+      "minutes_movilnet": "Ilimitados",
+      "minutes_other": 1000,
+      "sms": 2000,
+      "description": "Para usuarios intensivos, streaming de video y trabajo remoto con máxima prioridad.",
+      "is_active": true
+    },
+    {
+      "id": "inteliplan_50gb",
+      "name": "Inteliplan 50GB Ultra",
+      "data_quota_gb": 50,
+      "price_bs": 1450.00,
+      "minutes_movilnet": "Ilimitados",
+      "minutes_other": 2500,
+      "sms": 5000,
+      "description": "Máxima potencia para creadores de contenido, tethering y empresas.",
+      "is_active": true
+    },
+    {
+      "id": "nocturno_ilimitado",
+      "name": "Navegación Nocturna Ilimitada (11 PM - 6 AM)",
+      "data_quota_gb": 999,
+      "price_bs": 210.00,
+      "minutes_movilnet": 0,
+      "minutes_other": 0,
+      "sms": 0,
+      "description": "Descargas y actualizaciones pesadas sin consumir tu cupo de día.",
+      "is_active": true
+    }
+  ],
+  "portability_campaign": {
+    "is_enabled": true,
+    "welcome_bonus_gb": 10,
+    "bonus_validity_days": 30,
+    "target_carriers": [
+      {
+        "carrier": "movistar",
+        "prefixes": ["0414", "0424"],
+        "pitch": "¡Pámbiate a Movilnet 4GMAX conservando tu número! Recibe 10 GB de bienvenida y tu eSIM digital gratuita."
+      },
+      {
+        "carrier": "digitel",
+        "prefixes": ["0412"],
+        "pitch": "¡Llega a toda Venezuela con Movilnet 4GMAX! Mantén tu número con nuestra eSIM digital y 10 GB de regalo."
+      }
+    ],
+    "esim_activation_url": "https://movilnet-core.onrender.com/ui/pwa_stitch/index.html?action=portability"
+  },
+  "seasonal_promotions": [
+    {
+      "promo_id": "recarga_doble_octubre",
+      "title": "Bono 4GMAX Octubre Victorioso",
+      "multiplier": 1.5,
+      "min_recharge_bs": 150.0,
+      "active": true
+    }
+  ]
+}

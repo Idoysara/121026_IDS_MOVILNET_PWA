@@ -74,6 +74,17 @@ class SemanticRouter:
                 ],
                 mcp_server="mcp_partner_marketplace",
                 description="Beneficios comerciales B2B2C, cupones y servicios públicos aliados"
+            ),
+            Route(
+                name="network_noc",
+                utterances=[
+                    "no tengo señal", "falla en radiobase", "sin cobertura", "problemas de señal",
+                    "datos lentos", "caida de red", "averia de cobertura", "mantenimiento en maracaibo",
+                    "no me levanta 4g", "antena sin servicio", "corte de fibra", "sin datos en mi zona",
+                    "radiobase caida", "sin señal", "falla de red"
+                ],
+                mcp_server="mcp_noc_tools",
+                description="Operaciones de red, radiobases, diagnósticos de señal y avisos del NOC"
             )
         ]
 

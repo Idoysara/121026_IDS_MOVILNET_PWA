@@ -1,19 +1,20 @@
 # PUNTO DE CONTROL — SESIÓN ACTIVA (MOVILNET ↔ PROTOCOLO DECAGONAL CERO ERRORES)
-- **Fecha/Hora:** 2026-10-14 06:30 VET | **Capítulo Bitácora:** 178 (Ambiente Aislado develop, Desacoplamiento de Producción y Regla Inviolable de Blindaje: Cero Pase Autónomo)
+- **Fecha/Hora:** 2026-10-14 07:22 VET | **Capítulo Bitácora:** 179 (Ecosistema Integral de Agentes Departamentales, Suite NOC MCP, Motor Hot-Reload y Certificación 430/430 PASS)
 - **Entorno de Trabajo Activo:** Rama Git **`develop`** (Rastreando `origin/develop`). Físicamente desacoplado de la nube de Producción en Render.
 - **🚨 REGLA INVIOLABLE MANDATORIA DE BLINDAJE DE PRODUCCIÓN (.agents/rules/regla-inviolable-pase-produccion.md):**
-  > *"ESTRICTA PROHIBICIÓN DE PASAR A PRODUCCIÓN SIN INSTRUCCIONES DIRECTAS Y EXPRESAS DEL USUARIO. Antes de cualquier pase a producción autorizado, es MANDATORIO generar una copia completa con respaldo sellado criptográficamente (SHA-256) y certificar el 100% PASS de las 423 pruebas sin fallos."*
-- **Estado de Calidad:** 423 / 423 tests aprobados (100% PASS, 0 fallos en 46 suites).
+  > *"ESTRICTA PROHIBICIÓN DE PASAR A PRODUCCIÓN SIN INSTRUCCIONES DIRECTAS Y EXPRESAS DEL USUARIO. Antes de cualquier pase a producción autorizado, es MANDATORIO generar una copia completa con respaldo sellado criptográficamente (SHA-256) y certificar el 100% PASS de las 430 pruebas sin fallos."*
+- **Estado de Calidad:** 430 / 430 tests aprobados (100% PASS, 0 fallos en 47 suites).
 - **Línea Activa Oficial del Bot (El '1' en N <-> 1):** `+58 424 153 3712` (`0424-1533712`, `584241533712@s.whatsapp.net`, identidad `MOVI`).
 - **Comando Maestro de Prueba Real (1 Clic / Cero Terminal):**
   * Lanzador macOS: `EJECUTAR_PRUEBA_REAL.command` (Doble clic directo).
   * Script CLI Autónomo: `scripts/ejecutar_prueba_real.py` (`--test`, `--no-open`, `--message`, `--timeout`).
   * Suite de Pruebas: `tests/test_ejecutar_prueba_real.py` (4/4 PASS).
   * Aislamiento de Interfaz: Solo abre la Sala de Control (`conversatorio.html`) en la Mac; no abre pestañas de WhatsApp Web, preservando la interacción en el móvil físico.
-- **Arquitectura de Reglas Departamentales Hot-Reload (Capítulo 174):**
+- **Arquitectura de Reglas Departamentales Hot-Reload (Capítulo 179):**
   * Catálogo Declarativo: `config/department_rules/` (5 departamentos: Comercial, Finanzas C2P, Soporte, Seguridad/CONATEL y NOC).
-  * Motor de Recarga: `DepartmentRuleEngine` (<5ms en memoria volátil, `threading.RLock()`, endpoint `/api/v1/rules/reload`).
-  * Validador Soberano: `ACTUALIZAR_REGLAS_DEPARTAMENTALES.command` / `scripts/validate_department_rules.py`.
+  * Motor de Recarga: `DepartmentRuleEngine` (2.14 ms en memoria volátil, `threading.RLock()`, endpoints `/api/v1/rules/reload` y `/api/v1/rules/status`).
+  * Agente y MCP NOC: `api/agents/agent_network_noc.py` y `mcp/noc_tools.py` (`mcp_noc_tools`).
+  * Validador Soberano: `ACTUALIZAR_REGLAS_DEPARTAMENTALES.command` / `scripts/validate_department_rules.py` (--test 100% PASS).
 - **Parametrización Central de Entorno:**
   * Variables en `.env` y `.env.example`: `MOVILNET_ACTIVE_BOT_PHONE=0424-1533712` y `MOVILNET_BOT_NAME=MOVI`.
   * Gestor Singleton: `core/system_config.py` (`SystemConfigManager`, `get_active_bot_phone()`, `get_allowed_bot_senders()`).

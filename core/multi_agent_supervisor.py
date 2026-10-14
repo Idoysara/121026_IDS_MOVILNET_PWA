@@ -23,10 +23,13 @@ from core.semantic_router import SemanticRouter
 from mcp.telco_tools import TelcoMcpServer
 from mcp.fintech_tools import FintechMcpServer
 from mcp.whatsapp_tools import WhatsAppMcpServer
+from mcp.noc_tools import NocMcpServer
+from core.department_rule_engine import DepartmentRuleEngine
 
 _TELCO_SERVER = TelcoMcpServer()
 _FINTECH_SERVER = FintechMcpServer()
 _WHATSAPP_SERVER = WhatsAppMcpServer()
+_NOC_SERVER = NocMcpServer()
 
 
 class SubAgentWorker:
@@ -74,6 +77,16 @@ class SubAgentWorker:
                 })
                 mcp_result = resp.get("result")
 
+        elif self.domain == "network_noc":
+            region = context.get("state", "Distrito Capital")
+            msg_lower = message.lower()
+            for r in ["maracaibo", "zulia", "valencia", "carabobo", "caracas", "miranda", "lara", "barquisimeto"]:
+                if r in msg_lower:
+                    region = r.capitalize()
+                    break
+            resp = _NOC_SERVER.handle_request("mcp_noc_get_regional_status", {"region": region})
+            mcp_result = resp.get("result")
+
         return {
             "worker": self.name,
             "domain": self.domain,
@@ -117,8 +130,15 @@ class MultiAgentSupervisor:
                 domain="partner_marketplace",
                 system_prompt="Especialista en promociones comerciales aliadas, cines y servicios públicos.",
                 mcp_server="mcp_partner_marketplace"
+            ),
+            "network_noc": SubAgentWorker(
+                name="NetworkNocAgent",
+                domain="network_noc",
+                system_prompt="Especialista en operaciones de red, radiobases, diagnósticos de señal y mitigación proactiva de averías masivas.",
+                mcp_server="mcp_noc_tools"
             )
         }
+        self.rule_engine = DepartmentRuleEngine.get_instance()
 
     def process_turn(self, user_message: str, subscriber_context: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         """
@@ -126,7 +146,8 @@ class MultiAgentSupervisor:
           1. Enrutamiento Semántico (<15ms).
           2. Smart MCP Gateway: Filtrado de herramientas por dominio.
           3. Delegación al Subagente Especialista (Maker).
-          4. Recomendación Contextual TM Forum (TMF680).
+          4. Verificación de Reglas Departamentales (Hot-Reload).
+          5. Recomendación Contextual TM Forum (TMF680).
         """
         # 1. Clasificación Semántica
         domain, target_mcp, confidence = self.router.route(user_message)
@@ -137,7 +158,13 @@ class MultiAgentSupervisor:
         # 3. Ejecución del Worker en Sandboxing
         execution = worker.execute(user_message, subscriber_context or {})
 
-        # 4. Regla TM Forum TMF680 (Recomendación Proactiva de Paquetes si los megas son bajos)
+        # 4. Verificación de Boletín Proactivo del NOC (DepartmentRuleEngine)
+        noc_bulletin = None
+        if domain in ["network_noc", "telco_core"]:
+            ctx_state = (subscriber_context or {}).get("state", "")
+            noc_bulletin = self.rule_engine.find_proactive_bulletin_for_region(user_message + " " + ctx_state)
+
+        # 5. Regla TM Forum TMF680 (Recomendación Proactiva de Paquetes si los megas son bajos)
         recommendation = None
         if subscriber_context and subscriber_context.get("remaining_data_mb", 1000) < 500:
             recommendation = {
@@ -157,6 +184,7 @@ class MultiAgentSupervisor:
             },
             "delegated_worker": worker.name,
             "execution_details": execution,
+            "noc_bulletin": noc_bulletin,
             "tm_forum_recommendation": recommendation
         }
 
