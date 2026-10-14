@@ -318,15 +318,12 @@ def update_n8n_workflow(file_path: Path = WORKFLOW_PATH) -> bool:
                     `1. 📍 *Comparte tu ubicación actual por WhatsApp:* Presiona el botón de adjuntar (📎 o +) y selecciona *'Ubicación'* -> *'Enviar mi ubicación actual'*.\\n` +
                     `2. ✍️ *O dinos en qué ciudad o zona estás:* Ejemplos: *'Oficinas en Caracas'*, *'Agencias en Valencia'*, *'Maracaibo'*, *'Barquisimeto'*, *'Puerto La Cruz'*.\\n\\n` +
                     `Te responderemos al instante con la dirección exacta, horarios y cómo llegar. 📶`;
-      }
     }
-
-  // CASO A: SALDO Y FACTURACIÓN"""
-        
+"""
         if "// CASO GEO: LOCALIZADOR DE OFICINAS" not in current_js:
             updated_js = current_js.replace(
-                "  // CASO A: CONSULTA DE SALDO, DEUDA, BALANCE O CORTE",
-                geo_block + "\n\n  // CASO A: CONSULTA DE SALDO, DEUDA, BALANCE O CORTE"
+                "  // CASO A: CONSULTA DE SALDO, DEUDA, BALANCE O CORTE\n  if (/saldo",
+                geo_block + "\n  // CASO A: CONSULTA DE SALDO, DEUDA, BALANCE O CORTE\n  } else if (/saldo"
             )
             router_code["parameters"]["jsCode"] = updated_js
 
