@@ -298,7 +298,7 @@ class NTo1ActivationEngine:
         Demuestra la ausencia de colisiones de memoria y la resiliencia multihilo.
         """
         test_phones = [
-            "04160000001", "04260000002", "04142554590", "04241533712",
+            "04160000001", "04260000002", "04140000003", "04241533712",
             "04169998877", "04261234567", "04128889900", "04165554433"
         ]
         channels = [
@@ -480,9 +480,9 @@ def run_self_verification() -> bool:
     print(f"  ✅ [PASS]: Telegram verificado activó sesión en {tg_res.latency_ms:.2f}ms con $0.00 USD.")
 
     # 4. Test Activación por Android SMS Gateway
-    sms_req = AndroidSmsGatewayAdapter.create_inbound_request("04142554590", "recarga c2p")
+    sms_req = AndroidSmsGatewayAdapter.create_inbound_request("04140000003", "recarga c2p")
     sms_res = engine.process_consultation(sms_req)
-    assert sms_res.session.canonical_msisdn == "04142554590"
+    assert sms_res.session.canonical_msisdn == "04140000003"
     assert sms_res.session.operator == "MOVISTAR"
     print(f"  ✅ [PASS]: Android SMS Gateway activó sesión en {sms_res.latency_ms:.2f}ms con $0.00 USD.")
 
@@ -570,7 +570,7 @@ def main() -> None:
         demo_requests = [
             PWAActivatorAdapter.create_inbound_request("04160000001", "saldo"),
             TelegramActivatorAdapter.create_inbound_request(998877, "584260000002", "planes"),
-            AndroidSmsGatewayAdapter.create_inbound_request("04142554590", "recarga c2p"),
+            AndroidSmsGatewayAdapter.create_inbound_request("04140000003", "recarga c2p"),
             HeaderEnrichmentAdapter.create_inbound_request("584169998877", "saldo")
         ]
         for req in demo_requests:

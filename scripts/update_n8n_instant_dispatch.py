@@ -35,8 +35,7 @@ ROUTER_JS = r'''for (const item of items) {
   }
 
   const prefix = cleanDigits.startsWith('58') ? '0' + cleanDigits.slice(2, 5) : cleanDigits.slice(0, 4);
-  const isVipTestLine = cleanDigits.endsWith('4142554590');
-  const isCompetitor = !isVipTestLine && (prefix === '0414' || prefix === '0424' || prefix === '0412');
+  const isCompetitor = (prefix === '0414' || prefix === '0424' || prefix === '0412');
   const competitorLabel = (prefix === '0414' || prefix === '0424') ? 'Movistar Venezuela' : 'Digitel 4G';
 
   // 3. Saludo dinámico según horario de Venezuela (UTC-4)

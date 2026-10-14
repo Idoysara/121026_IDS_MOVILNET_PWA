@@ -118,8 +118,8 @@ class FastPathIntentInterceptor:
         self.db_path = db_path or DEFAULT_DB_PATH
         self._ensure_prospect_table()
         if os.environ.get("PYTEST_CURRENT_TEST") or "pytest" in sys.modules or "unittest" in sys.modules:
-            self.reset_prospect_trial("04142554590")
-            self.reset_prospect_trial("04142650088")
+            self.reset_prospect_trial("04140000001")
+            self.reset_prospect_trial("04140000002")
 
     def _ensure_prospect_table(self) -> None:
         """Crea o actualiza la tabla prospect_trial_limits en SQLite."""
@@ -657,8 +657,8 @@ def main():
         assert "/ui/pwa_stitch/index.html?carrier=movilnet" in r2.response_text
 
         # Test 3: Pregunta abierta o de cultura general NO debe interceptarse en la 1ra consulta (debe pasar al AI Agent)
-        interceptor.reset_prospect_trial("04142650088")
-        r3 = interceptor.intercept("¿Cómo afectaría el fenómeno del Super Niño a la economía?", "04142650088")
+        interceptor.reset_prospect_trial("04140000002")
+        r3 = interceptor.intercept("¿Cómo afectaría el fenómeno del Super Niño a la economía?", "04140000002")
         assert r3.can_intercept is False, "ERROR: La pregunta libre debió pasar al AI Agent!"
         assert r3.intent_detected == "CONVERSACION_LIBRE"
 

@@ -48,10 +48,8 @@ def build_fixed_workflow(input_json_path: Path, output_json_path: Path) -> dict:
         "    const altJid = key.remoteJidAlt || '';\n"
         "    if (jid.endsWith('@lid') && altJid && !altJid.endsWith('@lid')) {\n"
         "      jid = altJid;\n"
-        "    } else if (jid.endsWith('@lid') && jid.includes('184949982400550')) {\n"
-        "      jid = '584142554590@s.whatsapp.net';\n"
         "    }\n"
-        "    const cleanNum = jid.replace(/@.*/, '').replace(/\\D/g, '') || $json.carrier_phone || '584142554590';\n"
+        "    const cleanNum = jid.replace(/@.*/, '').replace(/\\D/g, '') || $json.carrier_phone || '';\n"
         "    return JSON.stringify({\n"
         '      "number": cleanNum,\n'
         '      "options": {\n'

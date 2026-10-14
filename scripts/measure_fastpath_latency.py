@@ -53,7 +53,7 @@ class Measurement:
 
 CASES: List[Case] = [
     Case("04165551234", "Movilnet", "Hola, deseo consultar mi saldo disponible"),
-    Case("04142650088", "Movistar", "Cuál es mi contrato y plan activo?"),
+    Case("04140000002", "Movistar", "Cuál es mi contrato y plan activo?"),
     Case("04129998877", "Digitel", "Necesito hacer una recarga por pago móvil c2p"),
     Case("04261112233", "Movilnet", "Me robaron el teléfono, necesito bloqueo imei urgente"),
 ]

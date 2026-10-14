@@ -25,7 +25,7 @@ if str(PROJECT_ROOT) not in sys.path:
 
 PHANTOM_NAMES = ["Franclim Arvelo"]
 PHANTOM_PHONES = ["04143301801", "584143301801"]
-GROUND_TRUTH_PHONE = "04142650088"
+GROUND_TRUTH_PHONE = "04160000001"
 GROUND_TRUTH_NAME = "Francisco Landaeta"
 
 try:
@@ -37,7 +37,7 @@ try:
 except Exception:
     CANONICAL_BOT_SENDER = "584241533712@s.whatsapp.net"
     CANONICAL_BOT_PHONE = "04241533712"
-    ALLOWED_BOT_SENDERS = {"584241533712@s.whatsapp.net", "584166251587@s.whatsapp.net"}
+    ALLOWED_BOT_SENDERS = {"584241533712@s.whatsapp.net"}
 
 LIVE_WORKFLOW_FILE = PROJECT_ROOT / "api/n8n_workflows/viki_lpgtec_v2_ids_live.json"
 DB_FILE = PROJECT_ROOT / "db/local_movilnet.db"
@@ -58,7 +58,7 @@ def audit_workflow_evidence() -> Dict[str, Any]:
     actual_msg = pin.get("data", {}).get("message", {}).get("conversation")
 
     sender_ok = actual_sender in ALLOWED_BOT_SENDERS or actual_sender == CANONICAL_BOT_SENDER
-    customer_ok = actual_customer == "584142650088@s.whatsapp.net"
+    customer_ok = actual_customer == "584160000001@s.whatsapp.net"
     name_ok = actual_name == "Francisco Landaeta"
     msg_ok = actual_msg == "Calcular diferencial cambiario"
 
@@ -162,7 +162,7 @@ def run_self_verification() -> bool:
     assert evidence["status"] == "success"
     assert evidence["customer_name"] == GROUND_TRUTH_NAME
     assert "584241533712" in evidence["bot_line"] or "58416" in evidence["bot_line"]
-    assert evidence["customer_line"] == "584142650088@s.whatsapp.net"
+    assert evidence["customer_line"] == "584160000001@s.whatsapp.net"
 
     # 5. Validar que no existen alucinaciones en el código ni tests
     phantoms = scan_for_phantoms_in_code()

@@ -162,17 +162,17 @@ def main():
     parser = argparse.ArgumentParser(description="Aislador Canónico de Sesiones de Chat (Zero-Contamination)")
     parser.add_argument("--test", action="store_true", help="Ejecutar suite de pruebas formales")
     parser.add_argument("--demo", action="store_true", help="Demostración con casos de uso reales")
-    parser.add_argument("--jid", type=str, help="WhatsApp JID a evaluar (ej: 584142554590@s.whatsapp.net)")
-    parser.add_argument("--pushname", type=str, default="Ids", help="Nombre del perfil (ej: Ids)")
+    parser.add_argument("--jid", type=str, help="WhatsApp JID a evaluar (ej: 584140000001@s.whatsapp.net)")
+    parser.add_argument("--pushname", type=str, default="Usuario Demo", help="Nombre del perfil (ej: Usuario Demo)")
     args = parser.parse_args()
 
     if args.test:
         print("🧪 [TEST] Verificando SessionIdentityIsolator (Pilares I al VII)...")
-        # Caso 1: Mismo pushName 'Ids' en dos teléfonos distintos DEBEN tener claves diferentes
-        s1 = SessionIdentityIsolator.isolate_session(remote_jid="584142554590@s.whatsapp.net", push_name="Ids")
-        s2 = SessionIdentityIsolator.isolate_session(remote_jid="584241533712@s.whatsapp.net", push_name="Ids")
+        # Caso 1: Mismo pushName en dos teléfonos distintos DEBEN tener claves diferentes
+        s1 = SessionIdentityIsolator.isolate_session(remote_jid="584140000001@s.whatsapp.net", push_name="Usuario Demo")
+        s2 = SessionIdentityIsolator.isolate_session(remote_jid="584241533712@s.whatsapp.net", push_name="Usuario Demo")
         assert s1.canonical_session_key != s2.canonical_session_key, "ERROR: Colisión detectada entre mismos pushNames!"
-        assert s1.canonical_session_key == "SESSION:E164:584142554590"
+        assert s1.canonical_session_key == "SESSION:E164:584140000001"
         assert s2.canonical_session_key == "SESSION:E164:584241533712"
         assert s1.operator == "MOVISTAR"
         assert s2.operator == "MOVISTAR"
@@ -189,14 +189,14 @@ def main():
         assert s4.operator == "DIGITEL"
 
         # Caso 4: Determinismo del Blind Index
-        s1_again = SessionIdentityIsolator.isolate_session(remote_jid="584142554590@s.whatsapp.net", push_name="Ids")
+        s1_again = SessionIdentityIsolator.isolate_session(remote_jid="584140000001@s.whatsapp.net", push_name="Usuario Demo")
         assert s1.blind_index_hash == s1_again.blind_index_hash
 
         print("✅ [TEST PASS] Todos los invariantes de aislamiento verificados exitosamente (100% OK).")
         return
 
     if args.demo or args.jid:
-        target_jid = args.jid or "584142554590@s.whatsapp.net"
+        target_jid = args.jid or "584140000001@s.whatsapp.net"
         identity = SessionIdentityIsolator.isolate_session(remote_jid=target_jid, push_name=args.pushname)
         print(f"\n📱 Demostración de Aislamiento de Identidad:")
         print(f"   Target JID:             {target_jid}")

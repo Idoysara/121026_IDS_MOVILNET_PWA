@@ -367,14 +367,14 @@ def main():
         sample_notice = {
             "event": "messages.upsert",
             "data": {
-                "key": {"remoteJid": "584142554590@s.whatsapp.net", "fromMe": False},
+                "key": {"remoteJid": "584160000002@s.whatsapp.net", "fromMe": False},
                 "message": {"conversation": "Los mensajes y llamadas están cifrados de extremo a extremo."}
             }
         }
         sample_msg = {
             "event": "messages.upsert",
             "data": {
-                "key": {"remoteJid": "584142650088@s.whatsapp.net", "fromMe": False},
+                "key": {"remoteJid": "584160000001@s.whatsapp.net", "fromMe": False},
                 "message": {"conversation": "Buenas tardes, quiero recargar mi saldo"}
             }
         }

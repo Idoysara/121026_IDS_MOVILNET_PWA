@@ -124,10 +124,10 @@ def run_self_test() -> bool:
         "instance": "Viki LPGTEC",
         "data": {
             "key": {
-                "remoteJid": "584142650088@s.whatsapp.net",
+                "remoteJid": "584160000001@s.whatsapp.net",
                 "id": "DISPATCH-TEST-001"
             },
-            "pushName": "Francisco Landaeta",
+            "pushName": "Abonado Movilnet",
             "message": {
                 "conversation": "Saludo informa contrato"
             }
@@ -135,10 +135,10 @@ def run_self_test() -> bool:
     }
     result = agent.process_inbound_webhook(sample)
     assert result["status"] == "success"
-    assert result["phone"] == "04142650088"
+    assert result["phone"] == "04160000001"
     assert result["intent"] == "CONTRACT_INFO"
     assert "Inteliplan 10GB 4GMAX" in result["reply_text"]
-    assert result["n8n_egress_payload"]["number"] == "584142650088@s.whatsapp.net"
+    assert result["n8n_egress_payload"]["number"] == "584160000001@s.whatsapp.net"
     assert result["n8n_egress_payload"]["instanceId"] == "Viki LPGTEC"
     print("✅ [DISPATCHER AGENT TEST PASS]: Subagente despachador n8n 100% verificado.")
     return True
@@ -158,8 +158,8 @@ if __name__ == "__main__":
             "event": "messages.upsert",
             "instance": "Viki LPGTEC",
             "data": {
-                "key": {"remoteJid": "584142650088@s.whatsapp.net", "id": "SAMPLE-01"},
-                "pushName": "Francisco Landaeta",
+                "key": {"remoteJid": "584160000001@s.whatsapp.net", "id": "SAMPLE-01"},
+                "pushName": "Abonado Movilnet",
                 "message": {"conversation": "Saludo informa contrato"}
             }
         }

@@ -286,7 +286,7 @@ class CloudDeploymentValidator:
             target_file="db/connection.py"
         )
 
-    def generate_magic_link_sample(self, phone: str = "04142554590", base_url: str = "https://movilnet-core.onrender.com") -> str:
+    def generate_magic_link_sample(self, phone: str = "04160000001", base_url: str = "https://movilnet-core.onrender.com") -> str:
         """Genera el enlace mágico de onboarding para WhatsApp con URL pública de la nube."""
         clean_digits = "".join(filter(str.isdigit, phone))
         if clean_digits.startswith("58") and len(clean_digits) == 12:
@@ -313,8 +313,8 @@ class CloudDeploymentValidator:
             "passed_checks": sum(1 for c in checks if c.status == "PASS"),
             "failed_checks": sum(1 for c in checks if c.status == "FAIL"),
             "readiness_status": "READY_FOR_24_7_CLOUD_DEPLOYMENT" if all_passed else "NOT_READY",
-            "sample_magic_link_render": self.generate_magic_link_sample("04142554590", "https://movilnet-core.onrender.com"),
-            "sample_magic_link_custom_domain": self.generate_magic_link_sample("04142554590", "https://autogestion.movilnet.com.ve")
+            "sample_magic_link_render": self.generate_magic_link_sample("04160000001", "https://movilnet-core.onrender.com"),
+            "sample_magic_link_custom_domain": self.generate_magic_link_sample("04160000001", "https://autogestion.movilnet.com.ve")
         }
 
         report = CloudDeploymentAuditReport(
@@ -350,8 +350,8 @@ def run_self_verification() -> bool:
     assert report.summary["readiness_status"] == "READY_FOR_24_7_CLOUD_DEPLOYMENT"
 
     # Validar generación del enlace mágico
-    magic_link = validator.generate_magic_link_sample("04142554590", "https://autogestion.movilnet.com.ve")
-    assert magic_link == "https://autogestion.movilnet.com.ve/ui/pwa_stitch/index.html?phone=04142554590"
+    magic_link = validator.generate_magic_link_sample("04160000001", "https://autogestion.movilnet.com.ve")
+    assert magic_link == "https://autogestion.movilnet.com.ve/ui/pwa_stitch/index.html?phone=04160000001"
     print(f"  ✅ [PASS]: Enlace Mágico validado: {magic_link}")
 
     print("=" * 80)

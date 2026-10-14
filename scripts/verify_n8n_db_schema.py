@@ -106,11 +106,11 @@ def simulate_full_workflow_data_lifecycle() -> Dict[str, Any]:
     """, (instance_id, "http://evolution:8080", "sha256_mock_key_viki", "584241533712@s.whatsapp.net", "04241533712", "CONNECTED"))
 
     # 2. Registrar Contacto (Nodo: Edit Fields / Postgres Chat Memory)
-    remote_jid = "584142650088@s.whatsapp.net"
+    remote_jid = "584160000001@s.whatsapp.net"
     cur.execute("""
         INSERT INTO whatsapp_contacts (remote_jid, phone_national, push_name, instance_id, contact_type)
         VALUES (?, ?, ?, ?, ?);
-    """, (remote_jid, "04142650088", "Francisco Landaeta", instance_id, "NATURAL"))
+    """, (remote_jid, "04160000001", "Usuario Movilnet Test", instance_id, "NATURAL"))
 
     # 3. Registrar Evento Inbound (Nodo: Webhook / If / Edit Fields / Switch)
     event_id = str(uuid.uuid4())
@@ -165,11 +165,11 @@ def simulate_full_workflow_data_lifecycle() -> Dict[str, Any]:
             bridge_id, message_id, msisdn, intent_detected, plan_id,
             balance_ves, data_remaining_mb, latency_ms, tokens_cost_usd
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
-    """, (bridge_id, message_id, "04142650088", "CONTRACT_INFO", "PLAN-4G-INTELIPLAN-10GB", 0.00, 10240, 11.45, 0.0000))
+    """, (bridge_id, message_id, "04160000001", "CONTRACT_INFO", "PLAN-4G-INTELIPLAN-10GB", 0.00, 10240, 11.45, 0.0000))
 
     # 8. Registrar Mensaje de Salida Egress (Nodos: Merge -> Code -> HTTP Request)
     outbound_id = str(uuid.uuid4())
-    reply_text = f"Francisco Landaeta, el diferencial cambiario de hoy es {diff_pct}% (Bs. {diff_bs} por dólar)."
+    reply_text = f"Estimado abonado, el diferencial cambiario de hoy es {diff_pct}% (Bs. {diff_bs} por dólar)."
     cur.execute("""
         INSERT INTO outbound_messages (
             outbound_id, inbound_event_id, instance_id, recipient_jid,
@@ -190,7 +190,7 @@ def simulate_full_workflow_data_lifecycle() -> Dict[str, Any]:
         "lifecycle_verified": True,
         "records_inserted": 8,
         "fk_violations": 0,
-        "subscriber": "Francisco Landaeta (04142650088)",
+        "subscriber": "Usuario Movilnet Test (04160000001)",
         "differential_pct": diff_pct,
         "differential_bs": diff_bs
     }

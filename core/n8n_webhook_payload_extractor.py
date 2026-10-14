@@ -73,7 +73,7 @@ class N8nWebhookPayloadExtractor:
         # Si empieza con 0058 y tiene 14 dígitos (ej: 00584241329949) -> 04241329949
         if cleaned.startswith("0058") and len(cleaned) == 14:
             national = "0" + cleaned[4:]
-        # Si empieza con 58 y tiene 12 dígitos (ej: 584142650088) -> 04142650088
+        # Si empieza con 58 y tiene 12 dígitos (ej: 584140000001) -> 04140000001
         elif cleaned.startswith("58") and len(cleaned) == 12:
             national = "0" + cleaned[2:]
         elif len(cleaned) == 10 and not cleaned.startswith("0"):
@@ -380,11 +380,11 @@ def run_self_verification() -> bool:
         "instance": "Viki LPGTEC",
         "data": {
             "key": {
-                "remoteJid": "584142650088@s.whatsapp.net",
+                "remoteJid": "584160000001@s.whatsapp.net",
                 "fromMe": False,
                 "id": "3EB0C338A1278C695F06"
             },
-            "pushName": "Francisco Landaeta",
+            "pushName": "Abonado Movilnet",
             "message": {
                 "conversation": "Saludo informa contrato"
             },
@@ -394,8 +394,8 @@ def run_self_verification() -> bool:
     }
 
     norm = N8nWebhookPayloadExtractor.extract_universal(sample_evo)
-    assert norm.phone == "04142650088", f"Error en phone: {norm.phone}"
-    assert norm.sender_name == "Francisco Landaeta", f"Error en name: {norm.sender_name}"
+    assert norm.phone == "04160000001", f"Error en phone: {norm.phone}"
+    assert norm.sender_name == "Abonado Movilnet", f"Error en name: {norm.sender_name}"
     assert norm.intent == "CONTRACT_INFO", f"Error en intent: {norm.intent}"
     assert norm.instance_id == "Viki LPGTEC", f"Error en instance: {norm.instance_id}"
 
@@ -439,8 +439,8 @@ if __name__ == "__main__":
             "event": "messages.upsert",
             "instance": "Viki LPGTEC",
             "data": {
-                "key": {"remoteJid": "584142650088@s.whatsapp.net", "id": "3EB0C338A1278C695F06"},
-                "pushName": "Francisco Landaeta",
+                "key": {"remoteJid": "584160000001@s.whatsapp.net", "id": "3EB0C338A1278C695F06"},
+                "pushName": "Abonado Movilnet",
                 "message": {"conversation": "Saludo informa contrato"},
                 "source": "ios"
             }
