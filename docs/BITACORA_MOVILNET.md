@@ -5960,3 +5960,42 @@ Se formalizó la tabla integral de los 5 departamentos (Comercial, Finanzas C2P,
 
 
 
+
+
+---
+
+## 📘 Capítulo 181 — Implementación del Catálogo de 8 Campañas Estacionales de Octubre 2026, Motor Funnel NBA (Nacional y Regional) y Certificación 434/434 Tests (100% PASS)
+**Fecha:** 2026-10-14 | **Gobernanza:** Universal Best Practices Engineering Rule (Pilares I al VII) & Protocolo Decagonal (10 Fases)  
+**Mandato:** Construir 8 campañas de mercadeo digital y embudo estacional para abonados actuales (`0416/0426`), distribuidas rigurosamente en 2 campañas semanales (1 Nacional y 1 Regional) durante las 4 semanas de octubre de 2026, integrándolas en el motor Next-Best-Action de IA y validando con cero alucinación y 100% test pass.
+
+### 🎯 1. Arquitectura de las 8 Campañas Estacionales de Octubre 2026
+Se agregaron 8 campañas formalmente estructuradas y tipadas en `config/department_rules/comercial_ventas.json` y en el agente de embudo comercial `api/agents/agent_marketing_funnel.py`:
+
+| Semana | Fechas | Alcance | Región Objetivo | Campaña / Promo ID | Categoría | Propuesta de Valor y Beneficio | Precio (Bs.) | CTA Interactivo |
+|:---:|:---:|:---:|:---:|:---|:---:|:---|:---:|:---|
+| **Semana 1** | 01 - 07 Oct | **NACIONAL** | Todo el país | `OCT-S1-NAC-REGRESO-CLASES`<br>*(Regreso a Clases Universitario)* | `DATA_UPSELL` | Paquete Estudiantil 10GB extra para investigación, tesis y plataformas universitarias. | Bs. 85,00 | 🎒 Activar Paquete Estudiantil 10GB |
+| **Semana 1** | 01 - 07 Oct | **REGIONAL** | Caracas, Miranda, La Guaira | `OCT-S1-REG-CAPITAL-METRO`<br>*(Ruta Central Caraqueña)* | `DATA_UPSELL` | Bono Capitalino 15GB para streaming y música sin interrupciones en el eje metroplitano central. | Bs. 110,00 | 🏙️ Activar Bono Capitalino 15GB |
+| **Semana 2** | 08 - 15 Oct | **NACIONAL** | Todo el país | `OCT-S2-NAC-12OCT-SOBERANIA`<br>*(Semana de la Resistencia Indígena)* | `C2P_RECHARGE` | Recarga Soberana C2P desde 200 Bs con Bono Patrio de 2GB de navegación libre. | Bs. 200,00 | 🇻🇪 Recargar con Bono Soberano |
+| **Semana 2** | 08 - 15 Oct | **REGIONAL** | Bolívar, Amazonas, Delta Amacuro | `OCT-S2-REG-GUAYANA-ANCESTRAL`<br>*(Ruta Ancestral Guayana)* | `LOYALTY_RETENTION` | Navegación nocturna 100% libre y minutos comunitarios ilimitados en el sur del Orinoco. | Bs. 0,00 (Gratis) | 🌿 Activar Beneficio Ancestral Sur |
+| **Semana 3** | 16 - 23 Oct | **NACIONAL** | Todo el país | `OCT-S3-NAC-LVBP-PLAYBALL`<br>*(¡Play Ball! Arranque LVBP 2026)* | `DATA_UPSELL` | Paquete Fanático LVBP 7GB adicionales para transmisiones en vivo y portales deportivos. | Bs. 120,00 | ⚾ Activar Paquete LVBP 7GB |
+| **Semana 3** | 16 - 23 Oct | **REGIONAL** | Zulia y Falcón | `OCT-S3-REG-ZULIA-OCCIDENTE`<br>*(Pasión Zuliana y Falconiana Águilas)* | `PLAN_UPGRADE` | Upgrade a Inteliplan 20GB Pro con 25% de descuento el primer mes y prioridad 4GMAX. | Bs. 517,50 | 🦅 Mejorar a 20GB con 25% OFF |
+| **Semana 4** | 24 - 31 Oct | **NACIONAL** | Todo el país | `OCT-S4-NAC-HALLOWEEN-DATOS`<br>*(Halloween 4GMAX Noches de Terror)* | `DATA_UPSELL` | Pase Nocturno 'Sin Miedo' 15GB ultrarrápidos (10:00 PM - 6:00 AM) para maratones y videojuegos. | Bs. 70,00 | 🎃 Activar Pase Nocturno 15GB |
+| **Semana 4** | 24 - 31 Oct | **REGIONAL** | Mérida, Táchira, Trujillo | `OCT-S4-REG-ANDES-PARAMO`<br>*(Ruta de los Páramos en la Cumbre)* | `C2P_RECHARGE` | Recarga Andina desde 100 Bs con Bono de 1.5GB extra para turismo y fotos en las alturas. | Bs. 100,00 | 🏔️ Recargar con Bono Andino 1.5GB |
+
+### 🧠 2. Mejoras en el Motor de Inferencia Next-Best-Action (`MarketingFunnelAgent`)
+* **Nueva Categoría de Oferta:** Integración de `OfferCategory.LOYALTY_RETENTION` en los DTOs de dominio para beneficios gratuitos y comunitarios.
+* **Filtros Temporales y Semanales:** Métodos `get_october_campaigns()` y `get_campaigns_by_week(week)` en memoria volátil (<0.1ms).
+* **Intercepción Semántica de Temporada:** Detección de intenciones contextuales (Halloween, béisbol LVBP, Águilas del Zulia, semana patria del 12 de Octubre, estudiantes) con mapeo directo de botones interactivos hacia C2P, compra de datos o upgrade de plan.
+
+### 🧪 3. Suite de Pruebas Automatizadas (434 / 434 Tests 100% PASS)
+* Nuevas pruebas en `tests/test_marketing_funnel.py`:
+  - `test_07_october_campaigns_catalog_integrity`: Valida que existan exactamente 8 campañas, 2 por semana, y que cada semana posea 1 Nacional y 1 Regional.
+  - `test_08_october_halloween_campaign_recommendation`: Comprueba la recomendación estacional del Pase Nocturno de Halloween (`OCT-S4-NAC-HALLOWEEN-DATOS`).
+  - `test_09_october_12_octubre_soberania_recommendation`: Certifica la recomendación del 12 de Octubre Día de la Resistencia Indígena (`OCT-S2-NAC-12OCT-SOBERANIA`).
+  - `test_10_october_regional_zulia_recommendation`: Certifica la recomendación regional contextual de las Águilas del Zulia (`OCT-S3-REG-ZULIA-OCCIDENTE`).
+* **Resultado Pytest:** **434 / 434 pruebas aprobadas (100% PASS, 0 fallos)** en 28.30s.
+
+### 🔒 4. Sellado Criptográfico SHA-256 (`reports/MANIFESTO_SHA256_RESPALDO_141026.json`)
+* **Archivos Auditados:** 971 archivos.
+* **Hash Maestro SHA-256:** `02ac575b69aebd7d3aba3c755175f92c1abcc535f1aab7e0063f7d3fe49f6c35`.
+* **Rama Git:** `develop` (Desacoplada de producción según mandato institucional).

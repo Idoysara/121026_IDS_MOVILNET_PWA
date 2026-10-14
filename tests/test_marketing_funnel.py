@@ -101,6 +101,59 @@ class TestMarketingFunnelAgent(unittest.TestCase):
         button_ids = [b["id"] for b in resp.interactive_options]
         self.assertTrue(any("funnel" in bid or "c2p" in bid for bid in button_ids))
 
+    def test_07_october_campaigns_catalog_integrity(self):
+        """Verifica que el catálogo de Octubre contenga exactamente 8 campañas (2 por semana)."""
+        oct_camps = self.agent.get_october_campaigns()
+        self.assertEqual(len(oct_camps), 8)
+        for w in range(1, 5):
+            week_camps = self.agent.get_campaigns_by_week(w)
+            self.assertEqual(len(week_camps), 2, f"La semana {w} debe tener exactamente 2 campañas")
+            scopes = {c.scope for c in week_camps}
+            self.assertIn("NACIONAL", scopes)
+            self.assertIn("REGIONAL", scopes)
+
+    def test_08_october_halloween_campaign_recommendation(self):
+        """Verifica la recomendación estacional de la campaña de Halloween."""
+        offer = self.agent.evaluate_next_best_action(
+            msisdn="04160000001",
+            balance_ves=100.0,
+            remaining_data_mb=5000,
+            total_quota_mb=10240,
+            days_to_cutoff=10,
+            user_message="¿Tienen alguna promo para este fin de semana de halloween?"
+        )
+        self.assertEqual(offer.offer_id, "OCT-S4-NAC-HALLOWEEN-DATOS")
+        self.assertIn("Halloween", offer.headline)
+        self.assertEqual(offer.price_ves, 70.00)
+
+    def test_09_october_12_octubre_soberania_recommendation(self):
+        """Verifica la recomendación de la campaña del 12 de Octubre."""
+        offer = self.agent.evaluate_next_best_action(
+            msisdn="04160000001",
+            balance_ves=100.0,
+            remaining_data_mb=5000,
+            total_quota_mb=10240,
+            days_to_cutoff=10,
+            user_message="Quiero saber la promoción de la semana patria del 12 de octubre"
+        )
+        self.assertEqual(offer.offer_id, "OCT-S2-NAC-12OCT-SOBERANIA")
+        self.assertIn("12 de Octubre", offer.headline)
+        self.assertEqual(offer.price_ves, 200.00)
+
+    def test_10_october_regional_zulia_recommendation(self):
+        """Verifica la recomendación regional de la temporada de béisbol en Zulia."""
+        offer = self.agent.evaluate_next_best_action(
+            msisdn="04160000001",
+            balance_ves=100.0,
+            remaining_data_mb=5000,
+            total_quota_mb=10240,
+            days_to_cutoff=10,
+            user_message="Voy a ver a las Águilas del Zulia, ¿tienen promo especial?"
+        )
+        self.assertEqual(offer.offer_id, "OCT-S3-REG-ZULIA-OCCIDENTE")
+        self.assertEqual(offer.scope, "REGIONAL")
+        self.assertIn("Occidental", offer.headline)
+
 
 if __name__ == "__main__":
     unittest.main()

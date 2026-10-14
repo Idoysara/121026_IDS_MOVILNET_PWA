@@ -1,13 +1,13 @@
 {
   "project_name": "141026_Movilnet_Core_PWA",
-  "timestamp_utc": "2026-10-14T11:29:14.885501+00:00",
+  "timestamp_utc": "2026-10-14T11:42:20.358642+00:00",
   "root_directory": "/Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_141026/141026_Movilnet_Core_PWA",
-  "total_files_scanned": 968,
-  "total_bytes": 43965379,
+  "total_files_scanned": 971,
+  "total_bytes": 44189854,
   "directories": {
     "root": {
       "files_count": 23,
-      "total_bytes": 67978
+      "total_bytes": 67986
     },
     "ui": {
       "files_count": 1,
@@ -79,11 +79,11 @@
     },
     "config/department_rules": {
       "files_count": 5,
-      "total_bytes": 9941
+      "total_bytes": 17180
     },
     "tests": {
       "files_count": 48,
-      "total_bytes": 370219
+      "total_bytes": 372731
     },
     ".agents": {
       "files_count": 2,
@@ -115,7 +115,7 @@
     },
     "docs": {
       "files_count": 102,
-      "total_bytes": 5539564
+      "total_bytes": 5541795
     },
     "docs/img": {
       "files_count": 8,
@@ -131,7 +131,7 @@
     },
     "db": {
       "files_count": 7,
-      "total_bytes": 29220243
+      "total_bytes": 29412755
     },
     "api": {
       "files_count": 4,
@@ -139,7 +139,7 @@
     },
     "api/agents": {
       "files_count": 11,
-      "total_bytes": 215072
+      "total_bytes": 226964
     },
     "api/schemas": {
       "files_count": 0,
@@ -222,8 +222,8 @@
       "total_bytes": 1242
     },
     "reports": {
-      "files_count": 589,
-      "total_bytes": 3637375
+      "files_count": 592,
+      "total_bytes": 3645456
     }
   },
   "files": {
@@ -277,15 +277,15 @@
     },
     "MANIFIESTO_ARQUITECTURA_Y_COMPONENTES_141026.md": {
       "size_bytes": 14687,
-      "sha256": "413c6a9956a381e9e58925c5775ef71026bcd8bce02da3a1551bd8a8f5fb6bfc"
+      "sha256": "b37ab01af7cf38a37546eba7ce8e465e1072586138eb89e33e936fb9ea98e6e9"
     },
     "PROBAR_PWA_CELULAR.command": {
       "size_bytes": 986,
       "sha256": "693c0026f27a57fb4783240ba892f9be6b84a58af4731a7da9b95c3eb32979cd"
     },
     "PUNTO_DE_CONTROL_SESION_ACTIVA.md": {
-      "size_bytes": 4907,
-      "sha256": "e1851eadb6b5c778ccb22daa73052882762eef4047fbe0b02741f01e34e5a9f0"
+      "size_bytes": 4915,
+      "sha256": "5c96822f8dceace0c67fdcf963bbe107f3824f0c846d7828dbbce58557b5f55e"
     },
     "Procfile": {
       "size_bytes": 27,
@@ -508,8 +508,8 @@
       "sha256": "9a6e793c6b3217bd22a8a461b5b799ff72fb4343867983a511c7315abf236474"
     },
     "config/department_rules/comercial_ventas.json": {
-      "size_bytes": 2558,
-      "sha256": "dca98b47b81eb4b6af0121c2bd60101df1f6feb4c200ade26ac99b7289640318"
+      "size_bytes": 9797,
+      "sha256": "cfb9f3cedf6a45e5ceca43c68b6b8e031b4236718019228b126472072160e6e4"
     },
     "config/department_rules/finanzas_c2p.json": {
       "size_bytes": 1668,
@@ -580,8 +580,8 @@
       "sha256": "e54ab680588f96a3afac49efa22804cdbdc688f75557d8477deaa2e92b1b0332"
     },
     "tests/test_marketing_funnel.py": {
-      "size_bytes": 4378,
-      "sha256": "62a430cc48e5d5275c8f8fbfa89a9425b9d64812e44973a162eba3ffcd9b77d8"
+      "size_bytes": 6890,
+      "sha256": "0255c5775d81be2088e5ffe2dc6acb0b6d631737109f98f2ced84049404a1b4b"
     },
     "tests/test_mcp_telco_fintech.py": {
       "size_bytes": 668,
@@ -836,8 +836,8 @@
       "sha256": "c44d0591108e564ac4d379e7cb98a47ed429048c9168d471cce5339045cc4989"
     },
     "docs/BITACORA_MOVILNET.md": {
-      "size_bytes": 543666,
-      "sha256": "6658ffaccb81c6d737de4f0ac23d9d38a5ca85d10a813617f9e582376a0e0e89"
+      "size_bytes": 545897,
+      "sha256": "c12607d8b49577d1a3ada9f1170afc93442dcf037d9c95605c1aa4792419a104"
     },
     "docs/BITACORA_MOVILNET_COMPLETA.pdf": {
       "size_bytes": 251095,
@@ -1552,8 +1552,8 @@
       "sha256": "aad26d3bec69b10087596cc13b5c03279b43c432e42fe4af131e98ad22bf08ce"
     },
     "db/local_movilnet.db": {
-      "size_bytes": 17223680,
-      "sha256": "017fc253c4268c7fc3c761607f05b5c4fda8bb6e5add22aafc29b7e4b98b14b0"
+      "size_bytes": 17416192,
+      "sha256": "f83e755e7102ff5284fb1141fa2bf72953d2c335e5723d270344061b8566de43"
     },
     "db/local_movilnet.db.backup_test": {
       "size_bytes": 11923456,
@@ -1620,8 +1620,8 @@
       "sha256": "6672608f71e0f8a0c3549a9b0d28f1cfce1e57617dfd5318164c672ccba5f79c"
     },
     "api/agents/agent_marketing_funnel.py": {
-      "size_bytes": 9784,
-      "sha256": "691b6b7506533e92624555d3f3879a90da246711dbd9ad416f51b5e5936fe309"
+      "size_bytes": 21676,
+      "sha256": "26ce6c1996e8aa10740fd2f39e59bacbca056e70fc510b8a5796971f406ae58c"
     },
     "api/agents/agent_n8n_dispatcher.py": {
       "size_bytes": 5448,
@@ -1764,8 +1764,8 @@
       "sha256": "32fccf81f99f3d3c5d7d72c934c7e2a2077c6053b80595eaca55ede57cbd45e9"
     },
     "reports/CERTIFICATION_FASE2_GATEKEEPER.json": {
-      "size_bytes": 1780,
-      "sha256": "38b17e80e9862db3f10b50b4853b238a2bf44bf532e47cf59ea7a7c4a19ad912"
+      "size_bytes": 1781,
+      "sha256": "6096a8436c98a9f0279e4b29a30593fa894e462bafae3a73a1ff664fb8a082cb"
     },
     "reports/CERTIFICATION_FASE2_PASO1_REST_API.json": {
       "size_bytes": 1974,
@@ -1780,8 +1780,8 @@
       "sha256": "e2480a069d8ba547851d9d6ff5dee07386dfb71adc4a0f283f21821dea2a83bf"
     },
     "reports/CERTIFICATION_FASE3_GATEKEEPER.json": {
-      "size_bytes": 1642,
-      "sha256": "f958a126c9f707c18121a2a7dffe16fc9fe9350e6bc2c664ad4ee88d159fb6ce"
+      "size_bytes": 1641,
+      "sha256": "a02c69f08cc6f491d2b24e339121185b5dab06383ea6de93551bcb4dc0cfdff3"
     },
     "reports/CERTIFICATION_FASE3_PASO1_CUSTOMER_CARE.json": {
       "size_bytes": 2287,
@@ -1801,7 +1801,7 @@
     },
     "reports/CERTIFICATION_FASE4_GATEKEEPER.json": {
       "size_bytes": 1163,
-      "sha256": "e402b4025cd211470881d48fd4cf2150f43810b48ff82a679c98a6fcf8a9b50e"
+      "sha256": "2d141d4c428d12ec14b19790a41fe695fcefe3c814af28d50a272c146a167fab"
     },
     "reports/CERTIFICATION_FASE4_PASO1_DESIGN_SYSTEM.json": {
       "size_bytes": 1908,
@@ -1820,12 +1820,12 @@
       "sha256": "77d123dbb0d70bb0bd0bf9201bd5db1d759ca131b35f7a84d1bd2dfd0973f983"
     },
     "reports/MANIFESTO_SHA256_RESPALDO_141026.json": {
-      "size_bytes": 168016,
-      "sha256": "b6d4c35a6796449cd32df3171911999a5f63fe6ef1941658516e06a7ec50065d"
+      "size_bytes": 170958,
+      "sha256": "4508fb6fca382d0aedc85eeb9326141382a49e476433eaff044f65e641adab5e"
     },
     "reports/REPORTE_OBSERVADOR_ONLINE_TELEMETRIA.md": {
       "size_bytes": 3982,
-      "sha256": "207db373a4bcd30cee8ee5038b51558b7e980d7689177b64f0cd45646abe2c34"
+      "sha256": "48c9055e76218aaf386b9715314bfca90bbfe8f4c8e9741e69dbffc425d9c02c"
     },
     "reports/api_spec_tmp08tr4v4j_20261009_122105.json": {
       "size_bytes": 1740,
@@ -2026,6 +2026,10 @@
     "reports/api_spec_tmp8zsi_exp_20261007_221638.json": {
       "size_bytes": 1740,
       "sha256": "a0ec6161f9a0f515b16fd66c543e7ecf83b897b0fd432199a962660bcb2074da"
+    },
+    "reports/api_spec_tmp9cwq9wo0_20261014_074151.json": {
+      "size_bytes": 1740,
+      "sha256": "82cfa0f18954c03bcee451b916ac6be49ca45e2da6205299a7f1516b92bcbfb5"
     },
     "reports/api_spec_tmp9fzu6x_t_20261007_162926.json": {
       "size_bytes": 1740,
@@ -2573,23 +2577,23 @@
     },
     "reports/disaster_recovery_status.json": {
       "size_bytes": 281,
-      "sha256": "461f15cb1925f2507193b5e924f3cdda5dbc6cd1dccd7cd3e0958cd3698ea17d"
+      "sha256": "b1e084358f7540fd339451fb9cf45a7711ed7f07fe506b96be815abc5d3daafa"
     },
     "reports/fastpath_latency_report.json": {
       "size_bytes": 1199,
       "sha256": "f04fd36e1546b530f9617759c39a8a36e40c5eca3ea2ea4225c3929307aab014"
     },
     "reports/gatekeeper_phase2_report.json": {
-      "size_bytes": 7537,
-      "sha256": "57948449975b387fc4e81d9c38718891b8dc7f81b9f8443f4829ec32058adce0"
+      "size_bytes": 7539,
+      "sha256": "6a5b7e386857598c88f20b3af08087e210f06eb4a57ca0844bb282b7fe13d4f4"
     },
     "reports/gatekeeper_phase3_report.json": {
       "size_bytes": 8718,
-      "sha256": "9aef07301e420094a5f2eaf5e2d01d8834a0ab03ce146341270c689cd011a97c"
+      "sha256": "437389eca851559adf06877f861ae94f0349e3d73396dbd4bf9eba2b82aaaaeb"
     },
     "reports/gatekeeper_phase4_report.json": {
       "size_bytes": 6645,
-      "sha256": "32df5639bfb5a8c8304a4c1c6a43d2ff37260ceda675fcd4d0533cf3db412e51"
+      "sha256": "de5116ff1d800b340e2a0d4d5c066d757aa90f04163635c2ea84a5bc703ba29d"
     },
     "reports/gatekeeper_report_20260930_115000.json": {
       "size_bytes": 1108,
@@ -3335,21 +3339,25 @@
       "size_bytes": 1108,
       "sha256": "eb67a91dbae59259aeb6db1bf1b0fb143b0256d6b90b153912221996b452f14a"
     },
+    "reports/gatekeeper_report_20261014_074151.json": {
+      "size_bytes": 1108,
+      "sha256": "d6a165ff781b928419c243c38ecefd8b7233f1ccef2f7144d826fe8ce425dc00"
+    },
     "reports/live_supervisor_telemetry.json": {
       "size_bytes": 31935,
       "sha256": "9bb4225b3a8b2c08ec8ed03f022d68a280f20aa01933b3e0dbf5289ea646e6c9"
     },
     "reports/n8n_deployment_manifest.json": {
       "size_bytes": 4675,
-      "sha256": "11cfc728207867dc8c9a0bb9b38ad312b05e1c3428d061bb89f6341ed591e41f"
+      "sha256": "28ff485ec928d1f38c7126fe520f6c7dd5da815aa15e18164b9e200ba0a6e6df"
     },
     "reports/observer_online_telemetry.json": {
       "size_bytes": 6604,
-      "sha256": "50d634d35cbbe5d96c451c0da7bb927b7826f113d111114c6fa68fd6d1d8ed0d"
+      "sha256": "2c44b6c3ac64747eed9158672bf1dc2a945ee21da5d1611d4b389b7f9fd8c24b"
     },
     "reports/production_deployment_manifest.json": {
       "size_bytes": 2482,
-      "sha256": "33ca4e740e5b664f63306cfdfacab11f10c7caaa4ef1d721072f41d22332bf52"
+      "sha256": "e391001511a90d610ac09087ee225c32bda01aefb690e58b309457c7c31b6243"
     },
     "reports/pwa_replication_certification.json": {
       "size_bytes": 1142,
@@ -4031,6 +4039,10 @@
       "size_bytes": 2289,
       "sha256": "d4695d7fd25b4d4a1c5b974de35a3c86de6b0d7b587bd088289e2ea5cbd7e272"
     },
+    "reports/schema_inspection_tmpx8cid418_20261014_074151.json": {
+      "size_bytes": 2289,
+      "sha256": "eaa9fc2402f870b9e6ae64a69e82e0028b71663f818c4cdea404a29ae616ec2a"
+    },
     "reports/schema_inspection_tmpxfwyfctq_20261013_155951.json": {
       "size_bytes": 2289,
       "sha256": "0c0e8e8e98abaccc0615722b6906a16ed268487916194b6818893b11534fc7c5"
@@ -4100,5 +4112,5 @@
       "sha256": "0da99777ea1b546f81f3044187434dc1ec059a0f8940b94584d167eeb38d0e86"
     }
   },
-  "master_integrity_sha256": "fef90c79f19023c0457f695330d76c5b24e1d9c7d3121ebd9e342e99c5a1974e"
+  "master_integrity_sha256": "02ac575b69aebd7d3aba3c755175f92c1abcc535f1aab7e0063f7d3fe49f6c35"
 }
