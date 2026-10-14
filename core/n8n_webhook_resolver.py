@@ -25,6 +25,12 @@ logger = logging.getLogger("Movilnet.N8NWebhookResolver")
 
 CANONICAL_WEBHOOK_URL = "https://n8n.lpgtec.net/webhook/messages_upsert4"
 CANONICAL_WORKFLOW_ID = "sNMbtiEiTkuQ9OCY"
+APPROVED_BOT_PHONE = "0424-1533712"
+APPROVED_BOT_JID = "584241533712@s.whatsapp.net"
+APPROVED_BOT_NAME = "MOVI"
+
+ERADICATED_LEGACY_WORKFLOW_IDS = ["WdWU8G9EggQDMack"]
+ERADICATED_LEGACY_PHONES = ["0416-6251587", "04166251587", "584166251587"]
 LEGACY_WEBHOOK_PATHS = ["/webhook/messages_upsert", "/webhook-test/messages_upsert"]
 
 
@@ -103,7 +109,34 @@ def dispatch_to_n8n_with_retry(
     config = resolve_n8n_webhook_url(webhook_url)
     target_url = config.resolved_url
 
-    # Guardarraíl de Borde: descartar ruidos, difusiones y auto-respondedores antes del POST HTTP
+    # 1. Guardarraíl de Aislamiento PWA: Si el mensaje se originó en PWA, debe permanecer en modo data
+    channel_in = str(payload.get("channel", "")).strip().lower()
+    if channel_in in ["pwa", "pwa_mobile", "web", "pwa_stitch", "pwa_data"] or payload.get("is_pwa"):
+        logger.info(
+            f"[N8NWebhookResolver] Despacho a n8n Cloud bloqueado: el canal '{channel_in}' "
+            f"opera exclusivamente por retorno HTTP en modo data."
+        )
+        return {
+            "success": True,
+            "status_code": 200,
+            "target_url": target_url,
+            "attempt": 0,
+            "skipped_by_pwa_isolation": True,
+            "channel": channel_in,
+            "mode": "DATA_PWA_EXCLUSIVE",
+            "message": "Los mensajes de PWA operan exclusivamente por retorno HTTP en modo data.",
+            "error": None,
+        }
+
+    # 2. Erradicación del número antiguo 0416-6251587: Sustitución inmediata por la línea activa aprobada 0424-1533712 (MOVI)
+    sender_val = str(payload.get("sender") or "")
+    if any(leg in sender_val for leg in ["584166251587", "04166251587", "4166251587"]):
+        payload["sender"] = APPROVED_BOT_JID
+        logger.warning(
+            f"[N8NWebhookResolver] Número legacy '0416-6251587' sustituido atómicamente por la línea aprobada '{APPROVED_BOT_JID}'."
+        )
+
+    # 3. Guardarraíl de Borde: descartar ruidos, difusiones y auto-respondedores antes del POST HTTP
     try:
         from core.webhook_noise_filter import WebhookNoiseFilter
         noise_check = WebhookNoiseFilter.evaluate(payload)

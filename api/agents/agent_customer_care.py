@@ -329,7 +329,8 @@ class FastPathEngine:
         self,
         intent: IntentType,
         msisdn: Optional[str],
-        raw_text: str = ""
+        raw_text: str = "",
+        channel: str = ""
     ) -> Optional[Tuple[str, List[Dict[str, str]], Dict[str, Any]]]:
         """
         Ejecuta la respuesta determinista formateada para canales móviles.
@@ -380,9 +381,20 @@ class FastPathEngine:
         clean_msisdn = CarrierFunnelClassifier.clean_msisdn(msisdn)
         carrier_enum, carrier_label, is_comp = CarrierFunnelClassifier.identify_carrier(clean_msisdn)
 
+        is_pwa = str(channel or "").lower() in ["pwa", "pwa_mobile", "web", "pwa_stitch", "pwa_web", "mobile_pwa", "pwa_data"]
+        base_pwa_url = os.environ.get("MOVILNET_PUBLIC_PWA_URL", "https://movilnet-core.onrender.com").rstrip("/")
+
         if is_comp and intent in [IntentType.BALANCE_QUERY, IntentType.DATA_QUOTA_QUERY, IntentType.PLAN_QUERY, IntentType.LINE_STATUS_QUERY]:
             carrier_name = "Movistar" if carrier_enum == Carrier.MOVISTAR else ("Digitel" if carrier_enum == Carrier.DIGITEL else "tu operadora actual")
             token_hex = uuid.uuid4().hex[:8]
+            
+            pwa_promo = ""
+            if not is_pwa:
+                pwa_promo = (
+                    f"\n\n🎁 *Acceso Freemium al Asistente Virtual:*\n"
+                    f"Tienes a tu disposición 1,000 tokens de prueba (máx. 3 consultas/mes) para interactuar con nuestra IA: "
+                    f"{base_pwa_url}/ui/pwa_stitch/index.html?carrier={carrier_enum.value.lower()}&phone={clean_msisdn}&token={token_hex}"
+                )
             text = (
                 f"👋 ¡Hola! Te damos la más cordial bienvenida a *Movilnet 4GMAX*.\n\n"
                 f"Identificamos que nos contactas desde tu línea {carrier_label} (`{clean_msisdn}`). "
@@ -392,10 +404,8 @@ class FastPathEngine:
                 f"Puedes unirte a Movilnet conservando exactamente tu mismo número telefónico mediante nuestra oferta de *Portabilidad Numérica 4GMAX*:\n\n"
                 f"• ✨ *eSIM Digital Inmediata:* Activación rápida mediante código QR.\n"
                 f"• 🎁 *Bono de Bienvenida:* 10 GB de navegación ultrarrápida de obsequio.\n"
-                f"• 💵 *Ahorro Garantizado:* Ahorra hasta un 60% en tu renta mensual frente a las tarifas de {carrier_name}.\n\n"
-                f"🎁 *Acceso Freemium al Asistente Virtual:*\n"
-                f"Tienes a tu disposición 1,000 tokens de prueba (máx. 3 consultas/mes) para interactuar con nuestra IA: "
-                f"https://pwa.movilnet.com.ve/prospect?carrier={carrier_enum.value.lower()}&token={token_hex}"
+                f"• 💵 *Ahorro Garantizado:* Ahorra hasta un 60% en tu renta mensual frente a las tarifas de {carrier_name}."
+                f"{pwa_promo}"
             )
             buttons = [
                 {"id": "btn_portabilidad_express", "title": "🚀 Portabilidad eSIM"},
@@ -427,6 +437,12 @@ class FastPathEngine:
             plan_name = self._resolve_plan_name(sub_info.get("plan_id"))
 
             token_pwa = uuid.uuid4().hex[:8]
+            pwa_invite = ""
+            if not is_pwa:
+                pwa_invite = (
+                    f"\n\n🌐 Si prefieres una experiencia visual o interactiva, continúa tu consulta en nuestra PWA oficial: "
+                    f"{base_pwa_url}/ui/pwa_stitch/index.html?carrier=movilnet&phone={msisdn}&token={token_pwa}"
+                )
             text = (
                 f"📱 *Movilnet 4GMAX — Consulta de Saldo*\n\n"
                 f"👤 *Abonado:* `{msisdn}`\n"
@@ -434,9 +450,8 @@ class FastPathEngine:
                 f"💰 *Saldo Disponible:* *{balance_ves:.2f} Bs.* (~${balance_usd:.2f} USD)\n"
                 f"📅 *Próximo Corte:* {cutoff}\n"
                 f"🔒 *Estatus:* ACTIVO\n\n"
-                f"_¿Deseas recargar saldo mediante Pago Móvil C2P o consultar tus megas?_\n\n"
-                f"🌐 Si prefieres una experiencia visual o interactiva, continúa tu consulta en nuestra PWA oficial: "
-                f"https://pwa.movilnet.com.ve/chat?session={token_pwa}"
+                f"_¿Deseas recargar saldo mediante Pago Móvil C2P o consultar tus megas?_"
+                f"{pwa_invite}"
             )
             buttons = [
                 {"id": "btn_c2p_recharge", "title": "💳 Recargar C2P"},
@@ -1310,9 +1325,17 @@ BARRERAS Y REGLAS DE SEGURIDAD (ANTI-ALUCINACIÓN):
             from core.carrier_funnel_classifier import CarrierFunnelClassifier, Carrier
             clean_tel = CarrierFunnelClassifier.clean_msisdn(msisdn or "")
             carrier_enum, carrier_label, is_comp = CarrierFunnelClassifier.identify_carrier(clean_tel)
+            is_pwa = str(message.channel or "").lower() in ["pwa", "pwa_mobile", "web", "pwa_stitch", "pwa_web", "mobile_pwa", "pwa_data"]
+            base_pwa_url = os.environ.get("MOVILNET_PUBLIC_PWA_URL", "https://movilnet-core.onrender.com").rstrip("/")
             if is_comp and clean_tel:
                 carrier_name = "Movistar" if carrier_enum == Carrier.MOVISTAR else ("Digitel" if carrier_enum == Carrier.DIGITEL else "tu operadora actual")
                 token_hex = uuid.uuid4().hex[:8]
+                pwa_promo = ""
+                if not is_pwa:
+                    pwa_promo = (
+                        f"\n\n🎁 Tienes acceso a 1,000 tokens de prueba (máx. 3 consultas/mes) para interactuar con nuestra IA: "
+                        f"{base_pwa_url}/ui/pwa_stitch/index.html?carrier={carrier_enum.value.lower()}&phone={clean_tel}&token={token_hex}"
+                    )
                 reply = (
                     f"👋 ¡Hola! Te damos una cordial bienvenida a *Movilnet 4GMAX*.\n\n"
                     f"Identificamos que te comunicas desde tu línea {carrier_label} (`{clean_tel}`). "
@@ -1321,18 +1344,20 @@ BARRERAS Y REGLAS DE SEGURIDAD (ANTI-ALUCINACIÓN):
                     f"🚀 *¡Aprovecha y cámbiate a Movilnet 4GMAX manteniendo tu mismo número!*\n"
                     f"• ✨ *eSIM Digital:* Activación inmediata sin chip físico.\n"
                     f"• 🎁 *Bono de Bienvenida:* 10 GB de datos libres.\n"
-                    f"• 💵 *Tarifas Solidarias:* Ahorra hasta un 60% frente a lo que pagas en {carrier_name}.\n\n"
-                    f"🎁 Tienes acceso a 1,000 tokens de prueba (máx. 3 consultas/mes) para interactuar con nuestra IA: "
-                    f"https://pwa.movilnet.com.ve/prospect?carrier={carrier_enum.value.lower()}&token={token_hex}"
+                    f"• 💵 *Tarifas Solidarias:* Ahorra hasta un 60% frente a lo que pagas en {carrier_name}."
+                    f"{pwa_promo}"
                 )
             else:
+                pwa_promo = ""
+                if not is_pwa:
+                    pwa_promo = f"\n\n🌐 También puedes acceder a nuestra PWA oficial con autoservicio interactivo: {base_pwa_url}/ui/pwa_stitch/index.html"
                 reply = (
                     "📱 *Consulta de Saldo y Servicios Movilnet 4GMAX*\n\n"
                     "Para verificar tu línea en tiempo real con latencia cero:\n"
                     "• Escribe *'Saldo'* para consultar tu balance disponible, fecha de corte y estatus.\n"
                     "• Escribe *'Megas'* para ver tu cupo de navegación y consumo de datos.\n"
-                    "• Escribe *'Recarga'* para recargar al instante mediante Pago Móvil C2P.\n\n"
-                    "🌐 También puedes acceder a nuestra PWA oficial con autoservicio interactivo: https://pwa.movilnet.com.ve/chat"
+                    "• Escribe *'Recarga'* para recargar al instante mediante Pago Móvil C2P."
+                    f"{pwa_promo}"
                 )
 
         # 19.2 Aclaratoria o Pregunta de Justificación ("¿Por qué?", "a qué se debe")
@@ -1440,7 +1465,7 @@ class CustomerCareAgent:
         # 3. Intentar Despacho por Fast-Path Heurístico (Cero Tokens, < 1ms)
         fast_path_result = None
         if intent != IntentType.UNKNOWN:
-            fast_path_result = self.fast_path.execute_fast_path(intent, msisdn, raw_text)
+            fast_path_result = self.fast_path.execute_fast_path(intent, msisdn, raw_text, channel=message.channel or "")
 
         if fast_path_result is not None:
             resp_text, buttons, metadata = fast_path_result

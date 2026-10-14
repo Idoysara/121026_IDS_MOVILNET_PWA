@@ -119,6 +119,54 @@ class TestPWAProtocolGuardian(unittest.TestCase):
         self.assertIn("text/html", headers.get("Content-Type", ""))
         self.assertGreater(len(body), 50000)
 
+    def test_11_pwa_exclusive_return_channel_and_zero_whatsapp_leakage(self):
+        """
+        Verifica que:
+        1. Las interacciones PWA retornen 100% por el canal de respuesta HTTP (Data PWA).
+        2. Cero fugas hacia WhatsApp o n8n cuando el canal es PWA.
+        3. El número del bot sea exclusivamente el aprobado (0424-1533712 / MOVI).
+        4. Erradicación total de WdWU8G9EggQDMack y 0416-6251587.
+        """
+        from api.service import MovilnetAPIService
+        from core.n8n_webhook_resolver import dispatch_to_n8n_with_retry, APPROVED_BOT_PHONE, APPROVED_BOT_NAME
+        srv = MovilnetAPIService()
+
+        # 1. PWA message handling
+        pwa_req = {
+            "text": "Hola deseo consultar mis planes",
+            "phone": "04142554590",
+            "channel": "pwa_mobile",
+            "is_pwa": True
+        }
+        status, payload = srv.handle_customer_care_agent(pwa_req)
+        self.assertEqual(status, 200)
+        self.assertEqual(payload.get("channel"), "pwa_mobile")
+        self.assertEqual(payload.get("mode"), "DATA_PWA_EXCLUSIVE")
+        self.assertEqual(payload.get("bot_phone"), APPROVED_BOT_PHONE)
+        self.assertEqual(payload.get("bot_name"), APPROVED_BOT_NAME)
+        self.assertIn("reply", payload)
+        self.assertGreater(len(payload["reply"]), 10)
+
+        # 2. PWA payload isolation in n8n resolver
+        n8n_pwa_payload = {
+            "channel": "pwa_mobile",
+            "phone": "04142554590",
+            "text": "Prueba de aislamiento PWA"
+        }
+        res = dispatch_to_n8n_with_retry(n8n_pwa_payload)
+        self.assertTrue(res.get("skipped_by_pwa_isolation"))
+        self.assertEqual(res.get("mode"), "DATA_PWA_EXCLUSIVE")
+
+        # 3. Legacy phone eradication in resolver
+        legacy_payload = {
+            "event": "messages.upsert",
+            "sender": "584166251587@s.whatsapp.net",
+            "channel": "whatsapp"
+        }
+        dispatch_to_n8n_with_retry(legacy_payload)
+        self.assertEqual(legacy_payload["sender"], "584241533712@s.whatsapp.net")
+
 
 if __name__ == "__main__":
     unittest.main()
+

@@ -229,9 +229,9 @@ def run_self_verification() -> bool:
     """Auto-verificación formal del gestor de parametrización (Pilar II & V)."""
     print("🧪 [TEST 1/4] Carga de configuración por defecto...")
     cfg = SystemConfigManager.get_config(reload_env=True)
-    assert cfg.active_bot_phone.international_digits in ("584241533712", "584166251587")
+    assert cfg.active_bot_phone.international_digits == "584241533712"
     assert cfg.port == 8010
-    assert cfg.bot_name in ("MOVI", "VIKI")
+    assert cfg.bot_name == "MOVI"
 
     print("🧪 [TEST 2/4] Senders autorizados dinámicos...")
     senders = SystemConfigManager.get_allowed_bot_senders()

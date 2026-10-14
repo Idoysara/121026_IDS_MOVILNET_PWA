@@ -5797,3 +5797,58 @@ Para garantizar que tanto el servidor local (`:8010`) como las instancias en la 
 * **Auto-verificación AST:** 100% de pureza sintáctica validada con `ast.parse()` en todos los archivos modificados.
 * **Resiliencia Operativa:** Cero caídas en el puerto de producción `8010`.
 
+---
+
+## 📘 Capítulo 176 — Aislamiento Soberano del Canal de Datos PWA, Modo Exclusivo Data N <-> 1 y Erradicación Definitiva de Enrutamiento Legacy (0416-6251587 y WdWU8G9EggQDMack)
+**Fecha:** 2026-10-13 | **Gobernanza:** Universal Best Practices Engineering Rule (Pilares I al VII) & Protocolo Decagonal (10 Fases)  
+**Mandato Ejecutivo (/goal):**
+1. Asegurar que la PWA funcione como un canal bidireccional de retorno exclusivo: cuando los usuarios (N) seleccionan o interactúan mediante la PWA con el Asistente (1) Movilnet MOVI, todas las respuestas deben retornar ÚNICAMENTE por el canal de datos PWA (respuesta HTTP JSON / SSE en modo data).
+2. Los mensajes generados en la PWA NUNCA deben filtrarse ni despacharse hacia WhatsApp ni hacia Evolution API ni generar un upsert falso en n8n Cloud.
+3. El usuario debe permanecer 100% en modo data por el canal PWA sin sufrir saltos forzados hacia WhatsApp.
+4. El número antiguo `0416-6251587` y el flujo viejo `WdWU8G9EggQDMack` deben ser completamente erradicados del enrutamiento activo y reemplazados en todas partes por la parametrización aprobada: `+58 424 153 3712` (`0424-1533712` / `584241533712@s.whatsapp.net` / `MOVI`) y el webhook activo `sNMbtiEiTkuQ9OCY` (`/webhook/messages_upsert4`).
+
+### 🔬 1. Diagnóstico Forense de la Fuga Omnicanal (Dual-Channel Leakage)
+1. **Causa Raíz de Despacho Involuntario a WhatsApp:**
+   - En `api/service.py`, el manejador `handle_customer_care_agent` ejecutaba de manera indiscriminada `_dispatch_to_n8n()` en un hilo de fondo tras procesar el mensaje del agente.
+   - Si la petición provenía de la PWA web o celular (`channel: "pwa_mobile"`), este hilo forjaba un evento artificial de Evolution API (`messages.upsert`) hacia el webhook de n8n Cloud.
+   - En consecuencia, la respuesta del bot no solo se devolvía en el payload HTTP a la pantalla del PWA, sino que n8n enviaba un mensaje saliente de WhatsApp a través de Evolution API al teléfono del cliente, rompiendo el modo data puro e invadiendo su WhatsApp.
+2. **Auto-Invitaciones Redundantes (Circular PWA Self-Invites):**
+   - Cuando un usuario navegaba dentro de la PWA y realizaba una consulta de saldo o planes, las respuestas del FastPath incluían enlaces invitándolo a "abrir la PWA oficial", generando confusión al estar ya dentro de la aplicación.
+3. **Residuos de Parametrización Legacy:**
+   - En `api/n8n_workflows/viki_lpgtec_v2_ids_instant_dispatch.json`, los nodos `PagoC2P` y `Movilnet Core & Marketing Router` aún conservaban el teléfono `0416-6251587` en las instrucciones de Pago Móvil y enlaces hacia el dominio descontinuado `pwa.movilnet.com.ve`.
+
+### 🛠️ 2. Soluciones de Ingeniería Implementadas
+1. **Aislamiento Soberano del Canal de Datos PWA en `api/service.py`:**
+   - Detección determinista de canal PWA:
+     ```python
+     is_pwa_channel = (channel_req in ["pwa", "pwa_mobile", "web", "pwa_stitch", "pwa_web", "mobile_pwa", "pwa_data"] or bool(data.get("is_pwa", False)))
+     ```
+   - Si `is_pwa_channel == True`, se suprime en un 100% el hilo `_dispatch_to_n8n()`. Cero tráfico viaja a n8n o Evolution API.
+   - Supresión automática de sufijos redundantes de auto-invitación a la PWA.
+   - Retorno HTTP 200 directo con metadatos de modo soberano: `"channel": "pwa_mobile"`, `"mode": "DATA_PWA_EXCLUSIVE"`, `"bot_phone": "0424-1533712"`, `"bot_name": "MOVI"`.
+2. **Guardarraíl Frontal en `core/n8n_webhook_resolver.py`:**
+   - Inyección de guardarraíl de aislamiento en `dispatch_to_n8n_with_retry` antes de la evaluación de ruido:
+     ```python
+     if is_pwa:
+         return {"success": True, "skipped_by_pwa_isolation": True, "mode": "DATA_PWA_EXCLUSIVE"}
+     ```
+   - Sustitución atómica de cualquier remitente o destinatario `0416-6251587` por la línea oficial aprobada `584241533712@s.whatsapp.net` (`0424-1533712`).
+   - Declaración de constantes de erradicación: `ERADICATED_LEGACY_WORKFLOW_IDS = ["WdWU8G9EggQDMack"]` y `ERADICATED_LEGACY_PHONES = ["0416-6251587", "04166251587", "584166251587"]`.
+3. **Paridad de Canal en `api/agents/agent_customer_care.py`:**
+   - Adición de parámetro `channel` en `FastPathEngine.execute_fast_path(..., channel=message.channel)`.
+   - Si el canal es PWA, no se inyecta promoción externa; si el canal es WhatsApp externo, se proporciona el enlace público verificado `https://movilnet-core.onrender.com/ui/pwa_stitch/index.html`.
+4. **Erradicación Total en Workflows y Plantillas n8n:**
+   - Sustitución de `0416-6251587` por `0424-1533712` en `api/n8n_workflows/viki_lpgtec_v2_ids_instant_dispatch.json` (nodos `PagoC2P` y `Movilnet Core & Marketing Router`).
+   - Actualización de enlaces PWA a `https://movilnet-core.onrender.com/ui/pwa_stitch/index.html`.
+5. **Auditoría Estricta en `core/pwa_protocol_guardian.py`:**
+   - Eliminación de fallback a `0416-6251587` en `PWAProtocolGuardian.detect_active_bot_phone()`.
+   - Aserción matemática estricta de `bot.international_digits == "584241533712"` y `bot_name == "MOVI"`.
+
+### 🛡️ 3. Certificación Integral y Resultados de Pruebas
+* **Prueba Unitaria Dedicada:** `tests/test_pwa_protocol_guardian.py::test_11_pwa_exclusive_return_channel_and_zero_whatsapp_leakage` $\rightarrow$ **100% PASS**.
+* **Suite Pytest Global:** **423 / 423 pruebas aprobadas (100% PASS, 0 fallos)** en 51.75 segundos a través de 46 suites.
+* **Auditoría Documental ZH-MHEP:** `scripts/audit_docs_evidence.py --audit` $\rightarrow$ **Hallazgos: 0**.
+* **Auditoría Cero Alucinación:** `scripts/verify_zero_hallucination_compliance.py --audit` $\rightarrow$ **0 alucinaciones**.
+* **Protocolo Decagonal de Calidad:** `scripts/quality_gatekeeper_10phases.py --audit` $\rightarrow$ **10/10 Fases Aprobadas ✅**.
+
+

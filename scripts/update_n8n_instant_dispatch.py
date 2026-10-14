@@ -118,7 +118,7 @@ ROUTER_JS = r'''for (const item of items) {
                 `Puedes recargar mediante Pago Móvil C2P SUDEBAN instantáneo desde cualquier banco nacional:\n` +
                 `• Banco Receptor: Banco de Venezuela (0102)\n` +
                 `• RIF: G-20000012-3\n` +
-                `• Teléfono: 0416-6251587\n\n` +
+                `• Teléfono: 0424-1533712\n\n` +
                 `Indica el monto a recargar (Monto mínimo: Bs. 150,00).`;
 
   // CASO 4: CATÁLOGO DE PLANES

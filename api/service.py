@@ -2063,6 +2063,11 @@ class MovilnetAPIService:
         clean_text_in = str(text).strip()
         phone_for_guard = normalized_phone or (str(msisdn_raw).strip() if msisdn_raw else "04160000001")
 
+        incoming_channel = str(body.get("channel") or agent_msg.channel or "").strip().lower()
+        is_pwa_channel = incoming_channel in [
+            "pwa", "pwa_mobile", "web", "pwa_stitch", "pwa_web", "mobile_pwa", "pwa_data"
+        ] or bool(body.get("is_pwa"))
+
         if WebhookNoiseFilter.is_system_security_notice(clean_text_in):
             response = self.customer_care_agent.process_message(agent_msg)
             response.response_text = (
@@ -2080,9 +2085,11 @@ class MovilnetAPIService:
             response.metadata["guardrail"] = "NON_SOLICITED_PROPAGANDA_GUARD"
         else:
             response = self.customer_care_agent.process_message(agent_msg)
-            pwa_suffix = FastPathIntentInterceptor.build_pwa_link_suffix(phone_for_guard)
-            if "https://pwa.movilnet.com.ve/" not in response.response_text:
-                response.response_text = f"{response.response_text}{pwa_suffix}"
+            # Solo añadir sufijo de enlace PWA si el usuario NO está ya en el canal PWA
+            if not is_pwa_channel:
+                pwa_suffix = FastPathIntentInterceptor.build_pwa_link_suffix(phone_for_guard)
+                if "https://movilnet-core.onrender.com" not in response.response_text:
+                    response.response_text = f"{response.response_text}{pwa_suffix}"
 
         # Registro en vivo para Monitores y Dashboard NOC (:8010 y :8012)
         if not os.environ.get("PYTEST_CURRENT_TEST"):
@@ -2090,7 +2097,7 @@ class MovilnetAPIService:
             sender_val = body.get("sender_name") or body.get("name") or (
                 "WhatsApp Asignado (00584241533712)" if "4241533712" in phone_val else f"Abonado {phone_val}"
             )
-            device_val = body.get("channel") or body.get("device_type") or "PWA Móvil"
+            device_val = "PWA Móvil (Data 4GMAX)" if is_pwa_channel else (body.get("channel") or body.get("device_type") or "PWA Móvil")
             try:
                 from core.conversation_trace_engine import conversation_trace_engine
                 from core.webhook_live_feed import webhook_feed_manager
@@ -2116,52 +2123,59 @@ class MovilnetAPIService:
             except Exception:
                 pass
 
-            # Despacho en segundo plano a n8n Cloud (Workflow sNMbtiEiTkuQ9OCY con auto-upgrade y reintentos)
-            def _dispatch_to_n8n():
-                try:
-                    from core.webhook_noise_filter import WebhookNoiseFilter
-                    from core.n8n_webhook_resolver import dispatch_to_n8n_with_retry
-                    phone_val_n8n = phone_val or "04160000001"
-                    remote_jid = f"58{phone_val_n8n[1:]}@s.whatsapp.net" if phone_val_n8n.startswith("0") else f"{phone_val_n8n}@s.whatsapp.net"
-                    n8n_payload = {
-                        "event": "messages.upsert",
-                        "instance": os.environ.get("EVOLUTION_INSTANCE", "Viki LPGTEC"),
-                        "sender": "584241533712@s.whatsapp.net",
-                        "server_url": os.environ.get("EVOLUTION_SERVER_URL", "http://evolution:8080"),
-                        "apikey": os.environ.get("EVOLUTION_APIKEY", "957EEABBC570-4C60-8EDB-949655A34113"),
-                        "date_time": datetime.now(timezone.utc).isoformat(),
-                        "data": {
-                            "key": {
-                                "remoteJid": remote_jid,
-                                "id": f"PWA-MSG-{uuid.uuid4().hex[:8].upper()}"
-                            },
-                            "pushName": sender_val,
-                            "message": {
-                                "conversation": str(text).strip()
+            # Despacho en segundo plano a n8n Cloud EXCLUSIVAMENTE para canales externos WhatsApp.
+            # Prohibición Estricta: Los mensajes originados en PWA NUNCA se despachan a n8n ni a WhatsApp,
+            # permaneciendo el usuario (N) estrictamente en modo data por el canal PWA de retorno HTTP.
+            if not is_pwa_channel:
+                def _dispatch_to_n8n():
+                    try:
+                        from core.webhook_noise_filter import WebhookNoiseFilter
+                        from core.n8n_webhook_resolver import dispatch_to_n8n_with_retry
+                        phone_val_n8n = phone_val or "04160000001"
+                        remote_jid = f"58{phone_val_n8n[1:]}@s.whatsapp.net" if phone_val_n8n.startswith("0") else f"{phone_val_n8n}@s.whatsapp.net"
+                        n8n_payload = {
+                            "event": "messages.upsert",
+                            "instance": os.environ.get("EVOLUTION_INSTANCE", "Viki LPGTEC"),
+                            "sender": "584241533712@s.whatsapp.net",
+                            "server_url": os.environ.get("EVOLUTION_SERVER_URL", "http://evolution:8080"),
+                            "apikey": os.environ.get("EVOLUTION_APIKEY", "957EEABBC570-4C60-8EDB-949655A34113"),
+                            "date_time": datetime.now(timezone.utc).isoformat(),
+                            "data": {
+                                "key": {
+                                    "remoteJid": remote_jid,
+                                    "id": f"PWA-MSG-{uuid.uuid4().hex[:8].upper()}"
+                                },
+                                "pushName": sender_val,
+                                "message": {
+                                    "conversation": str(text).strip()
+                                }
                             }
                         }
-                    }
-                    noise_res = WebhookNoiseFilter.evaluate(n8n_payload)
-                    if not noise_res.should_process:
-                        logger.info(
-                            f"[Service] Despacho a n8n Cloud omitido por WebhookNoiseFilter: "
-                            f"{noise_res.verdict.value} ({noise_res.reason})"
-                        )
-                        return
+                        noise_res = WebhookNoiseFilter.evaluate(n8n_payload)
+                        if not noise_res.should_process:
+                            logger.info(
+                                f"[Service] Despacho a n8n Cloud omitido por WebhookNoiseFilter: "
+                                f"{noise_res.verdict.value} ({noise_res.reason})"
+                            )
+                            return
 
-                    res = dispatch_to_n8n_with_retry(n8n_payload, max_retries=2)
-                    if not res.get("success"):
-                        logger.warning(f"[Service] Despacho a n8n Cloud advirtió: {res.get('error')}")
-                except Exception as ex_dispatch:
-                    logger.error(f"[Service] Error al despachar webhook hacia n8n: {ex_dispatch}")
+                        res = dispatch_to_n8n_with_retry(n8n_payload, max_retries=2)
+                        if not res.get("success"):
+                            logger.warning(f"[Service] Despacho a n8n Cloud advirtió: {res.get('error')}")
+                    except Exception as ex_dispatch:
+                        logger.error(f"[Service] Error al despachar webhook hacia n8n: {ex_dispatch}")
 
-            threading.Thread(target=_dispatch_to_n8n, daemon=True).start()
+                threading.Thread(target=_dispatch_to_n8n, daemon=True).start()
 
         res_payload = response.to_dict()
         res_payload["reply"] = response.response_text
         res_payload["response"] = response.response_text
         res_payload["text"] = response.response_text
         res_payload["message"] = response.response_text
+        res_payload["channel"] = "pwa_mobile" if is_pwa_channel else "whatsapp"
+        res_payload["mode"] = "DATA_PWA_EXCLUSIVE" if is_pwa_channel else "OMNICHANNEL"
+        res_payload["bot_phone"] = "0424-1533712"
+        res_payload["bot_name"] = "MOVI"
         return 200, res_payload
 
     def handle_n8n_webhook_ingest(self, body: Dict[str, Any]) -> Tuple[int, Dict[str, Any]]:

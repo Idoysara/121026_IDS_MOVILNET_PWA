@@ -111,8 +111,6 @@ class PWAProtocolGuardian:
                 content = f.read()
                 if "584241533712" in content or "04241533712" in content:
                     return PhoneDescriptor.from_string("0424-1533712")
-                elif "584166251587" in content or "04166251587" in content:
-                    return PhoneDescriptor.from_string("0416-6251587")
 
         return PhoneDescriptor.from_string(default_phone)
 
@@ -432,7 +430,7 @@ def run_self_verification() -> bool:
     print("🧪 [TEST 1/5] Instanciación de PWAProtocolGuardian y detección de línea activa...")
     guardian = PWAProtocolGuardian()
     bot = guardian.detect_active_bot_phone()
-    assert bot.international_digits in ("584241533712", "584166251587")
+    assert bot.international_digits == "584241533712"
 
     print("🧪 [TEST 2/5] Extracción y validación de versión del Service Worker...")
     sw_ver, sw_name = guardian.extract_sw_version()

@@ -1,8 +1,8 @@
 # PUNTO DE CONTROL — SESIÓN ACTIVA (MOVILNET ↔ PROTOCOLO DECAGONAL CERO ERRORES)
-- **Fecha/Hora:** 2026-10-13 18:50 VET | **Capítulo Bitácora:** 175 (Resolución DEFCON 1: Erradicación de Enlace Inexistente pwa.movilnet.com.ve, Nube Render 24/7 y Portabilidad In-Chat WhatsApp)
+- **Fecha/Hora:** 2026-10-13 20:20 VET | **Capítulo Bitácora:** 176 (Aislamiento Soberano del Canal de Datos PWA, Modo Exclusivo Data N <-> 1 y Erradicación Definitiva de Enrutamiento Legacy 0416-6251587 y WdWU8G9EggQDMack)
 - **Declaración Estratégica Ratificada:**
-  > *"Incidente DEFCON 1 Resuelto: El dominio inexistente 'pwa.movilnet.com.ve' (NXDOMAIN en celulares móviles 3G/4G/5G) fue erradicado y reemplazado en n8n Cloud y en el Core por la URL pública funcional 24/7 en Render: 'https://movilnet-core.onrender.com/ui/pwa_stitch/index.html'. Adicionalmente, se habilitó la Portabilidad Express directamente en el chat de WhatsApp ('Responde Portabilidad por aquí') para máxima accesibilidad sin depender de navegación externa."*
-- **Estado de Calidad:** 422 / 422 tests aprobados (100% PASS, 0 fallos en 25.05s en 46 suites).
+  > *"Aislamiento Soberano PWA Certificado: Cuando los usuarios (N) interactúan por la PWA con el Asistente (1) Movilnet MOVI, todas las respuestas retornan 100% de manera exclusiva por el canal de datos PWA (respuesta HTTP JSON / modo data). Se erradicó cualquier fuga o despacho saliente hacia WhatsApp o n8n Cloud cuando el canal es PWA. El número antiguo 0416-6251587 y el flujo viejo WdWU8G9EggQDMack han sido erradicados de todo el enrutamiento activo y workflows, consagrando la línea oficial única +58 424 153 3712 (0424-1533712 / MOVI) y el webhook canónico sNMbtiEiTkuQ9OCY."*
+- **Estado de Calidad:** 423 / 423 tests aprobados (100% PASS, 0 fallos en 51.75s en 46 suites).
 - **Línea Activa Oficial del Bot (El '1' en N <-> 1):** `+58 424 153 3712` (`0424-1533712`, `584241533712@s.whatsapp.net`, identidad `MOVI`).
 - **Comando Maestro de Prueba Real (1 Clic / Cero Terminal):**
   * Lanzador macOS: `EJECUTAR_PRUEBA_REAL.command` (Doble clic directo).
