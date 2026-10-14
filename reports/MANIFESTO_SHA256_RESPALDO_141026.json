@@ -1,13 +1,13 @@
 {
   "project_name": "141026_Movilnet_Core_PWA",
-  "timestamp_utc": "2026-10-14T10:14:18.106427+00:00",
-  "root_directory": "/Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_121026/Movilnet_PWA",
-  "total_files_scanned": 952,
-  "total_bytes": 43802661,
+  "timestamp_utc": "2026-10-14T11:29:14.885501+00:00",
+  "root_directory": "/Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_141026/141026_Movilnet_Core_PWA",
+  "total_files_scanned": 968,
+  "total_bytes": 43965379,
   "directories": {
     "root": {
-      "files_count": 22,
-      "total_bytes": 64178
+      "files_count": 23,
+      "total_bytes": 67978
     },
     "ui": {
       "files_count": 1,
@@ -70,20 +70,28 @@
       "total_bytes": 6871
     },
     "core": {
-      "files_count": 17,
-      "total_bytes": 383241
+      "files_count": 18,
+      "total_bytes": 401556
+    },
+    "config": {
+      "files_count": 0,
+      "total_bytes": 0
+    },
+    "config/department_rules": {
+      "files_count": 5,
+      "total_bytes": 9941
     },
     "tests": {
-      "files_count": 47,
-      "total_bytes": 363880
+      "files_count": 48,
+      "total_bytes": 370219
     },
     ".agents": {
       "files_count": 2,
       "total_bytes": 2723
     },
     ".agents/rules": {
-      "files_count": 5,
-      "total_bytes": 17113
+      "files_count": 6,
+      "total_bytes": 20566
     },
     ".agents/skills": {
       "files_count": 0,
@@ -102,12 +110,12 @@
       "total_bytes": 9187
     },
     "mcp": {
-      "files_count": 13,
-      "total_bytes": 187631
+      "files_count": 14,
+      "total_bytes": 195301
     },
     "docs": {
       "files_count": 102,
-      "total_bytes": 5536135
+      "total_bytes": 5539564
     },
     "docs/img": {
       "files_count": 8,
@@ -118,20 +126,20 @@
       "total_bytes": 0
     },
     "scripts": {
-      "files_count": 72,
-      "total_bytes": 960561
+      "files_count": 73,
+      "total_bytes": 965047
     },
     "db": {
       "files_count": 7,
-      "total_bytes": 29134227
+      "total_bytes": 29220243
     },
     "api": {
       "files_count": 4,
-      "total_bytes": 271588
+      "total_bytes": 272898
     },
     "api/agents": {
-      "files_count": 10,
-      "total_bytes": 207727
+      "files_count": 11,
+      "total_bytes": 215072
     },
     "api/schemas": {
       "files_count": 0,
@@ -156,6 +164,10 @@
     "skills/venezuela-geo-locator": {
       "files_count": 1,
       "total_bytes": 1468
+    },
+    "skills/telco-noc-incident-responder": {
+      "files_count": 1,
+      "total_bytes": 1591
     },
     "skills/n8n-movilnet-e2e-orchestrator": {
       "files_count": 1,
@@ -210,8 +222,8 @@
       "total_bytes": 1242
     },
     "reports": {
-      "files_count": 586,
-      "total_bytes": 3628352
+      "files_count": 589,
+      "total_bytes": 3637375
     }
   },
   "files": {
@@ -230,6 +242,10 @@
     ".mcp.json": {
       "size_bytes": 460,
       "sha256": "8eb8128fd82b780c20a7b5dc17593f34b1c961af6a1f60f807298c2f1c65d8ac"
+    },
+    "ACTUALIZAR_REGLAS_DEPARTAMENTALES.command": {
+      "size_bytes": 1265,
+      "sha256": "b57e275e5ebaf55a205d4b6a57da7910bb92daffa09b991358cf8dcc3c9c8cd7"
     },
     "ACTUALIZAR_RENDER_1CLIC.command": {
       "size_bytes": 2815,
@@ -260,32 +276,32 @@
       "sha256": "2261f5589b7de23625010d783115dd6817aa28068afffa53d0ba77b7bc4d7085"
     },
     "MANIFIESTO_ARQUITECTURA_Y_COMPONENTES_141026.md": {
-      "size_bytes": 14533,
-      "sha256": "369240c77fb55a51b6b287faf4665491bf37ef99c2541fe83255768314339ad5"
+      "size_bytes": 14687,
+      "sha256": "413c6a9956a381e9e58925c5775ef71026bcd8bce02da3a1551bd8a8f5fb6bfc"
     },
     "PROBAR_PWA_CELULAR.command": {
       "size_bytes": 986,
       "sha256": "693c0026f27a57fb4783240ba892f9be6b84a58af4731a7da9b95c3eb32979cd"
     },
     "PUNTO_DE_CONTROL_SESION_ACTIVA.md": {
-      "size_bytes": 4855,
-      "sha256": "9597e7970178880001505d61199684efce706bb3764f9f9215c6e19cc91c41f3"
+      "size_bytes": 4907,
+      "sha256": "e1851eadb6b5c778ccb22daa73052882762eef4047fbe0b02741f01e34e5a9f0"
     },
     "Procfile": {
       "size_bytes": 27,
       "sha256": "fce8d515eb7f47de9ae3d319a96cf84a5c989613f8490645977e08d3cbd29e5f"
     },
     "README.md": {
-      "size_bytes": 5136,
-      "sha256": "fb9e65f5f1b384571c58d4cfd2fc5057782249cf88ed34aed5cda86c1c01495a"
+      "size_bytes": 6820,
+      "sha256": "04d272bc550129fe52b4ac2318656c04ee2a6cdc1d16786cf8c57f17dbfaca52"
     },
     "REINICIAR_SERVICIOS_MOVILNET.command": {
       "size_bytes": 2450,
       "sha256": "1499640009bc21df53edc5d60b684f73c6db6bb73ea9c91d148dc5a3f1a96933"
     },
     "STATE.md": {
-      "size_bytes": 11384,
-      "sha256": "60662f2d92ca1dfffd07af8c2bf23297f47b7a4d543b72b23b7f548050568d2b"
+      "size_bytes": 12029,
+      "sha256": "e5a45cab78ad6b83d72a7c54a3305ca8c3840e0fbb7c82f3685da64e4000b351"
     },
     "SUBIR_A_GITHUB.command": {
       "size_bytes": 2550,
@@ -423,6 +439,10 @@
       "size_bytes": 156851,
       "sha256": "c25a459aa9794692a583c93a2a51001dd7093273b96834b01bca695da8e67e38"
     },
+    "core/department_rule_engine.py": {
+      "size_bytes": 16194,
+      "sha256": "2ec28d6045887adc716ea66f8aadf29b4257701e64d8811e7420bf0e960b18e2"
+    },
     "core/fastpath_intent_interceptor.py": {
       "size_bytes": 36252,
       "sha256": "87b52691d3c3e638897b49af33d3a7db337cd87f13e5c850e5c65f4534275752"
@@ -436,8 +456,8 @@
       "sha256": "94eee681317cfcb36e463ec7e842a500d6046070615b1a3e3ddcaecfc3641f8f"
     },
     "core/multi_agent_supervisor.py": {
-      "size_bytes": 8437,
-      "sha256": "a5d3f5004f4fc2eba6a529d3ce20c969f2adf1276686da70908498bda537c460"
+      "size_bytes": 9914,
+      "sha256": "24deddaa99198603cca22c02b671a637c4e86395853f8c278b477d169098a9c9"
     },
     "core/n8n_webhook_payload_extractor.py": {
       "size_bytes": 18134,
@@ -464,8 +484,8 @@
       "sha256": "730573c242e928a44c8467389794a80b6e8057db24c5e05d9ac18c13066848d4"
     },
     "core/semantic_router.py": {
-      "size_bytes": 6423,
-      "sha256": "416b1bcd1e208c6bd41abecc067657222a37694e1d7a89d58bd5842c6942121f"
+      "size_bytes": 7067,
+      "sha256": "fb66153acbb28d03214b111f5e0eca89b38422d53bb02c9f4f62155aa000a765"
     },
     "core/session_identity_isolator.py": {
       "size_bytes": 9128,
@@ -482,6 +502,26 @@
     "core/webhook_noise_filter.py": {
       "size_bytes": 16931,
       "sha256": "7e2342618553b64e12fbc2562af5bbd7e4433c4d5226bdbceba81f51f3633310"
+    },
+    "config/department_rules/atencion_cliente.json": {
+      "size_bytes": 2716,
+      "sha256": "9a6e793c6b3217bd22a8a461b5b799ff72fb4343867983a511c7315abf236474"
+    },
+    "config/department_rules/comercial_ventas.json": {
+      "size_bytes": 2558,
+      "sha256": "dca98b47b81eb4b6af0121c2bd60101df1f6feb4c200ade26ac99b7289640318"
+    },
+    "config/department_rules/finanzas_c2p.json": {
+      "size_bytes": 1668,
+      "sha256": "242ef459da950042c2ef6daac85bcbd32ff1f9086f767f298a8d73c84f00bda1"
+    },
+    "config/department_rules/operaciones_noc.json": {
+      "size_bytes": 1869,
+      "sha256": "3110cf705be8c2a4c285a83b323492e4e53439ec7bfb536ee9dd268ffb1d5794"
+    },
+    "config/department_rules/seguridad_conatel.json": {
+      "size_bytes": 1130,
+      "sha256": "d0e29adf4a1aaa032c0e11517242cdaca3f2dd4dc8ca287117941957671146d3"
     },
     "tests/__init__.py": {
       "size_bytes": 34,
@@ -502,6 +542,10 @@
     "tests/test_conversation_trace_monitor.py": {
       "size_bytes": 13158,
       "sha256": "3cb3a18bde800d85197f38ff98d81e6e14a5e8debde98e40720204daa4cbb504"
+    },
+    "tests/test_department_rules.py": {
+      "size_bytes": 6339,
+      "sha256": "e96ec31b45098c4867a8bba941c572c102ae9d2853b1620772d75e6b7a3d298d"
     },
     "tests/test_discovery_mcp.py": {
       "size_bytes": 18629,
@@ -691,6 +735,10 @@
       "size_bytes": 4657,
       "sha256": "893e2a1dd2aa3eb6f52c699ce456daed28299e626f36700cc5c726dd0fba3132"
     },
+    ".agents/rules/regla-inviolable-pase-produccion.md": {
+      "size_bytes": 3453,
+      "sha256": "0a3893857377b63edbf9de6d3203201b7fc9df7de2fadbb228ebc652fc5e8d1c"
+    },
     ".agents/rules/regla-webhook-canonico-exclusivo-n8n.md": {
       "size_bytes": 2971,
       "sha256": "c1786a85e448f92c7425e0067991595deb389bf99aee58ba9fdb238a5a7d85e6"
@@ -739,6 +787,10 @@
       "size_bytes": 11530,
       "sha256": "8add4937b6631af7d4cd2570d559e9134222d0ac545a4bf2b4c87344124131f7"
     },
+    "mcp/noc_tools.py": {
+      "size_bytes": 7670,
+      "sha256": "d569de56785c1c68db951ece4e17905f9800617752f891701b1a9527b0a8e877"
+    },
     "mcp/phone_migration_mcp.py": {
       "size_bytes": 6263,
       "sha256": "ede3edc4904a8609e9f8ceb5cae1871984b27cade00a3e76aca0aab3d335b71b"
@@ -784,8 +836,8 @@
       "sha256": "c44d0591108e564ac4d379e7cb98a47ed429048c9168d471cce5339045cc4989"
     },
     "docs/BITACORA_MOVILNET.md": {
-      "size_bytes": 540237,
-      "sha256": "7ba899ba118c6af1db01ba266143cdac18cb88252d96c5eeb0548800acfb584e"
+      "size_bytes": 543666,
+      "sha256": "6658ffaccb81c6d737de4f0ac23d9d38a5ca85d10a813617f9e582376a0e0e89"
     },
     "docs/BITACORA_MOVILNET_COMPLETA.pdf": {
       "size_bytes": 251095,
@@ -1483,6 +1535,10 @@
       "size_bytes": 17351,
       "sha256": "f9d05e25fe4fd43cac0df8d05a6dee88290158bf1f27a77e4c640a02778f7a75"
     },
+    "scripts/validate_department_rules.py": {
+      "size_bytes": 4486,
+      "sha256": "7aa6fec12c9ca2f4dee470c84a0b7c564796d319459f348cee70beb0092c430c"
+    },
     "scripts/verify_n8n_db_schema.py": {
       "size_bytes": 9747,
       "sha256": "c96dda6a67970022b998cfb71a839193b4391a91e7fd268e469af14f67fa7d89"
@@ -1496,8 +1552,8 @@
       "sha256": "aad26d3bec69b10087596cc13b5c03279b43c432e42fe4af131e98ad22bf08ce"
     },
     "db/local_movilnet.db": {
-      "size_bytes": 17137664,
-      "sha256": "de7c0946d9e3f62f8d4d82a5c360154a4cebe9b63952d7558370240dcafe7fca"
+      "size_bytes": 17223680,
+      "sha256": "017fc253c4268c7fc3c761607f05b5c4fda8bb6e5add22aafc29b7e4b98b14b0"
     },
     "db/local_movilnet.db.backup_test": {
       "size_bytes": 11923456,
@@ -1528,8 +1584,8 @@
       "sha256": "c4cd6c0287a51e2af2fdffa84310532901ae33502ae457db0e527cdcce0161be"
     },
     "api/service.py": {
-      "size_bytes": 163494,
-      "sha256": "aac59491ab5209210446b755bd30070899e82de9addf58b586c614f948d5ea18"
+      "size_bytes": 164804,
+      "sha256": "0b081c3c1c0dfc162764d1924f32b5250b3f220bd61b772781f1f2b91888b624"
     },
     "api/webhook_bridge.py": {
       "size_bytes": 35191,
@@ -1570,6 +1626,10 @@
     "api/agents/agent_n8n_dispatcher.py": {
       "size_bytes": 5448,
       "sha256": "2bd78ed5326c575a38d36ffbd51fec3442a51957ffb104cf4610e48e4a3f7487"
+    },
+    "api/agents/agent_network_noc.py": {
+      "size_bytes": 7345,
+      "sha256": "871affbed9903f936fa9aad7be61b8c107eec53f8a432ec7841e40075f4d44e5"
     },
     "api/agents/agent_retention_churn.py": {
       "size_bytes": 39754,
@@ -1626,6 +1686,10 @@
     "skills/venezuela-geo-locator/SKILL.md": {
       "size_bytes": 1468,
       "sha256": "45e1d47ccb3da3df0cdbece50e0a3775e4390243f758798b93a43f8d40a8a896"
+    },
+    "skills/telco-noc-incident-responder/SKILL.md": {
+      "size_bytes": 1591,
+      "sha256": "c2b49498cbbf5778c241176db4a45bc2627177f8a22d72482a9e783f52a8153e"
     },
     "skills/n8n-movilnet-e2e-orchestrator/SKILL.md": {
       "size_bytes": 2671,
@@ -1700,8 +1764,8 @@
       "sha256": "32fccf81f99f3d3c5d7d72c934c7e2a2077c6053b80595eaca55ede57cbd45e9"
     },
     "reports/CERTIFICATION_FASE2_GATEKEEPER.json": {
-      "size_bytes": 1781,
-      "sha256": "a85cd60280cc1f7e922bbfd48b6392d7c1ba165f8c226aee2e46066fe77c6d00"
+      "size_bytes": 1780,
+      "sha256": "38b17e80e9862db3f10b50b4853b238a2bf44bf532e47cf59ea7a7c4a19ad912"
     },
     "reports/CERTIFICATION_FASE2_PASO1_REST_API.json": {
       "size_bytes": 1974,
@@ -1716,8 +1780,8 @@
       "sha256": "e2480a069d8ba547851d9d6ff5dee07386dfb71adc4a0f283f21821dea2a83bf"
     },
     "reports/CERTIFICATION_FASE3_GATEKEEPER.json": {
-      "size_bytes": 1641,
-      "sha256": "8127fbb1d2832384789b441ba1c0a1eee5b22aefc932eabc42eee81ee7fff221"
+      "size_bytes": 1642,
+      "sha256": "f958a126c9f707c18121a2a7dffe16fc9fe9350e6bc2c664ad4ee88d159fb6ce"
     },
     "reports/CERTIFICATION_FASE3_PASO1_CUSTOMER_CARE.json": {
       "size_bytes": 2287,
@@ -1737,7 +1801,7 @@
     },
     "reports/CERTIFICATION_FASE4_GATEKEEPER.json": {
       "size_bytes": 1163,
-      "sha256": "83b4dad15f6fe3c04a1cb72021640acb53608591c5e0877554af5fda607003aa"
+      "sha256": "e402b4025cd211470881d48fd4cf2150f43810b48ff82a679c98a6fcf8a9b50e"
     },
     "reports/CERTIFICATION_FASE4_PASO1_DESIGN_SYSTEM.json": {
       "size_bytes": 1908,
@@ -1756,12 +1820,12 @@
       "sha256": "77d123dbb0d70bb0bd0bf9201bd5db1d759ca131b35f7a84d1bd2dfd0973f983"
     },
     "reports/MANIFESTO_SHA256_RESPALDO_141026.json": {
-      "size_bytes": 167587,
-      "sha256": "7a8780d02a990657b3e80c7d5f6787947d575c5cc31f4b1c4118e150ad7f6ac0"
+      "size_bytes": 168016,
+      "sha256": "b6d4c35a6796449cd32df3171911999a5f63fe6ef1941658516e06a7ec50065d"
     },
     "reports/REPORTE_OBSERVADOR_ONLINE_TELEMETRIA.md": {
       "size_bytes": 3982,
-      "sha256": "e82d454fa51c7f28b65063d1eced8b1684e84fb0fe2d082bdcef4d83dc7d0837"
+      "sha256": "207db373a4bcd30cee8ee5038b51558b7e980d7689177b64f0cd45646abe2c34"
     },
     "reports/api_spec_tmp08tr4v4j_20261009_122105.json": {
       "size_bytes": 1740,
@@ -2106,6 +2170,10 @@
     "reports/api_spec_tmpes1o3tmz_20261011_174022.json": {
       "size_bytes": 1740,
       "sha256": "255e96d1bf2caeca4675ae6e4e18165c4f4c5a2ba828d3ab6423892975c2e8b0"
+    },
+    "reports/api_spec_tmpevcb2gtn_20261014_072004.json": {
+      "size_bytes": 1740,
+      "sha256": "7871761613f93c1a853c10acba9dfaf54bbc8c11e43825e8289ec8116e26d00f"
     },
     "reports/api_spec_tmpey64q9x5_20261011_201846.json": {
       "size_bytes": 1740,
@@ -2505,23 +2573,23 @@
     },
     "reports/disaster_recovery_status.json": {
       "size_bytes": 281,
-      "sha256": "e2efdd1e4fe26ae8cad98471c261a9648f7b911525a803e8749918bb04b69960"
+      "sha256": "461f15cb1925f2507193b5e924f3cdda5dbc6cd1dccd7cd3e0958cd3698ea17d"
     },
     "reports/fastpath_latency_report.json": {
       "size_bytes": 1199,
       "sha256": "f04fd36e1546b530f9617759c39a8a36e40c5eca3ea2ea4225c3929307aab014"
     },
     "reports/gatekeeper_phase2_report.json": {
-      "size_bytes": 7539,
-      "sha256": "098b1e6257bf3ff48dd4c9364aa1eea30381c50cf81e7cda43de0cdbbdb40067"
+      "size_bytes": 7537,
+      "sha256": "57948449975b387fc4e81d9c38718891b8dc7f81b9f8443f4829ec32058adce0"
     },
     "reports/gatekeeper_phase3_report.json": {
-      "size_bytes": 8717,
-      "sha256": "f079acf2812dc74b2f883c154441d6f46aceb6b7aa3cd336f3b668a275887227"
+      "size_bytes": 8718,
+      "sha256": "9aef07301e420094a5f2eaf5e2d01d8834a0ab03ce146341270c689cd011a97c"
     },
     "reports/gatekeeper_phase4_report.json": {
-      "size_bytes": 6644,
-      "sha256": "1a950af68e676766990adce58bccf20bc14aca8ef456d48ddc4bd44eeefab40e"
+      "size_bytes": 6645,
+      "sha256": "32df5639bfb5a8c8304a4c1c6a43d2ff37260ceda675fcd4d0533cf3db412e51"
     },
     "reports/gatekeeper_report_20260930_115000.json": {
       "size_bytes": 1108,
@@ -3263,21 +3331,25 @@
       "size_bytes": 1108,
       "sha256": "b80d439579db9c3791587bc30bccf648bb5be341d0661994ae1af057f05f23a6"
     },
+    "reports/gatekeeper_report_20261014_072004.json": {
+      "size_bytes": 1108,
+      "sha256": "eb67a91dbae59259aeb6db1bf1b0fb143b0256d6b90b153912221996b452f14a"
+    },
     "reports/live_supervisor_telemetry.json": {
-      "size_bytes": 28490,
-      "sha256": "71fff987b64d3228f2606cd2123f17349d174236b63fc97ebe435d77a6b8313b"
+      "size_bytes": 31935,
+      "sha256": "9bb4225b3a8b2c08ec8ed03f022d68a280f20aa01933b3e0dbf5289ea646e6c9"
     },
     "reports/n8n_deployment_manifest.json": {
       "size_bytes": 4675,
-      "sha256": "188ed56e6e679391595654091d8797b7ca4d08922d12d040f37b18c46a69c513"
+      "sha256": "11cfc728207867dc8c9a0bb9b38ad312b05e1c3428d061bb89f6341ed591e41f"
     },
     "reports/observer_online_telemetry.json": {
       "size_bytes": 6604,
-      "sha256": "73c0c7d8d0b21972186d5cc81d4515c3e61290d84b7bb5de34433a72c98fd6a9"
+      "sha256": "50d634d35cbbe5d96c451c0da7bb927b7826f113d111114c6fa68fd6d1d8ed0d"
     },
     "reports/production_deployment_manifest.json": {
-      "size_bytes": 2470,
-      "sha256": "c61f6a5d7502cf780a920e1dcd507c3f9e51daa5f65d3a1e6c1d096b6e7b6576"
+      "size_bytes": 2482,
+      "sha256": "33ca4e740e5b664f63306cfdfacab11f10c7caaa4ef1d721072f41d22332bf52"
     },
     "reports/pwa_replication_certification.json": {
       "size_bytes": 1142,
@@ -3691,6 +3763,10 @@
       "size_bytes": 2289,
       "sha256": "57c2e3a38b65081e6d189920742d6f7d2e99b0ec3d8cfc815dbf4b6fa4ae1569"
     },
+    "reports/schema_inspection_tmpklvjd1lh_20261014_072004.json": {
+      "size_bytes": 2289,
+      "sha256": "922c1cb21ecf5b62bf01390cdcd9f73c8d1544fa6051bb4a59c5816e2a65ef09"
+    },
     "reports/schema_inspection_tmpkmh7ufio_20261007_110823.json": {
       "size_bytes": 2289,
       "sha256": "7b4931df49731087a0f95b390c9b61fe35e2e9c6ba8cbba9870eb984ea61ab19"
@@ -4024,5 +4100,5 @@
       "sha256": "0da99777ea1b546f81f3044187434dc1ec059a0f8940b94584d167eeb38d0e86"
     }
   },
-  "master_integrity_sha256": "e89c73620be5a6324194727be2a3b9d343e46eab4bc636ead77ed3a663ba9811"
+  "master_integrity_sha256": "fef90c79f19023c0457f695330d76c5b24e1d9c7d3121ebd9e342e99c5a1974e"
 }

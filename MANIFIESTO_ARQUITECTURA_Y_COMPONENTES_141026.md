@@ -5,9 +5,9 @@
 **Directorio de Origen:** `/Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_121026/Movilnet_PWA`  
 **Fecha de Certificación:** 14 de Octubre de 2026 | **Hora:** 05:45 VET  
 **Gobernanza:** Universal Best Practices Engineering Rule (Pilares I al VII) & Protocolo Decagonal (10 Fases)  
-**Hash Maestro SHA-256 del Respaldo:** `dd3e1a6cd7b921acf712c5ac8c237f370716fcb4718e7b0a57cbc2cb8dfbcbde`  
-**Total de Archivos Auditados:** 945 archivos (41.48 MB)  
-**Calidad de Pruebas Automatizadas:** **423 / 423 Pruebas Unitarias Aprobadas (100% PASS, 0 Fallos)**  
+**Hash Maestro SHA-256 del Respaldo:** `fef90c79f19023c0457f695330d76c5b24e1d9c7d3121ebd9e342e99c5a1974e`  
+**Total de Archivos Auditados:** 968 archivos (41.93 MB)  
+**Calidad de Pruebas Automatizadas:** **430 / 430 Pruebas Unitarias Aprobadas (100% PASS, 0 Fallos)**  
 
 ---
 
@@ -86,6 +86,7 @@ flowchart TB
   * `agent_fintech_c2p.py`: Agente N2 de FinTech y Pagos Móviles C2P SUDEBAN. Valida pagos directos y consulta la tasa oficial del Banco Central de Venezuela (BCV).
   * `agent_emergency_eir.py`: Agente N3 de Emergencias y Seguridad EIR. Bloqueo de líneas y validación matemática de código IMEI mediante el algoritmo de Luhn.
   * `agent_retention_churn.py`: Agente N4 de Retención y Prevención de Churn. Predicción analítica de fuga de clientes mediante modelo Scikit-Learn.
+  * `agent_network_noc.py`: Agente N5 de Operaciones de Red y NOC. Detección zonal de incidencias, boletines proactivos y mitigación de tickets falsos.
 * **`api/n8n_workflows/`:**  
   Workflows versionados de n8n Cloud. Destaca `viki_lpgtec_v2_ids_instant_dispatch.json`, con despacho instantáneo (`delay: 0`) y datos bancarios oficiales actualizados a `0424-1533712`.
 
