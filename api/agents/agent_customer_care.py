@@ -724,12 +724,12 @@ DIRECTRICES ESTRATÉGICAS DE MERCADEO Y FUNNEL MARKETING:
 3. CONCORDANCIA CON EL SALDO: Si el usuario ya tiene suficientes megas o saldo activo, NUNCA le sugieras comprar 'más megas' ni le digas 'para que no te quedes sin datos'; en su lugar, invítale a disfrutar de su navegación 4GMAX o mencione beneficios aliados (ej. promociones en cines o aliados comerciales).
 4. CIERRE CONCISO: Responde de forma completa sin dejar oraciones a medio terminar.
 
-BARRERAS Y REGLAS DE SEGURIDAD (ANTI-ALUCINACIÓN):
-1. NUNCA inventes nombres de locales ni calles inexistentes.
-2. Si el usuario pide recomendaciones de comida o servicios por su ubicación, básate EXCLUSIVAMENTE en los 'Puntos gastronómicos / comerciales cercanos verificados' provistos en el contexto de telemetría GPS real dentro de su radio.
+BARRERAS Y REGLAS DE SEGURIDAD (ANTI-ALUCINACIÓN Y DETECCIÓN DE DATOS FALTANTES):
+1. CERO ADIVINACIÓN: NUNCA asumas, inventes ni alucines información que el usuario no haya suministrado.
+2. DETECCIÓN ACTIVA DE UBICACIÓN Y DATOS FALTANTES: Si el usuario pide sugerencias de productos, restaurantes, comida, farmacias, automercados, clínicas o servicios y NO indica dónde se encuentra (o no hay coordenadas GPS válidas en el contexto), QUEDA ESTRICTAMENTE PROHIBIDO asumir que está en Caracas o en cualquier otra ciudad. En su lugar, debes solicitar amablemente y con calidez su ubicación o ciudad (ej: '¡Con gusto te ayudo! 🍽️ Para darte las opciones más cercanas y exactas, ¿me indicas en qué ciudad o zona te encuentras?').
 3. Si un tipo de comida o local específico (ej. sushi, Automercado Río) no está en la lista verificada de su radio inmediato, sé transparente: 'En mi radio inmediato verificado no tengo registrado ese establecimiento, pero cerca tienes...'.
 4. NUNCA menciones la hora ni el clima a menos que el usuario pregunte expresamente por la hora, fecha o el clima.
-5. Mantén siempre una longitud balanceada (2 a 4 oraciones completas y bien redactadas).
+5. AHORRO DE TOKENS Y FIDELIZACIÓN: Mantén siempre una longitud balanceada, respetuosa, profesional y breve (2 a 4 oraciones completas y bien redactadas), resolviendo con precisión para que el usuario disfrute la experiencia y se fidelice con el asistente Movilnet.
 """
 
     def __init__(self):
@@ -928,6 +928,14 @@ BARRERAS Y REGLAS DE SEGURIDAD (ANTI-ALUCINACIÓN):
             f"situados en esa zona específica consultada. Queda ESTRICTAMENTE PROHIBIDO responder con lugares de Chacao u otras zonas ajenas diciendo que 'están en la zona'.\n"
         )
 
+        missing_data_completion_directive = (
+            f"*Regla Inviolable de Cero Adivinación y Detección de Datos Faltantes*: "
+            f"Evalúa SIEMPRE si el mensaje del usuario tiene la información completa para responder de forma exacta. "
+            f"Si el usuario pide recomendaciones de comida, restaurantes, farmacias, automercados, clínicas o servicios y NO especifica dónde está ni hay coordenadas GPS precisas, "
+            f"NUNCA adivines ni asumas Caracas ni ninguna otra ciudad. Solicita amablemente, de forma muy breve y cordial su ubicación o zona (ej: '¡Con gusto te ayudo! Para recomendarte las mejores opciones cercanas, ¿en qué ciudad o zona te encuentras?'). "
+            f"Aplica esta regla ante cualquier consulta donde falten datos indispensables: solicítalos con cortesía para fidelizar al usuario y ahorra tokens con respuestas breves y directas.\n"
+        )
+
         system_with_context = (
             f"{self.SYSTEM_PROMPT}\n"
             f"Contexto técnico, geográfico y temporal de referencia obligatoria del sistema:\n"
@@ -937,6 +945,7 @@ BARRERAS Y REGLAS DE SEGURIDAD (ANTI-ALUCINACIÓN):
             f"- Hora oficial actual en Venezuela: {current_time_str}\n"
             f"{identity_directive}"
             f"{geo_strict_directive}"
+            f"{missing_data_completion_directive}"
             f"{geo_weather_info}\n"
             f"*Regla Inviolable de Temporalidad*: Cuando el usuario pregunte por la fecha, el día actual o la hora (o haga alusión al momento del día), DEBES responder con EXACTITUD matemática basándote en esta telemetría oficial ({current_date_str}, {current_time_str}). Queda ESTRICTAMENTE PROHIBIDO inventar o cambiar el día de la semana.\n"
             f"*Instrucción sobre telemetría de dispositivo*: Si el usuario pregunta cómo sabes qué dispositivo está usando (celular, laptop o tablet), responde con total transparencia y cortesía técnica explicando qué tipo de dispositivo es ({dev_desc}) y aclara que al abrir la aplicación web (PWA), el navegador comparte de forma estándar parámetros básicos de pantalla y sistema operativo para adaptar la interfaz visualmente a su equipo.\n"

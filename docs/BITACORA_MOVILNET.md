@@ -6370,6 +6370,35 @@ La consulta directa a la API de ejecuciones de n8n Cloud verificó las 3 interac
   2. El sincronizador en segundo plano conectó inmediatamente con la API de n8n Cloud y sincronizó las 10 ejecuciones más recientes.
   3. El hilo del abonado Ids (`0414-2554590`) se actualizó a 180 mensajes, y las 3 conversaciones de la merienda, el helado y la portabilidad quedaron posicionadas de inmediato en la cima del monitor `http://localhost:8010/ui/monitor/conversatorio.html`.
 
+---
+
+## 📘 Capítulo 192 — Regla General Inviolable de Cero Adivinación, Detección Activa de Datos Faltantes y Optimización Extrema de Tokens para Fidelización de Usuarios (N)
+**Fecha:** 2026-10-14 | **Gobernanza:** Universal Best Practices Engineering Rule (Pilares I al VII) & Protocolo Decagonal (Fases 1 a 10)  
+**Mandato:** Formalizar, consagrar e inyectar en todas las capas del sistema la Regla General No Negociable: el Asistente Movilnet (1) no puede adivinar ni alucinar ante consultas de usuarios (N). Si faltan datos clave (ej. ubicación para recomendaciones de restaurantes, farmacias o automercados; parámetros de planes o productos), debe solicitarlos amablemente, con calidez, brevedad y profesionalismo, ahorrando tokens para crear una experiencia de alta fidelidad.
+
+### 🛡️ 1. Principios Operativos de la Regla
+1. **Tolerancia Cero a la Suposición Geográfica:**
+   * Queda terminantemente prohibido asumir que un usuario se encuentra en Caracas, Maracaibo o cualquier otra ciudad si este no lo ha manifestado explícitamente en el diálogo o mediante telemetría GPS verificada.
+   * Si el usuario consulta: *"recomiéndame un restaurante"* o *"dónde compro sushi"*, el bot jamás debe inventar un local ficticio ni asumir una zona.
+2. **Evaluación de Completitud de Datos en Todo Mensaje:**
+   * Ante todo mensaje entrante, el agente evalúa si cuenta con los datos indispensables para una resolución útil y certera.
+   * Si faltan datos clave, debe emitir una solicitud breve, cordial y empática venezolana:
+     > *"¡Con gusto te ayudo! 🍽️ Para recomendarte las opciones más ricas y cercanas, ¿me indicas en qué ciudad o zona te encuentras?"*
+3. **Resolución con Herramientas Gratuitas de IA (Smart MCP + Gemini Flash):**
+   * Una vez suministrados los datos faltantes, el agente activa las herramientas gratuitas de búsqueda geoespacial (`mcp_geo_tools`) y resuelve la recomendación con exactitud en pocas oraciones.
+4. **Ahorro Extremo de Tokens y Experiencia de Usuario:**
+   * Respuestas estructuradas de 2 a 4 oraciones directas, respetuosas y cálidas, sin rodeos, diseñadas para generar confianza y convertir al usuario en un asiduo seguidor del asistente Movilnet.
+
+---
+
+### 🛠️ 2. Implementación Arquitectónica Transversal
+* **Regla de Agente Oficial:** Creado el archivo [`.agents/rules/regla-cero-adivinacion-solicitud-datos-faltantes.md`](file:///Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_141026/141026_Movilnet_Core_PWA/.agents/rules/regla-cero-adivinacion-solicitud-datos-faltantes.md).
+* **Core Cognitivo:** Actualizado `SYSTEM_PROMPT` y el constructor de contexto `_build_system_context` en [`api/agents/agent_customer_care.py`](file:///Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_141026/141026_Movilnet_Core_PWA/api/agents/agent_customer_care.py).
+* **Reglas Departamentales:** Inyectada la política `zero_hallucination_and_missing_data_rules` en [`config/department_rules/atencion_cliente.json`](file:///Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_141026/141026_Movilnet_Core_PWA/config/department_rules/atencion_cliente.json).
+* **Orquestador n8n Cloud:** Desplegado parche en vivo sobre el workflow `sNMbtiEiTkuQ9OCY` mediante [`scripts/patch_n8n_zero_hallucination_rule.py`](file:///Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_141026/141026_Movilnet_Core_PWA/scripts/patch_n8n_zero_hallucination_rule.py), actualizando las instrucciones del nodo `AI Agent`.
+* **Pruebas de Regresión:** 25 pruebas unitarias departamentales ejecutadas con **100% PASS** (0 fallos).
+
+
 
 
 
