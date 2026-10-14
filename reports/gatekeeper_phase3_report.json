@@ -1,8 +1,8 @@
 {
-  "gatekeeper_id": "GK3-PHASE3-AUDIT-A0A37E496C83",
+  "gatekeeper_id": "GK3-PHASE3-AUDIT-0A605173754F",
   "phase": "FASE_3_AI_CORE_AND_MULTI_AGENT_SWARM",
   "project": "AI_Movilnet_300926",
-  "timestamp": "2026-10-14T00:17:16.807126+00:00",
+  "timestamp": "2026-10-14T10:12:27.683205+00:00",
   "status": "CERTIFICADO_Y_APROBADO_100%",
   "dimensions": {
     "dimension_1": {
@@ -118,7 +118,7 @@
       "name": "Dimensión 5: Auditoría SAST & Grado Militar de Seguridad Criptográfica",
       "passed": true,
       "checks": {
-        "scanned_files_count": 141,
+        "scanned_files_count": 142,
         "hardcoded_secrets_found": 0,
         "issues": [],
         "zero_secrets_exposed": true,
@@ -129,20 +129,20 @@
       "name": "Dimensión 6: Rendimiento, Tolerancia a Fallos & Benchmarks Carrier-Grade",
       "passed": true,
       "checks": {
-        "db_latency_avg_ms": 0.081,
-        "db_latency_p95_ms": 0.12,
+        "db_latency_avg_ms": 0.136,
+        "db_latency_p95_ms": 0.372,
         "db_sla_passed": true,
-        "agent_n1_avg_ms": 0.303,
-        "agent_n1_p95_ms": 0.474,
+        "agent_n1_avg_ms": 0.75,
+        "agent_n1_p95_ms": 0.725,
         "agent_n1_sla_passed": true,
-        "agent_n2_bcv_avg_ms": 0.006,
+        "agent_n2_bcv_avg_ms": 0.017,
         "agent_n2_sla_passed": true,
-        "agent_n3_luhn_avg_ms": 0.017,
+        "agent_n3_luhn_avg_ms": 0.051,
         "agent_n3_sla_passed": true,
-        "agent_n4_ml_avg_ms": 0.009,
-        "agent_n4_ml_p95_ms": 0.011,
+        "agent_n4_ml_avg_ms": 0.019,
+        "agent_n4_ml_p95_ms": 0.03,
         "agent_n4_sla_passed": true,
-        "agent_n4_fallback_latency_ms": 0.002,
+        "agent_n4_fallback_latency_ms": 0.004,
         "agent_n4_fallback_valid": true
       }
     }
@@ -160,7 +160,7 @@
     "openapi.json": "c4cd6c0287a51e2af2fdffa84310532901ae33502ae457db0e527cdcce0161be",
     "webhook_bridge.py": "df8b85f02555fa325b54589c42099b9bc42d7cc39933fa0081a73395a432b98c",
     "deploy_n8n_workflows.py": "f57f57633cc2daf883d76b18f3940ae066f605f80d5d99a23be40d85bcf431ce",
-    "n8n_deployment_manifest.json": "11d6fb37cc392890d2f8c3b40a0f8b145819160415b6374c850ea06de451d01e",
+    "n8n_deployment_manifest.json": "188ed56e6e679391595654091d8797b7ca4d08922d12d040f37b18c46a69c513",
     "movilnet_whatsapp_ai_workflow.json": "e51979e5c12522d18f343b0330a8077e3f3b749ac564285103c724e4a722a74e",
     "movilnet_telegram_ai_workflow.json": "e7afad7334cae7c03af0de47392d412cd6eb446851f79fd66586fcafd76e18dd",
     "movilnet_c2p_payment_workflow.json": "6bd9acc40556c417d102ddb244ba1b7dbd8c029b64ef1042ee2e072c587952f0",
