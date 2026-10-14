@@ -1,8 +1,9 @@
 # PUNTO DE CONTROL — SESIÓN ACTIVA (MOVILNET ↔ PROTOCOLO DECAGONAL CERO ERRORES)
-- **Fecha/Hora:** 2026-10-13 20:20 VET | **Capítulo Bitácora:** 176 (Aislamiento Soberano del Canal de Datos PWA, Modo Exclusivo Data N <-> 1 y Erradicación Definitiva de Enrutamiento Legacy 0416-6251587 y WdWU8G9EggQDMack)
-- **Declaración Estratégica Ratificada:**
-  > *"Aislamiento Soberano PWA Certificado: Cuando los usuarios (N) interactúan por la PWA con el Asistente (1) Movilnet MOVI, todas las respuestas retornan 100% de manera exclusiva por el canal de datos PWA (respuesta HTTP JSON / modo data). Se erradicó cualquier fuga o despacho saliente hacia WhatsApp o n8n Cloud cuando el canal es PWA. El número antiguo 0416-6251587 y el flujo viejo WdWU8G9EggQDMack han sido erradicados de todo el enrutamiento activo y workflows, consagrando la línea oficial única +58 424 153 3712 (0424-1533712 / MOVI) y el webhook canónico sNMbtiEiTkuQ9OCY."*
-- **Estado de Calidad:** 423 / 423 tests aprobados (100% PASS, 0 fallos en 51.75s en 46 suites).
+- **Fecha/Hora:** 2026-10-14 06:30 VET | **Capítulo Bitácora:** 178 (Ambiente Aislado develop, Desacoplamiento de Producción y Regla Inviolable de Blindaje: Cero Pase Autónomo)
+- **Entorno de Trabajo Activo:** Rama Git **`develop`** (Rastreando `origin/develop`). Físicamente desacoplado de la nube de Producción en Render.
+- **🚨 REGLA INVIOLABLE MANDATORIA DE BLINDAJE DE PRODUCCIÓN (.agents/rules/regla-inviolable-pase-produccion.md):**
+  > *"ESTRICTA PROHIBICIÓN DE PASAR A PRODUCCIÓN SIN INSTRUCCIONES DIRECTAS Y EXPRESAS DEL USUARIO. Antes de cualquier pase a producción autorizado, es MANDATORIO generar una copia completa con respaldo sellado criptográficamente (SHA-256) y certificar el 100% PASS de las 423 pruebas sin fallos."*
+- **Estado de Calidad:** 423 / 423 tests aprobados (100% PASS, 0 fallos en 46 suites).
 - **Línea Activa Oficial del Bot (El '1' en N <-> 1):** `+58 424 153 3712` (`0424-1533712`, `584241533712@s.whatsapp.net`, identidad `MOVI`).
 - **Comando Maestro de Prueba Real (1 Clic / Cero Terminal):**
   * Lanzador macOS: `EJECUTAR_PRUEBA_REAL.command` (Doble clic directo).

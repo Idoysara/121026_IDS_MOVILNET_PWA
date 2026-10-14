@@ -1,13 +1,13 @@
 {
   "project_name": "141026_Movilnet_Core_PWA",
-  "timestamp_utc": "2026-10-14T09:47:01.324612+00:00",
-  "root_directory": "/Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_141026/141026_Movilnet_Core_PWA",
-  "total_files_scanned": 945,
-  "total_bytes": 43495141,
+  "timestamp_utc": "2026-10-14T10:14:18.106427+00:00",
+  "root_directory": "/Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_121026/Movilnet_PWA",
+  "total_files_scanned": 952,
+  "total_bytes": 43802661,
   "directories": {
     "root": {
-      "files_count": 21,
-      "total_bytes": 49006
+      "files_count": 22,
+      "total_bytes": 64178
     },
     "ui": {
       "files_count": 1,
@@ -106,8 +106,8 @@
       "total_bytes": 187631
     },
     "docs": {
-      "files_count": 100,
-      "total_bytes": 5527105
+      "files_count": 102,
+      "total_bytes": 5536135
     },
     "docs/img": {
       "files_count": 8,
@@ -123,7 +123,7 @@
     },
     "db": {
       "files_count": 7,
-      "total_bytes": 29023635
+      "total_bytes": 29134227
     },
     "api": {
       "files_count": 4,
@@ -210,8 +210,8 @@
       "total_bytes": 1242
     },
     "reports": {
-      "files_count": 582,
-      "total_bytes": 3455626
+      "files_count": 586,
+      "total_bytes": 3628352
     }
   },
   "files": {
@@ -259,29 +259,33 @@
       "size_bytes": 4486,
       "sha256": "2261f5589b7de23625010d783115dd6817aa28068afffa53d0ba77b7bc4d7085"
     },
+    "MANIFIESTO_ARQUITECTURA_Y_COMPONENTES_141026.md": {
+      "size_bytes": 14533,
+      "sha256": "369240c77fb55a51b6b287faf4665491bf37ef99c2541fe83255768314339ad5"
+    },
     "PROBAR_PWA_CELULAR.command": {
       "size_bytes": 986,
       "sha256": "693c0026f27a57fb4783240ba892f9be6b84a58af4731a7da9b95c3eb32979cd"
     },
     "PUNTO_DE_CONTROL_SESION_ACTIVA.md": {
-      "size_bytes": 4884,
-      "sha256": "b864bbcbfc2627051d219f3db99f088d2047ab32e41d2b4fccbb8a79cb08c85e"
+      "size_bytes": 4855,
+      "sha256": "9597e7970178880001505d61199684efce706bb3764f9f9215c6e19cc91c41f3"
     },
     "Procfile": {
       "size_bytes": 27,
       "sha256": "fce8d515eb7f47de9ae3d319a96cf84a5c989613f8490645977e08d3cbd29e5f"
     },
     "README.md": {
-      "size_bytes": 4613,
-      "sha256": "a5b891e06a8bdc39cd9088e526bfa367956ffa3cc9ed139f95ca833a0c41ac05"
+      "size_bytes": 5136,
+      "sha256": "fb9e65f5f1b384571c58d4cfd2fc5057782249cf88ed34aed5cda86c1c01495a"
     },
     "REINICIAR_SERVICIOS_MOVILNET.command": {
       "size_bytes": 2450,
       "sha256": "1499640009bc21df53edc5d60b684f73c6db6bb73ea9c91d148dc5a3f1a96933"
     },
     "STATE.md": {
-      "size_bytes": 11239,
-      "sha256": "ef9bc7fcbce2d7902ed82d3c95f22df5b678830b43b717281619eaef5e784775"
+      "size_bytes": 11384,
+      "sha256": "60662f2d92ca1dfffd07af8c2bf23297f47b7a4d543b72b23b7f548050568d2b"
     },
     "SUBIR_A_GITHUB.command": {
       "size_bytes": 2550,
@@ -780,8 +784,8 @@
       "sha256": "c44d0591108e564ac4d379e7cb98a47ed429048c9168d471cce5339045cc4989"
     },
     "docs/BITACORA_MOVILNET.md": {
-      "size_bytes": 536750,
-      "sha256": "8b02a15f8171df59f301827987fd1a557fcfa604d70e93b7a3c2c48ff28ef7a8"
+      "size_bytes": 540237,
+      "sha256": "7ba899ba118c6af1db01ba266143cdac18cb88252d96c5eeb0548800acfb584e"
     },
     "docs/BITACORA_MOVILNET_COMPLETA.pdf": {
       "size_bytes": 251095,
@@ -839,6 +843,10 @@
       "size_bytes": 2776,
       "sha256": "d97789c22bf797366729d37ec2e3c317b8c662d964f91964406ea6d9c217e14c"
     },
+    "docs/CUESTIONARIO_LEVANTAMIENTO_INTEGRATIONTEST_TELCO_2026-10-14.md": {
+      "size_bytes": 2776,
+      "sha256": "00df357874c33b027e3e18a59ed2a038f03b3f50ec4e82aedfa34cfdc0fc4b2a"
+    },
     "docs/CUESTIONARIO_LEVANTAMIENTO_MOVILNET_VENEZUELA_2026-09-30.md": {
       "size_bytes": 2773,
       "sha256": "f3233fae56ce6dccd8c0faef3d8fd150fb64333105e76572d0238514256d1240"
@@ -890,6 +898,10 @@
     "docs/CUESTIONARIO_LEVANTAMIENTO_TESTCO_TELCO_2026-10-13.md": {
       "size_bytes": 2767,
       "sha256": "d3a4581d7604b78cafec27983645ea692bccd1af6297e5efa312650d1496c373"
+    },
+    "docs/CUESTIONARIO_LEVANTAMIENTO_TESTCO_TELCO_2026-10-14.md": {
+      "size_bytes": 2767,
+      "sha256": "0171c9965daf43b845a33a868ac4421eacc827094e782e9eb0ede4abc5e16f29"
     },
     "docs/DESPLIEGUE_PRODUCCION_CARRIER_GRADE.md": {
       "size_bytes": 8284,
@@ -1484,8 +1496,8 @@
       "sha256": "aad26d3bec69b10087596cc13b5c03279b43c432e42fe4af131e98ad22bf08ce"
     },
     "db/local_movilnet.db": {
-      "size_bytes": 17027072,
-      "sha256": "1f138458ec7e0fb5a547281ab1233325c436413858ae7396f04e38267b0167df"
+      "size_bytes": 17137664,
+      "sha256": "de7c0946d9e3f62f8d4d82a5c360154a4cebe9b63952d7558370240dcafe7fca"
     },
     "db/local_movilnet.db.backup_test": {
       "size_bytes": 11923456,
@@ -1688,8 +1700,8 @@
       "sha256": "32fccf81f99f3d3c5d7d72c934c7e2a2077c6053b80595eaca55ede57cbd45e9"
     },
     "reports/CERTIFICATION_FASE2_GATEKEEPER.json": {
-      "size_bytes": 1780,
-      "sha256": "ab54eaf6701dea1728abcd3858f1ad08c9a38e01f6c6f973adcf15b8635e7ff2"
+      "size_bytes": 1781,
+      "sha256": "a85cd60280cc1f7e922bbfd48b6392d7c1ba165f8c226aee2e46066fe77c6d00"
     },
     "reports/CERTIFICATION_FASE2_PASO1_REST_API.json": {
       "size_bytes": 1974,
@@ -1704,8 +1716,8 @@
       "sha256": "e2480a069d8ba547851d9d6ff5dee07386dfb71adc4a0f283f21821dea2a83bf"
     },
     "reports/CERTIFICATION_FASE3_GATEKEEPER.json": {
-      "size_bytes": 1642,
-      "sha256": "7b338627907fcfbe57b3d494c1d5308fac1cbb7b4c95b949e56efdfe4d919409"
+      "size_bytes": 1641,
+      "sha256": "8127fbb1d2832384789b441ba1c0a1eee5b22aefc932eabc42eee81ee7fff221"
     },
     "reports/CERTIFICATION_FASE3_PASO1_CUSTOMER_CARE.json": {
       "size_bytes": 2287,
@@ -1725,7 +1737,7 @@
     },
     "reports/CERTIFICATION_FASE4_GATEKEEPER.json": {
       "size_bytes": 1163,
-      "sha256": "7e00833c7466b47066c41ce9e5cb6840767db4b149e33a38d2579aacd8c97be9"
+      "sha256": "83b4dad15f6fe3c04a1cb72021640acb53608591c5e0877554af5fda607003aa"
     },
     "reports/CERTIFICATION_FASE4_PASO1_DESIGN_SYSTEM.json": {
       "size_bytes": 1908,
@@ -1743,9 +1755,13 @@
       "size_bytes": 1865,
       "sha256": "77d123dbb0d70bb0bd0bf9201bd5db1d759ca131b35f7a84d1bd2dfd0973f983"
     },
+    "reports/MANIFESTO_SHA256_RESPALDO_141026.json": {
+      "size_bytes": 167587,
+      "sha256": "7a8780d02a990657b3e80c7d5f6787947d575c5cc31f4b1c4118e150ad7f6ac0"
+    },
     "reports/REPORTE_OBSERVADOR_ONLINE_TELEMETRIA.md": {
-      "size_bytes": 3981,
-      "sha256": "6832ff3cad26648cb79d6299ccbe00c92a5b25f1247b7415be69bab30baba748"
+      "size_bytes": 3982,
+      "sha256": "e82d454fa51c7f28b65063d1eced8b1684e84fb0fe2d082bdcef4d83dc7d0837"
     },
     "reports/api_spec_tmp08tr4v4j_20261009_122105.json": {
       "size_bytes": 1740,
@@ -2299,6 +2315,10 @@
       "size_bytes": 1740,
       "sha256": "9cdcbf22780386fdc90d0259bfee2691e344859d7341bb6b5b80d68c0b24e618"
     },
+    "reports/api_spec_tmpqapaqp1t_20261014_061220.json": {
+      "size_bytes": 1740,
+      "sha256": "d067bab00ddb24b3afbb2a26b156ebd5f5e53750a11a51764d791087f6fffff7"
+    },
     "reports/api_spec_tmpqnii4b8__20261009_160748.json": {
       "size_bytes": 1740,
       "sha256": "b0db518d04616d6e823cca98ec99b0e7374ae7582857693d77db6f2f3f0e660c"
@@ -2485,23 +2505,23 @@
     },
     "reports/disaster_recovery_status.json": {
       "size_bytes": 281,
-      "sha256": "573a190aea27b841065198720d395f4883760b4f933efa49d506fc05c4992ec0"
+      "sha256": "e2efdd1e4fe26ae8cad98471c261a9648f7b911525a803e8749918bb04b69960"
     },
     "reports/fastpath_latency_report.json": {
       "size_bytes": 1199,
       "sha256": "f04fd36e1546b530f9617759c39a8a36e40c5eca3ea2ea4225c3929307aab014"
     },
     "reports/gatekeeper_phase2_report.json": {
-      "size_bytes": 7537,
-      "sha256": "31f3e6b3c25bb3a0898bdcbddbb0590aa741bc526f84695e2245fee45aa07be3"
+      "size_bytes": 7539,
+      "sha256": "098b1e6257bf3ff48dd4c9364aa1eea30381c50cf81e7cda43de0cdbbdb40067"
     },
     "reports/gatekeeper_phase3_report.json": {
-      "size_bytes": 8718,
-      "sha256": "4a264c9cc18f11bcc8be728dadccfb8864060f566069db13efc7fcf585f03888"
+      "size_bytes": 8717,
+      "sha256": "f079acf2812dc74b2f883c154441d6f46aceb6b7aa3cd336f3b668a275887227"
     },
     "reports/gatekeeper_phase4_report.json": {
-      "size_bytes": 6645,
-      "sha256": "ff9074852ae40e8e994e5800e74e9335396bdaeeb63386a6a11acfbd47d0fbf9"
+      "size_bytes": 6644,
+      "sha256": "1a950af68e676766990adce58bccf20bc14aca8ef456d48ddc4bd44eeefab40e"
     },
     "reports/gatekeeper_report_20260930_115000.json": {
       "size_bytes": 1108,
@@ -3239,21 +3259,25 @@
       "size_bytes": 1108,
       "sha256": "0c839a3d81f512da55dc329ecf707785da51ced457e9dbb01a76336d470c4b13"
     },
+    "reports/gatekeeper_report_20261014_061220.json": {
+      "size_bytes": 1108,
+      "sha256": "b80d439579db9c3791587bc30bccf648bb5be341d0661994ae1af057f05f23a6"
+    },
     "reports/live_supervisor_telemetry.json": {
       "size_bytes": 28490,
       "sha256": "71fff987b64d3228f2606cd2123f17349d174236b63fc97ebe435d77a6b8313b"
     },
     "reports/n8n_deployment_manifest.json": {
       "size_bytes": 4675,
-      "sha256": "11d6fb37cc392890d2f8c3b40a0f8b145819160415b6374c850ea06de451d01e"
+      "sha256": "188ed56e6e679391595654091d8797b7ca4d08922d12d040f37b18c46a69c513"
     },
     "reports/observer_online_telemetry.json": {
-      "size_bytes": 6603,
-      "sha256": "2d17f5697fe47842c61ffc50f72a6344c2739790b58ee194105b8bed75494246"
+      "size_bytes": 6604,
+      "sha256": "73c0c7d8d0b21972186d5cc81d4515c3e61290d84b7bb5de34433a72c98fd6a9"
     },
     "reports/production_deployment_manifest.json": {
       "size_bytes": 2470,
-      "sha256": "a3bfa862d2d30a3e6ce8fd76eb5ef4d00d091428685dd34619ef02d2eebacf58"
+      "sha256": "c61f6a5d7502cf780a920e1dcd507c3f9e51daa5f65d3a1e6c1d096b6e7b6576"
     },
     "reports/pwa_replication_certification.json": {
       "size_bytes": 1142,
@@ -3839,6 +3863,10 @@
       "size_bytes": 2289,
       "sha256": "962e7b6f7b20bfe6f616c9cca2ea826346e29c644bf33bc8b0cdc4b66e6315ba"
     },
+    "reports/schema_inspection_tmpt26ydnjy_20261014_061220.json": {
+      "size_bytes": 2289,
+      "sha256": "49319fa20b825c2c2514714120ad47aeefd551bf1af245d612c41cdb4446709d"
+    },
     "reports/schema_inspection_tmptj_1aw29_20261011_194534.json": {
       "size_bytes": 2289,
       "sha256": "f92d845010546e2d1a18f9b280cb6a2243197a34a0f669e3082aa2e5747549e8"
@@ -3996,5 +4024,5 @@
       "sha256": "0da99777ea1b546f81f3044187434dc1ec059a0f8940b94584d167eeb38d0e86"
     }
   },
-  "master_integrity_sha256": "dd3e1a6cd7b921acf712c5ac8c237f370716fcb4718e7b0a57cbc2cb8dfbcbde"
+  "master_integrity_sha256": "e89c73620be5a6324194727be2a3b9d343e46eab4bc636ead77ed3a663ba9811"
 }
