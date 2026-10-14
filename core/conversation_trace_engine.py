@@ -2823,7 +2823,7 @@ class ConversationTraceEngine:
 
             # La línea oficial +58 424 153 3712 es el Asistente Movilnet (1), NO un abonado externo (N).
             # Se excluye del listado de abonados para mostrar únicamente las conversaciones de usuarios (N <--> 1).
-            if "4241533712" in phone_key or phone_key == "04160000001":
+            if "4241533712" in phone_key:
                 continue
 
             display_phone = phone_key
@@ -2833,6 +2833,8 @@ class ConversationTraceEngine:
             if phone_key not in threads_map:
                 if "4142554590" in phone_key:
                     user_name = "Ids"
+                elif phone_key == "04160000001":
+                    user_name = "Abonado PWA (Movilnet)"
                 else:
                     user_name = t.user_push_name or "Abonado"
                 threads_map[phone_key] = {

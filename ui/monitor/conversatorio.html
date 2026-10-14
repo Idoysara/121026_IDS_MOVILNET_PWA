@@ -2080,8 +2080,8 @@
       });
       Object.values(map).forEach(th => {
         // La línea oficial +58 424 153 3712 es el Asistente Movilnet (1), no un abonado (N).
-        // 04160000001 es la semilla simulada de prueba. Ambas se excluyen de la lista de abonados.
-        if (th.phone_key && (th.phone_key.includes('4241533712') || th.phone_key === '04160000001')) {
+        // Se excluye de la lista de abonados para mantener el modelo N <--> 1.
+        if (th.phone_key && th.phone_key.includes('4241533712')) {
           delete map[th.phone_key];
           return;
         }
@@ -2130,7 +2130,7 @@
         else if (raw.length === 10 && raw.startsWith('4')) key = '0' + raw;
         if (!key) key = 'Desconocido';
 
-        if (key.includes('4241533712') || key === '04160000001') return;
+        if (key.includes('4241533712')) return;
 
         let display = key;
         if (key.length === 11 && key.startsWith('0')) display = key.slice(0, 4) + '-' + key.slice(4);
@@ -2159,7 +2159,7 @@
           map[key] = {
             phone_key: key,
             display_phone: display,
-            user_name: key.includes('4241533712') ? 'WhatsApp Asignado (00584241533712)' : (t.user_name || (key.includes('4142554590') ? 'Ids' : 'Abonado')),
+            user_name: key.includes('4241533712') ? 'WhatsApp Asignado (00584241533712)' : (key === '04160000001' ? 'Abonado PWA (Movilnet)' : (key.includes('4142554590') ? 'Ids' : (t.user_name || 'Abonado'))),
             carrier: inferredCarrier,
             carrier_label: inferredLabel,
             is_competitor: inferredComp,
