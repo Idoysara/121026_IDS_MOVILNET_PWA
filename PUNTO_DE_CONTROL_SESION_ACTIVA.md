@@ -1,8 +1,9 @@
 # PUNTO DE CONTROL — SESIÓN ACTIVA (MOVILNET ↔ PROTOCOLO DECAGONAL CERO ERRORES)
-- **Fecha/Hora:** 2026-10-14 06:15 VET | **Capítulo Bitácora:** 177 (Generación del Respaldo Soberano Integral 141026_Movilnet_Core_PWA, Manifiesto Criptográfico SHA-256 de 945 Archivos, Autonomía de Entorno y Arquitectura N <-> 1)
-- **Declaración Estratégica Ratificada:**
-  > *"Respaldo Soberano 141026 Certificado: Se generó el respaldo completo, ordenado y lógicamente desacoplado en '/Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_141026/141026_Movilnet_Core_PWA' con 945 archivos (41.48 MB) sellados bajo el hash maestro SHA-256 'dd3e1a6cd7b921acf712c5ac8c237f370716fcb4718e7b0a57cbc2cb8dfbcbde'. Se construyó el Manifiesto de Arquitectura y Componentes MANIFIESTO_ARQUITECTURA_Y_COMPONENTES_141026.md y se certificó la autonomía total de pruebas (15/15 PASS en el respaldo y 423/423 PASS en la suite global)."*
-- **Estado de Calidad:** 423 / 423 tests aprobados (100% PASS, 0 fallos en 51.75s en 46 suites).
+- **Fecha/Hora:** 2026-10-14 06:30 VET | **Capítulo Bitácora:** 178 (Ambiente Aislado develop, Desacoplamiento de Producción y Regla Inviolable de Blindaje: Cero Pase Autónomo)
+- **Entorno de Trabajo Activo:** Rama Git **`develop`** (Rastreando `origin/develop`). Físicamente desacoplado de la nube de Producción en Render.
+- **🚨 REGLA INVIOLABLE MANDATORIA DE BLINDAJE DE PRODUCCIÓN (.agents/rules/regla-inviolable-pase-produccion.md):**
+  > *"ESTRICTA PROHIBICIÓN DE PASAR A PRODUCCIÓN SIN INSTRUCCIONES DIRECTAS Y EXPRESAS DEL USUARIO. Antes de cualquier pase a producción autorizado, es MANDATORIO generar una copia completa con respaldo sellado criptográficamente (SHA-256) y certificar el 100% PASS de las 423 pruebas sin fallos."*
+- **Estado de Calidad:** 423 / 423 tests aprobados (100% PASS, 0 fallos en 46 suites).
 - **Línea Activa Oficial del Bot (El '1' en N <-> 1):** `+58 424 153 3712` (`0424-1533712`, `584241533712@s.whatsapp.net`, identidad `MOVI`).
 - **Comando Maestro de Prueba Real (1 Clic / Cero Terminal):**
   * Lanzador macOS: `EJECUTAR_PRUEBA_REAL.command` (Doble clic directo).
