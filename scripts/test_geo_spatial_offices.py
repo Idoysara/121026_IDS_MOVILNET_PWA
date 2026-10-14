@@ -57,6 +57,8 @@ class TestGeoSpatialOfficesSuite(unittest.TestCase):
         cls.geo_agent = GeoSpatialAgent()
         cls.val_agent = GeoValidationAgent()
         cls.mcp_server = GeoVenezuelaMcpServer()
+        # Calentamiento de caché SQLite para evitar jitter de arranque en frío
+        cls.interceptor.intercept("Warmup", "04160000000", latitude=10.49, longitude=-66.85)
 
     # -------------------------------------------------------------------------
     # 1. Bounding Box Nacional WGS84
