@@ -101,6 +101,11 @@ class PhoneDescriptor:
             session_token_suffix=session_suffix,
         )
 
+    @property
+    def is_movilnet_subscriber(self) -> bool:
+        """Indica si la línea pertenece estrictamente a los prefijos de abonados Movilnet (0416/0426)."""
+        return self.prefix_area in ("0416", "0426")
+
     def get_search_patterns(self) -> List[str]:
         """Retorna lista de expresiones de búsqueda para este número."""
         return [

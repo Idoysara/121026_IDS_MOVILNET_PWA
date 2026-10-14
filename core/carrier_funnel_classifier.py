@@ -59,10 +59,16 @@ class CarrierClassificationResult:
     funnel_reply_text: Optional[str] = None
     funnel_stage: Optional[str] = None
 
+    @property
+    def is_movilnet_subscriber(self) -> bool:
+        """Compuerta booleana inmutable de abonado Movilnet (0416/0426)."""
+        return not self.is_competitor and self.carrier == Carrier.MOVILNET
+
     def to_dict(self) -> Dict[str, Any]:
         d = asdict(self)
         d["carrier"] = self.carrier.value
         d["pipeline_route"] = self.pipeline_route.value
+        d["is_movilnet_subscriber"] = self.is_movilnet_subscriber
         return d
 
 

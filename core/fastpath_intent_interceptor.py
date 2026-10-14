@@ -60,6 +60,8 @@ class FastPathResolution:
     tokens_consumed: int
     latency_ms: float
     data_source: str
+    is_movilnet_subscriber: bool = False
+    authorized_pipeline: str = "NO_USUARIOS_MOVILNET"
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
@@ -587,6 +589,10 @@ class FastPathIntentInterceptor:
         import time
         t0 = time.perf_counter()
 
+        carrier_enum, _, is_comp = CarrierFunnelClassifier.identify_carrier(phone_number)
+        is_movilnet = (not is_comp) and (carrier_enum == Carrier.MOVILNET)
+        pipeline = "CORE_MOVILNET_AUTOGESTION" if is_movilnet else "NO_USUARIOS_MOVILNET"
+
         intent = self.detect_telco_intent(message_text)
         if not intent:
             # Validar límite mensual Freemium para prospectos No-Movilnet (máx. 3 consultas/mes o 1,000 tokens)
@@ -599,7 +605,9 @@ class FastPathIntentInterceptor:
                     response_text=self._resolve_prospect_limit_reached(phone_number, queries_used, tokens_used),
                     tokens_consumed=0,
                     latency_ms=latency,
-                    data_source="SQLITE_PROSPECT_TRIAL_LIMITS"
+                    data_source="SQLITE_PROSPECT_TRIAL_LIMITS",
+                    is_movilnet_subscriber=is_movilnet,
+                    authorized_pipeline=pipeline
                 )
             return FastPathResolution(
                 can_intercept=False,
@@ -607,7 +615,9 @@ class FastPathIntentInterceptor:
                 response_text="",
                 tokens_consumed=0,
                 latency_ms=latency,
-                data_source="NONE"
+                data_source="NONE",
+                is_movilnet_subscriber=is_movilnet,
+                authorized_pipeline=pipeline
             )
 
         # Resolución según intención
@@ -615,7 +625,6 @@ class FastPathIntentInterceptor:
             resp = self._resolve_propaganda_guard(phone_number)
             source = "NON_SOLICITED_PROPAGANDA_GUARD"
         elif intent == "SALUDO_BIENVENIDA":
-            carrier_enum, _, is_comp = CarrierFunnelClassifier.identify_carrier(phone_number)
             resp = self._resolve_greeting(phone_number)
             if is_comp or carrier_enum != Carrier.MOVILNET:
                 source = "FUNNEL_MARKETING_NO_USUARIOS_MOVILNET"
@@ -648,7 +657,9 @@ class FastPathIntentInterceptor:
             response_text=resp,
             tokens_consumed=0,
             latency_ms=latency,
-            data_source=source
+            data_source=source,
+            is_movilnet_subscriber=is_movilnet,
+            authorized_pipeline=pipeline
         )
 
 

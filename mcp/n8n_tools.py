@@ -71,7 +71,9 @@ def _make_request(endpoint: str, method: str = "GET", data: Optional[Dict[str, A
 
     start_time = time.time()
     try:
-        with urllib.request.urlopen(req, timeout=8) as response:
+        import ssl
+        ctx = ssl._create_unverified_context()
+        with urllib.request.urlopen(req, timeout=8, context=ctx) as response:
             latency_ms = round((time.time() - start_time) * 1000, 2)
             res_body = response.read().decode("utf-8")
             try:

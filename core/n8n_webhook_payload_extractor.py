@@ -41,6 +41,11 @@ class NormalizedInboundMessage:
     message_id: str
     timestamp: str
     source: str = "whatsapp"
+    is_movilnet_subscriber: bool = False
+    carrier_prefix: str = ""
+    authorized_pipeline: str = "NO_USUARIOS_MOVILNET"
+    detected_carrier: str = "DESCONOCIDO"
+    carrier_label: str = "Operadora Externa"
     raw_payload: Dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -86,6 +91,27 @@ class N8nWebhookPayloadExtractor:
         return national, raw
 
     @classmethod
+    def evaluate_carrier_firewall(cls, national_phone: str) -> Tuple[bool, str, str, str, str]:
+        """
+        Evalúa el Firewall Perimetral Booleano (0416/0426):
+        Retorna (is_movilnet, prefix, authorized_pipeline, detected_carrier, carrier_label)
+        """
+        prefix = national_phone[:4] if len(national_phone) >= 4 else "EXT"
+        is_movilnet = prefix in ("0416", "0426")
+        if is_movilnet:
+            return True, prefix, "CORE_MOVILNET_AUTOGESTION", "MOVILNET", "Movilnet 4GMAX"
+        elif prefix in ("0414", "0424"):
+            return False, prefix, "NO_USUARIOS_MOVILNET", "MOVISTAR", "Movistar Venezuela"
+        elif prefix == "0412":
+            return False, prefix, "NO_USUARIOS_MOVILNET", "DIGITEL", "Digitel 4G"
+        elif prefix.startswith("02"):
+            return False, prefix, "NO_USUARIOS_MOVILNET", "CANTV_FIJO", "Telefonía Fija CANTV"
+        elif prefix in ("0500", "0800", "0501"):
+            return False, prefix, "NO_USUARIOS_MOVILNET", "VOIP_SPECIAL", "Servicio Especial No Geográfico"
+        else:
+            return False, prefix, "NO_USUARIOS_MOVILNET", "INTERNACIONAL_ROAMING", "Línea Internacional / Externa"
+
+    @classmethod
     def classify_intent(cls, text: str) -> str:
         """Clasifica deterministamente la intención Telco a partir del texto."""
         lower_text = text.lower().strip()
@@ -128,6 +154,7 @@ class N8nWebhookPayloadExtractor:
         national_phone, raw_phone = cls.normalize_phone(remote_jid)
         intent = cls.classify_intent(raw_text)
         ts = body.get("date_time") or datetime.now(timezone.utc).isoformat()
+        is_mov, prefix, pipeline, carrier, label = cls.evaluate_carrier_firewall(national_phone)
 
         return NormalizedInboundMessage(
             phone=national_phone,
@@ -140,6 +167,11 @@ class N8nWebhookPayloadExtractor:
             message_id=msg_id,
             timestamp=ts,
             source=source,
+            is_movilnet_subscriber=is_mov,
+            carrier_prefix=prefix,
+            authorized_pipeline=pipeline,
+            detected_carrier=carrier,
+            carrier_label=label,
             raw_payload=body
         )
 
@@ -162,6 +194,7 @@ class N8nWebhookPayloadExtractor:
 
             national_phone, _ = cls.normalize_phone(raw_phone)
             intent = cls.classify_intent(raw_text)
+            is_mov, prefix, pipeline, carrier, label = cls.evaluate_carrier_firewall(national_phone)
 
             return NormalizedInboundMessage(
                 phone=national_phone,
@@ -174,6 +207,11 @@ class N8nWebhookPayloadExtractor:
                 message_id=msg_id,
                 timestamp=datetime.now(timezone.utc).isoformat(),
                 source="meta_whatsapp",
+                is_movilnet_subscriber=is_mov,
+                carrier_prefix=prefix,
+                authorized_pipeline=pipeline,
+                detected_carrier=carrier,
+                carrier_label=label,
                 raw_payload=body
             )
         except (IndexError, KeyError, TypeError):
@@ -205,6 +243,7 @@ class N8nWebhookPayloadExtractor:
 
         national_phone, _ = cls.normalize_phone(phone_raw)
         intent = cls.classify_intent(message_raw)
+        is_mov, prefix, pipeline, carrier, label = cls.evaluate_carrier_firewall(national_phone)
 
         return NormalizedInboundMessage(
             phone=national_phone,
@@ -217,6 +256,11 @@ class N8nWebhookPayloadExtractor:
             message_id=str(actual_body.get("id", actual_body.get("message_id", ""))),
             timestamp=datetime.now(timezone.utc).isoformat(),
             source="generic_webhook",
+            is_movilnet_subscriber=is_mov,
+            carrier_prefix=prefix,
+            authorized_pipeline=pipeline,
+            detected_carrier=carrier,
+            carrier_label=label,
             raw_payload=webhook_payload
         )
 
