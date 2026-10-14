@@ -20,7 +20,9 @@ Este repositorio alberga la plataforma de producción de **Telecomunicaciones Mo
 - **Experiencia de Usuario (UI/UX/AX):** PWA Mobile-First responsive (`https://movilnet-core.onrender.com/prospect` y `/ui/pwa_stitch/index.html`) con simuladores nativos independientes de WhatsApp, Celular y Tablet.
 - **Despliegue en la Nube 24/7:** Servicio activo en Render (`movilnet-core.onrender.com`) y n8n Cloud (`n8n.lpgtec.net`).
 - **Entregables Soberanos de Doble Clic:** Scripts `.command` para macOS (`EJECUTAR_PRUEBA_REAL.command`, `REINICIAR_SERVICIOS_MOVILNET.command`, `PROBAR_PWA_CELULAR.command`, `ACTUALIZAR_RENDER_1CLIC.command`).
-- **Respaldo Soberano Certificado:** `141026_Movilnet_Core_PWA` (`/Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_141026/`) sellado con hash SHA-256 (`dd3e1a6cd7b921acf712c5ac8c237f370716fcb4718e7b0a57cbc2cb8dfbcbde`).
+- **Entorno de Trabajo:** Rama aislada **`develop`** (Rastreando `origin/develop`), físicamente desacoplada de la producción en Render Cloud.
+- **Blindaje de Producción:** Protegido bajo la regla institucional `.agents/rules/regla-inviolable-pase-produccion.md` (Cero despliegue a producción sin orden humana directa y respaldo previo sellado con SHA-256).
+- **Respaldo Soberano Certificado:** `141026_Movilnet_Core_PWA` (`/Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_141026/`) sellado con hash SHA-256 (`e89c73620be5a6324194727be2a3b9d343e46eab4bc636ead77ed3a663ba9811`).
 
 ---
 
@@ -36,7 +38,7 @@ AI_Movilnet_300926 / Movilnet_PWA/
 │   └── webhook_bridge.py # Puente de Webhooks HMAC con DLQ y backoff
 ├── core/                 # Enrutadores semánticos, pasarela de modelos, trazador conversacional
 ├── db/                   # DDL ODA, conectores con pooling y repositorio seguro Zero-PII
-├── docs/                 # Bitácora continua (Capítulos 1-177) y documentos maestros
+├── docs/                 # Bitácora continua (Capítulos 1-178) y documentos maestros
 ├── mcp/                  # Suites MCP (Telco, Fintech, CRM, Privacy, Omnicanal, Geo, Google, SkillSpector)
 ├── reports/              # Certificados criptográficos SHA-256 y manifiesto de respaldo
 ├── scripts/              # Pipelines de despliegue, SRE Watchdog, auditores y clientes CLI
