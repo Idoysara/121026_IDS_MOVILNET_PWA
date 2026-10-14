@@ -6467,3 +6467,21 @@ Mediante el script [`scripts/update_n8n_greeting_and_funnel.py`](file:///Users/i
   5. Módulo `NO_USUARIOS_MOVILNET` para líneas `0414` y `0412`: **PASS**.
   6. Consultas Telco combinadas con saludo (saldo, planes, c2p, eir): **PASS**.
 * **Resultado Global:** **6/6 suites (35 aserciones unitarias) aprobadas con 100% de éxito (0 fallos).**
+
+---
+
+## 📘 Capítulo 194 — Promoción Oficial a Producción Release v1.0.1-prod-sealed: Fusión de Develop a Main, Sello Inmutable y Sincronización Total Multicapa
+**Fecha:** 2026-10-14 | **Gobernanza:** Universal Best Practices Engineering Rule (Pilares I al VII) & Protocolo Decagonal (Fases 1 a 10)  
+**Mandato:** Tras autorización expresa del usuario, ejecutar la promoción integral a producción de los avances de los Capítulos 190 al 193. Fusionar de forma limpia `develop` en `main`, emitir el tag inmutable `v1.0.1-prod-sealed`, desplegar hacia el repositorio remoto GitHub y Render Cloud, y retornar de inmediato a la rama `develop` para preservar el aislamiento de entornos.
+
+### 🚀 1. Matriz de Promoción Multicapa a Producción
+* **Rama `main` (Producción):** Fusionada con `develop` mediante fast-forward limpio al commit [`23ed7c9`](file:///Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_141026/141026_Movilnet_Core_PWA).
+* **Tag Inmutable de Producción:** Creado y firmado el tag **`v1.0.1-prod-sealed`** (despliegue canónico de carrier).
+* **Push Remoto:** `origin main` y `v1.0.1-prod-sealed` sincronizados exitosamente en GitHub (`https://github.com/Idoysara/121026_IDS_MOVILNET_PWA.git`).
+* **Servidor en la Nube (Render):** `https://movilnet-core.onrender.com` con webhook de compilación y despliegue disparado sobre `main` (Health 200 OK, DB Connected).
+* **Canal WhatsApp en Vivo (n8n Cloud):** Operando en caliente sobre el workflow oficial `sNMbtiEiTkuQ9OCY` en `/webhook/messages_upsert4` con el enrutador determinista calibrado y el nodo AI Agent con regla de cero adivinación.
+* **Aislamiento de Ramas:** Tras completar la promoción, el entorno de trabajo activo retornó inmediatamente a la rama **`develop`**.
+
+### 🧪 2. Certificación de Calidad Pre-Release
+* **Suite Automatizada:** [`scripts/test_pure_greeting_vs_compound_query.py`](file:///Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_141026/141026_Movilnet_Core_PWA/scripts/test_pure_greeting_vs_compound_query.py) (6/6 suites, 35 aserciones, 100% Pass).
+* **Idempotencia:** Añadido reseteo de cuota freemium en `setUp()` para garantizar determinismo absoluto en entornos de integración continua (CI/CD).
