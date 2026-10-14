@@ -1,6 +1,6 @@
 {
   "last_heartbeat": {
-    "timestamp_utc": "2026-10-14T14:51:59.915958+00:00",
+    "timestamp_utc": "2026-10-14T17:21:17.169349+00:00",
     "instance_name": "Viki LPGTEC",
     "server_url": "http://evolution:8080",
     "is_socket_responsive": true,
@@ -8,14 +8,14 @@
     "pending_stuck_detected": 0,
     "auto_heal_triggered": false,
     "action_taken": "HEARTBEAT_OK_NO_ACTION_REQUIRED",
-    "latency_ms": 0.75,
-    "sha256_seal": "39c8637f71b1b22e3d43d01925ebb9e5ec3258d59d7a9a9034ed497c75f9836c"
+    "latency_ms": 1.57,
+    "sha256_seal": "355a6c3e89cac37026ba40cc47a6837ee0554eced2076a01cd735148ff542bd2"
   },
   "total_auto_heals_executed": 0,
   "consecutive_failures": 0,
   "recent_cycles": [
     {
-      "timestamp_utc": "2026-10-14T14:51:59.796910+00:00",
+      "timestamp_utc": "2026-10-14T17:21:17.132045+00:00",
       "instance_name": "Viki LPGTEC",
       "server_url": "http://evolution:8080",
       "is_socket_responsive": true,
@@ -23,11 +23,11 @@
       "pending_stuck_detected": 0,
       "auto_heal_triggered": false,
       "action_taken": "HEARTBEAT_OK_NO_ACTION_REQUIRED",
-      "latency_ms": 4.45,
-      "sha256_seal": "37623d1137c9b7c89d8bcc6a7aa9a2c822b16551ee300062ec2f2f0d9bcdb2a0"
+      "latency_ms": 3.93,
+      "sha256_seal": "c2c86b05583ccf3a317dff467471e32b66a4de541e56e693602a7f82175a96dd"
     },
     {
-      "timestamp_utc": "2026-10-14T14:51:59.915958+00:00",
+      "timestamp_utc": "2026-10-14T17:21:17.169349+00:00",
       "instance_name": "Viki LPGTEC",
       "server_url": "http://evolution:8080",
       "is_socket_responsive": true,
@@ -35,9 +35,9 @@
       "pending_stuck_detected": 0,
       "auto_heal_triggered": false,
       "action_taken": "HEARTBEAT_OK_NO_ACTION_REQUIRED",
-      "latency_ms": 0.75,
-      "sha256_seal": "39c8637f71b1b22e3d43d01925ebb9e5ec3258d59d7a9a9034ed497c75f9836c"
+      "latency_ms": 1.57,
+      "sha256_seal": "355a6c3e89cac37026ba40cc47a6837ee0554eced2076a01cd735148ff542bd2"
     }
   ],
-  "updated_at": "2026-10-14T14:51:59.916209+00:00"
+  "updated_at": "2026-10-14T17:21:17.169589+00:00"
 }
