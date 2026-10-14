@@ -41,6 +41,10 @@ class TestPureGreetingVsCompoundQuerySuite(unittest.TestCase):
         self.phone_movilnet_alt = "04269876543"
         self.phone_competitor_movistar = "04142650088"  # Francisco Landaeta
         self.phone_competitor_digitel = "04125556677"
+        # Resetear cuota de prueba Freemium para asegurar idempotencia en pruebas unitarias
+        self.interceptor.reset_prospect_trial(self.phone_competitor_movistar)
+        self.interceptor.reset_prospect_trial(self.phone_competitor_digitel)
+
 
     # =========================================================================
     # 1. PRUEBAS DE SALUDO PURO (PURE GREETING)
