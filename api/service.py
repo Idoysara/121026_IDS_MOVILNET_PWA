@@ -2863,6 +2863,27 @@ class MovilnetAPIService:
                 health = whatsapp_guardian.run_health_check()
                 return 200, resp_headers, json.dumps(health.to_dict()).encode("utf-8")
 
+            if clean_path in ["/api/v1/whatsapp/webhook", "/whatsapp/webhook"]:
+                from core.whatsapp_enterprise_gateway import whatsapp_enterprise_gateway
+                q_params = parse_qs(parsed_url.query)
+                is_ok, challenge = whatsapp_enterprise_gateway.meta_adapter.verify_webhook_handshake(q_params)
+                if is_ok and challenge:
+                    text_headers = dict(resp_headers)
+                    text_headers["Content-Type"] = "text/plain; charset=utf-8"
+                    return 200, text_headers, challenge.encode("utf-8")
+                return 403, resp_headers, json.dumps({"error": "Meta Webhook Handshake Failed: Invalid verify token"}).encode("utf-8")
+
+            if clean_path in ["/api/v1/whatsapp/gateway-status", "/whatsapp/gateway-status"]:
+                from core.whatsapp_enterprise_gateway import whatsapp_enterprise_gateway
+                report = whatsapp_enterprise_gateway.get_telemetry_report()
+                return 200, resp_headers, json.dumps(report).encode("utf-8")
+
+            if clean_path in ["/api/v1/whatsapp/watchdog-status", "/whatsapp/watchdog-status"]:
+                from scripts.whatsapp_keepalive_watchdog import whatsapp_watchdog
+                report = whatsapp_watchdog.execute_heartbeat_cycle()
+                return 200, resp_headers, json.dumps(report.to_dict()).encode("utf-8")
+
+
             if clean_path in ["/api/v1/security/sim-swap", "/security/sim-swap"]:
                 q_phone = parse_qs(parsed_url.query).get("phone", [None])[0] or parse_qs(parsed_url.query).get("msisdn", ["04160000001"])[0]
                 status, payload = self.handle_sim_swap_audit({"msisdn": q_phone})
@@ -2954,6 +2975,85 @@ class MovilnetAPIService:
             if clean_path in ["/api/v1/webhooks/dlq/retry", "/webhooks/dlq/retry"]:
                 status, payload = self.handle_webhook_dlq_retry(json_body)
                 return status, resp_headers, json.dumps(payload).encode("utf-8")
+
+            if clean_path in ["/api/v1/whatsapp/webhook", "/whatsapp/webhook"]:
+                from core.whatsapp_enterprise_gateway import (
+                    whatsapp_enterprise_gateway,
+                    WhatsAppOutgoingMessage
+                )
+                from api.agents.agent_customer_care import CustomerCareAgent, AgentMessage
+                
+                raw_bytes = body_bytes
+                inbound = None
+                if whatsapp_enterprise_gateway.meta_adapter.verify_webhook_signature(headers, raw_bytes):
+                    inbound = whatsapp_enterprise_gateway.meta_adapter.parse_inbound_event(raw_bytes)
+                else:
+                    inbound = whatsapp_enterprise_gateway.evolution_adapter.parse_inbound_event(raw_bytes)
+
+                if not inbound or not inbound.sender_phone:
+                    return 200, resp_headers, json.dumps({"status": "ignored", "reason": "No actionable message in payload"}).encode("utf-8")
+
+                agent = CustomerCareAgent()
+                core_reply = agent.process_message(AgentMessage(
+                    text=inbound.text_body,
+                    msisdn=inbound.sender_phone,
+                    sender_name=inbound.sender_name
+                ))
+                reply_text = core_reply.response_text or "Estimado abonado, su consulta fue recibida."
+
+                out_msg = WhatsAppOutgoingMessage(
+                    recipient_phone=inbound.sender_phone,
+                    text_content=reply_text,
+                    sender_name="MOVI"
+                )
+                dispatch_res = whatsapp_enterprise_gateway.dispatch(out_msg)
+
+                return 200, resp_headers, json.dumps({
+                    "status": "processed",
+                    "inbound_sender": inbound.sender_phone,
+                    "reply_text": reply_text,
+                    "dispatch_result": dispatch_res.to_dict()
+                }).encode("utf-8")
+
+            if clean_path in ["/api/v1/whatsapp/gateway-mode", "/whatsapp/gateway-mode"]:
+                from core.whatsapp_enterprise_gateway import whatsapp_enterprise_gateway, WhatsAppGatewayMode
+                new_mode_str = json_body.get("mode", "").upper()
+                if new_mode_str in WhatsAppGatewayMode.__members__:
+                    whatsapp_enterprise_gateway.set_mode(WhatsAppGatewayMode[new_mode_str])
+                    return 200, resp_headers, json.dumps({
+                        "status": "success",
+                        "new_mode": whatsapp_enterprise_gateway.mode.value,
+                        "description": "Modo de pasarela actualizado en caliente",
+                        "timestamp": datetime.now(timezone.utc).isoformat()
+                    }).encode("utf-8")
+                return 400, resp_headers, json.dumps({
+                    "error": "Modo inválido",
+                    "valid_modes": list(WhatsAppGatewayMode.__members__.keys())
+                }).encode("utf-8")
+
+            if clean_path in ["/api/v1/whatsapp/auto-heal", "/whatsapp/auto-heal"]:
+                from scripts.whatsapp_keepalive_watchdog import whatsapp_watchdog
+                cycle_res = whatsapp_watchdog.execute_heartbeat_cycle()
+                return 200, resp_headers, json.dumps({
+                    "status": "auto_heal_executed",
+                    "cycle_result": cycle_res.to_dict(),
+                    "timestamp": datetime.now(timezone.utc).isoformat()
+                }).encode("utf-8")
+
+            if clean_path in ["/api/v1/whatsapp/send", "/whatsapp/send"]:
+                from core.whatsapp_enterprise_gateway import whatsapp_enterprise_gateway, WhatsAppOutgoingMessage
+                to_num = json_body.get("to") or json_body.get("number") or json_body.get("phone")
+                txt = json_body.get("text") or json_body.get("message")
+                if not to_num or not txt:
+                    return 400, resp_headers, json.dumps({"error": "Parámetros 'to' y 'text' son requeridos"}).encode("utf-8")
+                
+                try:
+                    out_msg = WhatsAppOutgoingMessage(recipient_phone=str(to_num), text_content=str(txt))
+                    res = whatsapp_enterprise_gateway.dispatch(out_msg)
+                    return 200, resp_headers, json.dumps(res.to_dict()).encode("utf-8")
+                except ValueError as ve:
+                    return 422, resp_headers, json.dumps({"error": str(ve)}).encode("utf-8")
+
 
             if clean_path in [
                 "/api/v1/agents/customer-care/process", "/agents/customer-care/process",

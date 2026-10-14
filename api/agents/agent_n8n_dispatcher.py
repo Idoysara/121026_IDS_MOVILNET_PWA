@@ -43,6 +43,24 @@ class N8nEgressMessage:
             "text": self.text_content
         }
 
+    def to_meta_payload(self) -> Dict[str, Any]:
+        """Formatea el payload exacto esperado por Meta WhatsApp Business Cloud API v21.0 (CERO Celular)."""
+        import re
+        clean_num = re.sub(r"\D", "", self.recipient_jid.split("@")[0].strip())
+        if clean_num.startswith("04") and len(clean_num) == 11:
+            clean_num = "58" + clean_num[1:]
+        return {
+            "messaging_product": "whatsapp",
+            "recipient_type": "individual",
+            "to": clean_num,
+            "type": "text",
+            "text": {
+                "preview_url": False,
+                "body": self.text_content
+            }
+        }
+
+
 
 class N8nDispatcherAgent:
     """Subagente orquestador del puente bidireccional entre n8n y Movilnet Core."""
@@ -92,8 +110,10 @@ class N8nDispatcherAgent:
             "balance": core_res.get("balance"),
             "latency_mode": egress.latency_mode,
             "tokens_cost_usd": 0.0,
-            "n8n_egress_payload": egress.to_evolution_payload()
+            "n8n_egress_payload": egress.to_evolution_payload(),
+            "meta_cloud_payload": egress.to_meta_payload()
         }
+
 
 
 def run_self_test() -> bool:
