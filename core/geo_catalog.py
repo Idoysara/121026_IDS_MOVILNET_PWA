@@ -196,6 +196,14 @@ def init_geo_database(db_file: Path = DB_PATH) -> None:
 
     cur.execute("CREATE INDEX IF NOT EXISTS idx_geo_pois_lat_lon ON geo_pois(latitude, longitude);")
     cur.execute("CREATE INDEX IF NOT EXISTS idx_geo_pois_cat_muni ON geo_pois(category, municipality);")
+    cur.execute("CREATE INDEX IF NOT EXISTS idx_geo_pois_state ON geo_pois(state);")
+
+    # Si ya existen registros certificados en geo_pois, no sobrescribir con semilla básica
+    cur.execute("SELECT COUNT(*) FROM geo_pois WHERE category IN ('oficina_servicio_movilnet', 'agente_autorizado_movilnet', 'agente_comercial_integral')")
+    certified_count = cur.fetchone()[0]
+    if certified_count > 0:
+        conn.close()
+        return
 
     # Semilla oficial de POIs verificados en Venezuela (incluyendo Oficinas Comerciales Movilnet)
     INITIAL_POIS = [
@@ -433,7 +441,11 @@ def find_nearest_movilnet_agency(
         SELECT id, osm_id, name, category, sub_category, state, municipality, parish,
                latitude, longitude, address, phone, opening_hours, emergency_service, metadata_json
         FROM geo_pois
-        WHERE category = 'oficina_comercial_movilnet'
+        WHERE category IN (
+            'oficina_servicio_movilnet', 'oficina_comercial_movilnet', 
+            'sede_corporativa_movilnet', 'agente_autorizado_movilnet', 
+            'agente_comercial_integral'
+        )
     """)
     rows = cur.fetchall()
     conn.close()
@@ -494,8 +506,8 @@ def find_agencies_by_city_or_state(
     db_file: Path = DB_PATH
 ) -> List[Dict[str, Any]]:
     """
-    Busca agencias y oficinas comerciales de Movilnet por nombre de ciudad, estado,
-    municipio o palabra clave geográfica (ej: 'Maracaibo', 'Valencia', 'Caracas', 'Chacao', 'Lara').
+    Busca agencias, oficinas comerciales (OSAC) y agentes autorizados de Movilnet por nombre de ciudad,
+    estado, municipio o palabra clave geográfica (ej: 'Maracaibo', 'Valencia', 'Caracas', 'Chacao', 'Lara').
     """
     clean_q = query.strip().lower()
     if not clean_q:
@@ -508,7 +520,11 @@ def find_agencies_by_city_or_state(
         SELECT id, osm_id, name, category, sub_category, state, municipality, parish,
                latitude, longitude, address, phone, opening_hours, emergency_service, metadata_json
         FROM geo_pois
-        WHERE category = 'oficina_comercial_movilnet'
+        WHERE category IN (
+            'oficina_servicio_movilnet', 'oficina_comercial_movilnet', 
+            'sede_corporativa_movilnet', 'agente_autorizado_movilnet', 
+            'agente_comercial_integral'
+        )
           AND (
             LOWER(state) LIKE ? OR
             LOWER(municipality) LIKE ? OR
@@ -516,6 +532,12 @@ def find_agencies_by_city_or_state(
             LOWER(name) LIKE ? OR
             LOWER(address) LIKE ?
           )
+        ORDER BY
+          CASE
+            WHEN category IN ('sede_corporativa_movilnet', 'oficina_servicio_movilnet', 'oficina_comercial_movilnet') THEN 1
+            ELSE 2
+          END,
+          name ASC
         LIMIT ?
     """, (f"%{clean_q}%", f"%{clean_q}%", f"%{clean_q}%", f"%{clean_q}%", f"%{clean_q}%", limit))
 

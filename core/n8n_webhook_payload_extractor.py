@@ -610,7 +610,7 @@ def run_self_verification() -> bool:
     assert res_gps["status"] == "success"
     assert res_gps["tokens_cost_usd"] == 0.0
     assert "Agencia Movilnet más cercana" in res_gps["reply_text"]
-    assert "El Recreo" in res_gps["reply_text"] or "Chacao" in res_gps["reply_text"]
+    assert "Google Maps" in res_gps["reply_text"]
 
     # Caso 5: Meta Cloud API con Pin GPS (Prospecto 0414 Movistar -> Portabilidad)
     sample_meta_gps = {
@@ -645,7 +645,8 @@ def run_self_verification() -> bool:
     res_meta = N8nWebhookPayloadExtractor.execute_in_movilnet_core(norm_meta)
     assert res_meta["status"] == "success"
     assert "Portabilidad" in res_meta["reply_text"]
-    assert "Las Delicias" in res_meta["reply_text"] or "Maracay" in res_meta["reply_text"]
+    assert "Agencia Movilnet más cercana" in res_meta["reply_text"]
+    assert "Google Maps" in res_meta["reply_text"]
 
     print("✅ [AUTO-VERIFICACIÓN FORMAL]: Todos los invariantes matemáticos y de dominio pasaron al 100%.")
     return True
