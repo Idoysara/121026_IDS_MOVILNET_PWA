@@ -189,6 +189,49 @@ class TestPureGreetingVsCompoundQuerySuite(unittest.TestCase):
         self.assertTrue(res_eir.can_intercept)
         self.assertEqual(res_eir.intent_detected, "EMERGENCIA_EIR")
 
+    # =========================================================================
+    # 6. CASOS DE REENCUENTRO ("Nuevamente soy yo", etc.) Y NO-MOVILNET
+    # =========================================================================
+    def test_reencounter_greetings_and_no_movilnet_guarantee(self):
+        """Verifica 'Nuevamente soy yo' (Caso Ids 0414-2554590):
+        1. Se clasifica como PURE_GREETING.
+        2. Es interceptado por FastPath.
+        3. Recibe data_source: FUNNEL_MARKETING_NO_USUARIOS_MOVILNET.
+        4. PROHIBIDO TERMINANTEMENTE decir 'tu línea Movilnet'.
+        """
+        reencounter_cases = [
+            "Nuevamente soy yo",
+            "nuevamente soy yo",
+            "Soy yo de nuevo",
+            "de nuevo yo",
+            "Aqui de nuevo",
+            "aqui estoy",
+            "otra vez yo",
+            "Volvi",
+            "buenas de nuevo"
+        ]
+
+        for msg in reencounter_cases:
+            with self.subTest(msg=msg):
+                res = GreetingCompoundClassifier.analyze(msg)
+                self.assertTrue(
+                    res.is_pure_greeting,
+                    f"Fallo: '{msg}' debió clasificarse como PURE_GREETING, pero fue: {res.category}"
+                )
+
+        # Prueba con número real del incidente: 0414-2554590 (Movistar)
+        phone_ids = "04142554590"
+        res_interceptor = self.interceptor.intercept("Nuevamente soy yo", phone_ids)
+        self.assertTrue(res_interceptor.can_intercept, "Fallo: 'Nuevamente soy yo' debió ser interceptado")
+        self.assertEqual(res_interceptor.intent_detected, "SALUDO_BIENVENIDA")
+        self.assertEqual(res_interceptor.data_source, "FUNNEL_MARKETING_NO_USUARIOS_MOVILNET")
+        self.assertIn("Módulo de Nuevos Usuarios & Portabilidad 4GMAX", res_interceptor.response_text)
+        self.assertIn("Movistar Venezuela", res_interceptor.response_text)
+        # Regla Soberana: Jamás decir 'con tu línea Movilnet'
+        self.assertNotIn("tu línea Movilnet", res_interceptor.response_text)
+        self.assertNotIn("con tu línea Movilnet", res_interceptor.response_text)
+
+
 
 def run_tests():
     suite = unittest.TestLoader().loadTestsFromTestCase(TestPureGreetingVsCompoundQuerySuite)

@@ -78,19 +78,22 @@ class MessageAnalysisResult:
 class GreetingCompoundClassifier:
     """Clasificador Carrier-Grade para distinguir Saludo Puro de Consultas Compuestas."""
 
-    # Saludos compuestos (orden descendente de longitud para regex matching ávido)
+    # Saludos compuestos y aperturas de reencuentro (orden descendente de longitud)
     MULTI_WORD_GREETINGS = [
         "buenos dias", "buen dia", "buenas tardes", "buenas noches",
         "feliz dia", "feliz tarde", "feliz noche", "feliz fin de semana",
         "que tal", "como estas", "como esta", "como estan", "como te va",
         "un cordial saludo", "saludos cordiales", "muy buenas tardes",
-        "muy buenos dias", "muy buenas noches", "un saludo"
+        "muy buenos dias", "muy buenas noches", "un saludo",
+        "nuevamente soy yo", "soy yo de nuevo", "de nuevo yo",
+        "aqui de nuevo", "aqui estoy", "otra vez yo", "aqui volvi",
+        "buenas de nuevo"
     ]
 
     # Palabras de saludo individuales
     SINGLE_WORD_GREETINGS = [
         "hola", "buenas", "buenos", "buen", "alo", "epa", "epale",
-        "saludos", "saludo", "hi", "hello", "hey"
+        "saludos", "saludo", "hi", "hello", "hey", "volvi"
     ]
 
     # Cortesías o vocativos que pueden acompañar un saludo sin constituir pregunta o solicitud
@@ -99,8 +102,10 @@ class GreetingCompoundClassifier:
         "equipo", "gente", "asistente", "bot", "movilnet", "senor",
         "senora", "sr", "sra", "estimado", "estimada", "estimados",
         "gracias", "muchas gracias", "bendiciones", "saludos", "todos",
-        "todas", "ok", "vale", "listo", "aqui", "alli", "hoy", "dia"
+        "todas", "ok", "vale", "listo", "aqui", "alli", "hoy", "dia",
+        "nuevamente", "otra vez", "de nuevo", "yo"
     }
+
 
     # Conectores y preposiciones gramaticales funcionales en español
     GRAMMATICAL_CONNECTORS: Set[str] = {

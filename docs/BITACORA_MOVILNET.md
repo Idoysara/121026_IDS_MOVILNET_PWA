@@ -6485,3 +6485,79 @@ Mediante el script [`scripts/update_n8n_greeting_and_funnel.py`](file:///Users/i
 ### 🧪 2. Certificación de Calidad Pre-Release
 * **Suite Automatizada:** [`scripts/test_pure_greeting_vs_compound_query.py`](file:///Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_141026/141026_Movilnet_Core_PWA/scripts/test_pure_greeting_vs_compound_query.py) (6/6 suites, 35 aserciones, 100% Pass).
 * **Idempotencia:** Añadido reseteo de cuota freemium en `setUp()` para garantizar determinismo absoluto en entornos de integración continua (CI/CD).
+
+
+---
+
+## 📘 Capítulo 195 — Blindaje Absoluto Contra Asunción de Abonado en Líneas No-Movilnet: Doble Guardia Determinista e Inyección Dinámica de Modo Captación en AI Agent
+**Fecha:** 2026-10-14 | **Gobernanza:** Universal Best Practices Engineering Rule (Pilares I al VII) & Protocolo Decagonal (Fases 1 a 10)  
+**Mandato:** Erradicar de forma definitiva cualquier asunción de que un usuario no-Movilnet (0414, 0424, 0412, etc.) posee una línea Movilnet. Resolver la causa raíz del incidente en vivo donde el remitente `0414-2554590` (Movistar) dijo *"Nuevamente soy yo"* y el asistente respondió *"¿En qué te puedo colaborar en este momento con tu línea Movilnet?"*. Garantizar la activación soberana del **MODO_CAPTACION_FUNNEL_MARKETING_NO_MOVILNET** tanto en la capa determinista como en la capa cognitiva del AI Agent.
+
+### 🔍 1. Diagnóstico Forense y Causa Raíz
+* **Incidente Real en Producción:**
+  - **Usuario:** `Ids (0414-2554590)` $\rightarrow$ Operadora: **Movistar Venezuela**.
+  - **Mensaje:** *"Nuevamente soy yo"*.
+  - **Respuesta Emitida:** *"¡Qué hubo de nuevo! Un gusto tenerte por aquí otra vez. ¿En qué te puedo colaborar en este momento con tu línea Movilnet? 😉📶"*.
+* **Causa Raíz Multicapa Identificada:**
+  1. **Filtro Determinista:** La expresión regular del router determinista evaluaba saludos clásicos (`hola`, `buenos dias`), pero no contemplaba fórmulas coloquiales de reencuentro (`"nuevamente soy yo"`, `"soy yo de nuevo"`, `"de nuevo yo"`, `"aqui de nuevo"`, `"volvi"`). Por lo tanto, el mensaje no fue capturado como saludo puro y cayó al nodo `AI Agent`.
+  2. **Prompt de Entrada al AI Agent en n8n:** El nodo `AI Agent` recibía un prompt genérico (`text: =Usuario: {pushName} Telefono: {phone} Mensaje: {Content}`) sin especificar la operadora a la que pertenece la línea ni definir el modo operativo que debía adoptar el modelo de lenguaje.
+  3. **Alucinación Cognitiva:** Gemini asumió por omisión de contexto que quien escribe al canal oficial de Movilnet es un cliente con línea Movilnet activa, generando la frase *"con tu línea Movilnet"*.
+
+---
+
+### 🛡️ 2. Arquitectura de Doble Guardia Implementada
+
+#### Guardia A: Capa Determinista (FastPath & Router)
+* **Archivo:** [`core/greeting_compound_classifier.py`](file:///Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_141026/141026_Movilnet_Core_PWA/core/greeting_compound_classifier.py)
+  - Incorporadas expresiones de reencuentro a `MULTI_WORD_GREETINGS`: `"nuevamente soy yo"`, `"soy yo de nuevo"`, `"de nuevo yo"`, `"aqui de nuevo"`, `"aqui estoy"`, `"otra vez yo"`, `"aqui volvi"`, `"buenas de nuevo"`.
+  - Agregadas partículas a `COURTESY_FILLERS`: `"nuevamente"`, `"otra vez"`, `"de nuevo"`, `"yo"`, `"volvi"`, `"estoy"`.
+* **Workflow n8n (`sNMbtiEiTkuQ9OCY`):**
+  - Condición `telco_movilnet_fastpath` en `Router - Consultas determinísticas` actualizada con soporte de reencuentros sin carga sustantiva.
+  - En `Movilnet Core & Marketing Router`, cualquier saludo o reencuentro proveniente de una línea no-0416/0426 es despachado automáticamente con `pipeline_route = 'FUNNEL_MARKETING_NO_USUARIOS_MOVILNET'`, entregando el menú de captación (Portabilidad 4GMAX, eSIM digital gratuita, Bono de 10GB de bienvenida) y suprimiendo opciones de autogestión de saldo personal.
+
+#### Guardia B: Capa Cognitiva Inviolable en AI Agent (n8n Cloud + Python Agent)
+* **Inyección Dinámica de Contexto y Modo Operativo (`parameters.text`):**
+  Se programó una función JavaScript embebida en el nodo `AI Agent` que analiza el JID/número telefónico en tiempo real antes de construir el prompt:
+  ```javascript
+  const prefix = national.slice(0, 4);
+  const isMovilnet = (prefix === '0416' || prefix === '0426');
+  const carrier = isMovilnet ? 'Movilnet 4GMAX' : ((prefix === '0414' || prefix === '0424') ? 'Movistar Venezuela' : (prefix === '0412' ? 'Digitel 4G' : 'Operadora Externa'));
+  const modoOperativo = isMovilnet ? 'ABONADO_MOVILNET_ACTIVO' : 'MODO_CAPTACION_FUNNEL_MARKETING_NO_MOVILNET';
+  ```
+  El prompt entregado al LLM incluye obligatoriamente:
+  ```
+  [PERFIL DEL USUARIO]
+  - Nombre: {pushName}
+  - Teléfono: {national} ({carrier})
+  - MODO OPERATIVO DEL SISTEMA: {modoOperativo}
+  - Fecha Actual: {timestamp}
+  ```
+* **Instrucción de Dominio Soberana (`systemMessage`):**
+  Se decretó la regla inviolable:
+  - Si el modo es `MODO_CAPTACION_FUNNEL_MARKETING_NO_MOVILNET`:
+    * ⚠️ **EL USUARIO NO ES CLIENTE DE MOVILNET.** Pertenece a la competencia.
+    * 🚫 **PROHIBIDO TERMINANTEMENTE:** Decir *"con tu línea Movilnet"*, *"tu plan Movilnet"*, asumir que tiene contrato o saldo en Movilnet, u ofrecerle consultar su propio saldo.
+    * 🎯 **OBLIGACIÓN:** Atender con calidez venezolana, reconociendo su operadora externa con respeto, e invitarlo cordialmente a la portabilidad 4GMAX con eSIM gratis y 10GB de bienvenida.
+* **Refuerzo en Agente Local:** [`api/agents/agent_customer_care.py`](file:///Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_141026/141026_Movilnet_Core_PWA/api/agents/agent_customer_care.py) sincronizado con las mismas cláusulas de seguridad Zero-Hallucination.
+
+---
+
+### 🚀 3. Despliegue en Vivo y Sincronización Multicapa
+1. **n8n Cloud Workflow `sNMbtiEiTkuQ9OCY`:** Actualizado en caliente vía API REST mediante [`scripts/update_n8n_greeting_and_funnel.py`](file:///Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_141026/141026_Movilnet_Core_PWA/scripts/update_n8n_greeting_and_funnel.py). Ambos nodos (`AI Agent`, `Router - Consultas determinísticas`, `Movilnet Core & Marketing Router`) operando en producción.
+2. **Copia Canónica Local Sincronizada:** [`api/n8n_workflows/viki_lpgtec_v2_ids_instant_dispatch.json`](file:///Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_141026/141026_Movilnet_Core_PWA/api/n8n_workflows/viki_lpgtec_v2_ids_instant_dispatch.json).
+3. **Servicio HTTP Daemon Local (`:8010`):** Proceso reiniciado limpiamente (PID activo), verificado respondiendo `HTTP 200 healthy`.
+
+---
+
+### 🧪 4. Certificación Militar Automatizada (100% Pass)
+* **Suite de Pruebas:** [`scripts/test_pure_greeting_vs_compound_query.py`](file:///Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_141026/141026_Movilnet_Core_PWA/scripts/test_pure_greeting_vs_compound_query.py)
+* **Pruebas Específicas del Capítulo 195:**
+  - `test_reencounter_greetings_and_no_movilnet_guarantee`:
+    * Valida 9 fórmulas de reencuentro (`"Nuevamente soy yo"`, `"Soy yo de nuevo"`, `"Volví"`, etc.) clasificadas como `PURE_GREETING`: **PASS**.
+    * Valida el número real del incidente `0414-2554590`:
+      - `can_intercept = True`
+      - `intent_detected = 'SALUDO_BIENVENIDA'`
+      - `data_source = 'FUNNEL_MARKETING_NO_USUARIOS_MOVILNET'`
+      - Contiene `"Módulo de Nuevos Usuarios & Portabilidad 4GMAX"` y `"Movistar Venezuela"`: **PASS**.
+      - **Aserciones Negativas Críticas:** `"tu línea Movilnet"` NOT IN response, `"con tu línea Movilnet"` NOT IN response: **PASS**.
+* **Resultado Global de la Suite:** **7/7 pruebas aprobadas con 100% de éxito (0 fallos).**

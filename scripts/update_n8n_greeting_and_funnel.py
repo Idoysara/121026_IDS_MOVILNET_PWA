@@ -3,18 +3,23 @@
 scripts/update_n8n_greeting_and_funnel.py
 =========================================
 Actualiza en vivo el workflow canónico sNMbtiEiTkuQ9OCY en n8n Cloud:
-1. En 'Router - Consultas determinísticas':
-   - Calibra la condición 'telco_movilnet_fastpath' para que SOLO capture Saludos Puros
-     o intenciones Telco específicas (saldo, planes, recarga, c2p, eir, portabilidad).
-   - Cualquier consulta compuesta (ej. 'Hola, quiero comprar una laptop...', 'Buenos días recomiéndame una farmacia')
-     retorna FALSE y viaja limpiamente por la salida de fallback hacia el nodo 'AI Agent' (Gemini 2.5 Flash).
-2. En 'Movilnet Core & Marketing Router':
-   - Aplica discriminación rigurosa de Saludo Puro.
-   - Enruta números de la competencia (0414/0424/0412/otros) al MÓDULO NO_USUARIOS_MOVILNET
-     (Funnel Marketing Portabilidad 4GMAX, eSIM gratis, 10GB de bono, SIN opciones internas de saldo).
-   - Reserva el Menú Oficial de Autogestión (Saldo, Planes, Recarga, Contrato) EXCLUSIVAMENTE
-     para abonados únicos de Movilnet (0416/0426).
-   - Erradica de raíz el secuestro comercial ciego.
+1. En 'AI Agent':
+   - Inyecta dinámicamente en el prompt del usuario (parameters.text):
+     * Perfil del usuario, número y operadora detectada.
+     * MODO OPERATIVO OBLIGATORIO:
+       - 'ABONADO_MOVILNET_ACTIVO' (si es 0416 o 0426).
+       - 'MODO_CAPTACION_FUNNEL_MARKETING_NO_MOVILNET' (si es 0414, 0424, 0412 u otro).
+   - Inyecta en el 'systemMessage':
+     * REGLA SOBERANA INVIOLABLE: PROHIBIDO TERMINANTEMENTE decir 'con tu línea Movilnet'
+       o asumir que tiene Movilnet a números no 0416/0426.
+     * Obligación de operar en modo captación y portabilidad para prospectos.
+     * Trato empático ante aperturas como 'Nuevamente soy yo', reconociendo su línea externa.
+2. En 'Router - Consultas determinísticas':
+   - Calibra la condición 'telco_movilnet_fastpath' para capturar saludos y reencuentros
+     ('nuevamente soy yo', 'de nuevo yo', 'volvi', 'hola') sin carga sustantiva.
+3. En 'Movilnet Core & Marketing Router':
+   - Reconoce saludos y reencuentros, enrutando a la competencia (0414/0424/0412) directamente
+     al MÓDULO NO_USUARIOS_MOVILNET (Portabilidad 4GMAX, eSIM gratis, Bono 10GB, sin saldo interno).
 """
 
 import sys
@@ -28,7 +33,100 @@ if str(PROJECT_ROOT) not in sys.path:
 from mcp.n8n_tools import _make_request
 
 # ==============================================================================
-# 1. EXPRESIÓN DE ENRUTAMIENTO DETERMINISTA EN ROUTER
+# 1. PROMPT Y SYSTEM MESSAGE DEL AI AGENT
+# ==============================================================================
+AI_AGENT_TEXT_PROMPT = r'''={{
+  (() => {
+    const ef = $('Edit Fields').first().json.body || {};
+    const wh = $('Webhook').first().json.body || {};
+    const whData = Array.isArray(wh.data) ? wh.data[0] : (wh.data || {});
+    const dataKey = (whData && whData.key) || (ef.data && ef.data.key) || {};
+
+    let rawJid = dataKey.remoteJid || whData.remoteJid || wh.sender || (ef && ef.phone) || '';
+    const altJid = dataKey.remoteJidAlt || '';
+    if (rawJid.endsWith('@lid')) {
+      if (altJid && !altJid.endsWith('@lid')) rawJid = altJid;
+      else if (whData.participant && !whData.participant.endsWith('@lid')) rawJid = whData.participant;
+    }
+
+    let cleanDigits = rawJid.replace(/@.*$/, '').replace(/[^\d]/g, '');
+    if (cleanDigits.startsWith('0058') && cleanDigits.length === 14) cleanDigits = cleanDigits.slice(2);
+    let national = cleanDigits;
+    if (cleanDigits.startsWith('58') && cleanDigits.length === 12) national = '0' + cleanDigits.slice(2);
+
+    const prefix = national.slice(0, 4);
+    const isMovilnet = (prefix === '0416' || prefix === '0426');
+    const carrier = isMovilnet ? 'Movilnet 4GMAX' : ((prefix === '0414' || prefix === '0424') ? 'Movistar Venezuela' : (prefix === '0412' ? 'Digitel 4G' : 'Operadora Externa'));
+    const modoOperativo = isMovilnet ? 'ABONADO_MOVILNET_ACTIVO' : 'MODO_CAPTACION_FUNNEL_MARKETING_NO_MOVILNET';
+    const pushName = whData.pushName || (ef.data && ef.data.pushName) || 'Abonado';
+
+    return `[PERFIL DEL USUARIO]\n` +
+           `- Nombre: ${pushName}\n` +
+           `- Teléfono: ${national} (${carrier})\n` +
+           `- MODO OPERATIVO DEL SISTEMA: ${modoOperativo}\n` +
+           `- Fecha Actual: ${$now}\n\n` +
+           `[MENSAJE DEL USUARIO]\n` +
+           `${$json.Content}`;
+  })()
+}}'''
+
+AI_AGENT_SYSTEM_MESSAGE = """Eres MOVI, el Asistente Virtual Oficial y Asesor Cognitivo de Telecomunicaciones Movilnet 4GMAX por WhatsApp (+58 424 153 3712).
+
+MISIÓN:
+Atender a los usuarios con calidez venezolana, empatía, profesionalismo y precisión. Comprendes el lenguaje coloquial venezolano, modismos y expresiones naturales sin depender de palabras clave exactas.
+
+🚨 REGLA SOBERANA INVIOLABLE: SEGMENTACIÓN ESTRICTA POR NÚMERO (0416/0426 vs NO-MOVILNET):
+
+A. SI EL MODO OPERATIVO ES 'ABONADO_MOVILNET_ACTIVO' (Líneas 0416 y 0426 ÚNICAMENTE):
+   - El usuario ya es cliente de Movilnet. Atiéndelo cordialmente sobre su línea actual, saldo, megas, recargas C2P y planes Movilnet 4GMAX.
+
+B. SI EL MODO OPERATIVO ES 'MODO_CAPTACION_FUNNEL_MARKETING_NO_MOVILNET' (Cualquier número DIFERENTE de 0416 y 0426: 0414, 0424, 0412, etc.):
+   - ⚠️ EL USUARIO NO ES CLIENTE DE MOVILNET. Su línea pertenece a la competencia (Movistar Venezuela, Digitel, etc.).
+   - 🚫 QUEDA TERMINANTEMENTE PROHIBIDO:
+     * Decirle 'con tu línea Movilnet', 'tu plan Movilnet' o 'en qué te ayudo con tu línea Movilnet'.
+     * Asumir que tiene plan, saldo o contrato activo en Movilnet.
+     * Ofrecerle consultar el saldo de su propio número telefónico externo.
+   - 🎯 ESTÁS OBLIGADO A OPERAR 100% EN MODO CAPTACIÓN Y FUNNEL MARKETING:
+     1. Saludos, aperturas o reencuentros (ej: 'Nuevamente soy yo', 'Hola', 'Volví', 'Epa'):
+        Salúdalo con entusiasmo y calidez venezolana, reconociendo con respeto su operadora:
+        Ejemplo: "¡Qué gusto saludarte de nuevo! Veo que nos contactas desde tu línea Movistar Venezuela. ¿Cómo te podemos asesorar hoy para traerte tu número a Movilnet 4GMAX con tu eSIM gratis y bono de 10GB de bienvenida, o en qué consulta general te colaboro?"
+     2. Consultas de saldo o consumo:
+        Aclara amablemente que al ser de Movistar/Digitel no tenemos acceso a su saldo externo, pero invítalo a unirse a Movilnet para ahorrar hasta 60% en renta con eSIM gratis + 10GB de bono, o si desea consultar el saldo de una línea 0416/0426 que indique dicho número.
+     3. Consultas abiertas o de asesoría (laptops, farmacias, restaurantes, etc.):
+        Responde su consulta con amabilidad, precisión y brevedad (siguiendo la regla de datos faltantes), e incluye al final una invitación cordial a unirse a Movilnet 4GMAX para tener la mejor conectividad móvil.
+
+ÁRBOL DE DECISIÓN COGNITIVO Y HERRAMIENTAS:
+1. PORTABILIDAD Y CAMBIO DE COMPAÑÍA:
+   - Invoca SIEMPRE la herramienta 'Portabilidad'.
+   - Presenta con entusiasmo los beneficios exclusivos (100% gratis conservando su número, eSIM digital activada en minutos, bono de 10GB de bienvenida y WhatsApp libre).
+   - Invita amablemente al usuario a indicar su Cédula de Identidad para iniciar la portabilidad express.
+
+2. CONSULTA DE SALDO, MEGAS Y CORTE:
+   - Solo para líneas 0416/0426. Para números externos, aplicar regla B.2 arriba.
+   - Invoca la herramienta 'ConsultarSaldo' y responde amablemente con sus balances detallados.
+
+3. CATÁLOGO DE PLANES Y TARIFAS:
+   - Invoca la herramienta 'CatalogoPlanes' y detalla los planes de forma estructurada y atractiva (Inteliplan 10GB, Plan Conecta 5GB, Mega Plus 25GB).
+
+4. RECARGA DE SALDO Y PAGO MÓVIL C2P:
+   - Invoca la herramienta 'PagoC2P' y proporciona los datos oficiales del Banco de Venezuela para Pago Móvil C2P.
+
+5. ROBO, EXTRAVÍO Y BLOQUEO DE IMEI:
+   - Invoca la herramienta 'BloqueoIMEI' y solicita con empatía los requisitos de seguridad (Cédula y últimos 4 dígitos del IMEI).
+
+6. TASAS DE CAMBIO (BCV / EUROS):
+   - Usa 'BCV oficial' o 'BCV Euros' para tasas oficiales.
+   - Tasa paralela: solo si el usuario proporciona la clave autorizada 2306.
+
+7. REGLA INVIOLABLE DE CERO ADIVINACIÓN Y DATOS FALTANTES:
+   - NUNCA adivines ni alucines información que el usuario no haya suministrado.
+   - Si el usuario pide sugerencias de productos o recomendaciones de lugares (restaurantes, farmacias, automercados, clínicas, etc.) y NO indica en qué ciudad o zona se encuentra, QUEDA ESTRICTAMENTE PROHIBIDO asumir que está en Caracas o en cualquier otra ciudad.
+   - En su lugar, solicita amablemente, de forma muy breve y cordial su ubicación o datos faltantes: "¿En qué ciudad o zona te encuentras para recomendarte las mejores opciones cercanas?".
+   - Una vez que responda, usa las herramientas y la información verificada para responder de forma concisa, respetuosa y amigable, ahorrando tokens al máximo (2 a 4 oraciones)."""
+
+
+# ==============================================================================
+# 2. EXPRESIÓN DE ENRUTAMIENTO DETERMINISTA EN ROUTER
 # ==============================================================================
 ROUTER_TELCO_CONDITION_JS = r'''={{
   (() => {
@@ -38,18 +136,18 @@ ROUTER_TELCO_CONDITION_JS = r'''={{
     // 1. Intenciones Telco deterministas explícitas
     const isTelcoSpecific = /\b(saldo|megas?|datos|cupo|balance|debo|cuanto debo|corte|contrato|informa contrato|mi contrato|plan|planes|titular|recarga|recargar|recargo|como pago|pago movil|pago movil c2p|como recargar|como recargo|donde recargo|c2p|robo|hurto|extravio|bloqueo|bloquear|imei|suspender|portabilidad|portar|cambiar|migrar|adquirir|pasarme)\b/.test(t);
 
-    // 2. Detección de saludos
-    const hasGreeting = /\b(hola|buen(as?|os?)|buen dia|que tal|como estas?|saludos?|buenas noches|buenos dias|buenas tardes|alo|epa|epale|hi|hello)\b/.test(t);
+    // 2. Detección de saludos y aperturas de reencuentro
+    const hasGreeting = /\b(hola|buen(as?|os?)|buen dia|que tal|como estas?|saludos?|buenas noches|buenos dias|buenas tardes|alo|epa|epale|hi|hello|nuevamente soy yo|soy yo de nuevo|de nuevo yo|aqui de nuevo|aqui estoy|otra vez yo|volvi|buenas de nuevo)\b/.test(t);
 
     // Si no tiene nada de lo anterior, no es fastpath determinista
     if (!isTelcoSpecific && !hasGreeting) return false;
 
-    // 3. Si tiene saludo pero NO es una intención telco explícita:
+    // 3. Si tiene saludo o reencuentro pero NO es una intención telco explícita:
     // Analizar si es Saludo Puro o Consulta Compuesta (ej: "Hola, quiero comprar una laptop...")
     if (hasGreeting && !isTelcoSpecific) {
-      // Limpiar saludos, cortesías y signos para evaluar si queda contenido sustantivo
+      // Limpiar saludos, cortesías y reencuentros para evaluar si queda contenido sustantivo
       const residual = t
-        .replace(/\b(hola|buenos dias|buenas tardes|buenas noches|buen dia|que tal|como estas?|saludos?|alo|epa|epale|hi|hello|buenas?|buenos?|amig[oa]s?|equipo|gente|asistente|bot|movilnet|senor|senora|sr|sra|estimad[oa]s?|gracias|muchas gracias|bendiciones|por favor|porfa|ok|vale|listo|aqui|alli)\b/g, '')
+        .replace(/\b(hola|buenos dias|buenas tardes|buenas noches|buen dia|que tal|como estas?|saludos?|alo|epa|epale|hi|hello|buenas?|buenos?|amig[oa]s?|equipo|gente|asistente|bot|movilnet|senor|senora|sr|sra|estimad[oa]s?|gracias|muchas gracias|bendiciones|por favor|porfa|ok|vale|listo|aqui|alli|nuevamente|soy|yo|de nuevo|otra vez|volvi|estoy)\b/g, '')
         .replace(/[^a-z0-9\s]/g, ' ')
         .trim();
 
@@ -69,7 +167,7 @@ ROUTER_TELCO_CONDITION_JS = r'''={{
 
 
 # ==============================================================================
-# 2. CÓDIGO JS REFINADO PARA 'Movilnet Core & Marketing Router'
+# 3. CÓDIGO JS REFINADO PARA 'Movilnet Core & Marketing Router'
 # ==============================================================================
 ROUTER_CORE_MARKETING_JS = r'''for (const item of items) {
   // 1. Extraer datos del remitente y mensaje con soporte universal (Object o Array) y resolución LID
@@ -130,9 +228,9 @@ ROUTER_CORE_MARKETING_JS = r'''for (const item of items) {
   let replyText = '';
   let pipelineRoute = 'FAST_PATH_TELCO_ODA';
 
-  // EVALUAR SI ES SALUDO PURO:
+  // EVALUAR SI ES SALUDO O REENCUENTRO PURO:
   const residualGreeting = cleanMsg
-    .replace(/\b(hola|buenos dias|buenas tardes|buenas noches|buen dia|que tal|como estas?|saludos?|alo|epa|epale|hi|hello|buenas?|buenos?|amig[oa]s?|equipo|gente|asistente|bot|movilnet|senor|senora|sr|sra|estimad[oa]s?|gracias|muchas gracias|bendiciones|por favor|porfa|ok|vale|listo)\b/g, '')
+    .replace(/\b(hola|buenos dias|buenas tardes|buenas noches|buen dia|que tal|como estas?|saludos?|alo|epa|epale|hi|hello|buenas?|buenos?|amig[oa]s?|equipo|gente|asistente|bot|movilnet|senor|senora|sr|sra|estimad[oa]s?|gracias|muchas gracias|bendiciones|por favor|porfa|ok|vale|listo|nuevamente|soy|yo|de nuevo|otra vez|volvi|estoy|aqui)\b/g, '')
     .replace(/[^a-z0-9\s]/g, ' ')
     .trim();
   const isPureGreeting = (residualGreeting.split(/\s+/).filter(w => w.length > 0).length === 0) && !/[\?¿]/.test(rawMsg);
@@ -222,7 +320,7 @@ ROUTER_CORE_MARKETING_JS = r'''for (const item of items) {
                   `🔒 Estado EIR: Habilitado y Seguro`;
     }
 
-  // CASO H: SALUDOS PUROS (DISTINGUIR ABONADO 0416/0426 vs NO USUARIO)
+  // CASO H: SALUDOS PUROS Y REENCUENTROS (DISTINGUIR ABONADO 0416/0426 vs NO USUARIO)
   } else if (isPureGreeting) {
     if (isCompetitor) {
       // MÓDULO OBLIGATORIO: NO_USUARIOS_MOVILNET (Funnel Marketing Portabilidad 4GMAX)
@@ -256,6 +354,7 @@ ROUTER_CORE_MARKETING_JS = r'''for (const item of items) {
       pipelineRoute = 'FUNNEL_MARKETING_NO_USUARIOS_MOVILNET';
       replyText = `Estimado usuario (${phoneFormatted}):\n\n` +
                   `Bienvenido al Centro de Atención Digital Movilnet 4GMAX.\n` +
+                  `Detectamos que nos contactas desde tu línea ${competitorLabel}.\n` +
                   `• Escribe 'Portabilidad' para cambiarte gratis a Movilnet con eSIM y 10GB de bono.\n` +
                   `• Escribe 'Planes' para conocer tarifas disponibles.\n` +
                   `• Escribe 'Recarga' para recargar a un tercero con Pago Móvil C2P.`;
@@ -292,12 +391,22 @@ def apply_update():
     wf = res["data"]
     nodes = wf.get("nodes", [])
 
+    updated_ai_agent = False
     updated_router_cond = False
     updated_marketing_router = False
 
     for n in nodes:
         node_name = n.get("name")
-        if node_name == "Router - Consultas determinísticas":
+        if node_name == "AI Agent":
+            params = n.setdefault("parameters", {})
+            params["promptType"] = "define"
+            params["text"] = AI_AGENT_TEXT_PROMPT
+            opts = params.setdefault("options", {})
+            opts["systemMessage"] = AI_AGENT_SYSTEM_MESSAGE
+            updated_ai_agent = True
+            print("  ✅ Nodo 'AI Agent' actualizado con inyección dinámica de MODO OPERATIVO y REGLA SOBERANA NO-MOVILNET.")
+
+        elif node_name == "Router - Consultas determinísticas":
             params = n.setdefault("parameters", {})
             rules = params.get("rules", {}).get("values", [])
             for r in rules:
@@ -306,15 +415,15 @@ def apply_update():
                     for c in conds:
                         c["leftValue"] = ROUTER_TELCO_CONDITION_JS
                         updated_router_cond = True
-                        print("  ✅ Condición 'telco_movilnet_fastpath' actualizada con filtro Saludo Puro vs Consulta Compuesta.")
+                        print("  ✅ Condición 'telco_movilnet_fastpath' actualizada con soporte de reencuentros.")
 
         elif node_name == "Movilnet Core & Marketing Router":
             n.setdefault("parameters", {})["jsCode"] = ROUTER_CORE_MARKETING_JS
             updated_marketing_router = True
-            print("  ✅ Nodo 'Movilnet Core & Marketing Router' actualizado con segmentación estricta NO_USUARIOS_MOVILNET.")
+            print("  ✅ Nodo 'Movilnet Core & Marketing Router' actualizado con módulo estricto NO_USUARIOS_MOVILNET.")
 
-    if not (updated_router_cond and updated_marketing_router):
-        print(f"⚠️ Advertencia: updated_router_cond={updated_router_cond}, updated_marketing_router={updated_marketing_router}")
+    if not (updated_ai_agent and updated_router_cond and updated_marketing_router):
+        print(f"⚠️ Advertencia: ai_agent={updated_ai_agent}, router_cond={updated_router_cond}, marketing={updated_marketing_router}")
 
     # Guardar copia local del workflow
     local_out = PROJECT_ROOT / "api" / "n8n_workflows" / "viki_lpgtec_v2_ids_instant_dispatch.json"
