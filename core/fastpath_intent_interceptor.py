@@ -44,6 +44,7 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 from core.carrier_funnel_classifier import CarrierFunnelClassifier, Carrier
+from core.greeting_compound_classifier import GreetingCompoundClassifier, MessageCategory
 
 NON_SOLICITED_PROPAGANDA_GUARD = "NON_SOLICITED_PROPAGANDA_GUARD"
 PROSPECT_TRIAL_LIMIT_REACHED = "PROSPECT_TRIAL_LIMIT_REACHED"
@@ -205,8 +206,12 @@ class FastPathIntentInterceptor:
             return "OFERTA_PORTABILIDAD"
 
         # 3. Pagos C2P
-        if any(w in text or w in normalized_text for w in ["recarga", "recargar", "como pago", "pago movil c2p", "donde recargo", "instrucciones de pago", "recarga c2p"]):
+        if any(w in text or w in normalized_text for w in [
+            "recarga", "recargar", "recargo", "como pago", "pago movil", "pago movil c2p",
+            "como recargar", "como recargo", "donde recargo", "instrucciones de pago", "recarga c2p", "c2p"
+        ]):
             return "GUIA_PAGO_C2P"
+
 
         # 4. Consulta de saldo y cupos (Se evalúa ANTES de SALUDO_BIENVENIDA para que 'Hola cuál es mi saldo' sea SALDO_CUPO)
         if any(w in text or w in normalized_text for w in ["saldo", "cuanto debo", "megas me quedan", "mis megas", "fecha de corte", "mi saldo", "consultar saldo", "balance"]):
@@ -216,15 +221,17 @@ class FastPathIntentInterceptor:
         if any(w in text or w in normalized_text for w in ["plan", "planes", "plan activo", "inteliplan", "catalogo de planes", "que planes tienen", "tarifas de planes"]):
             return "CATALOGO_PLANES"
 
-        # 6. Saludos y Bienvenida (Solo cuando el mensaje es un saludo sin otra intención específica arriba)
-        if (
-            re.search(r"^(hola|buen(as?|os?)|que tal|como estas?|saludos|alo|epa|epale|hi|hello)\b", text)
-            or re.search(r"\b(hola|buenos dias|buenas tardes|buenas noches)\b", text)
-            or re.search(r"^(hola|buen|que tal|como estas|saludos|alo|epa|epale|hi|hello)\b", normalized_text)
-        ):
+        # 6. Saludos y Bienvenida:
+        # Se evalúa formalmente con GreetingCompoundClassifier.
+        # ÚNICAMENTE si el mensaje es un saludo puro (sin dudas, preguntas o verbos adicionales)
+        # se devuelve SALUDO_BIENVENIDA. Si es una consulta compuesta o libre, se devuelve None
+        # para que viaje al motor de IA (CERO secuestro comercial ciego).
+        analysis = GreetingCompoundClassifier.analyze(message_text)
+        if analysis.is_pure_greeting:
             return "SALUDO_BIENVENIDA"
 
         return None
+
 
     def reset_prospect_trial(self, phone: str) -> None:
         """Reinicia el contador mensual de prueba para un número específico."""
@@ -362,7 +369,12 @@ class FastPathIntentInterceptor:
         )
 
     def _resolve_greeting(self, phone: str) -> str:
-        """Genera saludo y menú oficial de autogestión Movilnet 4GMAX en <5ms."""
+        """
+        Genera saludo y menú segmentado según la operadora del usuario:
+        - Para NO Usuarios Movilnet (0414, 0424, 0412, otros): MÓDULO OBLIGATORIO NO_USUARIOS_MOVILNET
+          (Funnel Marketing de Portabilidad 4GMAX, eSIM gratis y 10GB de bono, SIN opciones internas de saldo).
+        - Para Abonados ÚNICOS Movilnet (0416, 0426): Menú Oficial de Autogestión Movilnet (Saldo, Planes, C2P, EIR).
+        """
         digits = re.sub(r"[^\d]", "", phone)
         if digits.startswith("0058") and len(digits) == 14:
             national = "0" + digits[4:]
@@ -375,17 +387,24 @@ class FastPathIntentInterceptor:
         carrier_enum, display_name, is_comp = CarrierFunnelClassifier.identify_carrier(national or phone)
         pwa_suffix = self.build_pwa_link_suffix(national or phone)
 
-        if is_comp:
+        # MÓDULO OBLIGATORIO: NO_USUARIOS_MOVILNET (Funnel Marketing Portabilidad 4GMAX)
+        if is_comp or carrier_enum != Carrier.MOVILNET:
             return (
-                f"¡Hola! Te damos la bienvenida al canal oficial de atención digital **Movilnet 4GMAX**.\n\n"
+                f"¡Hola! Te damos la bienvenida al canal oficial de **Movilnet 4GMAX**.\n\n"
                 f"Detectamos que te comunicas desde una línea **{display_name}** ({phone_fmt}).\n\n"
-                f"🔄 **¡Cámbiate GRATIS a Movilnet 4GMAX conservando tu mismo número!**\n"
-                f"• 🎁 **Bono de Bienvenida:** 10 GB de navegación gratis + eSIM digital en minutos.\n"
-                f"• 💰 **Ahorro del 60%:** En tu renta mensual frente a tu operadora actual.\n"
-                f"• Escribe **'Portabilidad'** o **'Planes'** para conocer nuestras tarifas."
+                f"🚀 **Módulo de Nuevos Usuarios & Portabilidad 4GMAX:**\n"
+                f"• 🔄 **Cámbiate GRATIS a Movilnet:** Conserva tu mismo número con eSIM digital inmediata.\n"
+                f"• 🎁 **Bono de Bienvenida:** 10 GB de navegación gratis durante tu primer mes.\n"
+                f"• 💰 **Ahorro Comprobado:** Hasta 60% menos en tu renta mensual.\n\n"
+                f"¿Qué deseas realizar hoy?\n"
+                f"• Escribe **'Portabilidad'** para activar tu eSIM gratis con 10GB de bono.\n"
+                f"• Escribe **'Planes'** para conocer nuestras tarifas y comparar tu ahorro.\n"
+                f"• Escribe **'Recarga'** si deseas recargar la línea de un tercero Movilnet con Pago Móvil C2P.\n"
+                f"• O hazme cualquier pregunta sobre tecnología, servicios o dudas generales."
                 f"{pwa_suffix}"
             )
 
+        # MÓDULO EXCLUSIVO: ABONADOS ÚNICOS MOVILNET (0416 / 0426)
         sub_row = None
         try:
             with sqlite3.connect(self.db_path) as conn:
@@ -405,23 +424,26 @@ class FastPathIntentInterceptor:
             return (
                 f"¡Hola! Te damos la bienvenida a tu canal de autoservicio **Movilnet 4GMAX** ({phone_fmt}).\n\n"
                 f"✨ Tu línea se encuentra **{status}** ({segment}).\n\n"
-                f"¿Qué trámite deseas realizar hoy?\n"
+                f"📋 **Menú de Autogestión Oficial Movilnet:**\n"
                 f"• Escribe **'Saldo'** para consultar tu balance disponible y megas.\n"
                 f"• Escribe **'Planes'** para conocer nuestras tarifas activas.\n"
                 f"• Escribe **'Recarga'** para recargar mediante Pago Móvil C2P.\n"
-                f"• Escribe **'Portabilidad'** si deseas cambiarte o solicitar una nueva eSIM."
+                f"• Escribe **'Portabilidad'** si deseas tramitar una nueva eSIM 4GMAX.\n"
+                f"• O pregúntame cualquier consulta sobre tu servicio."
                 f"{pwa_suffix}"
             )
         else:
             return (
-                f"¡Hola! Te damos la bienvenida al canal oficial de atención digital **Movilnet 4GMAX** ({phone_fmt}).\n\n"
-                f"¿En qué te podemos ayudar hoy?\n"
+                f"¡Hola! Te damos la bienvenida al canal oficial de autoservicio **Movilnet 4GMAX** ({phone_fmt}).\n\n"
+                f"📋 **Menú de Autogestión Oficial Movilnet:**\n"
                 f"• Escribe **'Saldo'** para consultar balance disponible y megas.\n"
                 f"• Escribe **'Planes'** para conocer nuestras tarifas activas.\n"
                 f"• Escribe **'Recarga'** para recargar mediante Pago Móvil C2P.\n"
-                f"• Escribe **'Portabilidad'** para cambiarte GRATIS a Movilnet conservando tu número con 10GB de bono."
+                f"• Escribe **'Portabilidad'** para solicitar una nueva eSIM 4GMAX.\n"
+                f"• O indícame qué trámite deseas realizar."
                 f"{pwa_suffix}"
             )
+
 
     def _resolve_balance(self, phone: str) -> str:
         """Consulta el saldo real en SQLite para la línea solicitada (solo 0416/0426; a competencia ofrece Portabilidad)."""
@@ -593,8 +615,13 @@ class FastPathIntentInterceptor:
             resp = self._resolve_propaganda_guard(phone_number)
             source = "NON_SOLICITED_PROPAGANDA_GUARD"
         elif intent == "SALUDO_BIENVENIDA":
+            carrier_enum, _, is_comp = CarrierFunnelClassifier.identify_carrier(phone_number)
             resp = self._resolve_greeting(phone_number)
-            source = "FASTPATH_TELCO_GREETING"
+            if is_comp or carrier_enum != Carrier.MOVILNET:
+                source = "FUNNEL_MARKETING_NO_USUARIOS_MOVILNET"
+            else:
+                source = "MOVILNET_SUBSCRIBER_MENU"
+
         elif intent == "SALDO_CUPO":
             resp = self._resolve_balance(phone_number)
             source = "SQLITE_BALANCES_OCS"

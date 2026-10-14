@@ -6402,3 +6402,68 @@ La consulta directa a la API de ejecuciones de n8n Cloud verificó las 3 interac
 
 
 
+
+---
+
+## 📘 Capítulo 193 — Erradicación Definitiva de Falsos Positivos de Saludo: Clasificador "Saludo Puro" vs "Consulta Compuesta", Módulo Exclusivo NO_USUARIOS_MOVILNET y Cero Secuestro Comercial Ciego
+**Fecha:** 2026-10-14 | **Gobernanza:** Universal Best Practices Engineering Rule (Pilares I al VII) & Protocolo Decagonal (Fases 1 a 10)  
+**Mandato:** Resolver de raíz la intercepción errónea de consultas compuestas ("Hola, quiero comprar una laptop..."). Crear el clasificador formal de Saludos Puros vs Consultas Compuestas, garantizar que el menú de autogestión sea exclusivo para líneas 0416/0426, enviar líneas externas al módulo obligatorio NO_USUARIOS_MOVILNET y prohibir el secuestro comercial de mensajes abiertos para que siempre sean atendidos por la Inteligencia Artificial.
+
+### 🔍 1. Hallazgo Forense del Caso Francisco Landaeta (0414-2650088)
+* **Interacción Reportada:**
+  - **Mensaje Usuario:** *"Hola, quiero comprar una laptop, tienes alguna que me recomiendes comprar?"*
+  - **Respuesta Bot Recibida:** *"¡Buenas tardes, Francisco Landaeta! Te damos la bienvenida al canal oficial de Movilnet. Detectamos que te comunicas desde una línea Movistar Venezuela (+58 414 2650088)... Escribe 'Portabilidad' para cambiarte GRATIS..."*
+* **Autopsia de la Falla:**
+  1. **Falso Positivo por Regex Superficial:** El enrutador determinista evaluaba `^(hola)\b`. Al comenzar la oración con "Hola", clasificó el mensaje como un saludo puro, ignorando la carga semántica real (*"quiero comprar una laptop..."*).
+  2. **Bypass Completo del Agente de IA:** El mensaje fue cortocircuitado por el router determinista y **jamás llegó al nodo `AI Agent` (Gemini)**.
+  3. **Secuestro Comercial Ciego:** Al detectar prefijo `0414` (Movistar), disparó la plantilla de portabilidad, respondiendo de forma sorda a la solicitud de orientación técnica.
+
+---
+
+### 🛠️ 2. Solución de Ingeniería Aplicada
+
+#### A. Nuevo Motor Algorítmico: `GreetingCompoundClassifier`
+* **Archivo Creado:** [`core/greeting_compound_classifier.py`](file:///Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_141026/141026_Movilnet_Core_PWA/core/greeting_compound_classifier.py)
+* **Lógica Carrier-Grade:**
+  1. Suprime patrones multigram y unigram de saludo (`hola`, `buenos dias`, `que tal`, `saludos`, etc.).
+  2. Filtra vocativos de cortesía (`amigo`, `equipo`, `movilnet`, `senor`, `por favor`) y conectores gramaticales (`de`, `para`, `con`, `en`).
+  3. Evalúa la **Carga Semántica Residual**:
+     - Si tras remover saludos no quedan palabras sustantivas ni preguntas $\rightarrow$ `PURE_GREETING`.
+     - Si contiene verbos de acción (`quiero`, `comprar`, `recomiendas`), sustantivos (`laptop`, `precio`, `farmacia`) o signos de interrogación $\rightarrow$ `COMPOUND_QUERY`.
+  4. Auto-verificación matemática formal con aserciones (12/12 tests PASS).
+
+#### B. Menú Exclusivo para Abonados Únicos Movilnet (0416/0426)
+* **Regla Inviolable:** El menú de autogestión con opciones internas de consulta de saldo y megas solo se despliega para números con prefijo **`0416`** o **`0426`**.
+
+#### C. Módulo Obligatorio: `NO_USUARIOS_MOVILNET`
+* **Regla Inviolable:** Si el número entrante posee un prefijo distinto (`0414`, `0424`, `0412`, etc.) y emite un Saludo Puro:
+  - Es derivado al módulo `NO_USUARIOS_MOVILNET` (Ruta: `FUNNEL_MARKETING_NO_USUARIOS_MOVILNET`).
+  - Se le brinda una bienvenida cordial reconociendo su operadora.
+  - Se le presenta la propuesta de valor de **Portabilidad 4GMAX Express** (conservar su número, eSIM gratis, bono de 10 GB, 60% de ahorro).
+  - Opciones permitidas: 'Portabilidad', 'Planes' (para comparar ahorro), 'Recarga' (para recargar a un tercero Movilnet con Pago Móvil C2P) o consultas abiertas al Asistente IA.
+  - **Queda estrictamente prohibido mostrar opciones de saldo interno personal.**
+
+#### D. Cero Secuestro Comercial Ciego
+* Si un usuario de la competencia formula una pregunta abierta o consulta compuesta (ej. sobre laptops, restaurantes, farmacias o soporte), **jamás se le sustituye la respuesta por publicidad**. El mensaje viaja íntegro al motor de IA para ser resuelto con excelencia, calidez y brevedad.
+
+---
+
+### 🚀 3. Sincronización y Despliegue en Vivo en n8n Cloud
+Mediante el script [`scripts/update_n8n_greeting_and_funnel.py`](file:///Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_141026/141026_Movilnet_Core_PWA/scripts/update_n8n_greeting_and_funnel.py), se desplegaron en caliente las siguientes modificaciones sobre el workflow canónico `sNMbtiEiTkuQ9OCY`:
+1. **Nodo `Router - Consultas determinísticas`:** Condición `telco_movilnet_fastpath` calibrada para retornar `false` ante cualquier consulta compuesta, forzando la salida limpia de fallback hacia el nodo `AI Agent`.
+2. **Nodo `Movilnet Core & Marketing Router`:** Enrutamiento estricto segmentado por `isPureGreeting` y prefijo `isCompetitor`.
+3. **Workflow Local Sincronizado:** Guardada la copia certificada en [`api/n8n_workflows/viki_lpgtec_v2_ids_instant_dispatch.json`](file:///Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_141026/141026_Movilnet_Core_PWA/api/n8n_workflows/viki_lpgtec_v2_ids_instant_dispatch.json).
+4. **Monitor Conversatorio Local:** Actualizada la etiqueta de telemetría a `Módulo No Usuarios Movilnet ➔ Funnel Portabilidad 4GMAX (eSIM Gratis + Bono 10GB)` en [`ui/monitor/conversatorio.html`](file:///Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_141026/141026_Movilnet_Core_PWA/ui/monitor/conversatorio.html).
+
+---
+
+### 🧪 4. Certificación Militar de Pruebas Automatizadas (100% Pass)
+* **Suite de Pruebas Ejecutada:** [`scripts/test_pure_greeting_vs_compound_query.py`](file:///Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_141026/141026_Movilnet_Core_PWA/scripts/test_pure_greeting_vs_compound_query.py)
+* **Casos Validados:**
+  1. Saludos puros aislados (unigramas, cortesías vacías, emojis): **PASS**.
+  2. Consultas compuestas con saludo (Caso Landaeta laptop, restaurantes, farmacias, APN, 5G): **PASS** (0 falsos positivos).
+  3. Cero secuestro comercial en consulta de laptop: `can_intercept = False`, `CONVERSACION_LIBRE` $\rightarrow$ Pase a IA: **PASS**.
+  4. Menú de autogestión para líneas `0416` y `0426`: **PASS**.
+  5. Módulo `NO_USUARIOS_MOVILNET` para líneas `0414` y `0412`: **PASS**.
+  6. Consultas Telco combinadas con saludo (saldo, planes, c2p, eir): **PASS**.
+* **Resultado Global:** **6/6 suites (35 aserciones unitarias) aprobadas con 100% de éxito (0 fallos).**

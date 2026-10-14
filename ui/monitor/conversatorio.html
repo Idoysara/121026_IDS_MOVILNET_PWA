@@ -2409,8 +2409,8 @@
         let note = 'Atención MOVI • Asistente Virtual Movilnet 4GMAX (Gemini 2.5 Flash)';
         if (m.pipeline_route === 'FAST_PATH_TELCO_ODA') {
           note = 'Árbol Semántico ➔ Invocó Herramienta OCS ConsultarSaldo (Balance + Megas)';
-        } else if (m.pipeline_route === 'FUNNEL_MARKETING_PORTABILIDAD') {
-          note = 'Árbol Semántico ➔ Invocó Herramienta Portabilidad (eSIM Gratis + Bono 10GB)';
+        } else if (m.pipeline_route === 'FUNNEL_MARKETING_PORTABILIDAD' || m.pipeline_route === 'FUNNEL_MARKETING_NO_USUARIOS_MOVILNET') {
+          note = 'Módulo No Usuarios Movilnet ➔ Funnel Portabilidad 4GMAX (eSIM Gratis + Bono 10GB)';
         } else if (m.pipeline_route === 'CATALOGO_PLANES_4GMAX') {
           note = 'Árbol Semántico ➔ Invocó Herramienta CatalogoPlanes (Inteliplan 10GB / Conecta 5GB)';
         } else if (m.pipeline_route === 'FINTECH_C2P_PAGO_MOVIL') {
