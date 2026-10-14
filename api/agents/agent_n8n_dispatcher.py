@@ -37,7 +37,8 @@ class N8nEgressMessage:
             "instanceId": self.instance_id,
             "number": self.recipient_jid,
             "options": {
-                "delay": self.delay_ms
+                "delay": self.delay_ms,
+                "linkPreview": False
             },
             "text": self.text_content
         }

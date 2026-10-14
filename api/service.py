@@ -2047,6 +2047,12 @@ class MovilnetAPIService:
         if not isinstance(device_info, dict):
             device_info = None
 
+        sender_name_in = body.get("pushName") or body.get("sender_name") or body.get("name")
+        if sender_name_in and isinstance(sender_name_in, str):
+            sender_name_in = sender_name_in.strip()
+        else:
+            sender_name_in = None
+
         agent_msg = AgentMessage(
             text=str(text).strip(),
             msisdn=normalized_phone,
@@ -2055,7 +2061,8 @@ class MovilnetAPIService:
             subscriber_cid=normalized_cid,
             latitude=parsed_lat,
             longitude=parsed_lon,
-            device_info=device_info
+            device_info=device_info,
+            sender_name=sender_name_in
         )
         from core.webhook_noise_filter import WebhookNoiseFilter
         from core.fastpath_intent_interceptor import FastPathIntentInterceptor, fastpath_interceptor
@@ -2085,16 +2092,18 @@ class MovilnetAPIService:
             response.metadata["guardrail"] = "NON_SOLICITED_PROPAGANDA_GUARD"
         else:
             response = self.customer_care_agent.process_message(agent_msg)
-            # Solo añadir sufijo de enlace PWA si el usuario NO está ya en el canal PWA
+            # Solo añadir enlace PWA si el usuario no está en PWA y si la consulta solicita app/web o en saldo inicial
             if not is_pwa_channel:
-                pwa_suffix = FastPathIntentInterceptor.build_pwa_link_suffix(phone_for_guard)
-                if "https://movilnet-core.onrender.com" not in response.response_text:
-                    response.response_text = f"{response.response_text}{pwa_suffix}"
+                is_pwa_relevant = any(k in clean_text_in.lower() for k in ["pwa", "web", "aplicacion", "app", "portal", "link", "enlace", "autoservicio", "saldo", "planes"])
+                if is_pwa_relevant:
+                    pwa_suffix = FastPathIntentInterceptor.build_pwa_link_suffix(phone_for_guard)
+                    if "https://movilnet-core.onrender.com" not in response.response_text:
+                        response.response_text = f"{response.response_text}{pwa_suffix}"
 
         # Registro en vivo para Monitores y Dashboard NOC (:8010 y :8012)
         if not os.environ.get("PYTEST_CURRENT_TEST"):
             phone_val = normalized_phone or (str(msisdn_raw).strip() if msisdn_raw else "04160000001")
-            sender_val = body.get("sender_name") or body.get("name") or (
+            sender_val = sender_name_in or (
                 "WhatsApp Asignado (00584241533712)" if "4241533712" in phone_val else f"Abonado {phone_val}"
             )
             device_val = "PWA Móvil (Data 4GMAX)" if is_pwa_channel else (body.get("channel") or body.get("device_type") or "PWA Móvil")

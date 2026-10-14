@@ -86,6 +86,7 @@ class AgentMessage:
     latitude: Optional[float] = None
     longitude: Optional[float] = None
     device_info: Optional[Dict[str, Any]] = None
+    sender_name: Optional[str] = None
     timestamp: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
 
@@ -847,7 +848,8 @@ BARRERAS Y REGLAS DE SEGURIDAD (ANTI-ALUCINACIÓN):
         msisdn: Optional[str] = None,
         latitude: Optional[float] = None,
         longitude: Optional[float] = None,
-        device_info: Optional[Dict[str, Any]] = None
+        device_info: Optional[Dict[str, Any]] = None,
+        sender_name: Optional[str] = None
     ) -> Tuple[str, int, float]:
         """
         Ejecuta el razonamiento contextual con cascada de proveedores de IA:
@@ -856,7 +858,7 @@ BARRERAS Y REGLAS DE SEGURIDAD (ANTI-ALUCINACIÓN):
         3. Motor Semántico Contextual Local (Fallback Carrier-Grade).
         """
         # 0. Construir contexto enriquecido con telemetría de hora, día, fecha y dispositivo
-        system_context = self._build_system_context(latitude, longitude, device_info)
+        system_context = self._build_system_context(latitude, longitude, device_info, msisdn, sender_name)
 
         # 1. Intentar proveedor directo Google AI Studio (Gemini 3.5 / 2.5)
         if self.gemini_api_key:
@@ -881,7 +883,9 @@ BARRERAS Y REGLAS DE SEGURIDAD (ANTI-ALUCINACIÓN):
         self,
         latitude: Optional[float] = None,
         longitude: Optional[float] = None,
-        device_info: Optional[Dict[str, Any]] = None
+        device_info: Optional[Dict[str, Any]] = None,
+        msisdn: Optional[str] = None,
+        sender_name: Optional[str] = None
     ) -> str:
         """Construye el prompt de sistema con telemetría estricta de hora, día, fecha oficial en Venezuela y dispositivo."""
         now_utc = datetime.now(timezone.utc)
@@ -903,6 +907,27 @@ BARRERAS Y REGLAS DE SEGURIDAD (ANTI-ALUCINACIÓN):
             touch_txt = "Pantalla Táctil" if device_info.get("is_touch") else "Teclado/Mouse físico"
             dev_desc = f"{dev_type} ({os_fam}, {touch_txt}, resolución {screen})"
 
+        # Sección de Identidad Blindada Anti-Alucinación
+        verified_name = (sender_name or "").strip()
+        if verified_name:
+            identity_directive = (
+                f"- Nombre verificado del contacto/abonado: {verified_name}\n"
+                f"*Regla Inviolable de Identidad*: El nombre verificado de tu interlocutor es '{verified_name}'. "
+                f"Dirígete a él como '{verified_name}' o de manera cordial y respetuosa. "
+                f"Queda ESTRICTAMENTE PROHIBIDO llamarlo por cualquier otro nombre que provenga de mensajes pasados o ejemplos (por ejemplo: NUNCA lo llames 'Horacio', 'Carlos', etc.).\n"
+            )
+        else:
+            identity_directive = (
+                f"*Regla Inviolable de Identidad*: No hay un nombre propio verificado. "
+                f"Trátalo cordialmente sin inventar ni atribuir nombres personales ficticios como 'Horacio' o similares.\n"
+            )
+
+        geo_strict_directive = (
+            f"*Regla Inviolable de Precisión Geográfica*: Si el usuario pregunta por puntos de interés (farmacias, automercados, librerías, etc.) "
+            f"en una zona específica de Caracas (ejemplo: Petare, La Urbina, El Marqués, Palo Verde, Catia, etc.), responde ÚNICAMENTE con comercios "
+            f"situados en esa zona específica consultada. Queda ESTRICTAMENTE PROHIBIDO responder con lugares de Chacao u otras zonas ajenas diciendo que 'están en la zona'.\n"
+        )
+
         system_with_context = (
             f"{self.SYSTEM_PROMPT}\n"
             f"Contexto técnico, geográfico y temporal de referencia obligatoria del sistema:\n"
@@ -910,6 +935,8 @@ BARRERAS Y REGLAS DE SEGURIDAD (ANTI-ALUCINACIÓN):
             f"- Fecha oficial actual en Venezuela (UTC-4): {current_date_str}\n"
             f"- Día de la semana actual en Venezuela: {day_of_week}\n"
             f"- Hora oficial actual en Venezuela: {current_time_str}\n"
+            f"{identity_directive}"
+            f"{geo_strict_directive}"
             f"{geo_weather_info}\n"
             f"*Regla Inviolable de Temporalidad*: Cuando el usuario pregunte por la fecha, el día actual o la hora (o haga alusión al momento del día), DEBES responder con EXACTITUD matemática basándote en esta telemetría oficial ({current_date_str}, {current_time_str}). Queda ESTRICTAMENTE PROHIBIDO inventar o cambiar el día de la semana.\n"
             f"*Instrucción sobre telemetría de dispositivo*: Si el usuario pregunta cómo sabes qué dispositivo está usando (celular, laptop o tablet), responde con total transparencia y cortesía técnica explicando qué tipo de dispositivo es ({dev_desc}) y aclara que al abrir la aplicación web (PWA), el navegador comparte de forma estándar parámetros básicos de pantalla y sistema operativo para adaptar la interfaz visualmente a su equipo.\n"
@@ -1286,12 +1313,79 @@ BARRERAS Y REGLAS DE SEGURIDAD (ANTI-ALUCINACIÓN):
                     "📶 *Tip Movilnet:* Todas cuentan con excelente cobertura 4GMAX para consultar disponibilidad en línea o realizar pagos móviles C2P sin contratiempos. ¿Deseas verificar tus megas disponibles?"
                 )
             else:
+                if any(z in msg_clean for z in ["petare", "sucre", "redoma"]):
+                    reply = (
+                        "📍 *Farmacias en la Zona de Petare (Municipio Sucre):*\n\n"
+                        "• 🏥 *Farmatodo Redoma de Petare:* Av. Francisco de Miranda con inicio Av. Principal de Palo Verde, Redoma de Petare (+58 212-2561144) [Servicio 24 Horas]\n"
+                        "• 🏥 *Locatel La California Norte:* Av. Francisco de Miranda, Centro Comercial Líder, Nivel Miranda (+58 212-2384411)\n"
+                        "• 🏥 *Farmacia El Cristo Petare:* Casco Colonial de Petare, frente a la Plaza Sucre (+58 212-2713322)\n\n"
+                        "📶 Cuentan con óptima cobertura *Movilnet 4GMAX* para pagos móviles C2P y consultas en línea."
+                    )
+                elif any(z in msg_clean for z in ["urbina", "la urbina", "marques", "el marques", "el marqués"]):
+                    reply = (
+                        "📍 *Farmacias en La Urbina y El Marqués:*\n\n"
+                        "• 🏥 *Farmatodo La Urbina:* Calle 3A con Av. Principal de La Urbina, frente a la Plaza El Indio (+58 212-2425511) [24 Horas]\n"
+                        "• 🏥 *Locatel Boleíta / El Marqués:* Av. Rómulo Gallegos, Centro Comercial Boleíta Center (+58 212-2398822)\n"
+                        "• 🏥 *Farmatodo El Marqués:* Av. Rómulo Gallegos con Av. Sanz, El Marqués (+58 212-2729900)\n\n"
+                        "📶 Conectadas con red 4GMAX para transacciones rápidas."
+                    )
+                else:
+                    reply = (
+                        "📍 *Farmacias Cercanas en la Zona (Chacao / Caracas):*\n\n"
+                        "• 🏥 *Farmatodo Los Palos Grandes:* 1ra Avenida con 2da Transversal de Los Palos Grandes, Chacao (+58 212-2851122)\n"
+                        "• 🏥 *Locatel La Castellana:* Av. Principal de La Castellana con Calle José Ángel Lamas, Chacao (+58 212-2638844)\n\n"
+                        "📶 Cuentan con cobertura óptima 4GMAX para consultar disponibilidad online o pagar con Pago Móvil C2P."
+                    )
+
+        # 16.1 Automercados, Supermercados y Compras de Víveres
+        elif any(k in msg_clean for k in ["automercado", "supermercado", "abasto", "mercado", "compras", "viveres"]):
+            if any(z in msg_clean for z in ["petare", "sucre", "redoma", "urbina", "la urbina", "marques", "el marques", "el marqués", "palo verde"]):
                 reply = (
-                    "📍 *Farmacias Cercanas en la Zona (Chacao / Caracas):*\n\n"
-                    "• 🏥 *Farmatodo Los Palos Grandes:* 1ra Avenida con 2da Transversal de Los Palos Grandes, Chacao (+58 212-2851122)\n"
-                    "• 🏥 *Locatel La Castellana:* Av. Principal de La Castellana con Calle José Ángel Lamas, Chacao (+58 212-2638844)\n\n"
-                    "📶 Cuentan con cobertura óptima 4GMAX para consultar disponibilidad online o pagar con Pago Móvil C2P."
+                    "🛒 *Supermercados y Abastos en el Municipio Sucre (Petare / La Urbina / El Marqués):*\n\n"
+                    "• 🛒 *Central Madeirense La Urbina:* Av. Principal de La Urbina con Calle 1, Edif. Centro Urbina (+58 212-2415522)\n"
+                    "• 🛒 *Unicasa La Urbina:* Calle 3A con Av. Principal de La Urbina (+58 212-2423300)\n"
+                    "• 🛒 *Automercados Plaza's El Marqués:* Av. Rómulo Gallegos con Av. Sanz, El Marqués (+58 212-2712200)\n"
+                    "• 🛒 *Red de Abastos Petare:* Final Av. Francisco de Miranda, Redoma de Petare (+58 212-2567788)\n\n"
+                    "📶 Todos cuentan con excelente cobertura *Movilnet 4GMAX* para realizar tus pagos con Pago Móvil C2P o Biopago de inmediato."
                 )
+            else:
+                reply = (
+                    "🛒 *Supermercados Cercanos en la Zona (Chacao / Caracas):*\n\n"
+                    "• 🛒 *Automercados Plaza's Los Palos Grandes:* 3ra Transversal con Av. Andrés Bello (+58 212-2856600)\n"
+                    "• 🛒 *Excelsior Gama Plus Santa Eduvigis:* Av. Francisco de Miranda (+58 212-2864433)\n"
+                    "• 🛒 *Central Madeirense Chacao:* Av. Libertador con Calle Elice (+58 212-2633344)\n\n"
+                    "📶 Con cobertura óptima 4GMAX para realizar tus transacciones y pagos móviles C2P sin demoras."
+                )
+
+        # 16.2 Librerías, Papelerías, Libros y Útiles Escolares
+        elif any(k in msg_clean for k in ["libreria", "librería", "papeleria", "papelería", "libros", "utiles", "cuadernos"]):
+            if any(z in msg_clean for z in ["marques", "el marques", "el marqués", "lider", "líder", "urbina", "la urbina", "petare", "sucre", "boleita"]):
+                reply = (
+                    "📚 *Librerías y Papelerías en El Marqués, La California y Sucre:*\n\n"
+                    "• 📚 *Tecni-Ciencia Libros C.C. Líder:* Nivel Plaza Miranda, Centro Comercial Líder, Av. Francisco de Miranda (+58 212-2380123)\n"
+                    "• 📚 *Librería Nacho Unicentro El Marqués:* C.C. Unicentro El Marqués, Planta Baja, Local 12 (+58 212-2710044)\n"
+                    "• 📚 *Librería Las Novedades Boleíta:* C.C. Boleíta Center, Nivel Feria (+58 212-2395566)\n\n"
+                    "📶 Cuentan con óptima cobertura *Movilnet 4GMAX* para consultas y pagos móviles interbancarios C2P."
+                )
+            else:
+                reply = (
+                    "📚 *Librerías en Chacao y Este de Caracas:*\n\n"
+                    "• 📚 *Tecni-Ciencia Libros Sambil:* C.C. Sambil Chacao, Nivel Acuario (+58 212-2631144)\n"
+                    "• 📚 *Librería El Buscón:* C.C. Paseo Las Mercedes, Nivel Trasnocho (+58 212-9937846)\n\n"
+                    "📶 Conectadas a la red Movilnet 4GMAX."
+                )
+
+        # 16.3 Puntos de Referencia y Cobertura en Petare, La Urbina, El Marqués y Sucre
+        elif any(k in msg_clean for k in ["petare", "la urbina", "urbina", "el marques", "el marqués", "marques", "palo verde", "sucre", "la california"]):
+            reply = (
+                "📍 *Puntos de Referencia y Cobertura en Municipio Sucre (Petare / La Urbina / El Marqués):*\n\n"
+                "En todo el eje este del Municipio Sucre cuentas con cobertura modernizada *Movilnet 4GMAX* y acceso a:\n\n"
+                "• 🏢 *Zona Comercial La Urbina:* Calles 1 a 3A con amplia red de bancos, supermercados y farmacias.\n"
+                "• 🛍️ *Centros Comerciales:* C.C. Líder (La California), C.C. Unicentro El Marqués y C.C. Boleíta Center.\n"
+                "• 🚇 *Acceso Metro:* Estaciones Petare, Palo Verde y La California (Línea 1).\n"
+                "• 🏥 *Servicios de Salud:* Hospital Dr. Domingo Luciani (El Llanito) y clínicas de la zona.\n\n"
+                "📶 Con tu línea 4GMAX puedes navegar, usar apps de transporte y realizar Pago Móvil C2P con total rapidez. ¿Deseas consultar tu saldo o plan antes de desplazarte?"
+            )
 
         # 17. Ubicación, Zonas Urbanas, Transporte y Puntos en Chacao
         elif any(k in msg_clean for k in ["chacao", "altamira", "palos grandes", "el rosal", "sambil", "metro", "como llegar", "donde queda", "donde esta", "ubicacion", "direccion"]):
@@ -1379,27 +1473,47 @@ BARRERAS Y REGLAS DE SEGURIDAD (ANTI-ALUCINACIÓN):
                 "Con ese dato consultaremos de inmediato tu expediente en nuestra plataforma OCS para verificar tu saldo, megas y plan en tiempo real."
             )
 
-        # 20. Respuesta abierta empática inteligente MOVI
+        # 20. Respuesta abierta empática inteligente MOVI (Anti-Bucle Competidores)
         else:
             from core.carrier_funnel_classifier import CarrierFunnelClassifier, Carrier
             clean_tel = CarrierFunnelClassifier.clean_msisdn(msisdn or "")
             carrier_enum, carrier_label, is_comp = CarrierFunnelClassifier.identify_carrier(clean_tel)
+            is_greeting = any(g in msg_clean for g in [
+                "hola", "buenos dias", "buenas tardes", "buenas noches", "saludos",
+                "inicio", "empezar", "comenzar", "buen dia", "hey", "epale", "aloe"
+            ]) or (len(msg_clean) <= 4 and msg_clean in ["hi", "alo", "oye", "oe"])
+
             if is_comp and clean_tel:
                 carrier_name = "Movistar" if carrier_enum == Carrier.MOVISTAR else ("Digitel" if carrier_enum == Carrier.DIGITEL else "tu operadora actual")
-                reply = (
-                    f"¡Hola! Soy MOVI, tu asistente virtual de *Movilnet 4GMAX*. "
-                    f"Veo que nos escribes desde una línea {carrier_label} ({clean_tel}). "
-                    f"Con gusto te puedo orientar sobre nuestra cobertura 4GMAX en toda Venezuela, "
-                    f"los requisitos para activar una eSIM digital, nuestro catálogo de planes Inteliplan o cómo portar tu número actual conservando tus dígitos. "
-                    f"¿En qué te puedo asesorar el día de hoy?"
-                )
+                if is_greeting:
+                    reply = (
+                        f"¡Hola! Soy MOVI, tu asistente virtual de *Movilnet 4GMAX*. "
+                        f"Veo que nos escribes desde una línea {carrier_label} ({clean_tel}). "
+                        f"Con gusto te puedo orientar sobre nuestra cobertura 4GMAX en toda Venezuela, "
+                        f"los requisitos para activar una eSIM digital, nuestro catálogo de planes Inteliplan o cómo portar tu número actual conservando tus dígitos. "
+                        f"¿En qué te puedo asesorar el día de hoy?"
+                    )
+                else:
+                    reply = (
+                        f"Entendido. Con mucho gusto te oriento desde *Movilnet 4GMAX*. "
+                        f"Identifico que tu línea actual pertenece a {carrier_label} ({clean_tel}). "
+                        f"Puedo apoyarte con información de nuestra cobertura nacional 4GMAX, puntos comerciales, o coordinar el cambio a Movilnet con tu mismo número y 10 GB de bienvenida. "
+                        f"¿Podrías indicarme con un poco más de detalle qué trámite, ubicación o consulta deseas realizar?"
+                    )
             else:
-                reply = (
-                    "¡Hola! Soy MOVI, tu asistente virtual de *Movilnet 4GMAX*. Con total gusto te acompaño. "
-                    "Puedo orientarte sobre planes comerciales, consultar tu saldo disponible y consumo de megas en tiempo real, "
-                    "guiarte en recargas Pago Móvil C2P, ubicar oficinas de atención o resolver dudas de tu línea. "
-                    "Cuéntame con total confianza, ¿en qué te puedo colaborar en este momento?"
-                )
+                if is_greeting:
+                    reply = (
+                        "¡Hola! Soy MOVI, tu asistente virtual de *Movilnet 4GMAX*. Con total gusto te acompaño. "
+                        "Puedo orientarte sobre planes comerciales, consultar tu saldo disponible y consumo de megas en tiempo real, "
+                        "guiarte en recargas Pago Móvil C2P, ubicar oficinas de atención o resolver dudas de tu línea. "
+                        "Cuéntame con total confianza, ¿en qué te puedo colaborar en este momento?"
+                    )
+                else:
+                    reply = (
+                        "Comprendido. Como asistente oficial de *Movilnet 4GMAX* estoy aquí para ayudarte con cualquier gestión de tu línea "
+                        "(saldo, megas, planes, recargas C2P o soporte técnico), así como orientarte sobre puntos de atención o cobertura. "
+                        "¿Podrías especificarme un poco más tu consulta para darte una respuesta exacta?"
+                    )
 
         # Simulación analítica de tokens para telemetría
         input_tokens = len(message.split()) + 45
@@ -1497,7 +1611,8 @@ class CustomerCareAgent:
             msisdn=msisdn,
             latitude=message.latitude,
             longitude=message.longitude,
-            device_info=message.device_info
+            device_info=message.device_info,
+            sender_name=message.sender_name
         )
         latency_ms = round((time.perf_counter() - start_time) * 1000, 3)
 
@@ -1529,9 +1644,14 @@ class CustomerCareAgent:
         except Exception:
             pass
 
+        # Verificar si la línea proviene de una operadora competidora (Movistar/Digitel)
+        from core.carrier_funnel_classifier import CarrierFunnelClassifier, Carrier
+        clean_user_msisdn = CarrierFunnelClassifier.clean_msisdn(msisdn or "")
+        carrier_enum, carrier_label, is_comp = CarrierFunnelClassifier.identify_carrier(clean_user_msisdn)
+
         # Botones de acción sugeridos con gancho de conversión comercial inteligente
-        is_geo_query = any(k in raw_text.lower() for k in ["comer", "donde", "restaurante", "farmacia", "clinica", "palos grandes", "chacao", "lugar", "opciones", "altamira", "helado", "comida", "cafe"])
-        is_promo_query = any(k in raw_text.lower() for k in ["promo", "promocion", "oferta", "descuento", "beneficio", "cine", "regalo", "bono"])
+        is_geo_query = any(k in raw_text.lower() for k in ["comer", "donde", "restaurante", "farmacia", "clinica", "palos grandes", "chacao", "lugar", "opciones", "altamira", "helado", "comida", "cafe", "automercado", "supermercado", "libreria", "librería", "petare", "urbina", "marques"])
+        is_promo_query = any(k in raw_text.lower() for k in ["promo", "promocion", "promoción", "oferta", "ofertas", "descuento", "beneficio", "cine", "regalo", "bono"])
         
         if is_geo_query:
             default_buttons = [
@@ -1539,6 +1659,20 @@ class CustomerCareAgent:
                 {"id": "btn_geo_pharmacies", "title": "🏥 Farmacias"},
                 {"id": "btn_check_data", "title": "📊 Ver Megas"}
             ]
+        elif is_comp:
+            # Oferta de bienvenida y portabilidad para prospectos de otras operadoras
+            default_buttons = [
+                {"id": "btn_portabilidad_10gb", "title": "📲 Portabilidad 10GB"},
+                {"id": "btn_esim_digital", "title": "✨ eSIM Gratis"},
+                {"id": "btn_planes_4gmax", "title": "📋 Planes 4GMAX"}
+            ]
+            if is_promo_query:
+                llm_text += (
+                    f"\n\n🚀 *Oferta Exclusiva Portabilidad 4GMAX ({carrier_label}):*\n"
+                    f"¡Cámbiate a Movilnet conservando tu mismo número! Te obsequiamos tu *eSIM Digital Inmediata* "
+                    f"más un *Bono de Bienvenida de 10 GB* de navegación ultrarrápida y ahorras hasta 60% en tu renta mensual. "
+                    f"Escribe *'Portabilidad'* por aquí para tramitarla al instante."
+                )
         elif nba_offer:
             default_buttons = [
                 {"id": f"btn_funnel_{nba_offer.offer_id.lower()}", "title": nba_offer.cta_text[:20]},

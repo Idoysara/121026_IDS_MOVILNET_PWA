@@ -725,7 +725,7 @@
         "sendBody": true,
         "contentType": "raw",
         "rawContentType": "application/json",
-        "body": "={{ JSON.stringify({\n  \"number\": $('Webhook').item.json.body.data.key.remoteJid.replace(/@.*/, ''),\n  \"options\": {\n    \"delay\": ($json.human_delay_ms || 1200),\n    \"presence\": \"composing\"\n  },\n  \"text\": $json.final_text\n}) }}",
+        "body": "={{ JSON.stringify({\n  \"number\": $('Webhook').item.json.body.data.key.remoteJid.replace(/@.*/, ''),\n  \"options\": {\n    \"delay\": ($json.human_delay_ms || 1200),\n    \"presence\": \"composing\",\n    \"linkPreview\": false\n  },\n  \"text\": $json.final_text\n}) }}",
         "options": {
           "redirect": {
             "redirect": {

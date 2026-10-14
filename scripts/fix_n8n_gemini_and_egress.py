@@ -56,7 +56,8 @@ def build_fixed_workflow(input_json_path: Path, output_json_path: Path) -> dict:
         '      "number": cleanNum,\n'
         '      "options": {\n'
         '        "delay": ($json.human_delay_ms || 1200),\n'
-        '        "presence": "composing"\n'
+        '        "presence": "composing",\n'
+        '        "linkPreview": false\n'
         "      },\n"
         '      "text": $json.final_text\n'
         "    });\n"

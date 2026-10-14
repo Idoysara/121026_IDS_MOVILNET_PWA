@@ -54,6 +54,7 @@ class N8nWebhookPayloadExtractor:
         "CONTRACT_INFO": ["contrato", "informa contrato", "mi contrato", "plan contratado", "titular"],
         "BALANCE_CHECK": ["saldo", "cuanto debo", "megas", "datos", "debo", "cupo", "balance", "corte"],
         "RECHARGE_C2P": ["recarga", "recargar", "pago movil", "c2p", "pagar", "transferencia", "bcv"],
+        "PROMO_OFFER": ["promo", "promocion", "oferta", "halloween", "12 de octubre", "12 octubre", "beisbol", "lvbp", "aguilas", "estudiante", "descuento", "beneficio"],
         "EMERGENCY_EIR": ["robo", "hurto", "extravio", "bloqueo", "bloquear", "imei", "suspender", "denuncia"]
     }
 
@@ -296,6 +297,33 @@ class N8nWebhookPayloadExtractor:
                     "phone": message.phone,
                     "balance_ves": bal_ves,
                     "remaining_mb": rem_mb,
+                    "nba_offer": nba_offer.to_dict(),
+                    "reply_text": reply_text,
+                    "latency_mode": "FAST_PATH_DETERMINISTIC",
+                    "tokens_cost_usd": 0.0
+                }
+
+            elif message.intent == "PROMO_OFFER":
+                bal_ves = balance_data.get("balance_ves", 185.50)
+                rem_mb = balance_data.get("remaining_data_mb", 6400)
+                tot_mb = balance_data.get("total_quota_mb", balance_data.get("total_data_mb", 10240))
+                from api.agents.agent_marketing_funnel import marketing_funnel_agent
+                nba_offer = marketing_funnel_agent.evaluate_next_best_action(
+                    msisdn=message.phone,
+                    balance_ves=bal_ves,
+                    remaining_data_mb=rem_mb,
+                    total_quota_mb=tot_mb,
+                    days_to_cutoff=15,
+                    user_message=message.message_text
+                )
+                closing_pitch = marketing_funnel_agent.generate_closing_pitch(nba_offer)
+                reply_text = (
+                    f"¡Hola {message.sender_name}! En Movilnet 4GMAX tenemos propuestas especiales para ti:{closing_pitch}"
+                )
+                return {
+                    "status": "success",
+                    "intent": message.intent,
+                    "phone": message.phone,
                     "nba_offer": nba_offer.to_dict(),
                     "reply_text": reply_text,
                     "latency_mode": "FAST_PATH_DETERMINISTIC",

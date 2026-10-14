@@ -1,8 +1,8 @@
 {
-  "gatekeeper_id": "GK2-PHASE2-AUDIT-4FCD365C0B60",
+  "gatekeeper_id": "GK2-PHASE2-AUDIT-4E73CF12178D",
   "phase": "FASE_2_MICROSERVICES_AND_N8N_OMNICHANNEL",
   "project": "AI_Movilnet_300926",
-  "timestamp": "2026-10-14T10:12:26.469008+00:00",
+  "timestamp": "2026-10-14T13:08:43.546452+00:00",
   "status": "CERTIFICADO_Y_APROBADO_100%",
   "dimensions": {
     "dimension_1": {
@@ -93,14 +93,14 @@
       "name": "Dimensión 6: Rendimiento, Tolerancia a Fallos & Latencias Telco 4M",
       "passed": true,
       "checks": {
-        "db_latency_avg_ms": 0.104,
-        "db_latency_p95_ms": 0.146,
+        "db_latency_avg_ms": 0.041,
+        "db_latency_p95_ms": 0.102,
         "db_p95_sub_2ms": true,
-        "api_latency_avg_ms": 0.064,
-        "api_latency_p95_ms": 0.266,
+        "api_latency_avg_ms": 0.012,
+        "api_latency_p95_ms": 0.017,
         "api_p95_sub_5ms": true,
-        "webhook_latency_avg_ms": 1.454,
-        "webhook_latency_p95_ms": 2.162,
+        "webhook_latency_avg_ms": 0.514,
+        "webhook_latency_p95_ms": 0.994,
         "webhook_p95_sub_10ms": true,
         "webhook_avg_sub_2ms": true
       }
@@ -110,12 +110,12 @@
     "all_dimensions_passed": true,
     "total_dimensions_audited": 6,
     "dimensions_passed_count": 6,
-    "db_latency_avg_ms": 0.104,
-    "db_latency_p95_ms": 0.146,
-    "api_latency_avg_ms": 0.064,
-    "api_latency_p95_ms": 0.266,
-    "webhook_latency_avg_ms": 1.454,
-    "webhook_latency_p95_ms": 2.162,
+    "db_latency_avg_ms": 0.041,
+    "db_latency_p95_ms": 0.102,
+    "api_latency_avg_ms": 0.012,
+    "api_latency_p95_ms": 0.017,
+    "webhook_latency_avg_ms": 0.514,
+    "webhook_latency_p95_ms": 0.994,
     "security_secrets_found": 0,
     "mcp_suites_verified": 5,
     "openapi_endpoints_count": 25,
@@ -149,11 +149,11 @@
     }
   },
   "integrity_hashes": {
-    "service.py": "aac59491ab5209210446b755bd30070899e82de9addf58b586c614f948d5ea18",
+    "service.py": "f46bdfa18b55672bea7b49b5ba9376c0f03ea24dc34df43f55c73c2f107545dc",
     "openapi.json": "c4cd6c0287a51e2af2fdffa84310532901ae33502ae457db0e527cdcce0161be",
     "webhook_bridge.py": "df8b85f02555fa325b54589c42099b9bc42d7cc39933fa0081a73395a432b98c",
     "deploy_n8n_workflows.py": "f57f57633cc2daf883d76b18f3940ae066f605f80d5d99a23be40d85bcf431ce",
-    "n8n_deployment_manifest.json": "11d6fb37cc392890d2f8c3b40a0f8b145819160415b6374c850ea06de451d01e",
+    "n8n_deployment_manifest.json": "2d9f4cb52a60f043c4afc55ce8d790f7c7e3ef9af5ce5d14c0a4f50a82a358f0",
     "movilnet_whatsapp_ai_workflow.json": "e51979e5c12522d18f343b0330a8077e3f3b749ac564285103c724e4a722a74e",
     "movilnet_telegram_ai_workflow.json": "e7afad7334cae7c03af0de47392d412cd6eb446851f79fd66586fcafd76e18dd",
     "movilnet_c2p_payment_workflow.json": "6bd9acc40556c417d102ddb244ba1b7dbd8c029b64ef1042ee2e072c587952f0",
@@ -164,5 +164,5 @@
     "test_phase2_webhook_mcp_integration.py": "0fad60ce1eb53649aea3201428979a29f488b17ceb552c172e2aabee40c5615f"
   },
   "verdict": "Fase 2 de AI_Movilnet_300926 validada, auditada y certificada formalmente en sus 6 dimensiones críticas: Microservicio RESTful OpenAPI 3.1.0 TM Forum ODA, 4 Workflows canónicos n8n, Pipeline CI/CD, Puente de Webhooks con 5 Suites MCP en vivo, Grado Militar de Seguridad SAST y Rendimiento Carrier-Grade sub-milisegundo. Habilitado formalmente el pase a la Fase 3.",
-  "sha256_cryptographic_seal": "d83fa1fc896efaad9d5c944d664415c7dcc3ea027e1096f3a1c4f839e6a6e43c"
+  "sha256_cryptographic_seal": "12752742d86c0c08370dbe8d26df7ecd960a2d7976a2e9a688759d996d4d3f48"
 }
