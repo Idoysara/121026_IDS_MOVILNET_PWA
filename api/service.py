@@ -20,10 +20,18 @@ import re
 import uuid
 import socket
 import threading
+import logging
 from datetime import datetime, timezone
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from socketserver import ThreadingMixIn
 from urllib.parse import urlparse, parse_qs
+
+logger = logging.getLogger("MovilnetAPIService")
+if not logger.handlers:
+    _handler = logging.StreamHandler()
+    _handler.setFormatter(logging.Formatter("[%(asctime)s] %(levelname)s in %(name)s: %(message)s"))
+    logger.addHandler(_handler)
+    logger.setLevel(logging.INFO)
 
 # Auto-cargar variables de entorno desde .env local si existe
 _env_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), ".env")
@@ -3374,6 +3382,19 @@ def main():
     print(f"   📖 Documentación interactiva en http://{args.host}:{args.port}/docs")
     print(f"   📑 OpenAPI 3.1.0 JSON en http://{args.host}:{args.port}/openapi.json")
     print("   Presione Ctrl+C para detener.")
+
+    # Hilo en segundo plano para sincronizar continuamente con n8n Cloud cada 2.5s
+    def _background_n8n_poller():
+        from core.conversation_trace_engine import conversation_trace_engine
+        while True:
+            try:
+                time.sleep(2.5)
+                conversation_trace_engine.sync_with_n8n(limit=20)
+            except Exception:
+                pass
+
+    poller_thread = threading.Thread(target=_background_n8n_poller, daemon=True)
+    poller_thread.start()
 
     srv = StandaloneServerRunner(host=args.host, port=args.port)
     srv.start()

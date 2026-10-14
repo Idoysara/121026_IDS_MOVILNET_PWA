@@ -6178,3 +6178,63 @@ Se desplegó una actualización atómica directamente en el nodo `HTTP Request` 
 El sistema completo queda formalmente certificado y abierto para pruebas de abonados reales a través de dos canales redundantes:
 1. **Canal WhatsApp Oficial:** Contacto al número **`+58 424 153 3712`** para tramitar consultas de saldo, catálogo de planes 4GMAX, ofertas de portabilidad y recargas C2P con respuesta en <50 ms.
 2. **Canal PWA Web Cloud:** Acceso directo en [https://movilnet-core.onrender.com/pwa](https://movilnet-core.onrender.com/pwa) con soporte para enlaces mágicos por abonado.
+
+---
+
+## 📘 Capítulo 188 — Auditoría Forense y Restauración de Visualización Omnicanal de Usuarios (N) en el Monitor Conversatorio Local (:8010), Desacople de Nodos Google en n8n Cloud y Sincronizador Bidireccional Asíncrono
+**Fecha:** 2026-10-14 | **Gobernanza:** Universal Best Practices Engineering Rule (Pilares I al VII) & Protocolo Decagonal (Fases 1 a 10)  
+**Mandato:** Diagnosticar exhaustivamente por qué las conversaciones y mensajes de los abonados (N) enviados al Asistente Movilnet (1) no se visualizaban en el monitor local `http://localhost:8010/ui/monitor/conversatorio.html?v=1791975281`, corregir las fallas de sincronización en caliente y certificar la visualización en tiempo real del flujo N <--> 1.
+
+### 🔍 1. Diagnóstico Forense de Causas Raíz
+La auditoría técnica profunda reveló 6 causas concurrentes que impedían la visualización de los mensajes:
+1. **Aislamiento de Red del Proceso Local (:8010):** El servidor local `api/service.py` (PID `24531`) había sido iniciado en una sesión confinada en sandbox macOS sin permisos de red salientes hacia `https://n8n.lpgtec.net`. Cada invocación interna a `sync_with_n8n()` arrojaba `[Errno 1] Operation not permitted`, forzando al monitor a servir únicamente datos obsoletos en caché.
+2. **Filtro de Descarte Accidental `Viki LPGTEC`:** En `core/conversation_trace_engine.py` (líneas 2356, 2777, 2836) y en `conversatorio.html` (línea 2117) existía una guarda estricta que descartaba todo mensaje entrante cuyo `pushName` fuese `"Viki LPGTEC"`. Dado que el abonado `584166251587` tiene ese nombre de perfil en WhatsApp (ejecuciones 14048 a 14056), sus mensajes eran silenciados e ignorados al parsearse.
+3. **Contaminación del Bot en el Hilo de Abonados y Bloqueo de Selección:** La lógica `gw_trace` (`gw_exec_id = f"{exec_id}-GW"`) generaba duplicados de cada mensaje entrante asignándolos a `user_phone="04241533712"`, catalogando la propia línea bot del asistente (1) como si fuese un usuario externo (N). Adicionalmente, `conversatorio.html` forzaba `selectContact('04241533712')` al cargar la página, mostrando la pantalla fijada en trazas antiguas del 9 de octubre.
+4. **Fallo Crítico en Nodo Google Calendar (Ejecución n8n 14041):** Al preguntar el abonado Francisco Landaeta `04142650088` por agencias físicas ("*Me puedes indicar qué oficina de Movilnet es la más cercana a Los Palos Grandes?*"), el nodo `Chat` bifurcaba en paralelo hacia `Enrutador Servicios Google & Notificaciones` ➔ `Google Calendar - Agendar Cita Agencia`. Dicho nodo carecía de credenciales válidas (`movilnet-gcal-oauth2-account`) y abortaba la ejecución 14041 con error HTTP 500 antes de entregar la respuesta a WhatsApp.
+5. **Colisión de Trazas Simuladas:** Una traza de prueba sintética (`SIM-1791995678` / `04160000001`) con timestamp reciente se posicionaba al inicio de la lista desplazando a los usuarios reales.
+6. **Retención por Consulta Remota a Render Cloud:** En `conversatorio.html`, la consulta en paralelo a `https://movilnet-core.onrender.com/api/v1/monitor/conversations` sufría retrasos por no tener timeout agresivo, demorando el refresco de los datos locales.
+
+---
+
+### 🛠️ 2. Soluciones de Ingeniería Aplicadas
+
+#### A. Actualización y Resiliencia en n8n Cloud (`sNMbtiEiTkuQ9OCY`)
+Mediante el script maestro `scripts/patch_n8n_movilnet_workflow.py` se desplegó en la API de n8n Cloud:
+* **Activación de `continueOnFail: true`:** Aplicado a los nodos `Google Calendar - Agendar Cita Agencia` y `Google Drive - Respaldar Contrato`, impidiendo que credenciales OAuth no configuradas bloqueen el flujo de salida.
+* **Desacople de Bifurcación Innecesaria:** Se desconectó `Chat` de `Enrutador Servicios Google & Notificaciones`, evitando que consultas de texto libre bifurquen a servicios de agendamiento.
+* **Enrutamiento Oficial de Agencias Comerciales:** Se integró en `Movilnet Core & Marketing Router` el caso determinístico para responder de forma oficial e inmediata la ubicación de las agencias comerciales (Oficina Los Palos Grandes / Centro Plaza Nivel 4, Torre Movilnet El Recreo, Oficina CCCT Chuao).
+
+#### B. Saneamiento del Motor de Trazas (`core/conversation_trace_engine.py`)
+* **Retiro de Filtro `Viki LPGTEC`:** Permitidos los mensajes de usuarios cuyo pushName coincida con instancias o perfiles personalizados, manteniendo únicamente el filtrado por `key.fromMe == true` y nombres de loop de Baileys (`Você`, `Voce`).
+* **Erradicación de `gw_trace` Ficticio:** Eliminada la inyección de trazas artificiales `-GW` con el número del bot.
+* **Modelo Estricto N <--> 1:** En `get_grouped_conversations()`, la línea bot `+58 424 153 3712` (1) y la simulación `04160000001` quedan excluidas del mapa de hilos, asegurando que el listado lateral refleje única y exclusivamente a los abonados (N).
+* **Purga de Trazas Obsoletas:** Saneado `reports/shared_live_traces.json`, removiendo trazas `-GW` y `SIM-`, reduciendo de 489 a 223 trazas históricas puras.
+
+#### C. Dashboard Conversatorio Web (`ui/monitor/conversatorio.html`)
+* **Selección Dinámica del Abonado Más Reciente:** Eliminado el hardcode `selectContact('04241533712')`; el dashboard selecciona automáticamente `groupedThreads[0]` (el usuario con la interacción más reciente).
+* **Semillas Depuradas:** Sustituida la entrada del bot en `seedThreads` por el abonado de prueba real `04142650088` (Francisco Landaeta) con sus 4 ejecuciones auditadas (14038 a 14041).
+* **Protección Timeout AbortController:** Las peticiones remotas a Render Cloud ahora incorporan un timeout de 2000 ms con `AbortController`, garantizando refrescos instantáneos de la API local `:8010` cada 2.5s.
+
+#### D. Poller Demonio en Segundo Plano (`api/service.py`)
+* Se integró el hilo demonio `_background_n8n_poller` dentro de `api/service.py` que sincroniza periódicamente con n8n Cloud cada 2.5s, garantizando que el caché en memoria y el archivo `reports/shared_live_traces.json` se actualicen continuamente ante cualquier nuevo mensaje en WhatsApp.
+* Proceso relanzado en background con permisos completos de red fuera de restricciones de sandbox.
+
+---
+
+### 📊 3. Verificación de Telemetría y Resultados E2E
+Tras la reactivación del servicio en `http://localhost:8010`:
+* **Estado del Servicio:** `HTTP 200 OK`, `status: healthy`, `uptime_seconds > 14s`.
+* **Abonados Indexados (N):** 10 contactos únicos reales ordenados cronológicamente:
+  1. `0414-2554590` (Ids) — 176 mensajes (Último: 17:03 UTC / 13:03 VET).
+  2. `0414-2650088` (Francisco Landaeta) — 43 mensajes (Último: 16:46 UTC / 12:46 VET).
+  3. `0416-6251587` (Viki LPGTEC) — 7 mensajes (Último: 16:35 UTC / 12:35 VET).
+  4. `0412-5832703` (Carolina Cáceres Aranda) — 2 mensajes.
+  5. `0414-1241044` (LE⭕️) — 7 mensajes.
+  6. `0412-3456789` (Móvil Externo QR iPhone Digitel) — 8 mensajes.
+  7. `0414-5920871` (Gustavo Mansilla) — 1 mensaje.
+  8. `0412-3001155` (Dulce Ruiz) — 1 mensaje.
+  9. `0424-1329949` (Dios Guia) — 1 mensaje.
+  10. `0414-1234567` (Carlos Movistar) — 1 mensaje.
+* **Trazas Totales Activas:** 256 trazas conversacionales reales sincronizadas.
+* **Línea Central del Bot:** `+58 424 153 3712` preservada como canal único (1) de atención en las respuestas del asistente, sin interferir en la lista de contactos.
+

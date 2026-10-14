@@ -2353,7 +2353,7 @@ class ConversationTraceEngine:
                     if not is_assigned_wa_access and (
                         is_from_me
                         or str(phone).endswith("@lid")
-                        or name in ["Viki LPGTEC", "Você", "Voce"]
+                        or name in ["Você", "Voce"]
                         or phone in ["04160000000", "", "Desconocido"]
                     ):
                         continue
@@ -2520,37 +2520,6 @@ class ConversationTraceEngine:
                         known_ids.add(str(exec_id))
                         known_ids.add(f"TRACE-EXEC-{exec_id}")
                         new_synced += 1
-
-                    # Si el mensaje de otro abonado ingresó a través del WhatsApp asignado 00584241533712,
-                    # registrar también el acceso de pasarela en el hilo de 04241533712 para trazabilidad completa
-                    if "584241533712" in sender_jid and "4241533712" not in phone_clean:
-                        gw_exec_id = f"{exec_id}-GW"
-                        if gw_exec_id not in known_ids:
-                            gw_trace = ConversationTrace(
-                                trace_id=f"TRACE-EXEC-{gw_exec_id}",
-                                execution_id=gw_exec_id,
-                                workflow_id=item_wf or self.workflow_id,
-                                started_at=started_at,
-                                stopped_at=stopped_at,
-                                total_duration_sec=dur,
-                                status=status,
-                                bot_number="+58 424 153 3712",
-                                user_phone="04241533712",
-                                user_push_name="WhatsApp Asignado (00584241533712)",
-                                carrier="MOVISTAR",
-                                carrier_label="WhatsApp Asignado 00584241533712",
-                                is_competitor=True,
-                                user_message=f"📥 [Acceso vía WhatsApp Asignado 00584241533712 ← {phone_clean} ({name})]: {msg}",
-                                bot_reply=reply or "✅ Mensaje enrutado por pasarela WhatsApp 00584241533712.",
-                                intent_detected=intent,
-                                pipeline_route=route,
-                                steps=steps,
-                                process_timers=timers
-                            )
-                            with self._lock:
-                                self.traces_cache.insert(0, gw_trace)
-                                self._persist_trace_to_shared(gw_trace)
-                                known_ids.add(gw_exec_id)
                 except Exception:
                     continue
 
@@ -2774,7 +2743,7 @@ class ConversationTraceEngine:
         result = []
         for t in self.traces_cache:
             self._sanitize_and_certify_trace(t)
-            if t.user_push_name in ["Você", "Voce", "Viki LPGTEC"]:
+            if t.user_push_name in ["Você", "Voce"]:
                 continue
             if not (t.bot_reply != "" or len(t.steps) > 3 or t.status == "ERROR" or bool(t.user_message)):
                 continue
@@ -2833,7 +2802,7 @@ class ConversationTraceEngine:
         # Filtrar trazas genuinas y ordenar estrictamente de más antiguo a más reciente
         valid_traces = [
             t for t in self.traces_cache
-            if t.user_push_name not in ["Você", "Voce", "Viki LPGTEC"] and
+            if t.user_push_name not in ["Você", "Voce"] and
             (t.bot_reply != "" or len(t.steps) > 3 or t.status == "ERROR" or bool(t.user_message))
         ]
         sorted_traces = sorted(valid_traces, key=lambda x: x.started_at or "")
@@ -2852,17 +2821,18 @@ class ConversationTraceEngine:
             else:
                 phone_key = CarrierFunnelClassifier.clean_msisdn(t.user_phone) or t.user_phone
 
+            # La línea oficial +58 424 153 3712 es el Asistente Movilnet (1), NO un abonado externo (N).
+            # Se excluye del listado de abonados para mostrar únicamente las conversaciones de usuarios (N <--> 1).
+            if "4241533712" in phone_key or phone_key == "04160000001":
+                continue
+
             display_phone = phone_key
             if len(phone_key) == 11 and phone_key.startswith("0"):
                 display_phone = f"{phone_key[:4]}-{phone_key[4:]}"
-            if "4241533712" in phone_key:
-                display_phone = "0424-1533712 (00584241533712)"
 
             if phone_key not in threads_map:
                 if "4142554590" in phone_key:
                     user_name = "Ids"
-                elif "4241533712" in phone_key:
-                    user_name = "WhatsApp Asignado (00584241533712)"
                 else:
                     user_name = t.user_push_name or "Abonado"
                 threads_map[phone_key] = {
@@ -2886,10 +2856,7 @@ class ConversationTraceEngine:
             thread = threads_map[phone_key]
             if "4142554590" in phone_key:
                 thread["user_name"] = "Ids"
-            elif "4241533712" in phone_key:
-                thread["user_name"] = "WhatsApp Asignado (00584241533712)"
-                thread["display_phone"] = "0424-1533712 (00584241533712)"
-            elif t.user_push_name and t.user_push_name not in ["Abonado", "Você", "Voce", "Viki LPGTEC"]:
+            elif t.user_push_name and t.user_push_name not in ["Abonado", "Você", "Voce"]:
                 thread["user_name"] = t.user_push_name
 
             # Formato amigable de hora
