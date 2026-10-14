@@ -26,6 +26,11 @@ import argparse
 from typing import Any, Dict, List, Optional, Tuple
 from dataclasses import dataclass, asdict, field
 from datetime import datetime, timezone
+from pathlib import Path
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
 
 @dataclass
@@ -46,6 +51,9 @@ class NormalizedInboundMessage:
     authorized_pipeline: str = "NO_USUARIOS_MOVILNET"
     detected_carrier: str = "DESCONOCIDO"
     carrier_label: str = "Operadora Externa"
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
+    location_name: Optional[str] = None
     raw_payload: Dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -60,7 +68,8 @@ class N8nWebhookPayloadExtractor:
         "BALANCE_CHECK": ["saldo", "cuanto debo", "megas", "datos", "debo", "cupo", "balance", "corte"],
         "RECHARGE_C2P": ["recarga", "recargar", "pago movil", "c2p", "pagar", "transferencia", "bcv"],
         "PROMO_OFFER": ["promo", "promocion", "oferta", "halloween", "12 de octubre", "12 octubre", "beisbol", "lvbp", "aguilas", "estudiante", "descuento", "beneficio"],
-        "EMERGENCY_EIR": ["robo", "hurto", "extravio", "bloqueo", "bloquear", "imei", "suspender", "denuncia"]
+        "EMERGENCY_EIR": ["robo", "hurto", "extravio", "bloqueo", "bloquear", "imei", "suspender", "denuncia"],
+        "LOCALIZADOR_OFICINAS_TELCO": ["oficina", "oficinas", "agencia", "agencias", "sucursal", "sucursales", "sede", "donde queda", "donde estan", "ubicados", "atencion presencial", "direccion de movilnet", "donde ir"]
     }
 
     @classmethod
@@ -144,6 +153,29 @@ class N8nWebhookPayloadExtractor:
         source = data.get("source", "whatsapp")
 
         message_obj = data.get("message", {})
+        # Ubicación física GPS vía WhatsApp (locationMessage o liveLocationMessage)
+        loc_msg = (
+            message_obj.get("locationMessage")
+            or message_obj.get("liveLocationMessage")
+            or data.get("locationMessage")
+            or body.get("locationMessage")
+            or {}
+        )
+        latitude: Optional[float] = None
+        longitude: Optional[float] = None
+        location_name: Optional[str] = None
+
+        if loc_msg:
+            try:
+                lat_val = loc_msg.get("degreesLatitude", loc_msg.get("latitude"))
+                lon_val = loc_msg.get("degreesLongitude", loc_msg.get("longitude"))
+                if lat_val is not None and lon_val is not None:
+                    latitude = float(lat_val)
+                    longitude = float(lon_val)
+                location_name = loc_msg.get("name") or loc_msg.get("address") or "Pin GPS Compartido"
+            except (ValueError, TypeError):
+                pass
+
         # El texto puede venir en conversation, extendedTextMessage.text, etc.
         raw_text = (
             message_obj.get("conversation")
@@ -151,8 +183,16 @@ class N8nWebhookPayloadExtractor:
             or ""
         ).strip()
 
+        if not raw_text and latitude is not None and longitude is not None:
+            raw_text = f"[UBICACION_GPS: lat={latitude}, lon={longitude}]"
+
         national_phone, raw_phone = cls.normalize_phone(remote_jid)
-        intent = cls.classify_intent(raw_text)
+
+        if latitude is not None and longitude is not None:
+            intent = "LOCALIZADOR_OFICINAS_TELCO"
+        else:
+            intent = cls.classify_intent(raw_text)
+
         ts = body.get("date_time") or datetime.now(timezone.utc).isoformat()
         is_mov, prefix, pipeline, carrier, label = cls.evaluate_carrier_firewall(national_phone)
 
@@ -172,6 +212,9 @@ class N8nWebhookPayloadExtractor:
             authorized_pipeline=pipeline,
             detected_carrier=carrier,
             carrier_label=label,
+            latitude=latitude,
+            longitude=longitude,
+            location_name=location_name,
             raw_payload=body
         )
 
@@ -189,11 +232,26 @@ class N8nWebhookPayloadExtractor:
 
             push_name = contact.get("profile", {}).get("name", "Abonado")
             raw_phone = message.get("from", "")
-            raw_text = message.get("text", {}).get("body", "").strip()
             msg_id = message.get("id", "")
+            latitude: Optional[float] = None
+            longitude: Optional[float] = None
+            location_name: Optional[str] = None
+
+            if message.get("type") == "location" or "location" in message:
+                loc = message.get("location", {})
+                lat_val = loc.get("latitude")
+                lon_val = loc.get("longitude")
+                if lat_val is not None and lon_val is not None:
+                    latitude = float(lat_val)
+                    longitude = float(lon_val)
+                location_name = loc.get("name") or loc.get("address") or "Pin GPS Meta WhatsApp"
+                raw_text = f"[UBICACION_GPS: lat={latitude}, lon={longitude}]"
+                intent = "LOCALIZADOR_OFICINAS_TELCO"
+            else:
+                raw_text = message.get("text", {}).get("body", "").strip()
+                intent = cls.classify_intent(raw_text)
 
             national_phone, _ = cls.normalize_phone(raw_phone)
-            intent = cls.classify_intent(raw_text)
             is_mov, prefix, pipeline, carrier, label = cls.evaluate_carrier_firewall(national_phone)
 
             return NormalizedInboundMessage(
@@ -212,6 +270,9 @@ class N8nWebhookPayloadExtractor:
                 authorized_pipeline=pipeline,
                 detected_carrier=carrier,
                 carrier_label=label,
+                latitude=latitude,
+                longitude=longitude,
+                location_name=location_name,
                 raw_payload=body
             )
         except (IndexError, KeyError, TypeError):
@@ -241,8 +302,27 @@ class N8nWebhookPayloadExtractor:
         message_raw = str(actual_body.get("message", actual_body.get("text", "")))
         name_raw = str(actual_body.get("name", actual_body.get("pushName", "Abonado")))
 
+        loc = actual_body.get("location") or actual_body.get("locationMessage") or {}
+        lat_raw = actual_body.get("latitude") or loc.get("latitude") or loc.get("degreesLatitude")
+        lon_raw = actual_body.get("longitude") or loc.get("longitude") or loc.get("degreesLongitude")
+        latitude = None
+        longitude = None
+        if lat_raw is not None and lon_raw is not None:
+            try:
+                latitude = float(lat_raw)
+                longitude = float(lon_raw)
+            except (ValueError, TypeError):
+                pass
+        location_name = actual_body.get("location_name") or loc.get("name") or loc.get("address")
+
+        if latitude is not None and longitude is not None:
+            intent = "LOCALIZADOR_OFICINAS_TELCO"
+            if not message_raw:
+                message_raw = f"[UBICACION_GPS: lat={latitude}, lon={longitude}]"
+        else:
+            intent = cls.classify_intent(message_raw)
+
         national_phone, _ = cls.normalize_phone(phone_raw)
-        intent = cls.classify_intent(message_raw)
         is_mov, prefix, pipeline, carrier, label = cls.evaluate_carrier_firewall(national_phone)
 
         return NormalizedInboundMessage(
@@ -261,6 +341,9 @@ class N8nWebhookPayloadExtractor:
             authorized_pipeline=pipeline,
             detected_carrier=carrier,
             carrier_label=label,
+            latitude=latitude,
+            longitude=longitude,
+            location_name=location_name,
             raw_payload=webhook_payload
         )
 
@@ -384,6 +467,31 @@ class N8nWebhookPayloadExtractor:
                     "tokens_cost_usd": 0.0
                 }
 
+            elif message.intent == "LOCALIZADOR_OFICINAS_TELCO":
+                from core.fastpath_intent_interceptor import fastpath_interceptor
+                fastpath_res = fastpath_interceptor.intercept(
+                    message_text=message.message_text,
+                    phone_number=message.phone,
+                    latitude=message.latitude,
+                    longitude=message.longitude
+                )
+                return {
+                    "status": "success",
+                    "intent": message.intent,
+                    "phone": message.phone,
+                    "reply_text": fastpath_res.response_text,
+                    "action_required": "GEO_LOCATION_OFFICE_DISPATCH",
+                    "latency_mode": "FAST_PATH_DETERMINISTIC",
+                    "tokens_cost_usd": 0.0,
+                    "metadata": {
+                        "can_intercept": fastpath_res.can_intercept,
+                        "data_source": fastpath_res.data_source,
+                        "latency_ms": fastpath_res.latency_ms,
+                        "is_movilnet": fastpath_res.is_movilnet_subscriber,
+                        "pipeline": fastpath_res.authorized_pipeline
+                    }
+                }
+
             elif message.intent == "EMERGENCY_EIR":
                 return {
                     "status": "emergency_alert",
@@ -465,6 +573,79 @@ def run_self_verification() -> bool:
     norm_eir = N8nWebhookPayloadExtractor.extract_universal(sample_eir)
     assert norm_eir.phone == "04269876543"
     assert norm_eir.intent == "EMERGENCY_EIR"
+
+    # Caso 4: Payload Real Evolution API con Pin GPS Físico de WhatsApp (Abonado Movilnet)
+    sample_gps = {
+        "event": "messages.upsert",
+        "instance": "Viki LPGTEC",
+        "data": {
+            "key": {
+                "remoteJid": "584161234567@s.whatsapp.net",
+                "fromMe": False,
+                "id": "3EB0C338A1278C695F07"
+            },
+            "pushName": "Carlos Mendoza",
+            "message": {
+                "locationMessage": {
+                    "degreesLatitude": 10.4912,
+                    "degreesLongitude": -66.8534,
+                    "name": "Chacao",
+                    "address": "Av. Francisco de Miranda, Caracas",
+                    "accuracyInMeters": 15
+                }
+            },
+            "source": "android"
+        },
+        "date_time": "2024-10-05T15:52:00.000Z"
+    }
+    norm_gps = N8nWebhookPayloadExtractor.extract_universal(sample_gps)
+    assert norm_gps.phone == "04161234567", f"Error en phone: {norm_gps.phone}"
+    assert norm_gps.is_movilnet_subscriber is True
+    assert norm_gps.intent == "LOCALIZADOR_OFICINAS_TELCO"
+    assert norm_gps.latitude == 10.4912
+    assert norm_gps.longitude == -66.8534
+    assert norm_gps.location_name == "Chacao"
+
+    res_gps = N8nWebhookPayloadExtractor.execute_in_movilnet_core(norm_gps)
+    assert res_gps["status"] == "success"
+    assert res_gps["tokens_cost_usd"] == 0.0
+    assert "Agencia Movilnet más cercana" in res_gps["reply_text"]
+    assert "El Recreo" in res_gps["reply_text"] or "Chacao" in res_gps["reply_text"]
+
+    # Caso 5: Meta Cloud API con Pin GPS (Prospecto 0414 Movistar -> Portabilidad)
+    sample_meta_gps = {
+        "object": "whatsapp_business_account",
+        "entry": [{
+            "changes": [{
+                "value": {
+                    "contacts": [{"profile": {"name": "Luis Gomez"}}],
+                    "messages": [{
+                        "from": "584149998877",
+                        "id": "wamid.HBgL...",
+                        "type": "location",
+                        "location": {
+                            "latitude": 10.2469,
+                            "longitude": -67.5958,
+                            "name": "Maracay Centro",
+                            "address": "Av. Bolivar, Maracay"
+                        }
+                    }]
+                }
+            }]
+        }]
+    }
+    norm_meta = N8nWebhookPayloadExtractor.extract_universal(sample_meta_gps)
+    assert norm_meta.phone == "04149998877"
+    assert norm_meta.is_movilnet_subscriber is False
+    assert norm_meta.carrier_prefix == "0414"
+    assert norm_meta.authorized_pipeline == "NO_USUARIOS_MOVILNET"
+    assert norm_meta.intent == "LOCALIZADOR_OFICINAS_TELCO"
+    assert norm_meta.latitude == 10.2469
+
+    res_meta = N8nWebhookPayloadExtractor.execute_in_movilnet_core(norm_meta)
+    assert res_meta["status"] == "success"
+    assert "Portabilidad" in res_meta["reply_text"]
+    assert "Las Delicias" in res_meta["reply_text"] or "Maracay" in res_meta["reply_text"]
 
     print("✅ [AUTO-VERIFICACIÓN FORMAL]: Todos los invariantes matemáticos y de dominio pasaron al 100%.")
     return True
