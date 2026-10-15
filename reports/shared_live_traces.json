@@ -1,5 +1,1632 @@
 [
   {
+    "trace_id": "TRACE-EXEC-PWA-1792066743725",
+    "execution_id": "PWA-1792066743725",
+    "workflow_id": "sNMbtiEiTkuQ9OCY",
+    "started_at": "2026-10-15T12:19:03.846408+00:00",
+    "stopped_at": "2026-10-15T12:19:03.846408+00:00",
+    "total_duration_sec": 0.05,
+    "status": "SUCCESS",
+    "bot_number": "+58 424 153 3712",
+    "user_phone": "04142650088",
+    "user_push_name": "Móvil QR (04142650088)",
+    "carrier": "MOVISTAR",
+    "carrier_label": "Movistar Venezuela",
+    "is_competitor": true,
+    "user_message": "📲 [Acceso Directo QR Móvil - iPhone iOS]: Conectado a la PWA Omnicanal Movilnet (movilnet-core.onrender.com)",
+    "bot_reply": "✅ Sesión móvil QR iniciada para 04142650088 y sincronizada en vivo con el Monitor de Conversaciones (:8010) y pasarela WhatsApp 00584241533712.",
+    "intent_detected": "EXTERNAL_MOBILE_QR",
+    "pipeline_route": "FAST_PATH_TELCO_ODA",
+    "steps": [
+      {
+        "step_index": 1,
+        "node_name": "QR Mobile Global Gateway (Render Cloud)",
+        "phase_category": "1. Ingesta Perimetral Móvil",
+        "status": "success",
+        "execution_time_ms": 1.5,
+        "description": "Recibió mensaje desde dispositivo móvil externo (04142650088) vía QR Cloud",
+        "input_summary": {
+          "source": "QR_EXTERNAL_MOBILE",
+          "phone": "04142650088"
+        },
+        "output_summary": {
+          "user_message": "📲 [Acceso Directo QR Móvil - iPhone iOS]: Conectado a la PWA Omnicanal Movilnet (movilnet-core.onrender.com)"
+        }
+      },
+      {
+        "step_index": 2,
+        "node_name": "🧠 Movilnet Cognitive Agent L5 (Core N→1)",
+        "phase_category": "4. Procesamiento Core",
+        "status": "success",
+        "execution_time_ms": 50.0,
+        "description": "Procesó solicitud desde celular externo y sincronizó con Dashboard Local (:8010)",
+        "input_summary": {},
+        "output_summary": {
+          "route": "FAST_PATH_TELCO_ODA",
+          "reply_ready": true
+        }
+      },
+      {
+        "step_index": 3,
+        "node_name": "HTTP Request (Omni-Channel Delivery ACK)",
+        "phase_category": "6. Despacho Final al Celular",
+        "status": "success",
+        "execution_time_ms": 45.0,
+        "description": "Entregó respuesta en pantalla del celular externo 04142650088",
+        "input_summary": {},
+        "output_summary": {
+          "number": "04142650088",
+          "delivery_status": "DELIVERY_ACK"
+        }
+      }
+    ],
+    "process_timers": {
+      "t1_user_sent_ts": "2026-10-15T12:19:03.696408+00:00",
+      "t2_n8n_in_ts": "2026-10-15T12:19:03.846408+00:00",
+      "t3_core_resolved_ts": "2026-10-15T12:19:03.863408+00:00",
+      "t4_n8n_out_ts": "2026-10-15T12:19:03.846423+00:00",
+      "t5_evolution_queued_ts": "2026-10-15T12:19:03.866423+00:00",
+      "t6_meta_server_ack_ts": "2026-10-15T12:19:04.046423+00:00",
+      "t7_phone_delivered_ts": null,
+      "t8_user_read_ts": null,
+      "delta_inbound_sec": 0.15,
+      "delta_processing_sec": 0.0,
+      "delta_outbound_queue_sec": 4.64,
+      "delta_delivery_sec": null,
+      "delta_e2e_total_sec": null,
+      "delivery_state": "EN_COLA_WHATSAPP",
+      "delivery_badge": "⏳ En cola WhatsApp (4.64s) (Esperando entrega al móvil)",
+      "queue_wait_sec": 4.64
+    }
+  },
+  {
+    "trace_id": "TRACE-EXEC-14149",
+    "execution_id": "14149",
+    "workflow_id": "sNMbtiEiTkuQ9OCY",
+    "started_at": "2026-10-15T12:05:03.097Z",
+    "stopped_at": "2026-10-15T12:05:10.837Z",
+    "total_duration_sec": 7.74,
+    "status": "SUCCESS",
+    "bot_number": "+58 424 153 3712",
+    "user_phone": "04142554590",
+    "user_push_name": "Ids",
+    "carrier": "MOVISTAR",
+    "carrier_label": "Movistar Venezuela",
+    "is_competitor": true,
+    "user_message": "Probando probando buenos días que desayuno me reocmiendas",
+    "bot_reply": "¡Buenos días! Te recibo fuerte y claro. ☕🫓\nPara arrancar el día con energía bien venezolana, nada le gana a unas *empanaditas de carne mechada o cazón* con su respectivo guasacaca y café con leche, o una *arepa bien tostada rellena de perico con queso llanero*. \nSi estás pensando en salir a desayunar por ahí, dime en qué zona o ciudad estás para sugerirte buenos lugares cercanos. \nY para que nunca te falte señal ni datos mientras disfrutas de tu día, recuerda que puedes traerte tu número a *Movilnet 4GMAX* con *eSIM gratis* y *10GB de bienvenida*. ¡Buen provecho! 📲✨",
+    "intent_detected": "CONVERSACION_LIBRE",
+    "pipeline_route": "AI_AGENT_GEMINI",
+    "steps": [
+      {
+        "step_index": 1,
+        "node_name": "Webhook",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 774.0,
+        "description": "Ejecución del nodo Webhook en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 2,
+        "node_name": "If",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 774.0,
+        "description": "Ejecución del nodo If en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 3,
+        "node_name": "Edit Fields",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 774.0,
+        "description": "Ejecución del nodo Edit Fields en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 4,
+        "node_name": "Edge Carrier Firewall (0416/0426)",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 774.0,
+        "description": "Ejecución del nodo Edge Carrier Firewall (0416/0426) en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 5,
+        "node_name": "Switch",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 774.0,
+        "description": "Ejecución del nodo Switch en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 6,
+        "node_name": "Captura Texto",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 774.0,
+        "description": "Ejecución del nodo Captura Texto en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 7,
+        "node_name": "Chat",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 774.0,
+        "description": "Ejecución del nodo Chat en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 8,
+        "node_name": "If1",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 774.0,
+        "description": "Ejecución del nodo If1 en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 9,
+        "node_name": "Router - Consultas determinísticas",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 774.0,
+        "description": "Ejecución del nodo Router - Consultas determinísticas en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 10,
+        "node_name": "Postgres Chat Memory",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 774.0,
+        "description": "Ejecución del nodo Postgres Chat Memory en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 11,
+        "node_name": "Google Gemini Chat Model",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 774.0,
+        "description": "Ejecución del nodo Google Gemini Chat Model en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 12,
+        "node_name": "AI Agent",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 774.0,
+        "description": "Ejecución del nodo AI Agent en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 13,
+        "node_name": "Rescate Fallback AI Agent",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 774.0,
+        "description": "Ejecución del nodo Rescate Fallback AI Agent en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 14,
+        "node_name": "Merge - Respuestas 7",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 774.0,
+        "description": "Ejecución del nodo Merge - Respuestas 7 en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 15,
+        "node_name": "Merge - Respuestas 5",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 774.0,
+        "description": "Ejecución del nodo Merge - Respuestas 5 en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 16,
+        "node_name": "Code",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 774.0,
+        "description": "Ejecución del nodo Code en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 17,
+        "node_name": "HTTP Request",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 774.0,
+        "description": "Ejecución del nodo HTTP Request en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "DELIVERY_ACK"
+        }
+      }
+    ],
+    "process_timers": {
+      "t1_user_sent_ts": "2026-10-15T12:05:02+00:00",
+      "t2_n8n_in_ts": "2026-10-15T12:05:03.097000+00:00",
+      "t3_core_resolved_ts": "2026-10-15T12:05:09.676000+00:00",
+      "t4_n8n_out_ts": "2026-10-15T12:05:10.837000+00:00",
+      "t5_evolution_queued_ts": "2026-10-15T12:05:10.857000+00:00",
+      "t6_meta_server_ack_ts": "2026-10-15T12:05:11.037000+00:00",
+      "t7_phone_delivered_ts": "2026-10-15T12:05:11.387000+00:00",
+      "t8_user_read_ts": "2026-10-15T12:05:12.587000+00:00",
+      "delta_inbound_sec": 1.097,
+      "delta_processing_sec": 7.74,
+      "delta_outbound_queue_sec": 0.2,
+      "delta_delivery_sec": 0.35,
+      "delta_e2e_total_sec": 9.387,
+      "delivery_state": "DELIVERY_ACK",
+      "delivery_badge": "✓✓ Entregado (E2E: 9.387s | n8n: 7.74s | Red: 1.65s)",
+      "queue_wait_sec": 0.0
+    }
+  },
+  {
+    "trace_id": "TRACE-EXEC-PWA-1792064679502",
+    "execution_id": "PWA-1792064679502",
+    "workflow_id": "sNMbtiEiTkuQ9OCY",
+    "started_at": "2026-10-15T11:44:39.599659+00:00",
+    "stopped_at": "2026-10-15T11:44:39.599659+00:00",
+    "total_duration_sec": 0.05,
+    "status": "SUCCESS",
+    "bot_number": "+58 424 153 3712",
+    "user_phone": "04142650088",
+    "user_push_name": "Móvil QR (04142650088)",
+    "carrier": "MOVISTAR",
+    "carrier_label": "Movistar Venezuela",
+    "is_competitor": true,
+    "user_message": "📲 [Acceso Directo QR Móvil - iPhone iOS]: Conectado a la PWA Omnicanal Movilnet (movilnet-core.onrender.com)",
+    "bot_reply": "✅ Sesión móvil QR iniciada para 04142650088 y sincronizada en vivo con el Monitor de Conversaciones (:8010) y pasarela WhatsApp 00584241533712.",
+    "intent_detected": "EXTERNAL_MOBILE_QR",
+    "pipeline_route": "FAST_PATH_TELCO_ODA",
+    "steps": [
+      {
+        "step_index": 1,
+        "node_name": "QR Mobile Global Gateway (Render Cloud)",
+        "phase_category": "1. Ingesta Perimetral Móvil",
+        "status": "success",
+        "execution_time_ms": 1.5,
+        "description": "Recibió mensaje desde dispositivo móvil externo (04142650088) vía QR Cloud",
+        "input_summary": {
+          "source": "QR_EXTERNAL_MOBILE",
+          "phone": "04142650088"
+        },
+        "output_summary": {
+          "user_message": "📲 [Acceso Directo QR Móvil - iPhone iOS]: Conectado a la PWA Omnicanal Movilnet (movilnet-core.onrender.com)"
+        }
+      },
+      {
+        "step_index": 2,
+        "node_name": "🧠 Movilnet Cognitive Agent L5 (Core N→1)",
+        "phase_category": "4. Procesamiento Core",
+        "status": "success",
+        "execution_time_ms": 50.0,
+        "description": "Procesó solicitud desde celular externo y sincronizó con Dashboard Local (:8010)",
+        "input_summary": {},
+        "output_summary": {
+          "route": "FAST_PATH_TELCO_ODA",
+          "reply_ready": true
+        }
+      },
+      {
+        "step_index": 3,
+        "node_name": "HTTP Request (Omni-Channel Delivery ACK)",
+        "phase_category": "6. Despacho Final al Celular",
+        "status": "success",
+        "execution_time_ms": 45.0,
+        "description": "Entregó respuesta en pantalla del celular externo 04142650088",
+        "input_summary": {},
+        "output_summary": {
+          "number": "04142650088",
+          "delivery_status": "DELIVERY_ACK"
+        }
+      }
+    ],
+    "process_timers": {
+      "t1_user_sent_ts": "2026-10-15T11:44:39.449659+00:00",
+      "t2_n8n_in_ts": "2026-10-15T11:44:39.599659+00:00",
+      "t3_core_resolved_ts": "2026-10-15T11:44:39.616659+00:00",
+      "t4_n8n_out_ts": "2026-10-15T11:44:39.599675+00:00",
+      "t5_evolution_queued_ts": "2026-10-15T11:44:39.619675+00:00",
+      "t6_meta_server_ack_ts": "2026-10-15T11:44:39.799675+00:00",
+      "t7_phone_delivered_ts": null,
+      "t8_user_read_ts": null,
+      "delta_inbound_sec": 0.15,
+      "delta_processing_sec": 0.0,
+      "delta_outbound_queue_sec": 25.79,
+      "delta_delivery_sec": null,
+      "delta_e2e_total_sec": null,
+      "delivery_state": "EN_COLA_WHATSAPP",
+      "delivery_badge": "⏳ En cola WhatsApp (25.79s) (Esperando entrega al móvil)",
+      "queue_wait_sec": 25.79
+    }
+  },
+  {
+    "trace_id": "TRACE-EXEC-PWA-1792062275967",
+    "execution_id": "PWA-1792062275967",
+    "workflow_id": "sNMbtiEiTkuQ9OCY",
+    "started_at": "2026-10-15T11:04:36.056711+00:00",
+    "stopped_at": "2026-10-15T11:04:36.056711+00:00",
+    "total_duration_sec": 0.05,
+    "status": "SUCCESS",
+    "bot_number": "+58 424 153 3712",
+    "user_phone": "04142650088",
+    "user_push_name": "Móvil QR (04142650088)",
+    "carrier": "MOVISTAR",
+    "carrier_label": "Movistar Venezuela",
+    "is_competitor": true,
+    "user_message": "📲 [Acceso Directo QR Móvil - iPhone iOS]: Conectado a la PWA Omnicanal Movilnet (movilnet-core.onrender.com)",
+    "bot_reply": "✅ Sesión móvil QR iniciada para 04142650088 y sincronizada en vivo con el Monitor de Conversaciones (:8010) y pasarela WhatsApp 00584241533712.",
+    "intent_detected": "EXTERNAL_MOBILE_QR",
+    "pipeline_route": "FAST_PATH_TELCO_ODA",
+    "steps": [
+      {
+        "step_index": 1,
+        "node_name": "QR Mobile Global Gateway (Render Cloud)",
+        "phase_category": "1. Ingesta Perimetral Móvil",
+        "status": "success",
+        "execution_time_ms": 1.5,
+        "description": "Recibió mensaje desde dispositivo móvil externo (04142650088) vía QR Cloud",
+        "input_summary": {
+          "source": "QR_EXTERNAL_MOBILE",
+          "phone": "04142650088"
+        },
+        "output_summary": {
+          "user_message": "📲 [Acceso Directo QR Móvil - iPhone iOS]: Conectado a la PWA Omnicanal Movilnet (movilnet-core.onrender.com)"
+        }
+      },
+      {
+        "step_index": 2,
+        "node_name": "🧠 Movilnet Cognitive Agent L5 (Core N→1)",
+        "phase_category": "4. Procesamiento Core",
+        "status": "success",
+        "execution_time_ms": 50.0,
+        "description": "Procesó solicitud desde celular externo y sincronizó con Dashboard Local (:8010)",
+        "input_summary": {},
+        "output_summary": {
+          "route": "FAST_PATH_TELCO_ODA",
+          "reply_ready": true
+        }
+      },
+      {
+        "step_index": 3,
+        "node_name": "HTTP Request (Omni-Channel Delivery ACK)",
+        "phase_category": "6. Despacho Final al Celular",
+        "status": "success",
+        "execution_time_ms": 45.0,
+        "description": "Entregó respuesta en pantalla del celular externo 04142650088",
+        "input_summary": {},
+        "output_summary": {
+          "number": "04142650088",
+          "delivery_status": "DELIVERY_ACK"
+        }
+      }
+    ],
+    "process_timers": {
+      "t1_user_sent_ts": "2026-10-15T11:04:35.906711+00:00",
+      "t2_n8n_in_ts": "2026-10-15T11:04:36.056711+00:00",
+      "t3_core_resolved_ts": "2026-10-15T11:04:36.073711+00:00",
+      "t4_n8n_out_ts": "2026-10-15T11:04:36.056723+00:00",
+      "t5_evolution_queued_ts": "2026-10-15T11:04:36.076723+00:00",
+      "t6_meta_server_ack_ts": "2026-10-15T11:04:36.256723+00:00",
+      "t7_phone_delivered_ts": null,
+      "t8_user_read_ts": null,
+      "delta_inbound_sec": 0.15,
+      "delta_processing_sec": 0.0,
+      "delta_outbound_queue_sec": 29.53,
+      "delta_delivery_sec": null,
+      "delta_e2e_total_sec": null,
+      "delivery_state": "EN_COLA_WHATSAPP",
+      "delivery_badge": "⏳ En cola WhatsApp (29.53s) (Esperando entrega al móvil)",
+      "queue_wait_sec": 29.53
+    }
+  },
+  {
+    "trace_id": "TRACE-EXEC-PWA-1792061989103",
+    "execution_id": "PWA-1792061989103",
+    "workflow_id": "sNMbtiEiTkuQ9OCY",
+    "started_at": "2026-10-15T10:59:49.192081+00:00",
+    "stopped_at": "2026-10-15T10:59:49.192081+00:00",
+    "total_duration_sec": 0.05,
+    "status": "SUCCESS",
+    "bot_number": "+58 424 153 3712",
+    "user_phone": "04142650088",
+    "user_push_name": "Móvil QR (04142650088)",
+    "carrier": "MOVISTAR",
+    "carrier_label": "Movistar Venezuela",
+    "is_competitor": true,
+    "user_message": "📲 [Acceso Directo QR Móvil - iPhone iOS]: Conectado a la PWA Omnicanal Movilnet (movilnet-core.onrender.com)",
+    "bot_reply": "✅ Sesión móvil QR iniciada para 04142650088 y sincronizada en vivo con el Monitor de Conversaciones (:8010) y pasarela WhatsApp 00584241533712.",
+    "intent_detected": "EXTERNAL_MOBILE_QR",
+    "pipeline_route": "FAST_PATH_TELCO_ODA",
+    "steps": [
+      {
+        "step_index": 1,
+        "node_name": "QR Mobile Global Gateway (Render Cloud)",
+        "phase_category": "1. Ingesta Perimetral Móvil",
+        "status": "success",
+        "execution_time_ms": 1.5,
+        "description": "Recibió mensaje desde dispositivo móvil externo (04142650088) vía QR Cloud",
+        "input_summary": {
+          "source": "QR_EXTERNAL_MOBILE",
+          "phone": "04142650088"
+        },
+        "output_summary": {
+          "user_message": "📲 [Acceso Directo QR Móvil - iPhone iOS]: Conectado a la PWA Omnicanal Movilnet (movilnet-core.onrender.com)"
+        }
+      },
+      {
+        "step_index": 2,
+        "node_name": "🧠 Movilnet Cognitive Agent L5 (Core N→1)",
+        "phase_category": "4. Procesamiento Core",
+        "status": "success",
+        "execution_time_ms": 50.0,
+        "description": "Procesó solicitud desde celular externo y sincronizó con Dashboard Local (:8010)",
+        "input_summary": {},
+        "output_summary": {
+          "route": "FAST_PATH_TELCO_ODA",
+          "reply_ready": true
+        }
+      },
+      {
+        "step_index": 3,
+        "node_name": "HTTP Request (Omni-Channel Delivery ACK)",
+        "phase_category": "6. Despacho Final al Celular",
+        "status": "success",
+        "execution_time_ms": 45.0,
+        "description": "Entregó respuesta en pantalla del celular externo 04142650088",
+        "input_summary": {},
+        "output_summary": {
+          "number": "04142650088",
+          "delivery_status": "DELIVERY_ACK"
+        }
+      }
+    ],
+    "process_timers": {
+      "t1_user_sent_ts": "2026-10-15T10:59:49.042081+00:00",
+      "t2_n8n_in_ts": "2026-10-15T10:59:49.192081+00:00",
+      "t3_core_resolved_ts": "2026-10-15T10:59:49.209081+00:00",
+      "t4_n8n_out_ts": "2026-10-15T10:59:49.192088+00:00",
+      "t5_evolution_queued_ts": "2026-10-15T10:59:49.212088+00:00",
+      "t6_meta_server_ack_ts": "2026-10-15T10:59:49.392088+00:00",
+      "t7_phone_delivered_ts": null,
+      "t8_user_read_ts": null,
+      "delta_inbound_sec": 0.15,
+      "delta_processing_sec": 0.0,
+      "delta_outbound_queue_sec": 16.19,
+      "delta_delivery_sec": null,
+      "delta_e2e_total_sec": null,
+      "delivery_state": "EN_COLA_WHATSAPP",
+      "delivery_badge": "⏳ En cola WhatsApp (16.19s) (Esperando entrega al móvil)",
+      "queue_wait_sec": 16.19
+    }
+  },
+  {
+    "trace_id": "TRACE-SIM-1792060172561",
+    "execution_id": "SIM-1792060172",
+    "workflow_id": "sNMbtiEiTkuQ9OCY",
+    "started_at": "2026-10-15T10:29:32.561498+00:00",
+    "stopped_at": "2026-10-15T10:29:32.561594+00:00",
+    "total_duration_sec": 0.22,
+    "status": "SUCCESS",
+    "bot_number": "+58 424 153 3712",
+    "user_phone": "04160000001",
+    "user_push_name": "Abonado 04160000001",
+    "carrier": "MOVILNET",
+    "carrier_label": "Movilnet 4GMAX",
+    "is_competitor": false,
+    "user_message": "saldo",
+    "bot_reply": "Estimado abonado 04160000001: Su saldo disponible es Bs. 1550.00. Datos 4GMAX: 86.4 GB disponibles. Plan: Plan Básico Conecta 5GB.",
+    "intent_detected": "MARKETING_PORTABILITY",
+    "pipeline_route": "AI_AGENT_COGNITIVO",
+    "steps": [
+      {
+        "step_index": 1,
+        "node_name": "Webhook (messages.upsert)",
+        "phase_category": "1. Ingesta Perimetral",
+        "status": "success",
+        "execution_time_ms": 1.2,
+        "description": "Recibió mensaje desde PWA Móvil en la línea bot +58 424 153 3712",
+        "input_summary": {
+          "device": "PWA Móvil",
+          "raw_phone": "04160000001"
+        },
+        "output_summary": {
+          "normalized_phone": "04160000001",
+          "message": "saldo"
+        }
+      },
+      {
+        "step_index": 2,
+        "node_name": "If (fromMe == false)",
+        "phase_category": "1. Ingesta Perimetral",
+        "status": "success",
+        "execution_time_ms": 0.8,
+        "description": "Comprobó fromMe == false (mensaje genuino de usuario)",
+        "input_summary": {},
+        "output_summary": {
+          "condition_passed": true
+        }
+      },
+      {
+        "step_index": 3,
+        "node_name": "Edit Fields & Switch",
+        "phase_category": "2. Normalización de Medio",
+        "status": "success",
+        "execution_time_ms": 3.5,
+        "description": "Identificó operadora Movilnet 4GMAX y pushName 'Abonado 04160000001'",
+        "input_summary": {},
+        "output_summary": {
+          "carrier": "MOVILNET",
+          "is_competitor": false
+        }
+      },
+      {
+        "step_index": 4,
+        "node_name": "Router - Consultas determinísticas",
+        "phase_category": "3. Enrutamiento de Intención",
+        "status": "success",
+        "execution_time_ms": 4.1,
+        "description": "Intención Telco detectada en abonado Movilnet (Base 4M). Cable directo a MacBook Pro :8010",
+        "input_summary": {},
+        "output_summary": {
+          "branch_activated": "Rama 8: Movilnet Core - Fast-Path ODA",
+          "pipeline_route": "FAST_PATH_TELCO_ODA"
+        }
+      },
+      {
+        "step_index": 5,
+        "node_name": "🧠 Movilnet Cognitive Agent L5 (Core N→1)",
+        "phase_category": "4. Procesamiento Core",
+        "status": "success",
+        "execution_time_ms": 35.0,
+        "description": "Resolución contextual con herramientas OCS / Geo POIs / Planes en tiempo real",
+        "input_summary": {},
+        "output_summary": {
+          "agent_status": "OK",
+          "model": "gemini-flash-hybrid"
+        }
+      },
+      {
+        "step_index": 6,
+        "node_name": "Merge 5 & Code (Sanitización Markdown)",
+        "phase_category": "5. Sanitización de Salida",
+        "status": "success",
+        "execution_time_ms": 2.1,
+        "description": "Sanitizó caracteres especiales para WhatsApp y unificó salida hacia el canal de mensajería",
+        "input_summary": {},
+        "output_summary": {
+          "ready_for_whatsapp": true
+        }
+      },
+      {
+        "step_index": 7,
+        "node_name": "HTTP Request (Evolution API /sendText)",
+        "phase_category": "6. Despacho Final al Celular",
+        "status": "success",
+        "execution_time_ms": 180.0,
+        "description": "Entregó mensaje en pantalla de 04160000001 (PWA Móvil)",
+        "input_summary": {},
+        "output_summary": {
+          "number": "04160000001",
+          "delivery_status": "DELIVERY_ACK"
+        }
+      }
+    ],
+    "process_timers": {
+      "t1_user_sent_ts": "2026-10-15T10:29:32.411498+00:00",
+      "t2_n8n_in_ts": "2026-10-15T10:29:32.561498+00:00",
+      "t3_core_resolved_ts": "2026-10-15T10:29:32.578498+00:00",
+      "t4_n8n_out_ts": "2026-10-15T10:29:32.561594+00:00",
+      "t5_evolution_queued_ts": "2026-10-15T10:29:32.581594+00:00",
+      "t6_meta_server_ack_ts": "2026-10-15T10:29:32.761594+00:00",
+      "t7_phone_delivered_ts": "2026-10-15T10:29:33.111594+00:00",
+      "t8_user_read_ts": "2026-10-15T10:29:34.311594+00:00",
+      "delta_inbound_sec": 0.15,
+      "delta_processing_sec": 0.0,
+      "delta_outbound_queue_sec": 0.2,
+      "delta_delivery_sec": 0.35,
+      "delta_e2e_total_sec": 0.7,
+      "delivery_state": "DELIVERY_ACK",
+      "delivery_badge": "✓✓ Entregado (E2E: 0.7s | n8n: 0.0s | Red: 0.7s)",
+      "queue_wait_sec": 0.0
+    }
+  },
+  {
+    "trace_id": "TRACE-EXEC-14148",
+    "execution_id": "14148",
+    "workflow_id": "sNMbtiEiTkuQ9OCY",
+    "started_at": "2026-10-15T09:51:21.345Z",
+    "stopped_at": "2026-10-15T09:51:28.702Z",
+    "total_duration_sec": 7.36,
+    "status": "SUCCESS",
+    "bot_number": "+58 424 153 3712",
+    "user_phone": "04142554590",
+    "user_push_name": "Ids",
+    "carrier": "MOVISTAR",
+    "carrier_label": "Movistar Venezuela",
+    "is_competitor": true,
+    "user_message": "Muy buenos días",
+    "bot_reply": "¡Muy buenos días! ☀️ Espero que hayas amanecido muy bien y que tengas una jornada excelente y productiva hoy jueves.\n¿En qué te puedo asesorar o colaborar para arrancar el día? \nRecuerda que si estás listo para disfrutar de la mejor cobertura y rendimiento en tus datos, te apoyamos para traerte tu número a *Movilnet 4GMAX* de forma 100% digital con *eSIM gratis* y bono de *10GB de bienvenida*. \n¡Quedo a tu completa orden! 📲✨",
+    "intent_detected": "CONVERSACION_LIBRE",
+    "pipeline_route": "AI_AGENT_GEMINI",
+    "steps": [
+      {
+        "step_index": 1,
+        "node_name": "Webhook",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 736.0,
+        "description": "Ejecución del nodo Webhook en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 2,
+        "node_name": "If",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 736.0,
+        "description": "Ejecución del nodo If en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 3,
+        "node_name": "Edit Fields",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 736.0,
+        "description": "Ejecución del nodo Edit Fields en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 4,
+        "node_name": "Edge Carrier Firewall (0416/0426)",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 736.0,
+        "description": "Ejecución del nodo Edge Carrier Firewall (0416/0426) en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 5,
+        "node_name": "Switch",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 736.0,
+        "description": "Ejecución del nodo Switch en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 6,
+        "node_name": "Captura Texto",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 736.0,
+        "description": "Ejecución del nodo Captura Texto en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 7,
+        "node_name": "Chat",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 736.0,
+        "description": "Ejecución del nodo Chat en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 8,
+        "node_name": "If1",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 736.0,
+        "description": "Ejecución del nodo If1 en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 9,
+        "node_name": "Router - Consultas determinísticas",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 736.0,
+        "description": "Ejecución del nodo Router - Consultas determinísticas en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 10,
+        "node_name": "Postgres Chat Memory",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 736.0,
+        "description": "Ejecución del nodo Postgres Chat Memory en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 11,
+        "node_name": "Google Gemini Chat Model",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 736.0,
+        "description": "Ejecución del nodo Google Gemini Chat Model en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 12,
+        "node_name": "AI Agent",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 736.0,
+        "description": "Ejecución del nodo AI Agent en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 13,
+        "node_name": "Rescate Fallback AI Agent",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 736.0,
+        "description": "Ejecución del nodo Rescate Fallback AI Agent en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 14,
+        "node_name": "Merge - Respuestas 7",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 736.0,
+        "description": "Ejecución del nodo Merge - Respuestas 7 en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 15,
+        "node_name": "Merge - Respuestas 5",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 736.0,
+        "description": "Ejecución del nodo Merge - Respuestas 5 en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 16,
+        "node_name": "Code",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 736.0,
+        "description": "Ejecución del nodo Code en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 17,
+        "node_name": "HTTP Request",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 736.0,
+        "description": "Ejecución del nodo HTTP Request en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "DELIVERY_ACK"
+        }
+      }
+    ],
+    "process_timers": {
+      "t1_user_sent_ts": "2026-10-15T09:51:20+00:00",
+      "t2_n8n_in_ts": "2026-10-15T09:51:21.345000+00:00",
+      "t3_core_resolved_ts": "2026-10-15T09:51:27.598000+00:00",
+      "t4_n8n_out_ts": "2026-10-15T09:51:28.702000+00:00",
+      "t5_evolution_queued_ts": "2026-10-15T09:51:28.722000+00:00",
+      "t6_meta_server_ack_ts": "2026-10-15T09:51:28.902000+00:00",
+      "t7_phone_delivered_ts": "2026-10-15T09:51:29.252000+00:00",
+      "t8_user_read_ts": "2026-10-15T09:51:30.452000+00:00",
+      "delta_inbound_sec": 1.345,
+      "delta_processing_sec": 7.357,
+      "delta_outbound_queue_sec": 0.2,
+      "delta_delivery_sec": 0.35,
+      "delta_e2e_total_sec": 9.252,
+      "delivery_state": "DELIVERY_ACK",
+      "delivery_badge": "✓✓ Entregado (E2E: 9.252s | n8n: 7.357s | Red: 1.89s)",
+      "queue_wait_sec": 0.0
+    }
+  },
+  {
+    "trace_id": "TRACE-EXEC-14147",
+    "execution_id": "14147",
+    "workflow_id": "sNMbtiEiTkuQ9OCY",
+    "started_at": "2026-10-15T05:28:07.960Z",
+    "stopped_at": "2026-10-15T05:28:12.854Z",
+    "total_duration_sec": 4.89,
+    "status": "SUCCESS",
+    "bot_number": "+58 424 153 3712",
+    "user_phone": "04142554590",
+    "user_push_name": "Ids",
+    "carrier": "MOVISTAR",
+    "carrier_label": "Movistar Venezuela",
+    "is_competitor": true,
+    "user_message": "Gracias",
+    "bot_reply": "¡A tu completa orden siempre! 😊 \nQue descanses y tengas un excelente día jueves. Si necesitas cualquier otra cosa o te animas a traerte tu línea a *Movilnet 4GMAX* para disfrutar de tu *eSIM gratis* y *10GB de bienvenida*, por aquí estaré a un mensaje de distancia. \n¡Feliz noche! 🌙📶",
+    "intent_detected": "CONVERSACION_LIBRE",
+    "pipeline_route": "AI_AGENT_GEMINI",
+    "steps": [
+      {
+        "step_index": 1,
+        "node_name": "Webhook",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 488.99999999999994,
+        "description": "Ejecución del nodo Webhook en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 2,
+        "node_name": "If",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 488.99999999999994,
+        "description": "Ejecución del nodo If en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 3,
+        "node_name": "Edit Fields",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 488.99999999999994,
+        "description": "Ejecución del nodo Edit Fields en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 4,
+        "node_name": "Edge Carrier Firewall (0416/0426)",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 488.99999999999994,
+        "description": "Ejecución del nodo Edge Carrier Firewall (0416/0426) en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 5,
+        "node_name": "Switch",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 488.99999999999994,
+        "description": "Ejecución del nodo Switch en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 6,
+        "node_name": "Captura Texto",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 488.99999999999994,
+        "description": "Ejecución del nodo Captura Texto en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 7,
+        "node_name": "Chat",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 488.99999999999994,
+        "description": "Ejecución del nodo Chat en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 8,
+        "node_name": "If1",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 488.99999999999994,
+        "description": "Ejecución del nodo If1 en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 9,
+        "node_name": "Router - Consultas determinísticas",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 488.99999999999994,
+        "description": "Ejecución del nodo Router - Consultas determinísticas en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 10,
+        "node_name": "Postgres Chat Memory",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 488.99999999999994,
+        "description": "Ejecución del nodo Postgres Chat Memory en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 11,
+        "node_name": "Google Gemini Chat Model",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 488.99999999999994,
+        "description": "Ejecución del nodo Google Gemini Chat Model en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 12,
+        "node_name": "AI Agent",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 488.99999999999994,
+        "description": "Ejecución del nodo AI Agent en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 13,
+        "node_name": "Rescate Fallback AI Agent",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 488.99999999999994,
+        "description": "Ejecución del nodo Rescate Fallback AI Agent en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 14,
+        "node_name": "Merge - Respuestas 7",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 488.99999999999994,
+        "description": "Ejecución del nodo Merge - Respuestas 7 en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 15,
+        "node_name": "Merge - Respuestas 5",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 488.99999999999994,
+        "description": "Ejecución del nodo Merge - Respuestas 5 en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 16,
+        "node_name": "Code",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 488.99999999999994,
+        "description": "Ejecución del nodo Code en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 17,
+        "node_name": "HTTP Request",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 488.99999999999994,
+        "description": "Ejecución del nodo HTTP Request en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "DELIVERY_ACK"
+        }
+      }
+    ],
+    "process_timers": {
+      "t1_user_sent_ts": "2026-10-15T05:28:07+00:00",
+      "t2_n8n_in_ts": "2026-10-15T05:28:07.960000+00:00",
+      "t3_core_resolved_ts": "2026-10-15T05:28:12.120000+00:00",
+      "t4_n8n_out_ts": "2026-10-15T05:28:12.854000+00:00",
+      "t5_evolution_queued_ts": "2026-10-15T05:28:12.874000+00:00",
+      "t6_meta_server_ack_ts": "2026-10-15T05:28:13.054000+00:00",
+      "t7_phone_delivered_ts": "2026-10-15T05:28:13.404000+00:00",
+      "t8_user_read_ts": "2026-10-15T05:28:14.604000+00:00",
+      "delta_inbound_sec": 0.96,
+      "delta_processing_sec": 4.894,
+      "delta_outbound_queue_sec": 0.2,
+      "delta_delivery_sec": 0.35,
+      "delta_e2e_total_sec": 6.404,
+      "delivery_state": "DELIVERY_ACK",
+      "delivery_badge": "✓✓ Entregado (E2E: 6.404s | n8n: 4.894s | Red: 1.51s)",
+      "queue_wait_sec": 0.0
+    }
+  },
+  {
+    "trace_id": "TRACE-EXEC-14146",
+    "execution_id": "14146",
+    "workflow_id": "sNMbtiEiTkuQ9OCY",
+    "started_at": "2026-10-15T05:27:46.038Z",
+    "stopped_at": "2026-10-15T05:27:50.950Z",
+    "total_duration_sec": 4.91,
+    "status": "SUCCESS",
+    "bot_number": "+58 424 153 3712",
+    "user_phone": "04142554590",
+    "user_push_name": "Ids",
+    "carrier": "MOVISTAR",
+    "carrier_label": "Movistar Venezuela",
+    "is_competitor": true,
+    "user_message": "Que hora es",
+    "bot_reply": "Son la *1:27 a. m.* de la madrugada de este jueves 15 de octubre. 🌙⏰\n¡Hora de trasnocho! Si tienes alguna otra consulta o necesitas orientación para tu salida de hoy, aquí sigo activo para apoyarte. \nY recuerda que a cualquier hora puedes solicitar tu cambio a *Movilnet 4GMAX* conservando tu mismo número, con *eSIM gratis* y bono de *10GB de bienvenida*. ¡A tu orden! 📲✨",
+    "intent_detected": "CONVERSACION_LIBRE",
+    "pipeline_route": "AI_AGENT_GEMINI",
+    "steps": [
+      {
+        "step_index": 1,
+        "node_name": "Webhook",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 491.0,
+        "description": "Ejecución del nodo Webhook en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 2,
+        "node_name": "If",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 491.0,
+        "description": "Ejecución del nodo If en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 3,
+        "node_name": "Edit Fields",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 491.0,
+        "description": "Ejecución del nodo Edit Fields en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 4,
+        "node_name": "Edge Carrier Firewall (0416/0426)",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 491.0,
+        "description": "Ejecución del nodo Edge Carrier Firewall (0416/0426) en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 5,
+        "node_name": "Switch",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 491.0,
+        "description": "Ejecución del nodo Switch en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 6,
+        "node_name": "Captura Texto",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 491.0,
+        "description": "Ejecución del nodo Captura Texto en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 7,
+        "node_name": "Chat",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 491.0,
+        "description": "Ejecución del nodo Chat en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 8,
+        "node_name": "If1",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 491.0,
+        "description": "Ejecución del nodo If1 en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 9,
+        "node_name": "Router - Consultas determinísticas",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 491.0,
+        "description": "Ejecución del nodo Router - Consultas determinísticas en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 10,
+        "node_name": "Postgres Chat Memory",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 491.0,
+        "description": "Ejecución del nodo Postgres Chat Memory en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 11,
+        "node_name": "Google Gemini Chat Model",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 491.0,
+        "description": "Ejecución del nodo Google Gemini Chat Model en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 12,
+        "node_name": "AI Agent",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 491.0,
+        "description": "Ejecución del nodo AI Agent en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 13,
+        "node_name": "Rescate Fallback AI Agent",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 491.0,
+        "description": "Ejecución del nodo Rescate Fallback AI Agent en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 14,
+        "node_name": "Merge - Respuestas 7",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 491.0,
+        "description": "Ejecución del nodo Merge - Respuestas 7 en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 15,
+        "node_name": "Merge - Respuestas 5",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 491.0,
+        "description": "Ejecución del nodo Merge - Respuestas 5 en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 16,
+        "node_name": "Code",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 491.0,
+        "description": "Ejecución del nodo Code en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 17,
+        "node_name": "HTTP Request",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 491.0,
+        "description": "Ejecución del nodo HTTP Request en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "DELIVERY_ACK"
+        }
+      }
+    ],
+    "process_timers": {
+      "t1_user_sent_ts": "2026-10-15T05:27:45+00:00",
+      "t2_n8n_in_ts": "2026-10-15T05:27:46.038000+00:00",
+      "t3_core_resolved_ts": "2026-10-15T05:27:50.213000+00:00",
+      "t4_n8n_out_ts": "2026-10-15T05:27:50.950000+00:00",
+      "t5_evolution_queued_ts": "2026-10-15T05:27:50.970000+00:00",
+      "t6_meta_server_ack_ts": "2026-10-15T05:27:51.150000+00:00",
+      "t7_phone_delivered_ts": "2026-10-15T05:27:51.500000+00:00",
+      "t8_user_read_ts": "2026-10-15T05:27:52.700000+00:00",
+      "delta_inbound_sec": 1.038,
+      "delta_processing_sec": 4.912,
+      "delta_outbound_queue_sec": 0.2,
+      "delta_delivery_sec": 0.35,
+      "delta_e2e_total_sec": 6.5,
+      "delivery_state": "DELIVERY_ACK",
+      "delivery_badge": "✓✓ Entregado (E2E: 6.5s | n8n: 4.912s | Red: 1.59s)",
+      "queue_wait_sec": 0.0
+    }
+  },
+  {
     "trace_id": "TRACE-EXEC-14145",
     "execution_id": "14145",
     "workflow_id": "sNMbtiEiTkuQ9OCY",

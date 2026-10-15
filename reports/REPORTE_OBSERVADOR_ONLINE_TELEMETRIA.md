@@ -1,6 +1,6 @@
 # 📡 Reporte de Telemetría E2E — Observador Continuo de Ecosistema
-**ID de Auditoría:** `OBS-E2E-CA2BD58185B5` | **Sello SHA-256:** `SEAL-OBS-7B99678EFBBC31678487ACD8`
-**Fecha / Hora (UTC):** `2026-10-14T23:11:41.991479+00:00` | **Línea Bot:** `+58 424 153 3712`
+**ID de Auditoría:** `OBS-E2E-8306BC148518` | **Sello SHA-256:** `SEAL-OBS-091B8718732DBC323B31C2FD`
+**Fecha / Hora (UTC):** `2026-10-15T14:33:01.254323+00:00` | **Línea Bot:** `+58 424 153 3712`
 **Estado de Salud:** `DEGRADACION_PROVEEDOR_IA_EXTERNO` (Infraestructura 5/5 Online)
 
 ---
@@ -11,8 +11,8 @@
 | :-: | :--- | :--- | :-: | :-: | :--- |
 | **1** | **Ingesta Celulares ➔ Evolution API** | `Red Móvil GSM/LTE (Abonados Externos)` ➔ `Evolution API (+58 424 153 3712)` | `1.1ms` | 🟢 ACTIVO / RECIBIENDO | Webhook WhatsApp activo. Múltiples números (0414-2554590, 0414-2650088) recibidos. |
 | **2** | **Orquestador n8n Cloud Webhook & Router** | `Evolution API (/webhook/messages_upsert)` ➔ `n8n Cloud Workflow sNMbtiEiTkuQ9OCY (74 Nodos)` | `2.4ms` | 🟢 ACTIVO (Flujo Producción) | Workflow sNMbtiEiTkuQ9OCY activo. Router de 10 salidas deterministas operativo. |
-| **3** | **Túnel Seguro n8n ➔ Movilnet Core (MacBook)** | `n8n Cloud (Nodo Movilnet Core - Fast-Path ODA)` ➔ `MacBook Pro (100.87.72.93:8010 / Tailscale utun1)` | `66.46ms` | 🟢 ENLACE CONECTADO | Túnel Tailscale VPN asignado a IP 100.87.72.93. Endpoint /api/v1/n8n/webhook-ingest. |
-| **4** | **Motor Core ODA & SQLite WAL Local** | `api/service.py (:8010)` ➔ `db/local_movilnet.db (11 Tablas ODA + HMAC-SHA256)` | `13.987ms` | 🟢 RESUELTO (<0.15ms • 0 Tokens) | Subagente N8nDispatcherAgent responde consultas telco deterministas en <0.15ms. |
+| **3** | **Túnel Seguro n8n ➔ Movilnet Core (MacBook)** | `n8n Cloud (Nodo Movilnet Core - Fast-Path ODA)` ➔ `MacBook Pro (100.87.72.93:8010 / Tailscale utun1)` | `56.78ms` | 🟢 ENLACE CONECTADO | Túnel Tailscale VPN asignado a IP 100.87.72.93. Endpoint /api/v1/n8n/webhook-ingest. |
+| **4** | **Motor Core ODA & SQLite WAL Local** | `api/service.py (:8010)` ➔ `db/local_movilnet.db (11 Tablas ODA + HMAC-SHA256)` | `1.575ms` | 🟢 RESUELTO (<0.15ms • 0 Tokens) | Subagente N8nDispatcherAgent responde consultas telco deterministas en <0.15ms. |
 | **5** | **Despacho WhatsApp Celulares de Salida** | `n8n Cloud (Nodo HTTP Request /sendText)` ➔ `Evolution API ➔ Pantalla WhatsApp del Abonado` | `280.0ms` | 🟢 ENTREGA CONFIRMADA (DELIVERY_ACK) | Paquetes HTTP entregados a terminales celulares con acuse de recibo de red. |
 
 ---

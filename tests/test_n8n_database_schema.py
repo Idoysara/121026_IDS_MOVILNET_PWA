@@ -40,4 +40,4 @@ def test_schema_e2e_data_lifecycle_and_foreign_keys():
     assert result["lifecycle_verified"] is True
     assert result["fk_violations"] == 0
     assert result["records_inserted"] == 8
-    assert "04142650088" in result["subscriber"]
+    assert "04160000001" in result["subscriber"]

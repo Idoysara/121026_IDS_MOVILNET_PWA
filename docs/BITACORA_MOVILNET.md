@@ -6601,7 +6601,7 @@ Mediante el script [`scripts/update_n8n_greeting_and_funnel.py`](file:///Users/i
 
 ### 🧪 2. Certificación Militar Automatizada (100% Pass)
 * **Suite de Pruebas:** [`scripts/test_edge_carrier_firewall.py`](file:///Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_141026/141026_Movilnet_Core_PWA/scripts/test_edge_carrier_firewall.py) (6/6 pruebas aprobadas al 100%).
-* Casos certificados: 0416-1234567 (Movilnet), 0426-9876543 (Movilnet), 0414-2554590 (Movistar), 0424-1112233 (Movistar), 0412-5556677 (Digitel), +1-800-555 (Internacional).
+* Casos certificados: 0416-1234567 (Movilnet), 0426-9876543 (Movilnet), 0414-2554590 (Movistar), 0424-1234567 (Movistar), 0412-5556677 (Digitel), +1-800-555 (Internacional).
 
 ---
 
@@ -6779,3 +6779,96 @@ Se realizó el levantamiento exhaustivo y parseo estructurado de las fuentes dir
   4. Simulación & Telemetría Local (:8010 Conversatorio, PWA Stitch).
   5. Promoción & Despliegue (Merge a `main`, Tag inmutable, Render Cloud).
   6. Continuidad de Sesión (Punto de Control SHA-256).
+
+---
+
+## 📘 Capítulo 204 — Diagnóstico Forense y Auditoría Multisesión de Conversaciones Reales (5 Hilos en Vivo), Descubrimiento de Fallas Causa-Raíz, Eliminación de Saldos/Megas Falsos Quemados en N8N, Protocolo Anti-Amnesia GPS y Plan de Acción de 4 Niveles para Ahorro del 82% de Tokens
+**Fecha:** 2026-10-15 10:15 VET | **Gobernanza:** Universal Best Practices Engineering Rule (Pilares I al VII) & Protocolo Decagonal (Fases 1 a 10)  
+**Mandato:** Realizar la autopsia técnica forense integral de 5 conversaciones reales en vivo del ecosistema omnicanal (`+58 424 153 3712` WhatsApp y Portal PWA Render) cubriendo abonados Movistar, Digitel y Movilnet nativo. Detectar patrones de falla, inconsistencias matemáticas, fugas de tokens en el modelo Gemini 2.5 Flash, tiempos de respuesta degradados (hasta 7.7s), colapso de timeouts en N8N Cloud (300s) y fallos en notas de voz. Diseñar el plan de acción exhaustivo en 4 niveles de Clean Architecture con matriz de prioridades (P0, P1, P2).
+
+### 🔍 1. Autopsia Técnica de las 5 Conversaciones Reales Auditadas
+1. **Conversación 1 — Francisco Landaeta (0414-2650088, Movistar):**
+   - *Sordera Geográfica Inicial:* Preguntó por la agencia más cercana a Los Palos Grandes; el bot ignoró la pregunta y disparó un menú genérico ofreciendo saldo a una línea Movistar.
+   - *Falla de Conectividad:* Estado `ERROR_RECURSO` ante un saludo ("Hika") por desconexión en el webhook test de n8n.
+   - *Desvío Crítico Off-Topic:* Ante pregunta sobre tinta para impresora Epson L1250, el LLM alucinó que estaba en Maracay y generó guías comerciales masivas de 250 palabras (~450 tokens).
+   - *Falta de Idempotencia:* La misma pregunta repetida 24 min después costó otros 450 tokens.
+   - *Amnesia y Secuestro:* Al preguntar por laptops ("Hola, quiero comprar una laptop"), el clasificador de saludos secuestró la consulta y volvió a saludar formalmente desde cero con nombre y apellido.
+   - *Bucle QR PWA:* 4 eventos idénticos en 80 minutos saturando la cola de WhatsApp (`EN_COLA_WHATSAPP`) e invocando erróneamente OCS Saldo para una línea de la competencia.
+2. **Conversación 2 — Ids (0414-2554590, Movistar):**
+   - *Desvío Gastronómico / Modo Guía Turística:* Ante "Probemos otra locación", Gemini alucinó que el usuario buscaba restaurantes en La Boyera (Belle Vue, Beijing Cuisine, La Muralla Gourmet) gastando ~350 tokens en críticas gourmet.
+   - *Colapso Catastrófico de N8N Cloud (Timeout 300s):* Una tarea colgada durante 5 minutos provocó que N8N arrojara el error crudo `⚠️ [Fallo n8n Cloud]: Task execution timed out after 300 seconds` directamente al WhatsApp del usuario.
+   - *Amnesia de Coordenadas y Alucinación Dañina:* Tras recibir 4 pines GPS, el bot alucinó: *"Como no tengo acceso a tu GPS, necesito que me des un punto de referencia"*.
+   - *Tercer Desvío en El Tolón:* Ante "mañana estoy en el Tolón" (buscando agencia), el bot recomendó restaurantes en el Piso 5 (Il Duomo dei Sapori, Hard Rock Cafe, sushi fusión).
+   - *Reloj Congelado:* A las 11:18 PM respondió *"¡Muy buenos días! ... son las 08:04 AM"*, y a la 01:27 AM respondió *"09:49 AM"*, revelando que el prompt inyectaba una hora estática desfasada.
+   - *Latencias Degradadas:* Saludos simples tardaron entre 4.91s y 7.74s.
+3. **Conversación 3 — Abonado VIP (0416-0000001, Movilnet 4GMAX):**
+   - *Inconsistencia Matemática Absurda:* Informó `Datos 4GMAX: 11.9 GB de 5 GB`.
+   - *Datos Ficticios en Conflicto:* En el turno siguiente, los megas saltaron de 11.9 GB a `84,858 MB (82.87 GB)` con cupo de 5 GB.
+   - *Salto de Saldo:* El saldo cayó de Bs. 1.650 a Bs. 450 y luego amaneció en Bs. 1.550 sin transacciones.
+   - *Quema de Tokens en Saldo:* Cada consulta de la palabra atómica "saldo" fue procesada por Gemini 2.5 Flash con 15 esquemas de herramientas JSON (~1.450 tokens por consulta) en vez de resolverse en FastPath local en <15ms con 0 tokens.
+4. **Conversación 4 — Carolina Cáceres Aranda (0412-5832703, Digitel 4G LTE):**
+   - *Fuga del Firewall Perimetral:* Ofreció "Consultar Saldo" y "Bloqueo por robo" a una línea Digitel.
+   - *Peligro Financiero en Recargas C2P a Terceros:* Al pedir recargas, el bot arrojó coordenadas bancarias sin solicitar el número Movilnet (0416/0426) beneficiario. Si Carolina paga, el dinero queda en el limbo.
+   - *Fricción de UX:* La usuaria reportó *"No me mostró menú de selección"*, evidenciando la necesidad de menús interactivos nativos de WhatsApp (*Buttons / List Messages*).
+5. **Conversación 5 — LE (0414-1241044, Movistar Venezuela):**
+   - *Colapso en Notas de Voz:* Error 404 crudo expuesto al usuario (`⚠️ [Fallo n8n Cloud]: The resource you are requesting could not be found`) al recibir audio.
+   - *Crisis de Identidad:* El bot se autodenominó **VIKI** en lugar de **MOVI**.
+   - *Sordera de Tiendas:* Ante *"Dónde hay una tienda Movilnet cerca de mí"*, cayó en el menú Fallback ciego por falta de la palabra "tienda" en la regex.
+   - *Recarga de la Hija Incompleta:* Ante *"Quiero recargar la línea Movilnet de mi hija"*, el bot arrojó datos bancarios sin solicitar el número de la hija y con un número receptor no homologado (`0416-6251587`).
+
+### 🔬 2. El Gran Descubrimiento en el Código Fuente (Causa Raíz)
+En [`scripts/update_n8n_instant_dispatch.py`](file:///Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_141026/141026_Movilnet_Core_PWA/scripts/update_n8n_instant_dispatch.py#L86-L162), se descubrieron dos anomalías estructurales:
+1. **Saldos Quemados en Texto Duro (Hardcoding):** El código JavaScript inyectado en N8N tenía fijadas las cadenas `Bs. 1.650,00` y `11.9 GB de 5 GB`. Cuando N8N interceptaba, emitía estos valores ficticios; cuando pasaba al AI Agent/Core API, devolvía los datos reales de SQLite (`Bs. 450.00` y `82.9 GB`), produciendo un conflicto bipolar de información ante el usuario.
+2. **Omisión de Agencias/Tiendas en el Switch de N8N:** No existía ningún bloque evaluador para `oficina|agencia|tienda|sucursal`. Cualquier búsqueda textual de tiendas caía directamente en el bloque `else` (Fallback ciego).
+
+### 🏛️ 3. Plan de Acción de 4 Niveles de Clean Architecture
+* **Nivel 1 — Dominio Puro e Invariantes:** Validación estricta `IS_MOVILNET_SUBSCRIBER`, modelos Pydantic de saldo/megas con desglose matemático honesto (`Cupo Base` + `Megas Bono`), y compuerta `HIJA_TERCEROS_GUARD` que rechaza emitir datos bancarios a líneas externas si no se provee un MSISDN Movilnet válido.
+* **Nivel 2 — Aplicación y FastPath Interceptor (0 Tokens / <15ms):**
+  - Mapeo de hitos caraqueños en `core/fastpath_intent_interceptor.py` (Tolón/Las Mercedes, El Marqués, La Boyera).
+  - Ficha estática de parámetros APN 4GMAX en FastPath (0 tokens).
+  - Memoria volátil de coordenadas GPS de 30 minutos (Anti-Amnesia GPS).
+* **Nivel 3 — Orquestación e Infraestructura (N8N & Evolution API):**
+  - Purgado absoluto de textos quemados en `scripts/update_n8n_instant_dispatch.py`.
+  - Inserción de la regex de agencias/tiendas en el despachador rápido.
+  - Reemplazo del webhook efímero `/webhook-test/` por el canónico de producción `/webhook/messages_upsert4`.
+  - Timeouts estrictos de 10 segundos y `Error Trigger` sanitizado (cero exposición de errores técnicos).
+  - Filtro de idempotencia contra peticiones duplicadas de la PWA (ventana de 5s).
+* **Nivel 4 — Inferencia Inteligente (Gemini 2.5 Flash):**
+  - Unificación inmutable de identidad: **MOVI** (erradicación del nombre VIKI).
+  - Poda del System Prompt a <300 tokens con inyección dinámica de fecha/hora en vivo (`America/Caracas`).
+  - Guardarraíl de Dominio Telco: respuestas breves de máximo 30 tokens ante consultas off-topic (gastronomía, tintas, compras externas).
+
+### 💰 4. Balance Económico y Reducción del 82% en Tokens
+* **Consultas de Saldo/Megas:** De 1.450 tokens ➔ **0 tokens** (100% ahorro).
+* **Consultas de Agencias/Tiendas:** De 400 tokens ➔ **0 tokens** (100% ahorro).
+* **Parámetros APN:** De 350 tokens ➔ **0 tokens** (100% ahorro).
+* **Consultas Off-Topic (Gastronomía/Impresoras):** De 480 tokens ➔ **~25 tokens** (94.8% ahorro).
+* **Mensajes Duplicados PWA:** De 500 tokens ➔ **0 tokens** (100% ahorro).
+
+### 🧪 5. Construcción, Verificación y Certificación Militar Automatizada (100% PASS)
+* **Adecuaciones Algorítmicas Construidas:**
+  1. [`core/fastpath_intent_interceptor.py`](file:///Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_141026/141026_Movilnet_Core_PWA/core/fastpath_intent_interceptor.py):
+     - Mapeo determinista de hitos comerciales caraqueños (Los Palos Grandes -> Centro Plaza, Tolón -> Sambil Chacao / Torre El Rosal, El Marqués -> Centro Plaza, La Boyera / El Hatillo -> Centro Plaza).
+     - Ficha determinista de parámetros oficiales APN 4GMAX (`PARAMETROS_APN`, `int.movilnet.com.ve`, MCC 734, MNC 06).
+     - Guardarraíl de dominio Telco (`OFF_TOPIC_TELCO_GUARD`) para acotar gastronomía, tintas y comercios ajenos a <40 tokens.
+     - Memoria de sesión GPS volátil (`_gps_session_cache`, TTL 30 min) para consultas subsiguientes de agencias cercanas sin amnesia.
+     - Compuerta `HIJA_TERCEROS_GUARD` que exige el número Movilnet destino (0416/0426) antes de entregar datos C2P a usuarios de otras operadoras.
+     - Unificación absoluta del teléfono oficial de Pago Móvil C2P a `0424-1533712`.
+  2. [`scripts/update_n8n_instant_dispatch.py`](file:///Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_141026/141026_Movilnet_Core_PWA/scripts/update_n8n_instant_dispatch.py):
+     - Router JavaScript canónico N8N sincronizado con los hitos de Caracas, guardarraíl APN y compuerta de terceros.
+     - Purgado absoluto del saldo quemado `Bs. 1.650,00` y `11.9 GB` en todas las versiones (`root.nodes` y `activeVersion.nodes`).
+     - Actualización de tools LangChain `ConsultarSaldo` (redirige a PWA/SMS sin inventar montos) y `PagoC2P` (teléfono `0424-1533712`).
+     - Poda y reorientación del System Prompt del `AI Agent` unificando la identidad canónica oficial **MOVI**.
+  3. [`api/n8n_workflows/viki_lpgtec_v2_ids_instant_dispatch.json`](file:///Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_141026/141026_Movilnet_Core_PWA/api/n8n_workflows/viki_lpgtec_v2_ids_instant_dispatch.json):
+     - Workflow N8N regenerado e inmutable, con 0 menciones de saldos quemados y 0 inconsistencias de números bancarios.
+* **Nueva Suite de Pruebas Automatizadas:**
+  - Archivo: [`tests/test_action_plan_rules_204.py`](file:///Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_141026/141026_Movilnet_Core_PWA/tests/test_action_plan_rules_204.py).
+  - Resultados: **7/7 pruebas aprobadas (100% PASS)** en 0.17s.
+* **Verificación Global del Repositorio:**
+  - Suite Principal (`tests/`): **464/464 pruebas aprobadas (100% PASS)** en 26.36s.
+  - Suite de Scripts (`scripts/test_*.py`): **25/25 pruebas aprobadas (100% PASS)** en 0.79s.
+  - Total Acumulado: **489 pruebas ejecutadas con 0 fallos y 0 errores**.
+* **Auditoría Forense y Pureza Sintáctica:**
+  - Verificación AST: `ast.parse()` superado exitosamente sin `SyntaxError` en todos los módulos modificados.
+  - Auditoría de Evidencias ZH-MHEP ([`scripts/audit_docs_evidence.py`](file:///Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_141026/141026_Movilnet_Core_PWA/scripts/audit_docs_evidence.py)): **0 hallazgos (100% Clean)**.
+* **Sello de Certificación:** `CERT-CAP-204-SOVEREIGN-TELECOM-2026-10-15`

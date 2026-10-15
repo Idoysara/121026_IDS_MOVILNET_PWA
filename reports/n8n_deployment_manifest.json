@@ -1,5 +1,5 @@
 {
-  "deployment_timestamp": "2026-10-15T04:30:50Z",
+  "deployment_timestamp": "2026-10-15T14:33:02Z",
   "overall_status": "SUCCESS",
   "target_environment": "DOCKER_N8N_5678",
   "total_workflows_scanned": 10,
@@ -79,8 +79,8 @@
       "active": true,
       "nodes_count": 81,
       "connections_count": 74,
-      "sha256_hash": "2a4726a66e0ac51d38df6146e0084c751f7c6b1590e676c41adc349a0fe722f4",
-      "assigned_id": "WFL-LOCAL-2A4726A6",
+      "sha256_hash": "d7bf6cc6be5506e3da7b7b24e00b8e52b5d5d8d9024eac771de9a0fce758fcc0",
+      "assigned_id": "WFL-LOCAL-D7BF6CC6",
       "webhook_path": "messages_upsert4"
     },
     {

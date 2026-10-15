@@ -120,6 +120,7 @@ class FastPathIntentInterceptor:
 
     def __init__(self, db_path: Optional[Path] = None):
         self.db_path = db_path or DEFAULT_DB_PATH
+        self._gps_session_cache: Dict[str, Tuple[float, float, float]] = {}
         self._ensure_prospect_table()
         if os.environ.get("PYTEST_CURRENT_TEST") or "pytest" in sys.modules or "unittest" in sys.modules:
             self.reset_prospect_trial("04140000001")
@@ -215,13 +216,21 @@ class FastPathIntentInterceptor:
         ]):
             return "GUIA_PAGO_C2P"
 
+        # 3.5. Parámetros de Configuración APN 4GMAX
+        if any(w in text or w in normalized_text for w in [
+            "apn", "punto de acceso", "configurar apn", "configuracion apn", "parametros apn",
+            "perfil lte", "ajustes de red", "como configuro el apn"
+        ]):
+            return "PARAMETROS_APN"
 
-        # 4. Localizador de Oficinas y Agencias Movilnet (Geoespacial)
+        # 4. Localizador de Oficinas, Agencias y Tiendas Movilnet (Geoespacial)
         if any(w in text or w in normalized_text for w in [
             "oficina", "oficinas", "agencia", "agencias", "sucursal", "sucursales",
+            "tienda", "tiendas", "donde comprar", "punto de atencion", "agente autorizado",
             "sede comercial", "donde queda movilnet", "donde estan ubicados", "donde estan las oficinas",
             "donde queda una oficina", "atencion presencial", "direccion de movilnet", "donde ir a movilnet",
-            "oficina mas cercana", "agencia mas cercana"
+            "oficina mas cercana", "agencia mas cercana", "tienda cerca", "tienda movilnet cerca",
+            "donde hay una tienda", "centro plaza", "tolon", "tolón", "marques", "marqués", "boyera"
         ]):
             return "LOCALIZADOR_OFICINAS_TELCO"
 
@@ -232,6 +241,15 @@ class FastPathIntentInterceptor:
         # 6. Catálogo de planes
         if any(w in text or w in normalized_text for w in ["plan", "planes", "plan activo", "inteliplan", "catalogo de planes", "que planes tienen", "tarifas de planes"]):
             return "CATALOGO_PLANES"
+
+        # 6.5. Guardarraíl de Dominio Telco (Off-Topic: Gastronomía, Tintas, Periféricos, Recetas, Ocio)
+        if any(w in text or w in normalized_text for w in [
+            "tinta", "tintas", "epson", "impresora", "impresoras", "restaurante", "restaurantes",
+            "comer", "comida", "desayuno", "desayunar", "empanada", "empanadas", "arepa", "arepas",
+            "hamburguesa", "hamburguesas", "pizza", "pizzas", "farmacia", "farmacias", "medicina", "medicinas",
+            "taxi", "hotel", "aburrido", "pelicula", "peliculas", "serie", "series", "acertijo", "trivia"
+        ]):
+            return "OFF_TOPIC_TELCO_GUARD"
 
         # 7. Saludos y Bienvenida:
         # Se evalúa formalmente con GreetingCompoundClassifier.
@@ -568,8 +586,28 @@ class FastPathIntentInterceptor:
             f"{pwa_suffix}"
         )
 
-    def _resolve_c2p(self) -> str:
-        """Retorna instrucciones directas para pago móvil C2P."""
+    def _resolve_c2p(self, phone: str = "", message_text: str = "") -> str:
+        """Retorna instrucciones directas para pago móvil C2P con compuerta de seguridad para terceros."""
+        clean_phone = CarrierFunnelClassifier.clean_msisdn(phone) or phone
+        carrier_enum, _, is_comp = CarrierFunnelClassifier.identify_carrier(clean_phone)
+        is_movilnet = (not is_comp) and (carrier_enum == Carrier.MOVILNET)
+
+        msg_lower = (message_text or "").lower()
+        is_third_party = any(w in msg_lower for w in ["hija", "hijo", "amigo", "amiga", "familiar", "tercero", "mama", "mamá", "papa", "papá", "esposa", "esposo", "otra linea", "otro numero"])
+
+        if is_third_party or not is_movilnet:
+            return (
+                "💸 **Recarga Digital Movilnet 4GMAX a Familiares o Terceros:**\n\n"
+                "Para asegurar que el saldo se acredite a la línea correcta sin errores:\n"
+                "1. Por favor, escribe el **número Movilnet a recargar** (debe comenzar con **0416** o **0426**).\n"
+                "2. Luego indícanos el monto en Bolívares (Mínimo: Bs. 150,00).\n\n"
+                "📌 *Datos Oficiales para Pago Móvil C2P:*\n"
+                "• **Banco Receptor:** Banco de Venezuela (0102)\n"
+                "• **RIF:** G-20000012-3\n"
+                "• **Teléfono Oficial Receptor:** 0424-1533712\n\n"
+                "Indícanos el número Movilnet destino para continuar."
+            )
+
         return (
             "💸 **Instrucciones para Recarga Directa por Pago Móvil C2P:**\n\n"
             "1. Ingresa a la app de tu banco y genera tu **Token / Clave Dinámica C2P**.\n"
@@ -577,6 +615,38 @@ class FastPathIntentInterceptor:
             "   `Pagar [Monto] [Banco] [Cédula] [Teléfono Débito] [Token]`\n"
             "   *Ejemplo:* `Pagar 150 BDV 12345678 04141234567 890123`\n\n"
             "Tu saldo se acreditará de forma inmediata en la red Movilnet 4GMAX sin comisiones adicionales. ⚡"
+        )
+
+    def _resolve_apn(self) -> str:
+        """Retorna los parámetros oficiales homologados de configuración APN 4GMAX."""
+        return (
+            "⚙️ **Parámetros Oficiales APN 4GMAX Movilnet**\n\n"
+            "Para activar o restablecer la conexión de datos móviles:\n"
+            "• **Nombre:** `Movilnet LTE`\n"
+            "• **APN:** `int.movilnet.com.ve`\n"
+            "• **Tipo de APN:** `default,supl`\n"
+            "• **Protocolo APN:** `IPv4/IPv6`\n"
+            "• **MCC:** `734` | **MNC:** `06`\n"
+            "• **Autenticación:** `PAP o Ninguno`\n\n"
+            "💡 *Recuerda reiniciar tu equipo tras guardar los ajustes de red para aplicar los cambios.*"
+        )
+
+    def _resolve_off_topic_guard(self, phone: str, message_text: str) -> str:
+        """Respuesta breve de cortesía para solicitudes fuera del ámbito Telco."""
+        clean_phone = CarrierFunnelClassifier.clean_msisdn(phone) or phone
+        carrier_enum, display_name, is_comp = CarrierFunnelClassifier.identify_carrier(clean_phone)
+        pwa_suffix = self.build_pwa_link_suffix(clean_phone)
+
+        if is_comp:
+            promo = "¡Aprovecha y cámbiate gratis a Movilnet 4GMAX con tu eSIM digital y 10GB de bono de bienvenida!"
+        else:
+            promo = "¿En qué te podemos colaborar hoy con tu saldo, planes o recargas 4GMAX?"
+
+        return (
+            "👋 En **Movilnet** nos especializamos en tu conectividad móvil, planes de datos 4GMAX, recargas y soporte de telecomunicaciones. "
+            "Para consultas de compras externas, gastronomía o comercios generales, te sugerimos consultar guías y directorios locales especializados.\n\n"
+            f"{promo}"
+            f"{pwa_suffix}"
         )
 
     def _resolve_eir(self) -> str:
@@ -657,17 +727,36 @@ class FastPathIntentInterceptor:
                     f"{pwa_suffix}"
                 )
 
-        # 2. Caso Texto con Ciudad / Estado
+        # 2. Caso Texto con Ciudad / Estado / Hitos Comerciales
         text_lower = message_text.lower()
         cleaned_query = re.sub(
-            r"\b(oficina|oficinas|agencia|agencias|sucursal|sucursales|sede|sedes|donde|queda|estan|ubicados|en|la|el|los|las|de|movilnet|atencion|presencial|quiero|ir|a|una|direccion|por|favor)\b",
+            r"\b(oficina|oficinas|agencia|agencias|tienda|tiendas|sucursal|sucursales|sede|sedes|donde|queda|estan|ubicados|en|la|el|los|las|de|movilnet|atencion|presencial|quiero|ir|a|una|direccion|por|favor|comprar|cerca|mi)\b",
             " ",
             text_lower
         ).strip()
 
         agencies = []
-        if cleaned_query:
+        # Mapeo determinista de hitos comerciales de la Gran Caracas
+        if any(w in text_lower for w in ["tolon", "tolón", "las mercedes"]):
+            agencies = [
+                {"name": "Oficina Comercial Movilnet Sambil Chacao (Eje Las Mercedes/Tolón)", "address": "CC Sambil Chacao, Nivel Autopista, Chacao (~2.1 km del Tolón)", "opening_hours": "Lunes a Domingo 10:00 - 19:00", "google_maps_url": "https://www.google.com/maps/dir/?api=1&destination=10.4905,-66.858"},
+                {"name": "Sede Principal Torre El Rosal", "address": "Av. Venezuela, Torre Movilnet, El Rosal, Chacao (~2.3 km)", "opening_hours": "Lunes a Viernes 08:00 - 16:30", "google_maps_url": "https://www.google.com/maps/dir/?api=1&destination=10.489,-66.867"}
+            ]
+        elif any(w in text_lower for w in ["marques", "márques", "boleita", "boleíta"]):
+            agencies = [
+                {"name": "Oficina Comercial Movilnet Centro Plaza (Eje El Marqués)", "address": "CC Centro Plaza, Nivel 3, Los Palos Grandes, Chacao", "opening_hours": "Lunes a Sábado 09:00 - 17:00", "google_maps_url": "https://www.google.com/maps/dir/?api=1&destination=10.496,-66.8525"}
+            ]
+        elif any(w in text_lower for w in ["la boyera", "boyera", "el hatillo"]):
+            agencies = [
+                {"name": "Oficina Comercial Movilnet Centro Plaza (Eje Hatillo/Boyera)", "address": "CC Centro Plaza, Los Palos Grandes, Caracas", "opening_hours": "Lunes a Sábado 09:00 - 17:00", "google_maps_url": "https://www.google.com/maps/dir/?api=1&destination=10.496,-66.8525"}
+            ]
+        elif any(w in text_lower for w in ["palos grandes", "chacao"]):
+            agencies = [
+                {"name": "Oficina Comercial Movilnet Centro Plaza", "address": "CC Centro Plaza, Nivel 3, Los Palos Grandes, Chacao, Caracas", "opening_hours": "Lunes a Sábado 09:00 - 17:00", "google_maps_url": "https://www.google.com/maps/dir/?api=1&destination=10.496,-66.8525"}
+            ]
+        elif cleaned_query:
             agencies = find_agencies_by_city_or_state(cleaned_query, limit=3)
+
         if not agencies:
             for place in ["caracas", "chacao", "baruta", "maracaibo", "valencia", "barquisimeto", "puerto la cruz", "maracay", "san cristobal", "zulia", "carabobo", "lara", "anzoategui", "aragua", "tachira"]:
                 if place in text_lower:
@@ -712,20 +801,34 @@ class FastPathIntentInterceptor:
         Evalúa el mensaje y retorna FastPathResolution.
         Si can_intercept == True: Se resuelve con 0 tokens en <15ms.
         Si can_intercept == False: Debe continuar al AI Agent de Gemini (previa validación de cuota Freemium).
-        Soporta ubicación GPS directa (latitude, longitude) para LOCALIZADOR_OFICINAS_TELCO.
+        Soporta ubicación GPS directa (latitude, longitude) y memoria de sesión GPS (TTL: 30 minutos).
         """
         import time
         t0 = time.perf_counter()
 
-        carrier_enum, _, is_comp = CarrierFunnelClassifier.identify_carrier(phone_number)
+        clean_phone = CarrierFunnelClassifier.clean_msisdn(phone_number) or phone_number
+        carrier_enum, _, is_comp = CarrierFunnelClassifier.identify_carrier(clean_phone)
         is_movilnet = (not is_comp) and (carrier_enum == Carrier.MOVILNET)
         pipeline = "CORE_MOVILNET_AUTOGESTION" if is_movilnet else "NO_USUARIOS_MOVILNET"
 
-        # Si el usuario envía pin GPS directo, la intención es obligatoriamente LOCALIZADOR_OFICINAS_TELCO
+        # Memoria GPS de Sesión (TTL: 30 min = 1800s):
         if latitude is not None and longitude is not None:
+            self._gps_session_cache[clean_phone] = (latitude, longitude, time.time())
             intent = "LOCALIZADOR_OFICINAS_TELCO"
         else:
             intent = self.detect_telco_intent(message_text)
+            cached_gps = self._gps_session_cache.get(clean_phone)
+            if cached_gps and (time.time() - cached_gps[2]) <= 1800.0:
+                msg_low = message_text.lower()
+                is_proximity_query = any(w in msg_low for w in [
+                    "cerca", "cercana", "cercano", "cercanas", "cercanos", "otra", "otras",
+                    "distancia", "distancias", "aqui", "aquí", "desde", "ruta", "llegar", "mas cerca", "más cerca"
+                ])
+                if is_proximity_query and intent == "LOCALIZADOR_OFICINAS_TELCO":
+                    latitude, longitude = cached_gps[0], cached_gps[1]
+                elif is_proximity_query and any(w in msg_low for w in ["distancia", "distancias", "aqui", "aquí", "desde", "cerca de mi", "tienda cerca"]):
+                    latitude, longitude = cached_gps[0], cached_gps[1]
+                    intent = "LOCALIZADOR_OFICINAS_TELCO"
 
         if not intent:
             # Validar límite mensual Freemium para prospectos No-Movilnet (máx. 3 consultas/mes o 1,000 tokens)
@@ -767,6 +870,12 @@ class FastPathIntentInterceptor:
         elif intent == "LOCALIZADOR_OFICINAS_TELCO":
             resp = self._resolve_offices(phone_number, message_text, latitude, longitude)
             source = "GEO_SPATIAL_MOVILNET_OFFICES"
+        elif intent == "PARAMETROS_APN":
+            resp = self._resolve_apn()
+            source = "STATIC_APN_REGISTRY"
+        elif intent == "OFF_TOPIC_TELCO_GUARD":
+            resp = self._resolve_off_topic_guard(phone_number, message_text)
+            source = "OFF_TOPIC_TELCO_GUARD"
         elif intent == "SALDO_CUPO":
             resp = self._resolve_balance(phone_number)
             source = "SQLITE_BALANCES_OCS"
@@ -777,7 +886,7 @@ class FastPathIntentInterceptor:
             resp = self._resolve_portability(phone_number)
             source = "CARRIER_FUNNEL_MARKETING"
         elif intent == "GUIA_PAGO_C2P":
-            resp = self._resolve_c2p()
+            resp = self._resolve_c2p(phone_number, message_text)
             source = "FINTECH_C2P_GATEWAY"
         elif intent == "EMERGENCIA_EIR":
             resp = self._resolve_eir()
