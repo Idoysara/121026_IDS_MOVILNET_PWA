@@ -1946,16 +1946,27 @@
           groupedThreads = mergeThreadsWithSeeds(groupedThreads, aggregated);
         }
 
+        const poller = localData.n8n_poller_telemetry || {};
+        const isPollerBlocked = poller.is_connected === false || (poller.consecutive_failures && poller.consecutive_failures >= 3);
         const statusElem = document.getElementById('headerLiveStatus');
         if (statusElem) {
           const totalMsgs = groupedThreads.reduce((acc, th) => acc + (th.messages ? th.messages.length : 0), 0);
-          statusElem.innerHTML = `
-            <span class="live-pulse-dot" style="background:#22c55e; box-shadow:0 0 8px #22c55e;"></span>
-            <span style="font-weight:700; color:#16a34a;">MODO ONLINE SUPERVISANDO EN VIVO (LOCAL :8010 ↔ n8n Cloud ↔ WhatsApp)</span>
-            <span style="opacity:0.5;">•</span>
-            <span>${groupedThreads.length} líneas / ${totalMsgs} mensajes</span>
-            <span class="badge-cert-header" style="padding:2px 8px; font-size:0.65rem; margin-left:6px;">🛡️ ENTREGAS WHATSAPP & QR: 100% MONITOREADAS</span>
-          `;
+          if (isPollerBlocked) {
+            statusElem.innerHTML = `
+              <span class="live-pulse-dot" style="background:#ef4444; box-shadow:0 0 8px #ef4444;"></span>
+              <span style="font-weight:700; color:#dc2626;">🚨 SINCRONIZADOR N8N BLOQUEADO / SIN RED (${poller.last_error || 'Fallo de conexión'})</span>
+              <span style="opacity:0.5;">•</span>
+              <span style="font-size:0.72rem; color:#dc2626; font-weight:700;">Inicie mediante scripts/reiniciar_todo_limpio.command</span>
+            `;
+          } else {
+            statusElem.innerHTML = `
+              <span class="live-pulse-dot" style="background:#22c55e; box-shadow:0 0 8px #22c55e;"></span>
+              <span style="font-weight:700; color:#16a34a;">MODO ONLINE SUPERVISANDO EN VIVO (LOCAL :8010 ↔ n8n Cloud ↔ WhatsApp)</span>
+              <span style="opacity:0.5;">•</span>
+              <span>${groupedThreads.length} líneas / ${totalMsgs} mensajes</span>
+              <span class="badge-cert-header" style="padding:2px 8px; font-size:0.65rem; margin-left:6px;">🛡️ ENTREGAS WHATSAPP & QR: 100% MONITOREADAS</span>
+            `;
+          }
         }
 
         const topThread = groupedThreads[0];

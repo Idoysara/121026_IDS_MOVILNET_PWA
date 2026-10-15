@@ -265,8 +265,22 @@ class ConversationTraceEngine:
         self._last_sync_time: float = 0.0
         self._lock: threading.RLock = threading.RLock()
         self.traces_cache: List[ConversationTrace] = []
+        self._n8n_poller_telemetry: Dict[str, Any] = {
+            "is_connected": True,
+            "last_sync_attempt_utc": None,
+            "last_successful_sync_utc": None,
+            "consecutive_failures": 0,
+            "last_error": None,
+            "total_synced_in_session": 0,
+            "network_status": "ONLINE"
+        }
         self._seed_known_traces()
         self._load_shared_traces()
+
+    def get_poller_telemetry(self) -> Dict[str, Any]:
+        """Devuelve la telemetría viva de conexión con el sincronizador n8n Cloud."""
+        with self._lock:
+            return dict(self._n8n_poller_telemetry)
 
     @staticmethod
     def _is_same_trace_record(d: Dict[str, Any], trace: ConversationTrace) -> bool:
@@ -2178,11 +2192,28 @@ class ConversationTraceEngine:
             self._processed_exec_ids = set()
 
         try:
+            with self._lock:
+                self._n8n_poller_telemetry["last_sync_attempt_utc"] = datetime.now(timezone.utc).isoformat()
+
             from mcp.n8n_tools import _make_request
             # Consultar ejecuciones recientes globales de n8n Cloud para cubrir todos los canales WhatsApp activos
             res = _make_request(f"executions?limit={max(35, limit * 2)}")
             if not res.get("success"):
+                err_msg = res.get("error") or res.get("details") or "Respuesta no exitosa de n8n Cloud"
+                with self._lock:
+                    self._n8n_poller_telemetry["consecutive_failures"] += 1
+                    self._n8n_poller_telemetry["last_error"] = str(err_msg)
+                    if self._n8n_poller_telemetry["consecutive_failures"] >= 3:
+                        self._n8n_poller_telemetry["is_connected"] = False
+                        self._n8n_poller_telemetry["network_status"] = "BLOCKED_OR_OFFLINE"
                 return 0
+
+            with self._lock:
+                self._n8n_poller_telemetry["consecutive_failures"] = 0
+                self._n8n_poller_telemetry["last_successful_sync_utc"] = datetime.now(timezone.utc).isoformat()
+                self._n8n_poller_telemetry["last_error"] = None
+                self._n8n_poller_telemetry["is_connected"] = True
+                self._n8n_poller_telemetry["network_status"] = "ONLINE"
 
             exec_list = res.get("data", {}).get("data", [])
             with self._lock:
@@ -2528,8 +2559,17 @@ class ConversationTraceEngine:
                 if len(self.traces_cache) > 1000:
                     self.traces_cache = self.traces_cache[:1000]
 
+            with self._lock:
+                self._n8n_poller_telemetry["total_synced_in_session"] += new_synced
+
             return new_synced
-        except Exception:
+        except Exception as e:
+            with self._lock:
+                self._n8n_poller_telemetry["consecutive_failures"] += 1
+                self._n8n_poller_telemetry["last_error"] = str(e)
+                if self._n8n_poller_telemetry["consecutive_failures"] >= 3:
+                    self._n8n_poller_telemetry["is_connected"] = False
+                    self._n8n_poller_telemetry["network_status"] = "BLOCKED_OR_OFFLINE"
             return 0
 
     def _sanitize_and_certify_trace(self, t: ConversationTrace) -> None:

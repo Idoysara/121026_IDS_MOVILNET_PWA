@@ -1443,17 +1443,35 @@ class MovilnetAPIService:
             status_code = 503
 
         uptime = round(time.time() - self.start_time, 2)
+        
+        # Telemetría activa de sincronización con n8n Cloud
+        poller_telemetry = {}
+        try:
+            from core.conversation_trace_engine import conversation_trace_engine
+            poller_telemetry = conversation_trace_engine.get_poller_telemetry()
+        except Exception:
+            pass
+
+        poller_connected = poller_telemetry.get("is_connected", True)
+        overall_status = "healthy" if (status_code == 200 and poller_connected) else "degraded"
+
         payload = {
-            "status": "healthy" if status_code == 200 else "degraded",
+            "status": overall_status,
             "service": SERVICE_NAME,
             "version": SERVICE_VERSION,
             "database": {
                 "status": db_status,
                 "engine": self.repo.db.engine_type
             },
+            "n8n_poller": poller_telemetry,
             "uptime_seconds": uptime,
             "timestamp": datetime.now(timezone.utc).isoformat()
         }
+        if not poller_connected:
+            payload["alert"] = (
+                f"🚨 ADVERTENCIA: Poller n8n Cloud inalcanzable tras {poller_telemetry.get('consecutive_failures')} intentos fallidos. "
+                "Causa probable: Ejecución en Sandbox aislado o sin acceso de red. Inicie mediante scripts/reiniciar_todo_limpio.command."
+            )
         return status_code, payload
 
     def handle_status(self) -> Tuple[int, Dict[str, Any]]:
@@ -2830,7 +2848,8 @@ class MovilnetAPIService:
                         "certified_conversations_count": sum(1 for t in grouped if t.get("is_whatsapp_certified", False)),
                         "total_conversations_count": len(grouped),
                         "certification_seal": "CERT-E2E-WHATSAPP-DECAGONAL-20261011"
-                    }
+                    },
+                    "n8n_poller_telemetry": conversation_trace_engine.get_poller_telemetry()
                 }).encode("utf-8")
 
             if clean_path in ["/api/v1/monitor/supervisor-status", "/monitor/supervisor-status"]:
@@ -3381,6 +3400,22 @@ def main():
     print(f"   🌐 Escuchando en http://{args.host}:{args.port}")
     print(f"   📖 Documentación interactiva en http://{args.host}:{args.port}/docs")
     print(f"   📑 OpenAPI 3.1.0 JSON en http://{args.host}:{args.port}/openapi.json")
+
+    # Verificación Pre-Flight de conectividad y ausencia de Sandbox restrictivo
+    print("   🔍 Verificando conectividad saliente con n8n Cloud (Pre-Flight Check)...")
+    try:
+        from mcp.n8n_tools import _make_request
+        chk = _make_request("executions?limit=1")
+        if chk.get("success"):
+            print("   ✅ Conectividad con n8n Cloud: 100% OPERACIONAL (Acceso a red verificado).")
+        else:
+            err = chk.get("error") or chk.get("details") or "Respuesta no exitosa"
+            print(f"   ⚠️ ADVERTENCIA RED: n8n Cloud reportó: {err}")
+    except Exception as ex:
+        print(f"   🚨 ALERTA CRÍTICA: Proceso sin acceso saliente de red ({ex}).")
+        print("      Causa: Ejecución dentro de un Sandbox aislado sin acceso a internet.")
+        print("      Acción: Inicie el servicio ejecutando scripts/reiniciar_todo_limpio.command")
+
     print("   Presione Ctrl+C para detener.")
 
     # Hilo en segundo plano para sincronizar continuamente con n8n Cloud cada 2.5s
@@ -3390,7 +3425,7 @@ def main():
             try:
                 time.sleep(2.5)
                 conversation_trace_engine.sync_with_n8n(limit=20)
-            except Exception:
+            except Exception as e:
                 pass
 
     poller_thread = threading.Thread(target=_background_n8n_poller, daemon=True)

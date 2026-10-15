@@ -39,10 +39,16 @@ nohup python3 api/service.py --port 8010 > /dev/null 2>&1 &
 SERVER_PID=$!
 sleep 2
 
-# Verificar que levantó
+# Verificar que levantó y que el poller n8n está activo
+HEALTH_JSON=$(curl -s http://127.0.0.1:8010/health)
 HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:8010/health)
 if [ "$HTTP_STATUS" = "200" ]; then
     echo "   ✅ Servidor local iniciado exitosamente (PID $SERVER_PID, Health: 200 OK)."
+    if echo "$HEALTH_JSON" | grep -q '"is_connected": true'; then
+        echo "   ✅ Sincronizador n8n Cloud: CONECTADO (Tráfico WhatsApp en vivo activo)."
+    else
+        echo "   ⚠️ Sincronizador n8n Cloud: Inicializando enlace de red..."
+    fi
 else
     echo "   ❌ Alerta: El servidor no respondió 200 OK inmediatamente (Status: $HTTP_STATUS). Reintentando..."
     sleep 2

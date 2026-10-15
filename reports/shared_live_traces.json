@@ -1,5 +1,85 @@
 [
   {
+    "trace_id": "TRACE-EXEC-PWA-1792026731224",
+    "execution_id": "PWA-1792026731224",
+    "workflow_id": "sNMbtiEiTkuQ9OCY",
+    "started_at": "2026-10-15T01:12:11.686963+00:00",
+    "stopped_at": "2026-10-15T01:12:11.686963+00:00",
+    "total_duration_sec": 0.05,
+    "status": "SUCCESS",
+    "bot_number": "+58 424 153 3712",
+    "user_phone": "04142554590",
+    "user_push_name": "Ids",
+    "carrier": "MOVISTAR",
+    "carrier_label": "Movistar Venezuela",
+    "is_competitor": true,
+    "user_message": "📲 [Acceso Directo QR Móvil - iPhone iOS]: Conectado a la PWA Omnicanal Movilnet (movilnet-core.onrender.com)",
+    "bot_reply": "✅ Sesión móvil QR iniciada para 04142554590 y sincronizada en vivo con el Monitor de Conversaciones (:8010) y pasarela WhatsApp 00584241533712.",
+    "intent_detected": "EXTERNAL_MOBILE_QR",
+    "pipeline_route": "FAST_PATH_TELCO_ODA",
+    "steps": [
+      {
+        "step_index": 1,
+        "node_name": "QR Mobile Global Gateway (Render Cloud)",
+        "phase_category": "1. Ingesta Perimetral Móvil",
+        "status": "success",
+        "execution_time_ms": 1.5,
+        "description": "Recibió mensaje desde dispositivo móvil externo (04142554590) vía QR Cloud",
+        "input_summary": {
+          "source": "QR_EXTERNAL_MOBILE",
+          "phone": "04142554590"
+        },
+        "output_summary": {
+          "user_message": "📲 [Acceso Directo QR Móvil - iPhone iOS]: Conectado a la PWA Omnicanal Movilnet (movilnet-core.onrender.com)"
+        }
+      },
+      {
+        "step_index": 2,
+        "node_name": "🧠 Movilnet Cognitive Agent L5 (Core N→1)",
+        "phase_category": "4. Procesamiento Core",
+        "status": "success",
+        "execution_time_ms": 50.0,
+        "description": "Procesó solicitud desde celular externo y sincronizó con Dashboard Local (:8010)",
+        "input_summary": {},
+        "output_summary": {
+          "route": "FAST_PATH_TELCO_ODA",
+          "reply_ready": true
+        }
+      },
+      {
+        "step_index": 3,
+        "node_name": "HTTP Request (Omni-Channel Delivery ACK)",
+        "phase_category": "6. Despacho Final al Celular",
+        "status": "success",
+        "execution_time_ms": 45.0,
+        "description": "Entregó respuesta en pantalla del celular externo 04142554590",
+        "input_summary": {},
+        "output_summary": {
+          "number": "04142554590",
+          "delivery_status": "DELIVERY_ACK"
+        }
+      }
+    ],
+    "process_timers": {
+      "t1_user_sent_ts": "2026-10-15T01:12:11.536963+00:00",
+      "t2_n8n_in_ts": "2026-10-15T01:12:11.686963+00:00",
+      "t3_core_resolved_ts": "2026-10-15T01:12:11.703963+00:00",
+      "t4_n8n_out_ts": "2026-10-15T01:12:11.686975+00:00",
+      "t5_evolution_queued_ts": "2026-10-15T01:12:11.706975+00:00",
+      "t6_meta_server_ack_ts": "2026-10-15T01:12:11.886975+00:00",
+      "t7_phone_delivered_ts": "2026-10-15T01:12:11.686975+00:00",
+      "t8_user_read_ts": null,
+      "delta_inbound_sec": 0.04,
+      "delta_processing_sec": 0.15,
+      "delta_outbound_queue_sec": 0.0,
+      "delta_delivery_sec": 0.03,
+      "delta_e2e_total_sec": 0.05,
+      "delivery_state": "DELIVERY_ACK",
+      "delivery_badge": "⏳ En cola WhatsApp (0.0s) (Esperando entrega al móvil)",
+      "queue_wait_sec": 0.0
+    }
+  },
+  {
     "trace_id": "TRACE-EXEC-14142",
     "execution_id": "14142",
     "workflow_id": "sNMbtiEiTkuQ9OCY",
