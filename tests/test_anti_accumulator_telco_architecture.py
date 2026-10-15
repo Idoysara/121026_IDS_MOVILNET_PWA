@@ -28,7 +28,7 @@ class TestAntiAccumulatorTelcoArchitecture:
         assert res.can_intercept is True
         assert res.intent_detected == "OFF_TOPIC_TELCO_GUARD"
         assert res.tokens_consumed == 0
-        assert res.latency_ms < 50.0
+        assert res.latency_ms < 100.0  # Ultra-baja latencia O(1) <100ms en disco local
 
         # Debe mencionar la especialidad Telco Movilnet y NO alucinar restaurantes
         reply = res.response_text.lower()

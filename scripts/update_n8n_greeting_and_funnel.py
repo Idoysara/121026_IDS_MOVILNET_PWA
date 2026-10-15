@@ -222,7 +222,7 @@ ROUTER_CORE_MARKETING_JS = r'''for (const item of items) {
 
   // Enlace PWA oficial
   const pwaCarrierSlug = isCompetitor ? ((prefix === '0414' || prefix === '0424') ? 'movistar' : 'digitel') : 'movilnet';
-  const pwaLink = `\n\n🌐 *Portal PWA 4GMAX (Datos Móviles 3G/4G/5G):* https://movilnet-core.onrender.com/ui/pwa_stitch/index.html?carrier=${pwaCarrierSlug}&phone=${cleanDigits}&token=${cleanDigits.slice(-8)}4gmax`;
+  const pwaLink = `\n\n🌐 *Portal PWA 4GMAX (Datos Móviles 3G/4G/5G):* https://mixture-merchandise-jumping-expenditures.trycloudflare.com/ui/pwa_stitch/index.html?carrier=${pwaCarrierSlug}&phone=${cleanDigits}&token=${cleanDigits.slice(-8)}4gmax`;
 
   // 4. Lógica de Enrutamiento y Generación de Respuesta
   let replyText = '';

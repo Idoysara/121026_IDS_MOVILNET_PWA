@@ -48,6 +48,10 @@ backups/
 reports/*tmp*.json
 reports/gatekeeper_report_*.json
 
+# Binarios locales y logs de ejecución
+bin/
+logs/
+
 # Variables de entorno y secretos de producción (Zero-PII / Zero-Leak)
 .env
 .env.*

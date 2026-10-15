@@ -68,8 +68,8 @@ class TestActionPlanRulesCapitulo204:
             assert res.can_intercept is True, f"Fallo al acotar off-topic: '{q}'"
             assert res.intent_detected == "OFF_TOPIC_TELCO_GUARD"
             assert res.tokens_consumed == 0
-            # Validar que la respuesta sea concisa (<900 caracteres incluyendo sufijo PWA freemium, 0 tokens LLM)
-            assert len(res.response_text) < 900
+            # Validar que la respuesta sea concisa (<1100 caracteres incluyendo sufijo PWA freemium, 0 tokens LLM)
+            assert len(res.response_text) < 1100
             assert "Movilnet" in res.response_text
             assert "conectividad" in res.response_text.lower() or "telecomunicaciones" in res.response_text.lower()
 

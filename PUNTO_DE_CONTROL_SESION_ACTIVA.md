@@ -18,3 +18,9 @@
 
 - **Instrucción para Retomar Sesión:**
   > Escribir simplemente: **"¿Recuerdas dónde quedamos?"** o **"Continuemos en rama develop"**. El agente leerá este punto de control en 1 segundo con 0 tokens de desperdicio.
+
+
+### 🌐 Enlace Público Activo Cloudflare (Opción 2)
+- **URL Pública:** https://mixture-merchandise-jumping-expenditures.trycloudflare.com
+- **PWA Portal:** https://mixture-merchandise-jumping-expenditures.trycloudflare.com/ui/pwa_stitch/index.html
+- **Healthcheck:** https://mixture-merchandise-jumping-expenditures.trycloudflare.com/health (HTTP 200 OK)

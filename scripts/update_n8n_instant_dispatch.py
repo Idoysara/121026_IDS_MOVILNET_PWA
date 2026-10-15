@@ -82,7 +82,7 @@ ROUTER_JS = r'''for (const item of items) {
   // Enlace PWA oficial determinista
   const pwaCarrierSlug = isCompetitor ? ((prefix === '0414' || prefix === '0424') ? 'movistar' : 'digitel') : 'movilnet';
   const tokenSuffix = cleanDigits.length >= 8 ? cleanDigits.slice(-8) : '4gmaxvip';
-  const pwaLink = `\n\n🌐 *Portal PWA 4GMAX (Datos Móviles 3G/4G/5G):* https://movilnet-core.onrender.com/ui/pwa_stitch/index.html?carrier=${pwaCarrierSlug}&phone=${cleanDigits}&token=${tokenSuffix}4gmax`;
+  const pwaLink = `\n\n🌐 *Portal PWA 4GMAX (Datos Móviles 3G/4G/5G):* https://mixture-merchandise-jumping-expenditures.trycloudflare.com/ui/pwa_stitch/index.html?carrier=${pwaCarrierSlug}&phone=${cleanDigits}&token=${tokenSuffix}4gmax`;
 
   // 4. Lógica de Enrutamiento y Generación de Respuesta
   let replyText = '';
@@ -445,7 +445,7 @@ HTTP_BODY_EXPR = r'''={{ JSON.stringify({
 TOOL_SALDO_JS = r'''return JSON.stringify({
   operador: "Movilnet 4GMAX",
   aviso_oficial: "Para consultar saldo exacto al segundo, consumo de megas y fecha de corte en tiempo real sin alucinaciones, el abonado debe acceder a su sesión protegida en el Portal PWA o enviar SALDO al 123 por SMS.",
-  pwa_acceso: "https://movilnet-core.onrender.com/ui/pwa_stitch/",
+  pwa_acceso: "https://mixture-merchandise-jumping-expenditures.trycloudflare.com/ui/pwa_stitch/",
   estado_red: "Activa 4GMAX LTE",
   beneficio: "WhatsApp libre incluido en planes activos"
 });'''

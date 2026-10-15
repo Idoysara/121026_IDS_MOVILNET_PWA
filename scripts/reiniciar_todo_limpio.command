@@ -60,11 +60,16 @@ else
 fi
 
 echo ""
-echo "▶️ [4/5] Sincronizando telemetría y supervisor en vivo..."
+echo "▶️ [4/6] Verificando y Asegurando Túnel Cloudflare Gratuito (Opción 2)..."
+$PY_BIN scripts/tunnel_cloudflare_guardian.py --start
+CF_URL=$($PY_BIN scripts/tunnel_cloudflare_guardian.py --url 2>/dev/null || echo "https://movilnet-core.onrender.com")
+
+echo ""
+echo "▶️ [5/6] Sincronizando telemetría y supervisor en vivo..."
 $PY_BIN scripts/live_core_supervisor.py --audit
 
 echo ""
-echo "▶️ [5/5] Abriendo Interfaces Web de Monitoreo y Pruebas en el navegador..."
+echo "▶️ [6/6] Abriendo Interfaces Web de Monitoreo y Pruebas en el navegador..."
 open "http://localhost:8010/ui/monitor/conversatorio.html"
 open "http://localhost:8010/ui/pwa_stitch/simulador.html"
 
@@ -72,11 +77,12 @@ echo ""
 echo "========================================================================"
 echo "🏆 ECOSISTEMA REINICIADO CON ÉXITO Y 100% OPERATIVO EN VIVO"
 echo "========================================================================"
-echo "🌐 Conversatorio:  http://localhost:8010/ui/monitor/conversatorio.html"
-echo "📡 Health Check:   http://localhost:8010/health"
-echo "📖 Swagger API:    http://localhost:8010/docs"
-echo "☁️ Render Prod:    https://movilnet-core.onrender.com"
-echo "⚡ n8n Cloud:      https://n8n.lpgtec.net/workflow/sNMbtiEiTkuQ9OCY"
+echo "🌐 Conversatorio:      http://localhost:8010/ui/monitor/conversatorio.html"
+echo "📡 Health Check:       http://localhost:8010/health"
+echo "📖 Swagger API:        http://localhost:8010/docs"
+echo "🚀 Cloudflare Tunnel:  $CF_URL"
+echo "☁️ Render Cloud:       https://movilnet-core.onrender.com"
+echo "⚡ n8n Cloud:          https://n8n.lpgtec.net/workflow/sNMbtiEiTkuQ9OCY"
 echo "========================================================================"
 echo ""
 if [ -t 0 ]; then

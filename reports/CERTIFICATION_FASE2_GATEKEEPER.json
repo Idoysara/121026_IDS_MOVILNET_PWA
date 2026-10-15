@@ -1,20 +1,20 @@
 {
-  "certificate_id": "FASE2-GATEKEEPER-CERT-9C889D0560BB",
+  "certificate_id": "FASE2-GATEKEEPER-CERT-38C21ECE6F98",
   "phase": "FASE_2_MICROSERVICES_AND_N8N_OMNICHANNEL",
   "project": "AI_Movilnet_300926",
   "status": "CERTIFICADO_Y_APROBADO_100%",
-  "timestamp": "2026-10-15T15:39:42.465357+00:00",
+  "timestamp": "2026-10-15T16:25:56.579771+00:00",
   "verdict": "Fase 2 de AI_Movilnet_300926 validada, auditada y certificada formalmente en sus 6 dimensiones críticas: Microservicio RESTful OpenAPI 3.1.0 TM Forum ODA, 4 Workflows canónicos n8n, Pipeline CI/CD, Puente de Webhooks con 5 Suites MCP en vivo, Grado Militar de Seguridad SAST y Rendimiento Carrier-Grade sub-milisegundo. Habilitado formalmente el pase a la Fase 3.",
   "metrics": {
     "all_dimensions_passed": true,
     "total_dimensions_audited": 6,
     "dimensions_passed_count": 6,
-    "db_latency_avg_ms": 0.039,
-    "db_latency_p95_ms": 0.051,
-    "api_latency_avg_ms": 0.012,
-    "api_latency_p95_ms": 0.013,
-    "webhook_latency_avg_ms": 0.686,
-    "webhook_latency_p95_ms": 1.263,
+    "db_latency_avg_ms": 0.185,
+    "db_latency_p95_ms": 0.8,
+    "api_latency_avg_ms": 0.057,
+    "api_latency_p95_ms": 0.13,
+    "webhook_latency_avg_ms": 1.195,
+    "webhook_latency_p95_ms": 1.883,
     "security_secrets_found": 0,
     "mcp_suites_verified": 5,
     "openapi_endpoints_count": 25,
@@ -34,5 +34,5 @@
     "paso2_n8n_workflows": "FASE2-PASO2-CERT-9C381F4B2E05",
     "paso3_webhooks_mcp": "FASE2-PASO3-CERT-7B93E10C89FA"
   },
-  "sha256_cryptographic_seal": "9c889d0560bba723bb40426718e6b84cbfb154e13fbd054e735738b4b18cf19d"
+  "sha256_cryptographic_seal": "38c21ece6f980bb94be50088147ae32123ba6ce31df05fed93e6b4e2a3c8f0ad"
 }
