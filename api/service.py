@@ -2765,6 +2765,9 @@ class MovilnetAPIService:
                 resp_headers["Content-Type"] = "text/html; charset=utf-8"
                 return 200, resp_headers, html.encode("utf-8")
 
+            if clean_path in ["/simulador", "/celular", "/mockup"]:
+                return self._serve_static_ui("/ui/pwa_stitch/simulador.html")
+
             if clean_path in ["/", "/index.html", "/prospect", "/chat", "/pwa", "/app", "/stitch"]:
                 return self._serve_static_ui("/ui/pwa/index.html")
 
