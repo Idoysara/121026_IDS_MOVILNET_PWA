@@ -2765,11 +2765,11 @@ class MovilnetAPIService:
                 resp_headers["Content-Type"] = "text/html; charset=utf-8"
                 return 200, resp_headers, html.encode("utf-8")
 
+            if clean_path in ["/", "/index.html", "/prospect", "/chat", "/pwa", "/app", "/stitch"]:
+                return self._serve_static_ui("/ui/pwa/index.html")
+
             if clean_path == "/ui" or clean_path.startswith("/ui/"):
                 return self._serve_static_ui(clean_path)
-
-            if clean_path in ["/prospect", "/chat", "/pwa", "/app", "/stitch"]:
-                return self._serve_static_ui("/ui/pwa_stitch/index.html")
 
             if clean_path in ["/health", "/api/v1/health"]:
                 status, payload = self.handle_health()
