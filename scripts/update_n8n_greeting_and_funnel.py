@@ -251,10 +251,7 @@ ROUTER_CORE_MARKETING_JS = r'''for (const item of items) {
     } else {
       pipelineRoute = 'FAST_PATH_TELCO_ODA';
       replyText = `Estimado abonado Movilnet (${phoneFormatted}):\n\n` +
-                  `💰 Tu saldo disponible es: Bs. 1.650,00\n` +
-                  `📶 Datos 4GMAX: 10.0 GB disponibles\n` +
-                  `📋 Plan activo: Inteliplan 10GB 4GMAX\n` +
-                  `📅 Fecha de corte: 15 del mes.\n\n` +
+                  `💰 Tu consulta de saldo se procesa directamente vía OCS en tiempo real.\n` +
                   `Para recargar tu saldo vía Pago Móvil C2P, escribe 'Recarga'.`;
     }
 
@@ -315,8 +312,6 @@ ROUTER_CORE_MARKETING_JS = r'''for (const item of items) {
     } else {
       pipelineRoute = 'FAST_PATH_TELCO_ODA';
       replyText = `Estimado(a) ${pushName}, tu contrato para la línea Movilnet ${phoneFormatted} está ACTIVO en el plan Inteliplan 10GB 4GMAX.\n\n` +
-                  `💰 Saldo disponible: Bs. 1.650,00\n` +
-                  `📶 Datos remanentes: 10.0 GB de 10.0 GB\n` +
                   `🔒 Estado EIR: Habilitado y Seguro`;
     }
 

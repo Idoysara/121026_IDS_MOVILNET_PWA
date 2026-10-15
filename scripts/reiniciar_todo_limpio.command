@@ -35,7 +35,12 @@ echo "   🛡️ Puerto 8010 (Movilnet Core & Conversatorio): Asignado en exclus
 
 echo ""
 echo "▶️ [3/5] Arrancando Microservicio Movilnet Core ODA en puerto 8010..."
-nohup python3 api/service.py --port 8010 > /dev/null 2>&1 &
+if [ -f "./venv/bin/python3" ]; then
+    PY_BIN="./venv/bin/python3"
+else
+    PY_BIN="python3"
+fi
+nohup $PY_BIN api/service.py --port 8010 > /tmp/movilnet_api_8010.log 2>&1 &
 SERVER_PID=$!
 sleep 2
 
@@ -56,11 +61,12 @@ fi
 
 echo ""
 echo "▶️ [4/5] Sincronizando telemetría y supervisor en vivo..."
-python3 scripts/live_core_supervisor.py --audit
+$PY_BIN scripts/live_core_supervisor.py --audit
 
 echo ""
-echo "▶️ [5/5] Abriendo Centro de Monitoreo Conversatorio en el navegador..."
+echo "▶️ [5/5] Abriendo Interfaces Web de Monitoreo y Pruebas en el navegador..."
 open "http://localhost:8010/ui/monitor/conversatorio.html"
+open "http://localhost:8010/ui/pwa_stitch/simulador.html"
 
 echo ""
 echo "========================================================================"
@@ -73,4 +79,6 @@ echo "☁️ Render Prod:    https://movilnet-core.onrender.com"
 echo "⚡ n8n Cloud:      https://n8n.lpgtec.net/workflow/sNMbtiEiTkuQ9OCY"
 echo "========================================================================"
 echo ""
-read -p "Presione [Enter] para cerrar esta ventana..."
+if [ -t 0 ]; then
+    read -p "Presione [Enter] para cerrar esta ventana..."
+fi

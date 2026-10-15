@@ -667,7 +667,7 @@ class ConversationTraceEngine:
             carrier_label="Movilnet 4GMAX",
             is_competitor=False,
             user_message="Consulta mi saldo y megas",
-            bot_reply="Estimado abonado 0416-0000001: Su saldo disponible es Bs. 1.650,00. Datos 4GMAX: 11.9 GB de 5 GB. Corte: 15 del mes.",
+            bot_reply="Estimado abonado 04160000001: Su saldo disponible es Bs. 450.00. Datos 4GMAX: 82.9 GB disponibles. Plan: Plan Básico Conecta 5GB.",
             intent_detected="BALANCE_INQUIRY",
             pipeline_route="FAST_PATH_TELCO_ODA",
             steps=[]
@@ -1905,14 +1905,15 @@ class ConversationTraceEngine:
         ))
 
         # Paso 4: Router
+        from core.fastpath_intent_interceptor import fastpath_interceptor
+        fp_check = fastpath_interceptor.intercept(message_text, phone_clean)
         is_movilnet = classification.carrier == Carrier.MOVILNET
         lower_msg = message_text.lower()
-        is_telco = any(k in lower_msg for k in ["saldo", "mega", "contrato", "c2p", "recarga", "robo", "bloqueo", "plan"])
 
-        if is_movilnet and is_telco:
-            active_branch = "Rama 8: Movilnet Core - Fast-Path ODA"
+        if fp_check.can_intercept:
+            active_branch = f"Rama 8: Movilnet Core - Fast-Path ({fp_check.intent_detected})"
             route_name = "FAST_PATH_TELCO_ODA"
-            route_desc = "Intención Telco detectada en abonado Movilnet (Base 4M). Cable directo a MacBook Pro :8010"
+            route_desc = f"Intercepción determinística en frontera: {fp_check.intent_detected}. Cable directo :8010 (0 tokens)"
         elif classification.is_competitor and ("portabilidad" in lower_msg or "cambiar" in lower_msg or "esim" in lower_msg):
             active_branch = "Rama 8: Funnel Marketing Portabilidad"
             route_name = "FUNNEL_MARKETING_PORTABILIDAD"
@@ -1951,8 +1952,16 @@ class ConversationTraceEngine:
                 output_summary={"agent_status": "OK", "model": "gemini-flash-hybrid"}
             ))
         elif route_name == "FAST_PATH_TELCO_ODA":
-            proc_time = 0.15
-            reply = f"Estimado abonado {phone_clean}: Su saldo disponible es Bs. 1.650,00. Datos 4GMAX: 11.9 GB disponibles de 5 GB. Corte: 15 del mes."
+            from core.fastpath_intent_interceptor import fastpath_interceptor
+            fp_res = fastpath_interceptor.intercept(message_text, phone_clean)
+            if fp_res.can_intercept:
+                reply = fp_res.response_text
+                proc_time = max(0.15, fp_res.latency_ms)
+                intent_lbl = fp_res.intent_detected
+            else:
+                proc_time = 0.15
+                reply = f"Estimado abonado {phone_clean}: Su línea Movilnet 4GMAX se encuentra activa."
+                intent_lbl = "FASTPATH_TELCO"
             steps.append(PipelineNodeStep(
                 step_index=5,
                 node_name="💻 Movilnet Core - Fast-Path ODA (:8010)",
@@ -1960,7 +1969,7 @@ class ConversationTraceEngine:
                 status="success",
                 execution_time_ms=proc_time,
                 description="Resolución determinista instantánea en SQLite WAL con Blind Index HMAC-SHA256 (0 tokens)",
-                output_summary={"balance_ves": 1650.0, "latency_ms": 0.15, "cost_tokens": 0.0}
+                output_summary={"handled": True, "intent": intent_lbl, "latency_ms": proc_time, "cost_tokens": 0.0}
             ))
         elif route_name == "FUNNEL_MARKETING_PORTABILIDAD":
             proc_time = 0.22

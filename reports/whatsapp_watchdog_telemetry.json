@@ -1,6 +1,6 @@
 {
   "last_heartbeat": {
-    "timestamp_utc": "2026-10-15T14:33:15.995571+00:00",
+    "timestamp_utc": "2026-10-15T15:07:25.957779+00:00",
     "instance_name": "Viki LPGTEC",
     "server_url": "http://evolution:8080",
     "is_socket_responsive": true,
@@ -8,14 +8,14 @@
     "pending_stuck_detected": 0,
     "auto_heal_triggered": false,
     "action_taken": "HEARTBEAT_OK_NO_ACTION_REQUIRED",
-    "latency_ms": 0.52,
-    "sha256_seal": "210b3ad96b61e07a9f745156d239ac2cd4b70658e04a36e3c365fc83bae605f2"
+    "latency_ms": 0.72,
+    "sha256_seal": "c506db35e5a1233f50002038f4dccc3df310a3e18105057666d99dfb1569fd4a"
   },
   "total_auto_heals_executed": 0,
   "consecutive_failures": 0,
   "recent_cycles": [
     {
-      "timestamp_utc": "2026-10-15T14:33:15.995571+00:00",
+      "timestamp_utc": "2026-10-15T15:07:25.957779+00:00",
       "instance_name": "Viki LPGTEC",
       "server_url": "http://evolution:8080",
       "is_socket_responsive": true,
@@ -23,9 +23,9 @@
       "pending_stuck_detected": 0,
       "auto_heal_triggered": false,
       "action_taken": "HEARTBEAT_OK_NO_ACTION_REQUIRED",
-      "latency_ms": 0.52,
-      "sha256_seal": "210b3ad96b61e07a9f745156d239ac2cd4b70658e04a36e3c365fc83bae605f2"
+      "latency_ms": 0.72,
+      "sha256_seal": "c506db35e5a1233f50002038f4dccc3df310a3e18105057666d99dfb1569fd4a"
     }
   ],
-  "updated_at": "2026-10-15T14:33:15.995683+00:00"
+  "updated_at": "2026-10-15T15:07:25.958005+00:00"
 }
