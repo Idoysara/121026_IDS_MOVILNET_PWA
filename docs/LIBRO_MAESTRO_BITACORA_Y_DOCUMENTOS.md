@@ -50,7 +50,7 @@ flowchart TD
 
 ---
 
-## 📚 ÍNDICE DE CAPÍTULOS (1 al 103)
+## 📚 ÍNDICE DE CAPÍTULOS (1 al 202)
 
 | # | Título | Fecha | Estado |
 |:---:|:---|:---:|:---:|
@@ -12513,3 +12513,45 @@ Auditoría y verificación del Centro de Monitoreo Conversacional local en puert
 #### 📘 Capítulo 188 — Auditoría Forense y Restauración de Visualización Omnicanal de Usuarios (N) en el Monitor Conversatorio Local (:8010), Desacople de Nodos Google en n8n Cloud y Sincronizador Bidireccional Asíncrono
 Diagnóstico forense y resolución integral de la visualización de conversaciones de usuarios (N) hacia el Asistente Movilnet (1) en el conversatorio local (`http://localhost:8010/ui/monitor/conversatorio.html`). Corrección de 6 causas raíz: 1) Desconfinamiento del servidor local `api/service.py` fuera de sandbox con permisos de red completos hacia `n8n.lpgtec.net`; 2) Retiro del filtro de descarte `Viki LPGTEC` en `core/conversation_trace_engine.py` y `conversatorio.html`, permitiendo la ingesta de usuarios con perfiles personalizados (ej. `04166251587`); 3) Erradicación de trazas `-GW` artificiales con el número del bot, consagrando el modelo N <--> 1 donde la línea central `+58 424 153 3712` (1) actúa como asistente y no contamina la lista de contactos de abonados; 4) Resolución de crash HTTP 500 en n8n Cloud (ejecución 14041) activando `continueOnFail: true` en nodos de Google e integrando enrutamiento de agencias comerciales (Centro Plaza, El Recreo, CCCT) en `Movilnet Core & Marketing Router` vía `scripts/patch_n8n_movilnet_workflow.py`; 5) Implementación de poller demonio asíncrono en segundo plano (`_background_n8n_poller`) en `api/service.py` refrescando cada 2.5s; 6) Sustitución de semillas estáticas y selección automática del abonado más reciente (`groupedThreads[0]`) con timeout en consultas remotas. Verificación en vivo: 10 abonados reales indexados (`04142554590`, `04142650088`, `04166251587`, etc.), 256 trazas activas y servidor respondiendo `HTTP 200 OK` en `:8010`.
 
+
+#### 📘 Capítulo 189 — Saneamiento Quirúrgico de Teléfonos Hardcodeados, Purga de Trazas Legacy y Sincronización en n8n Cloud
+Saneamiento atómico de números hardcodeados residuales en el workflow canónico `sNMbtiEiTkuQ9OCY` de n8n Cloud y en la base de datos local SQLite. Normalización de extracción dinámica de abonados y purga de trazas obsoletas anteriores al release.
+
+#### 📘 Capítulo 190 — Blindaje y Congelamiento Inmutable del Ambiente de Producción (Tag `v1.0.0-prod-sealed`) y Retorno Exclusivo a Rama `develop`
+Congelamiento estricto de la rama `main` bajo la etiqueta Git `v1.0.0-prod-sealed`. Desacoplamiento de entornos y establecimiento de la política de no intervención directa sobre producción sin auditoría previa y aprobación humana.
+
+#### 📘 Capítulo 191 — Diagnóstico Forense del Estado 'PENDING' en Evolution API / n8n Cloud y Reactivación del Poller Asíncrono Desconfinado
+Dictamen técnico sobre el código `status: PENDING` emitido por Evolution API como comportamiento nativo asíncrono hacia Meta WhatsApp. Resolución de desconexión en el monitor local `:8010` mediante inicio desconfinado del servicio sin restricciones de red de sandbox.
+
+#### 📘 Capítulo 192 — Regla General Inviolable de Cero Adivinación, Detección Activa de Datos Faltantes y Optimización Extrema de Tokens
+Formalización e inyección transversal de la directiva de tolerancia cero a la suposición. Si el usuario no indica ubicación geográfica o parámetros de consulta, el agente solicita amablemente el dato faltante en 2-4 oraciones cálidas venezolanas antes de invocar herramientas o generar recomendaciones.
+
+#### 📘 Capítulo 193 — Erradicación Definitiva de Falsos Positivos de Saludo: Clasificador "Saludo Puro" vs "Consulta Compuesta"
+Construcción de `GreetingCompoundClassifier` en `core/greeting_compound_classifier.py` para erradicar el secuestro comercial ciego de mensajes abiertos (ej. caso Landaeta sobre laptops). Creación del módulo exclusivo `NO_USUARIOS_MOVILNET` y reserva del menú de autogestión de saldo únicamente para líneas 0416/0426.
+
+#### 📘 Capítulo 194 — Promoción Oficial a Producción Release `v1.0.1-prod-sealed`: Fusión de Develop a Main
+Pase formal a producción autorizado por el usuario, unificando en `main` los clasificadores de saludos, la protección contra falsos positivos y los parches de n8n Cloud bajo la etiqueta inmutable `v1.0.1-prod-sealed`.
+
+#### 📘 Capítulo 195 — Blindaje Absoluto Contra Asunción de Abonado en Líneas No-Movilnet (Doble Guardia)
+Implementación de doble guardia determinista y cognitiva para erradicar frases como 'con tu línea Movilnet' cuando el remitente pertenece a Movistar o Digitel. Inyección dinámica en el nodo AI Agent de n8n Cloud del parámetro `MODO_CAPTACION_FUNNEL_MARKETING_NO_MOVILNET`.
+
+#### 📘 Capítulo 196 — Firewall Perimetral Booleano `IS_MOVILNET_SUBSCRIBER` (0416/0426) y Segregación Absoluta de Rutas Telco vs Funnel
+Construcción e inyección perimetral del clasificador booleano en el nodo `Edge Carrier Firewall (0416/0426)` en n8n Cloud. Derivación instantánea hacia `CORE_MOVILNET_AUTOGESTION` para líneas 0416/0426 y hacia `NO_USUARIOS_MOVILNET` para operadoras externas, garantizando 0 colisiones.
+
+#### 📘 Capítulo 197 — Soporte Geoespacial Nativo WhatsApp (`locationMessage`, Pines GPS y Formato [UBICACION_GPS])
+Normalización e ingesta de coordenadas geográficas nativas enviadas como pines de ubicación en WhatsApp. Decodificación en `core/n8n_webhook_payload_extractor.py` del formato `[UBICACION_GPS: lat=..., lon=...]` para consulta geodésica Haversine inmediata en <10ms sin tokens LLM.
+
+#### 📘 Capítulo 198 — Sincronización y Emisión de Releases Inmutables `v1.0.2-prod-sealed` y `v1.0.3-prod-sealed`
+Consolidación de versiones intermedias con pruebas de regresión automáticas (28/28 suites PASS), congelando los avances del clasificador de saludos, firewall booleano y extractor de coordenadas GPS.
+
+#### 📘 Capítulo 199 — Ingesta Integral Certificada del Censo Nacional de 1.017 Puntos Físicos de Atención Movilnet con Sello SHA-256
+Levantamiento, auditoría y georreferenciación oficial de 1.017 puntos de atención Movilnet en todo el territorio nacional (1 Sede Corporativa, 31 Oficinas de Atención al Cliente OSAC, 500 Agentes Autorizados y 485 Agentes Comerciales Integrales). Emisión del dataset estructurado con sello criptográfico inmutable SHA-256 `a9d3578b5dbfa52b16f5692dfdbe4f713d0f7829ea97d2fec749220eea4eb492`.
+
+#### 📘 Capítulo 200 — Promoción Oficial a Producción Release `v1.0.4-prod-sealed` y Lanzador Soberano macOS
+Pase formal a producción tras autorización expresa del usuario ("opcion C , autorizo pase produccion") validada mediante simulación en vivo con el abonado `04142554590`. Creación del lanzador de doble clic `scripts/probar_geolocalizacion.command` para ejecución de pruebas sin terminal.
+
+#### 📘 Capítulo 201 — Diagnóstico y Resolución del Error en Nodo n8n 'Movilnet Core & Marketing Router' ante Geolocalización GPS WhatsApp (Task Broker WebSocket Disconnect / 45.7s Timeout)
+Autopsia forense y resolución definitiva del error en ejecución #14125 de n8n Cloud provocado por el timeout de 45.7s del Task Runner aislado ante mensajes con prefijo `[UBICACION_GPS:`. Inyección de detección temprana de formato GPS, derivación directa hacia la Suite Geoespacial Suite 6 y protección defensiva con try/catch en el nodo de código JavaScript.
+
+#### 📘 Capítulo 202 — Blindaje Soberano de Telemetría en Vivo, Aislamiento de Red del Backend, Supresión de Interferencia Render en Localhost y Watchdog Visual Activo para el Monitor Conversatorio (:8010)
+Blindaje integral del Centro de Monitoreo Conversacional local (`conversatorio.html`) y microservicio `:8010` (`api/service.py`). Adición de Pre-Flight Check en arranque, telemetría activa `_n8n_poller_telemetry` en `core/conversation_trace_engine.py`, consagración de soberanía 100% localhost (cero peticiones concurrentes a Render), watchdog visual activo con cabecera reactiva y lanzador certificado `scripts/reiniciar_todo_limpio.command`. Suite completa de pruebas certificada con 331/331 tests aprobados (100% PASS en 9.64s).
