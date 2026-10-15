@@ -6,7 +6,10 @@ Proyecto: AI_Movilnet_300926 — Telecomunicaciones Movilnet C.A.
 Gobernanza: Universal Best Practices Engineering Rule (Pilar V: 100% Pass)
 """
 
-import pytest
+try:
+    import pytest
+except ImportError:
+    pytest = None
 from scripts.ejecutar_prueba_real import RealTestRunner
 
 

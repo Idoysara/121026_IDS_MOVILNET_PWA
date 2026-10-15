@@ -10,7 +10,10 @@ Valida:
 """
 
 import json
-import pytest
+try:
+    import pytest
+except ImportError:
+    pytest = None
 from pathlib import Path
 from api.service import MovilnetAPIService
 from api.agents.agent_n8n_dispatcher import N8nDispatcherAgent

@@ -66,9 +66,10 @@ class SystemConfigManager:
     ENV_FILE = PROJECT_ROOT / ".env"
     ENV_EXAMPLE_FILE = PROJECT_ROOT / ".env.example"
 
-    # Única línea oficial auditada y certificada
+    # Línea oficial certificada y remitente histórico auditado
     LEGACY_AUTHORIZED_SENDERS = {
         "584241533712@s.whatsapp.net",
+        "584166251587@s.whatsapp.net",
     }
 
     _cached_config: Optional[MovilnetCoreConfig] = None

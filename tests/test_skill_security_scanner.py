@@ -6,7 +6,19 @@ Valida la detección estricta de vulnerabilidades, malware, virus lógicos y man
 homologado con los estándares de NVIDIA SkillSpector (71 patrones / 17 categorías).
 """
 
-import pytest
+class _DummyPytest:
+    @staticmethod
+    def fixture(*args, **kwargs):
+        def decorator(f):
+            return f
+        if len(args) == 1 and callable(args[0]):
+            return args[0]
+        return decorator
+
+try:
+    import pytest
+except ImportError:
+    pytest = _DummyPytest()
 import json
 from pathlib import Path
 from scripts.scan_skill_security import (

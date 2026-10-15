@@ -8,7 +8,10 @@ Valida la auditoría de los 5 eslabones y generación de reportes con sellos cri
 import sys
 import json
 from pathlib import Path
-import pytest
+try:
+    import pytest
+except ImportError:
+    pytest = None
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 if str(PROJECT_ROOT) not in sys.path:

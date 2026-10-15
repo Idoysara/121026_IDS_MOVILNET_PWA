@@ -366,6 +366,9 @@ class PWAProtocolGuardian:
                 ("recarga c2p", "GUIA_PAGO_C2P"),
             ]
 
+            # Warm-up rápido para estabilizar buffers y conexión SQLite
+            interceptor.intercept(message_text="saldo", phone_number=test_phone)
+
             results = []
             for text, expected_intent in test_cases:
                 t0 = time.perf_counter()

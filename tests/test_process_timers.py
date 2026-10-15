@@ -11,7 +11,10 @@ import json
 import time
 from pathlib import Path
 from datetime import datetime, timezone, timedelta
-import pytest
+try:
+    import pytest
+except ImportError:
+    pytest = None
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 if str(PROJECT_ROOT) not in sys.path:

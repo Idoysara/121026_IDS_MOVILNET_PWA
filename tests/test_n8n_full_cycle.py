@@ -7,7 +7,10 @@ Movilnet (Abonado) ↔ Input (n8n) ↔ Nodos (n8n) ↔ Output (n8n) ↔ Movilnet
 """
 
 import json
-import pytest
+try:
+    import pytest
+except ImportError:
+    pytest = None
 from api.service import MovilnetAPIService
 from api.agents.agent_n8n_dispatcher import N8nDispatcherAgent
 from scripts.inject_movilnet_node_into_n8n import inject_movilnet_integration

@@ -9,7 +9,19 @@ Gobernanza: Universal Best Practices Engineering Rule (Pilar V: Regla del 100% P
 import os
 import sys
 import json
-import pytest
+class _DummyPytest:
+    @staticmethod
+    def fixture(*args, **kwargs):
+        def decorator(f):
+            return f
+        if len(args) == 1 and callable(args[0]):
+            return args[0]
+        return decorator
+
+try:
+    import pytest
+except ImportError:
+    pytest = _DummyPytest()
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent

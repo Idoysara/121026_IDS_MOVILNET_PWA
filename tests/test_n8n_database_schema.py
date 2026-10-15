@@ -8,7 +8,10 @@ Valida la integridad de la base de datos relacional asociada al flujo sNMbtiEiTk
 - Ciclo de vida completo simulación E2E sin violaciones de integridad referencial.
 """
 
-import pytest
+try:
+    import pytest
+except ImportError:
+    pytest = None
 from scripts.verify_n8n_db_schema import verify_schema_integrity, simulate_full_workflow_data_lifecycle
 
 

@@ -9,7 +9,10 @@ y endpoints del monitor REST en api/service.py.
 import sys
 import json
 from pathlib import Path
-import pytest
+try:
+    import pytest
+except ImportError:
+    pytest = None
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 if str(PROJECT_ROOT) not in sys.path:

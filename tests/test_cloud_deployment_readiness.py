@@ -6,7 +6,10 @@ Proyecto: AI_Movilnet_300926 — Telecomunicaciones Movilnet C.A.
 Gobernanza: Universal Best Practices Engineering Rule (Pilar V: Regla del 100% Pass)
 """
 
-import pytest
+try:
+    import pytest
+except ImportError:
+    pytest = None
 from pathlib import Path
 from scripts.validate_cloud_deployment_readiness import CloudDeploymentValidator
 

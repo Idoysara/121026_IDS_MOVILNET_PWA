@@ -10,7 +10,10 @@ import hmac
 import hashlib
 import time
 import json
-import pytest
+try:
+    import pytest
+except ImportError:
+    pytest = None
 from core.n8n_webhook_payload_extractor import N8nWebhookPayloadExtractor, NormalizedInboundMessage
 from api.webhook_bridge import (
     DEFAULT_WEBHOOK_SECRET,

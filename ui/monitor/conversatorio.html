@@ -1893,42 +1893,65 @@
       try {
         const ts = Date.now();
         const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-        const requests = [fetch('/api/v1/monitor/conversations?t=' + ts)];
-        if (isLocal) {
-          const controller = new AbortController();
-          setTimeout(() => controller.abort(), 2000);
-          requests.push(fetch('https://movilnet-core.onrender.com/api/v1/monitor/conversations?t=' + ts, { signal: controller.signal }));
+        
+        let localData = null;
+        let responseOk = false;
+
+        // 1. Intento primario: Endpoint del microservicio local (:8010)
+        try {
+          const localRes = await fetch('/api/v1/monitor/conversations?t=' + ts);
+          if (localRes.ok) {
+            localData = await localRes.json();
+            responseOk = true;
+          }
+        } catch (localErr) {
+          console.warn('[Conversatorio] Error consultando /api/v1/monitor/conversations local:', localErr);
         }
-        const results = await Promise.allSettled(requests);
+
+        // 2. Si no es localhost o falló el local (ej. PWA estática externa), consultar Render como fallback
+        if (!responseOk && !isLocal) {
+          try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 4000);
+            const renderRes = await fetch('https://movilnet-core.onrender.com/api/v1/monitor/conversations?t=' + ts, { signal: controller.signal });
+            clearTimeout(timeoutId);
+            if (renderRes.ok) {
+              localData = await renderRes.json();
+              responseOk = true;
+            }
+          } catch (renderErr) {
+            console.warn('[Conversatorio] Fallback Render no disponible:', renderErr);
+          }
+        }
+
+        if (!localData) {
+          const statusElem = document.getElementById('headerLiveStatus');
+          if (statusElem) {
+            statusElem.innerHTML = `
+              <span class="live-pulse-dot" style="background:#eab308; box-shadow:0 0 8px #eab308;"></span>
+              <span style="font-weight:700; color:#ca8a04;">RECONECTANDO CON MOVILNET CORE (:8010)...</span>
+            `;
+          }
+          return;
+        }
 
         const curThread = groupedThreads.find(t => t.phone_key === selectedPhoneKey);
         const prevCount = curThread && curThread.messages ? curThread.messages.length : 0;
 
-        let localData = null;
-        for (let i = 0; i < results.length; i++) {
-          const r = results[i];
-          if (r.status === 'fulfilled' && r.value && r.value.ok) {
-            try {
-              const d = await r.value.json();
-              if (i === 0) localData = d;
-              const serverThreads = d.grouped_threads || d.threads || [];
-              if (Array.isArray(serverThreads) && serverThreads.length > 0) {
-                groupedThreads = mergeThreadsWithSeeds(groupedThreads, serverThreads);
-              } else if (d && Array.isArray(d.conversations) && d.conversations.length > 0) {
-                const aggregated = aggregateTracesLocally(d.conversations);
-                groupedThreads = mergeThreadsWithSeeds(groupedThreads, aggregated);
-              }
-            } catch (e) {}
-          }
+        const serverThreads = localData.grouped_threads || localData.threads || [];
+        if (Array.isArray(serverThreads) && serverThreads.length > 0) {
+          groupedThreads = mergeThreadsWithSeeds(groupedThreads, serverThreads);
+        } else if (localData && Array.isArray(localData.conversations) && localData.conversations.length > 0) {
+          const aggregated = aggregateTracesLocally(localData.conversations);
+          groupedThreads = mergeThreadsWithSeeds(groupedThreads, aggregated);
         }
 
-        const data = localData || {};
         const statusElem = document.getElementById('headerLiveStatus');
         if (statusElem) {
           const totalMsgs = groupedThreads.reduce((acc, th) => acc + (th.messages ? th.messages.length : 0), 0);
           statusElem.innerHTML = `
             <span class="live-pulse-dot" style="background:#22c55e; box-shadow:0 0 8px #22c55e;"></span>
-            <span style="font-weight:700; color:#16a34a;">MODO ONLINE SUPERVISANDO EN VIVO (LOCAL :8010 + QR CLOUD + WA 00584241533712)</span>
+            <span style="font-weight:700; color:#16a34a;">MODO ONLINE SUPERVISANDO EN VIVO (LOCAL :8010 ↔ n8n Cloud ↔ WhatsApp)</span>
             <span style="opacity:0.5;">•</span>
             <span>${groupedThreads.length} líneas / ${totalMsgs} mensajes</span>
             <span class="badge-cert-header" style="padding:2px 8px; font-size:0.65rem; margin-left:6px;">🛡️ ENTREGAS WHATSAPP & QR: 100% MONITOREADAS</span>
@@ -1952,7 +1975,9 @@
 
         renderContactsList();
         renderActiveChat(hasNewMessages);
-      } catch (err) {}
+      } catch (err) {
+        console.error('[Conversatorio Sync Error]:', err);
+      }
     }
 
     function normMsgId(m) {
