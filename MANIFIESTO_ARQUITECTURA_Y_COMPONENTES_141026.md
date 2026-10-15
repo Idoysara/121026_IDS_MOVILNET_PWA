@@ -22,7 +22,7 @@ $$\sum_{i=1}^{N} \text{Usuarios Móviles Concurrentes (3G/4G/5G)} \iff \mathbf{1
 2. **Erradicación Total de Parámetros Legacy:** La línea telefónica antigua `0416-6251587` y el flujo viejo `WdWU8G9EggQDMack` han sido completamente erradicados del enrutamiento activo y de todos los nodos de n8n, consagrando la línea oficial única:
    * **Línea Central Aprobada:** `+58 424 153 3712` (`0424-1533712` / `584241533712@s.whatsapp.net` / **MOVI**).
    * **Webhook Canónico Activo:** `https://n8n.lpgtec.net/webhook/messages_upsert4` (`sNMbtiEiTkuQ9OCY`).
-   * **Nube Pública 24/7:** `https://movilnet-core.onrender.com` (PWA Stitch y endpoints ODA).
+   * **Nube Pública 24/7:** `https://one21026-ids-movilnet-pwa.onrender.com` (PWA Stitch, PWA Clientes y endpoints ODA).
 3. **Cero Terminal para el Dueño (Pilar VII):** Toda operación de diagnóstico, reinicio, prueba y actualización cuenta con lanzadores de doble clic directos (`.command`), eliminando la necesidad de interactuar con terminales de comandos.
 
 ---

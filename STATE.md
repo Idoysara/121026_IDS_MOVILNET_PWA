@@ -27,7 +27,7 @@ Todas las Fases del proyecto, el Despliegue de Producción, la Suite Geoespacial
 16. ✅ **Centro de Monitoreo Conversacional E2E & Conversatorio (+58 424 153 3712 / MOVI)** — Certificado (Capítulo 164, 12 tests).
 17. ✅ **Nodo Autónomo Nativo n8n Cloud `Movilnet Core & Marketing Router`** — Operativo en producción (Capítulo 118).
 18. ✅ **Sincronizador Bidireccional en Vivo n8n Cloud ➔ Dashboard Conversatorio** — Operativo en tiempo real (Capítulo 121).
-19. ✅ **Despliegue en la Nube 24/7 en Render (`https://movilnet-core.onrender.com`)** — Certificado (Capítulo 175).
+19. ✅ **Despliegue en la Nube 24/7 en Render (`https://one21026-ids-movilnet-pwa.onrender.com`)** — Certificado (Capítulo 210, Workspace `IDS_Movilnet_2_IA`, Plan Free, $0/mo).
 20. ✅ **Aislamiento Soberano del Canal de Datos PWA (`DATA_PWA_EXCLUSIVE`)** — Certificado (Capítulo 176, 11 tests).
 21. ✅ **Respaldo Soberano Certificado `141026_Movilnet_Core_PWA`** — Certificado (Capítulo 177).
 22. ✅ **Ambiente Aislado `develop` & Regla Inviolable de Blindaje** — Certificado (Capítulo 178, `.agents/rules/regla-inviolable-pase-produccion.md`).

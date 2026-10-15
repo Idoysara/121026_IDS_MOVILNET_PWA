@@ -26,11 +26,15 @@ Este repositorio alberga la plataforma de producción de **Telecomunicaciones Mo
 - **Seguridad de Agentes (NVIDIA SkillSpector):** Escáner AST de malware, troyanos y jailbreaks para skills y tools.
 - **Conversatorio & Monitoreo E2E:** Observabilidad del Webhook bot `+58 424 153 3712` en `:8010/ui/monitor/conversatorio.html` con flags de entrega verificada (`DELIVERY_ACK`).
 - **Experiencia de Usuario (UI/UX/AX):** PWA Mobile-First responsive (`/ui/pwa_stitch/index.html`) con continuidad de sesión en `sessionStorage` (`movilnet_pwa_session_id`) y simuladores nativos.
+- **Despliegue 100% en la Nube (Producción 24/7):** Microservicio en Render Cloud (Plan Free, $0/mo) protegido con Cloudflare Enterprise Anycast Edge:
+  * **PWA Clientes Directa:** [`https://one21026-ids-movilnet-pwa.onrender.com`](https://one21026-ids-movilnet-pwa.onrender.com)
+  * **Simulador con Máscara de Smartphone:** [`https://one21026-ids-movilnet-pwa.onrender.com/simulador`](https://one21026-ids-movilnet-pwa.onrender.com/simulador)
+  * **NOC Dashboard:** [`https://one21026-ids-movilnet-pwa.onrender.com/ui/dashboard/noc_dashboard.html`](https://one21026-ids-movilnet-pwa.onrender.com/ui/dashboard/noc_dashboard.html)
 - **Túnel Seguro Cloudflare (Opción 2):** Despliegue de alta resiliencia con ancho de banda 100% ILIMITADO y \$0 costo, enrutando tráfico público hacia el Core local (`:8010`) en 152 ms (cero cold starts).
-- **Despliegue y Orquestación:** Microservicio ODA en puerto local `:8010`, túnel Anycast global y n8n Cloud (`n8n.lpgtec.net`).
+- **Despliegue y Orquestación:** Microservicio ODA en Render Cloud y puerto local `:8010`, túnel Anycast global y n8n Cloud (`n8n.lpgtec.net`).
 - **Anexo Técnico Oficial:** [`docs/ANEXO_TECNICO_CLOUDFLARE_TUNNEL.md`](docs/ANEXO_TECNICO_CLOUDFLARE_TUNNEL.md) con auditoría de protocolos QUIC, TLS 1.3, curvas X25519MLKEM768 y guía de mantenimiento.
-- **Entregables Soberanos de Doble Clic:** Scripts `.command` para macOS (`reiniciar_todo_limpio.command`, `probar_geolocalizacion.command`, `verificar_whatsapp_sin_celular.command`).
-- **Respaldo Soberano Certificado:** `141026_Movilnet_Core_PWA` sellado con hash SHA-256 (Capítulos 1 al 208).
+- **Entregables Soberanos de Doble Clic:** Scripts `.command` para macOS (`reiniciar_todo_limpio.command`, `probar_geolocalizacion.command`, `verificar_whatsapp_sin_celular.command`, `AUDITAR_CLOUDFLARE_1CLIC.command`).
+- **Respaldo Soberano Certificado:** Paquete maestro `CORE_MOVILNET_EXPORT_151026.tar.gz` (65.27 MB, SHA-256 `be6fe911cd005f5882d1ee3ff2b8d659757e47345a97bbc411055f69bffec9ea`) y Manual On-Premise `DEPLOYMENT_MANUAL_CLIENTE.md` (Capítulos 1 al 210).
 
 ---
 
