@@ -25,12 +25,12 @@ Este repositorio alberga la plataforma de producción de **Telecomunicaciones Mo
 - **Google Suite Enterprise:** Conectores MCP activos para Drive, Sheets, Docs, Calendar y Gmail con cuotas y circuit breakers.
 - **Seguridad de Agentes (NVIDIA SkillSpector):** Escáner AST de malware, troyanos y jailbreaks para skills y tools.
 - **Conversatorio & Monitoreo E2E:** Observabilidad del Webhook bot `+58 424 153 3712` en `:8010/ui/monitor/conversatorio.html` con flags de entrega verificada (`DELIVERY_ACK`).
-- **Experiencia de Usuario (UI/UX/AX):** PWA Mobile-First responsive (`https://movilnet-core.onrender.com/prospect` y `/ui/pwa_stitch/index.html`) con continuidad de sesión en `sessionStorage` (`movilnet_pwa_session_id`) y simuladores nativos.
-- **Despliegue en la Nube 24/7:** Servicio activo en Render (`movilnet-core.onrender.com`) y n8n Cloud (`n8n.lpgtec.net`).
+- **Experiencia de Usuario (UI/UX/AX):** PWA Mobile-First responsive (`/ui/pwa_stitch/index.html`) con continuidad de sesión en `sessionStorage` (`movilnet_pwa_session_id`) y simuladores nativos.
+- **Túnel Seguro Cloudflare (Opción 2):** Despliegue de alta resiliencia con ancho de banda 100% ILIMITADO y \$0 costo, enrutando tráfico público hacia el Core local (`:8010`) en 152 ms (cero cold starts).
+- **Despliegue y Orquestación:** Microservicio ODA en puerto local `:8010`, túnel Anycast global y n8n Cloud (`n8n.lpgtec.net`).
+- **Anexo Técnico Oficial:** [`docs/ANEXO_TECNICO_CLOUDFLARE_TUNNEL.md`](docs/ANEXO_TECNICO_CLOUDFLARE_TUNNEL.md) con auditoría de protocolos QUIC, TLS 1.3, curvas X25519MLKEM768 y guía de mantenimiento.
 - **Entregables Soberanos de Doble Clic:** Scripts `.command` para macOS (`reiniciar_todo_limpio.command`, `probar_geolocalizacion.command`, `verificar_whatsapp_sin_celular.command`).
-- **Entorno de Trabajo:** Rama aislada **`develop`** (Rastreando `origin/develop`), físicamente desacoplada de la producción en Render Cloud.
-- **Blindaje de Producción:** Protegido bajo la regla institucional `.agents/rules/regla-inviolable-pase-produccion.md` (Cero despliegue a producción sin orden humana directa y respaldo previo sellado con SHA-256).
-- **Respaldo Soberano Certificado:** `141026_Movilnet_Core_PWA` sellado con hash SHA-256 (Capítulos 1 al 206).
+- **Respaldo Soberano Certificado:** `141026_Movilnet_Core_PWA` sellado con hash SHA-256 (Capítulos 1 al 207).
 
 ---
 

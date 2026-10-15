@@ -7073,6 +7073,8 @@ Se implementó una topología híbrida de alta resiliencia y ultra-baja latencia
    - Los enlaces a la PWA de autogestión ahora se generan apuntando al túnel Cloudflare seguro, eliminando cualquier consumo de ancho de banda en Render.
 4. **Integración Soberana de Doble Clic (`scripts/reiniciar_todo_limpio.command`):**
    - Paso 4/6 añadido para verificar y auto-levantar el túnel Cloudflare al reiniciar el ecosistema, mostrando la URL pública activa en el banner de consola.
+5. **Documento de Reconocimiento y Anexo Técnico Especializado:**
+   - Auditoría completa de protocolos (QUIC, HTTP/2, TLS 1.3, Post-Quantum X25519MLKEM768), claves, procesos y guías de mantenimiento consolidada en [docs/ANEXO_TECNICO_CLOUDFLARE_TUNNEL.md](file:///Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_141026/141026_Movilnet_Core_PWA/docs/ANEXO_TECNICO_CLOUDFLARE_TUNNEL.md).
 
 ### 🧪 3. Resultados de Pruebas y Certificación Militar (100% PASS)
 * **Suite Completa de Pruebas Automatizadas:**
