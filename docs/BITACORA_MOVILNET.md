@@ -50,7 +50,7 @@ flowchart TD
 
 ---
 
-## 📚 ÍNDICE DE CAPÍTULOS (1 al 202)
+## 📚 ÍNDICE DE CAPÍTULOS (1 al 204)
 
 | # | Título | Fecha | Estado |
 |:---:|:---|:---:|:---:|
@@ -166,6 +166,8 @@ flowchart TD
 | [200](#capítulo-200) | Promoción Oficial a Producción Release v1.0.4-prod-sealed y Lanzador Soberano macOS | 2026-10-14 20:45 | ✅ |
 | [201](#capítulo-201) | Diagnóstico y Resolución del Error en Nodo n8n 'Movilnet Core & Marketing Router' (GPS) | 2026-10-14 22:15 | ✅ |
 | [202](#capítulo-202) | Blindaje Soberano de Telemetría en Vivo, Aislamiento de Red y Watchdog Conversatorio (:8010) | 2026-10-15 00:20 | ✅ |
+| [203](#capítulo-203) | Auditoría Forense y Convergencia con Master Blueprint B2B Tripartito, Dossier Inversionistas ($58k) | 2026-10-15 08:30 | ✅ |
+| [204](#capítulo-204) | Diagnóstico Forense 5 Conversaciones, Erradicación Saldos Falsos N8N, Plan Ahorro 82% Tokens (489 Tests) | 2026-10-15 10:15 | ✅ |
 
 ---
 

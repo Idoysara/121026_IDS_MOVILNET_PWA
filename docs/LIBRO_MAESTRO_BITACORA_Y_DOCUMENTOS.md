@@ -50,7 +50,7 @@ flowchart TD
 
 ---
 
-## 📚 ÍNDICE DE CAPÍTULOS (1 al 202)
+## 📚 ÍNDICE DE CAPÍTULOS (1 al 204)
 
 | # | Título | Fecha | Estado |
 |:---:|:---|:---:|:---:|
@@ -166,6 +166,8 @@ flowchart TD
 | [200](#capítulo-200) | Promoción Oficial a Producción Release v1.0.4-prod-sealed y Lanzador Soberano macOS | 2026-10-14 20:45 | ✅ |
 | [201](#capítulo-201) | Diagnóstico y Resolución del Error en Nodo n8n 'Movilnet Core & Marketing Router' (GPS) | 2026-10-14 22:15 | ✅ |
 | [202](#capítulo-202) | Blindaje Soberano de Telemetría en Vivo, Aislamiento de Red y Watchdog Conversatorio (:8010) | 2026-10-15 00:20 | ✅ |
+| [203](#capítulo-203) | Auditoría Forense y Convergencia con Master Blueprint B2B Tripartito, Dossier Inversionistas ($58k) | 2026-10-15 08:30 | ✅ |
+| [204](#capítulo-204) | Diagnóstico Forense 5 Conversaciones, Erradicación Saldos Falsos N8N, Plan Ahorro 82% Tokens (489 Tests) | 2026-10-15 10:15 | ✅ |
 
 ---
 
@@ -15784,3 +15786,31 @@ En [`scripts/update_n8n_instant_dispatch.py`](file:///Users/ismael/Desktop/12102
 * **Parámetros APN:** De 350 tokens ➔ **0 tokens** (100% ahorro).
 * **Consultas Off-Topic (Gastronomía/Impresoras):** De 480 tokens ➔ **~25 tokens** (94.8% ahorro).
 * **Mensajes Duplicados PWA:** De 500 tokens ➔ **0 tokens** (100% ahorro).
+
+### 🧪 5. Construcción, Verificación y Certificación Militar Automatizada (100% PASS)
+* **Adecuaciones Algorítmicas Construidas:**
+  1. [`core/fastpath_intent_interceptor.py`](file:///Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_141026/141026_Movilnet_Core_PWA/core/fastpath_intent_interceptor.py):
+     - Mapeo determinista de hitos comerciales caraqueños (Los Palos Grandes -> Centro Plaza, Tolón -> Sambil Chacao / Torre El Rosal, El Marqués -> Centro Plaza, La Boyera / El Hatillo -> Centro Plaza).
+     - Ficha determinista de parámetros oficiales APN 4GMAX (`PARAMETROS_APN`, `int.movilnet.com.ve`, MCC 734, MNC 06).
+     - Guardarraíl de dominio Telco (`OFF_TOPIC_TELCO_GUARD`) para acotar gastronomía, tintas y comercios ajenos a <40 tokens.
+     - Memoria de sesión GPS volátil (`_gps_session_cache`, TTL 30 min) para consultas subsiguientes de agencias cercanas sin amnesia.
+     - Compuerta `HIJA_TERCEROS_GUARD` que exige el número Movilnet destino (0416/0426) antes de entregar datos C2P a usuarios de otras operadoras.
+     - Unificación absoluta del teléfono oficial de Pago Móvil C2P a `0424-1533712`.
+  2. [`scripts/update_n8n_instant_dispatch.py`](file:///Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_141026/141026_Movilnet_Core_PWA/scripts/update_n8n_instant_dispatch.py):
+     - Router JavaScript canónico N8N sincronizado con los hitos de Caracas, guardarraíl APN y compuerta de terceros.
+     - Purgado absoluto del saldo quemado `Bs. 1.650,00` y `11.9 GB` en todas las versiones (`root.nodes` y `activeVersion.nodes`).
+     - Actualización de tools LangChain `ConsultarSaldo` (redirige a PWA/SMS sin inventar montos) y `PagoC2P` (teléfono `0424-1533712`).
+     - Poda y reorientación del System Prompt del `AI Agent` unificando la identidad canónica oficial **MOVI**.
+  3. [`api/n8n_workflows/viki_lpgtec_v2_ids_instant_dispatch.json`](file:///Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_141026/141026_Movilnet_Core_PWA/api/n8n_workflows/viki_lpgtec_v2_ids_instant_dispatch.json):
+     - Workflow N8N regenerado e inmutable, con 0 menciones de saldos quemados y 0 inconsistencias de números bancarios.
+* **Nueva Suite de Pruebas Automatizadas:**
+  - Archivo: [`tests/test_action_plan_rules_204.py`](file:///Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_141026/141026_Movilnet_Core_PWA/tests/test_action_plan_rules_204.py).
+  - Resultados: **7/7 pruebas aprobadas (100% PASS)** en 0.17s.
+* **Verificación Global del Repositorio:**
+  - Suite Principal (`tests/`): **464/464 pruebas aprobadas (100% PASS)** en 26.36s.
+  - Suite de Scripts (`scripts/test_*.py`): **25/25 pruebas aprobadas (100% PASS)** en 0.79s.
+  - Total Acumulado: **489 pruebas ejecutadas con 0 fallos y 0 errores**.
+* **Auditoría Forense y Pureza Sintáctica:**
+  - Verificación AST: `ast.parse()` superado exitosamente sin `SyntaxError` en todos los módulos modificados.
+  - Auditoría de Evidencias ZH-MHEP ([`scripts/audit_docs_evidence.py`](file:///Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_141026/141026_Movilnet_Core_PWA/scripts/audit_docs_evidence.py)): **0 hallazgos (100% Clean)**.
+* **Sello de Certificación:** `CERT-CAP-204-SOVEREIGN-TELECOM-2026-10-15`
