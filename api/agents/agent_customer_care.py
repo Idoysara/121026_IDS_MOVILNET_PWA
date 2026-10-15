@@ -339,20 +339,39 @@ class FastPathEngine:
         """
         # Consultas de información pública que no requieren contexto de abonado
         if intent == IntentType.OFFICE_LOCATION_QUERY:
+            from core.geo_catalog import find_agencies_by_city_or_state
+            cleaned_q = re.sub(
+                r"\b(oficina|oficinas|agencia|agencias|sucursal|sucursales|donde|queda|estan|atencion|en|la|el|los|las|de|movilnet)\b",
+                " ",
+                raw_text.lower()
+            ).strip()
+            agencies = find_agencies_by_city_or_state(cleaned_q, limit=3) if cleaned_q else []
+            if not agencies:
+                for kw in ["palos grandes", "chacao", "caracas", "maracaibo", "valencia", "barquisimeto", "puerto ordaz"]:
+                    if kw in raw_text.lower():
+                        agencies = find_agencies_by_city_or_state(kw, limit=3)
+                        if agencies:
+                            break
+            if not agencies:
+                ccs_offices = find_agencies_by_city_or_state("recreo", limit=1)
+                mcbo_offices = find_agencies_by_city_or_state("maracaibo", limit=1)
+                val_offices = find_agencies_by_city_or_state("valencia", limit=1)
+                agencies = ccs_offices + mcbo_offices + val_offices
+
+            ag_lines = []
+            for ag in agencies:
+                ag_lines.append(f"📍 *{ag['name']}:* {ag['address']}. Horario: {ag.get('opening_hours', 'Lunes a Sábado 09:00 - 17:00')}")
+
             text = (
-                f"🏢 *Oficinas Comerciales y Centros de Atención Movilnet*\n\n"
-                f"📍 *Caracas:* C.C. El Recreo, Nivel C2 / Torre Movilnet El Rosal.\n"
-                f"📍 *Maracaibo:* C.C. Sambil Maracaibo, Nivel Feria.\n"
-                f"📍 *Valencia:* C.C. Metrópolis, Nivel Sol.\n"
-                f"📍 *Barquisimeto:* C.C. Las Trinitarias.\n"
-                f"📍 *Puerto Ordaz:* C.C. Orinokia Mall.\n\n"
-                f"⏰ *Horario de Atención:* Lunes a Sábado de 9:00 AM a 6:00 PM."
+                f"🏢 *Oficinas Comerciales y Centros de Atención Movilnet 4GMAX*\n\n"
+                + "\n\n".join(ag_lines) + "\n\n"
+                f"⏰ *Horario General:* Lunes a Sábado de 9:00 AM a 5:00 PM."
             )
             buttons = [
                 {"id": "btn_check_balance", "title": "💰 Saldo"},
                 {"id": "btn_tech_apn", "title": "⚙️ Soporte Técnico"}
             ]
-            meta = {"locations_count": 5}
+            meta = {"locations_count": len(agencies)}
             return text, buttons, meta
 
         if intent == IntentType.APN_TECH_SUPPORT:
@@ -716,20 +735,20 @@ class LLMReasoningEngine:
 
     SYSTEM_PROMPT = """
 Eres el Asistente Oficial e Inteligente de Telecomunicaciones Movilnet C.A. (Venezuela).
-Tu misión primordial es representar a Movilnet, brindar soporte de excelencia en telecomunicaciones (líneas 0416/0426, planes 4GMAX, saldo, recargas C2P, APN y cobertura) y orientar el embudo de marketing digital de forma armónica y pertinente.
+Tu misión primordial es representar a Movilnet, brindar soporte de excelencia en telecomunicaciones (líneas 0416/0426, planes 4GMAX, saldo, recargas C2P, APN, reposición SIM, portabilidad y puntos de atención presencial) y orientar el embudo de mercadeo de forma armónica y respetuosa.
 
-DIRECTRICES ESTRATÉGICAS DE MERCADEO Y FUNNEL MARKETING:
-1. ARMONÍA Y NO REPETICIÓN: Sé natural y empático. Si el usuario está conversando sobre un tema específico (por ejemplo, buscando lugares donde comer o farmacias cercanas), ENFÓCATE PRIMERO en darle la información exacta y completa.
-2. NO hagas spam comercial en cada mensaje: solo ofrece recargas o paquetes de datos si el usuario lo solicita, si su consulta está vinculada a saldo/megas, o como una recomendación breve al inicio de una sesión.
-3. CONCORDANCIA CON EL SALDO: Si el usuario ya tiene suficientes megas o saldo activo, NUNCA le sugieras comprar 'más megas' ni le digas 'para que no te quedes sin datos'; en su lugar, invítale a disfrutar de su navegación 4GMAX o mencione beneficios aliados (ej. promociones en cines o aliados comerciales).
-4. CIERRE CONCISO: Responde de forma completa sin dejar oraciones a medio terminar.
+DIRECTRICES DE ROL Y ALCANCE DE ATENCIÓN (CORE DOMAIN TELCO):
+1. ESPECIALIDAD Y ENFOQUE EXCLUSIVO: Eres un asistente corporativo de telecomunicaciones. NO eres un directorio gastronómico, turístico ni de compras comerciales externas.
+2. DELIMITACIÓN ANTE CONSULTAS OFF-TOPIC: Si el usuario pregunta por restaurantes, comidas, farmacias ajenas, delivery, hoteles u ocio, aclara de forma breve y cortés que tu función oficial es la conectividad y soporte de telecomunicaciones Movilnet, e invítale a utilizar mapas o aplicaciones locales desde su navegación 4GMAX. NUNCA inventes recomendaciones gastronómicas, ni ofrezcas menús de comida criolla, rápida o italiana.
+3. CONTEXTO MULTI-TURNO Y CONTINUIDAD: Tienes acceso al historial reciente de la conversación (`session_history`). Si el usuario hace referencia a algo conversado previamente ('como te dije', 'lo recuerdas', 'te comenté antes'), revisa los turnos anteriores para responder con coherencia y empatía sin decir que cada sesión inicia de cero.
+4. ARMONÍA Y NO REPETICIÓN: Sé natural, empático y profesional. No hagas spam comercial en cada mensaje: solo ofrece recargas o paquetes de datos si el usuario lo solicita o si su consulta está vinculada a saldo o megas.
+5. CONCORDANCIA CON EL SALDO: Si el usuario ya tiene suficientes megas o saldo activo, NUNCA le sugieras comprar 'más megas' ni le digas 'para que no te quedes sin datos'; en su lugar, invítale a disfrutar de su navegación 4GMAX.
+6. CIERRE CONCISO: Responde de forma completa sin dejar oraciones a medio terminar (2 a 4 oraciones bien redactadas).
 
-BARRERAS Y REGLAS DE SEGURIDAD (ANTI-ALUCINACIÓN Y DETECCIÓN DE DATOS FALTANTES):
-1. CERO ADIVINACIÓN: NUNCA asumas, inventes ni alucines información que el usuario no haya suministrado.
-2. DETECCIÓN ACTIVA DE UBICACIÓN Y DATOS FALTANTES: Si el usuario pide sugerencias de productos, restaurantes, comida, farmacias, automercados, clínicas o servicios y NO indica dónde se encuentra (o no hay coordenadas GPS válidas en el contexto), QUEDA ESTRICTAMENTE PROHIBIDO asumir que está en Caracas o en cualquier otra ciudad. En su lugar, debes solicitar amablemente y con calidez su ubicación o ciudad (ej: '¡Con gusto te ayudo! 🍽️ Para darte las opciones más cercanas y exactas, ¿me indicas en qué ciudad o zona te encuentras?').
-3. Si un tipo de comida o local específico (ej. sushi, Automercado Río) no está en la lista verificada de su radio inmediato, sé transparente: 'En mi radio inmediato verificado no tengo registrado ese establecimiento, pero cerca tienes...'.
-4. NUNCA menciones la hora ni el clima a menos que el usuario pregunte expresamente por la hora, fecha o el clima.
-5. AHORRO DE TOKENS Y FIDELIZACIÓN: Mantén siempre una longitud balanceada, respetuosa, profesional y breve (2 a 4 oraciones completas y bien redactadas), resolviendo con precisión para que el usuario disfrute la experiencia y se fidelice con el asistente Movilnet.
+BARRERAS Y REGLAS DE SEGURIDAD (ANTI-ALUCINACIÓN):
+1. CERO ADIVINACIÓN: NUNCA asumas, inventes ni alucines información que no conste en los datos oficiales de Movilnet o suministrada por el usuario.
+2. PUNTOS DE ATENCIÓN OFICIALES: Si el usuario busca oficinas, agencias o agentes autorizados en una zona (ej: Los Palos Grandes, Chacao, Caracas, etc.), básate exclusivamente en las agencias y oficinas registradas en la base de datos de Movilnet.
+3. NUNCA menciones la hora ni el clima a menos que el usuario pregunte expresamente por la hora, fecha o el clima.
 
 REGLA SOBERANA DE SEGMENTACIÓN POR NÚMERO (0416/0426 vs NO-MOVILNET):
 - SI EL USUARIO TIENE UN NÚMERO DIFERENTE DE 0416 Y 0426 (ej: 0414, 0424, 0412 u otro):
@@ -824,30 +843,9 @@ REGLA SOBERANA DE SEGMENTACIÓN POR NÚMERO (0416/0426 vs NO-MOVILNET):
         except Exception:
             pass
 
-        # Buscar POIs de salud, farmacias, corporativos y gastronomía mediante MCP Geo Suite
-        places_summary = ""
-        try:
-            from mcp.geo_tools import mcp_geo_spatial_search
-            # Buscar en radio de 3.5 km
-            geo_res = mcp_geo_spatial_search(target_lat, target_lon, radius_meters=3500, limit=8)
-            if geo_res.get("results"):
-                p_items = []
-                for p in geo_res["results"]:
-                    cat_badge = p['category'].upper()
-                    phone_txt = f" - Tel: {p['phone']}" if p.get("phone") else ""
-                    emerg_txt = " [Servicio 24 Horas]" if p.get("emergency_service_24h") else ""
-                    p_items.append(
-                        f"• [{cat_badge}] {p['name']} ({p['distance_meters']}m, a ~{p['walking_minutes_est']} min a pie - {p['address']}){phone_txt}{emerg_txt}"
-                    )
-                places_summary = "\nPuntos de Interés Cartográficos Verificados (Farmacias, Clínicas, Oficinas, Comercios) en este radio GPS:\n" + "\n".join(p_items)
-        except Exception:
-            pass
-
         return (
-            f"- Ubicación GPS estimada: {best_city} (Lat: {target_lat:.4f}, Lon: {target_lon:.4f})\n"
-            f"- Clima actual en su zona: {weather_info}\n"
-            f"{places_summary}\n"
-            f"*Regla estricta*: Si el usuario pregunta por recomendaciones de farmacias, clínicas, edificios, compras o gastronomía, básate exclusivamente en los puntos de interés verificados de arriba. Proporciona distancias a pie y números de teléfono si están registrados. NUNCA inventes nombres ni ubicaciones ficticias."
+            f"- Ubicación territorial de referencia: {best_city} (Lat: {target_lat:.4f}, Lon: {target_lon:.4f})\n"
+            f"- Clima actual: {weather_info}"
         )
 
     def generate_response(
@@ -1572,7 +1570,7 @@ class CustomerCareAgent:
         Garantiza medición estricta de latencia, costo en tokens y enrutamiento Swarm.
         """
         start_time = time.perf_counter()
-        session_id = message.session_id or f"sess-{message.msisdn or 'anon'}-{uuid.uuid4().hex[:6]}"
+        session_id = message.session_id or (f"sess-{message.msisdn}" if message.msisdn else f"sess-anon-{uuid.uuid4().hex[:6]}")
         raw_text = message.text.strip()
         msisdn = message.msisdn
 

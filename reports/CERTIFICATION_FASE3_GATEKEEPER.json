@@ -1,10 +1,10 @@
 {
-  "certificate_id": "FASE3-GATEKEEPER-CERT-1624278AEAAD",
+  "certificate_id": "FASE3-GATEKEEPER-CERT-A9461D51C517",
   "phase": "FASE_3_AI_CORE_AND_MULTI_AGENT_SWARM",
   "step": "PASO_5_GATEKEEPER_3_FINAL_FASE_3",
   "project": "AI_Movilnet_300926",
   "status": "CERTIFICADO_Y_APROBADO_100%",
-  "timestamp": "2026-10-15T15:07:12.230379+00:00",
+  "timestamp": "2026-10-15T15:39:43.006244+00:00",
   "verdict": "Fase 3 de AI_Movilnet_300926 validada, auditada y certificada formalmente en sus 6 dimensiones críticas: Enjambre Swarm L5 con 4 Agentes Especializados interconectados, 5 Workflows Omnicanal n8n desplegados, Pipeline CI/CD, Contrato OpenAPI 3.1.0 TM Forum ODA (23 paths, 29 schemas), Auditoría SAST Grado Militar y Rendimiento Carrier-Grade con latencias sub-milisegundo. Operación 100% Homologada para Telecomunicaciones Movilnet C.A.",
   "metrics": {
     "dimensions_evaluated": 6,
@@ -14,11 +14,11 @@
     "openapi_paths": 25,
     "openapi_schemas": 31,
     "hardcoded_secrets_detected": 0,
-    "db_avg_latency_ms": 0.273,
-    "agent_n1_avg_latency_ms": 0.662,
-    "agent_n2_bcv_latency_ms": 0.009,
-    "agent_n3_luhn_latency_ms": 0.037,
-    "agent_n4_ml_latency_ms": 0.033
+    "db_avg_latency_ms": 0.077,
+    "agent_n1_avg_latency_ms": 0.129,
+    "agent_n2_bcv_latency_ms": 0.003,
+    "agent_n3_luhn_latency_ms": 0.009,
+    "agent_n4_ml_latency_ms": 0.008
   },
   "supported_agents": [
     "Agente Nivel 1: Customer Care, Consulta OCS & Fast-Path Engine (TMF621)",
@@ -26,5 +26,5 @@
     "Agente Nivel 3: Gestión de Emergencias, Fraude y Bloqueo EIR/IMEI (TMF675 / GSMA)",
     "Agente Nivel 4: Retención Proactiva, Fidelización & Predicción de Churn ML (TMF680)"
   ],
-  "sha256_cryptographic_seal": "5f39c03afb8e54e97c784ca947954411c8b7d6a9e8f73206b478c4aa8da60599"
+  "sha256_cryptographic_seal": "e0cb1ca10169f79039576ba2d5e1a7af96957bf7cc21caf3d977be55a7b5b56a"
 }

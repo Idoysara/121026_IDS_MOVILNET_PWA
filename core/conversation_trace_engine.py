@@ -1910,14 +1910,14 @@ class ConversationTraceEngine:
         is_movilnet = classification.carrier == Carrier.MOVILNET
         lower_msg = message_text.lower()
 
-        if fp_check.can_intercept:
-            active_branch = f"Rama 8: Movilnet Core - Fast-Path ({fp_check.intent_detected})"
-            route_name = "FAST_PATH_TELCO_ODA"
-            route_desc = f"Intercepción determinística en frontera: {fp_check.intent_detected}. Cable directo :8010 (0 tokens)"
-        elif classification.is_competitor and ("portabilidad" in lower_msg or "cambiar" in lower_msg or "esim" in lower_msg):
+        if classification.is_competitor and ("portabilidad" in lower_msg or "cambiar" in lower_msg or "esim" in lower_msg or (fp_check.can_intercept and fp_check.intent_detected == "OFERTA_PORTABILIDAD")):
             active_branch = "Rama 8: Funnel Marketing Portabilidad"
             route_name = "FUNNEL_MARKETING_PORTABILIDAD"
             route_desc = f"Usuario de {classification.carrier_label} interesado en portabilidad. Activa oferta BOFU"
+        elif fp_check.can_intercept:
+            active_branch = f"Rama 8: Movilnet Core - Fast-Path ({fp_check.intent_detected})"
+            route_name = "FAST_PATH_TELCO_ODA"
+            route_desc = f"Intercepción determinística en frontera: {fp_check.intent_detected}. Cable directo :8010 (0 tokens)"
         elif classification.is_competitor:
             active_branch = "Rama 8: Funnel Marketing Portabilidad (Captación)"
             route_name = "FUNNEL_MARKETING_PORTABILIDAD"

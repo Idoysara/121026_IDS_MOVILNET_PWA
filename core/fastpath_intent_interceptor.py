@@ -223,6 +223,12 @@ class FastPathIntentInterceptor:
         ]):
             return "PARAMETROS_APN"
 
+        # 3.8. Exclusión de citas Google Calendar / Google Suite (delegar a agentes cognitivos)
+        if any(w in text or w in normalized_text for w in [
+            "agenda", "agendar", "cita", "calendario", "calendar", "google calendar", "enviar recibo", "enviar factura"
+        ]):
+            return None
+
         # 4. Localizador de Oficinas, Agencias y Tiendas Movilnet (Geoespacial)
         if any(w in text or w in normalized_text for w in [
             "oficina", "oficinas", "agencia", "agencias", "sucursal", "sucursales",
@@ -244,10 +250,11 @@ class FastPathIntentInterceptor:
 
         # 6.5. Guardarraíl de Dominio Telco (Off-Topic: Gastronomía, Tintas, Periféricos, Recetas, Ocio)
         if any(w in text or w in normalized_text for w in [
-            "tinta", "tintas", "epson", "impresora", "impresoras", "restaurante", "restaurantes",
-            "comer", "comida", "desayuno", "desayunar", "empanada", "empanadas", "arepa", "arepas",
-            "hamburguesa", "hamburguesas", "pizza", "pizzas", "farmacia", "farmacias", "medicina", "medicinas",
-            "taxi", "hotel", "aburrido", "pelicula", "peliculas", "serie", "series", "acertijo", "trivia"
+            "tinta", "tintas", "epson", "impresora", "impresoras", "restaurante", "restaurantes", "restaurant",
+            "comer", "comida", "almorzar", "almuerzo", "cenar", "cena", "desayuno", "desayunar", "sushi",
+            "empanada", "empanadas", "arepa", "arepas", "hamburguesa", "hamburguesas", "pizza", "pizzas",
+            "farmacia", "farmacias", "medicina", "medicinas", "taxi", "hotel", "aburrido",
+            "pelicula", "peliculas", "serie", "series", "acertijo", "trivia"
         ]):
             return "OFF_TOPIC_TELCO_GUARD"
 
@@ -637,6 +644,21 @@ class FastPathIntentInterceptor:
         carrier_enum, display_name, is_comp = CarrierFunnelClassifier.identify_carrier(clean_phone)
         pwa_suffix = self.build_pwa_link_suffix(clean_phone)
 
+        # Consultar la base de datos relacional si el usuario menciona una zona territorial
+        detected_agencies = []
+        text_lower = message_text.lower()
+        for kw in ["palos grandes", "chacao", "caracas", "maracaibo", "valencia", "barquisimeto", "altamira", "las mercedes", "maracay", "san cristobal", "baruta", "el hatillo", "petare"]:
+            if kw in text_lower:
+                detected_agencies = find_agencies_by_city_or_state(kw, limit=1)
+                if detected_agencies:
+                    break
+
+        agency_note = ""
+        if detected_agencies:
+            ag = detected_agencies[0]
+            sector_name = ag.get('parish') or ag.get('municipality') or 'tu sector'
+            agency_note = f"\n\n📍 En **{sector_name}** dispones de nuestra **{ag['name']}**."
+
         if is_comp:
             promo = "¡Aprovecha y cámbiate gratis a Movilnet 4GMAX con tu eSIM digital y 10GB de bono de bienvenida!"
         else:
@@ -644,7 +666,8 @@ class FastPathIntentInterceptor:
 
         return (
             "👋 En **Movilnet** nos especializamos en tu conectividad móvil, planes de datos 4GMAX, recargas y soporte de telecomunicaciones. "
-            "Para consultas de compras externas, gastronomía o comercios generales, te sugerimos consultar guías y directorios locales especializados.\n\n"
+            "Para consultas de compras externas, gastronomía o comercios generales, te sugerimos consultar guías y directorios locales especializados."
+            f"{agency_note}\n\n"
             f"{promo}"
             f"{pwa_suffix}"
         )
@@ -736,31 +759,44 @@ class FastPathIntentInterceptor:
         ).strip()
 
         agencies = []
-        # Mapeo determinista de hitos comerciales de la Gran Caracas
-        if any(w in text_lower for w in ["tolon", "tolón", "las mercedes"]):
-            agencies = [
-                {"name": "Oficina Comercial Movilnet Sambil Chacao (Eje Las Mercedes/Tolón)", "address": "CC Sambil Chacao, Nivel Autopista, Chacao (~2.1 km del Tolón)", "opening_hours": "Lunes a Domingo 10:00 - 19:00", "google_maps_url": "https://www.google.com/maps/dir/?api=1&destination=10.4905,-66.858"},
-                {"name": "Sede Principal Torre El Rosal", "address": "Av. Venezuela, Torre Movilnet, El Rosal, Chacao (~2.3 km)", "opening_hours": "Lunes a Viernes 08:00 - 16:30", "google_maps_url": "https://www.google.com/maps/dir/?api=1&destination=10.489,-66.867"}
-            ]
-        elif any(w in text_lower for w in ["marques", "márques", "boleita", "boleíta"]):
-            agencies = [
-                {"name": "Oficina Comercial Movilnet Centro Plaza (Eje El Marqués)", "address": "CC Centro Plaza, Nivel 3, Los Palos Grandes, Chacao", "opening_hours": "Lunes a Sábado 09:00 - 17:00", "google_maps_url": "https://www.google.com/maps/dir/?api=1&destination=10.496,-66.8525"}
-            ]
-        elif any(w in text_lower for w in ["la boyera", "boyera", "el hatillo"]):
-            agencies = [
-                {"name": "Oficina Comercial Movilnet Centro Plaza (Eje Hatillo/Boyera)", "address": "CC Centro Plaza, Los Palos Grandes, Caracas", "opening_hours": "Lunes a Sábado 09:00 - 17:00", "google_maps_url": "https://www.google.com/maps/dir/?api=1&destination=10.496,-66.8525"}
-            ]
-        elif any(w in text_lower for w in ["palos grandes", "chacao"]):
-            agencies = [
-                {"name": "Oficina Comercial Movilnet Centro Plaza", "address": "CC Centro Plaza, Nivel 3, Los Palos Grandes, Chacao, Caracas", "opening_hours": "Lunes a Sábado 09:00 - 17:00", "google_maps_url": "https://www.google.com/maps/dir/?api=1&destination=10.496,-66.8525"}
-            ]
-        elif cleaned_query:
+        if cleaned_query:
             agencies = find_agencies_by_city_or_state(cleaned_query, limit=3)
 
         if not agencies:
-            for place in ["caracas", "chacao", "baruta", "maracaibo", "valencia", "barquisimeto", "puerto la cruz", "maracay", "san cristobal", "zulia", "carabobo", "lara", "anzoategui", "aragua", "tachira"]:
-                if place in text_lower:
-                    agencies = find_agencies_by_city_or_state(place, limit=3)
+            # Resolución dinámica contra catálogo relacional SQLite geo_pois
+            territorial_hints = [
+                ("palos grandes", "palos grandes"),
+                ("chacao", "chacao"),
+                ("las mercedes", "sambil"),
+                ("tolon", "sambil"),
+                ("tolón", "sambil"),
+                ("marques", "centro plaza"),
+                ("márques", "centro plaza"),
+                ("boleita", "centro plaza"),
+                ("boleíta", "centro plaza"),
+                ("la boyera", "centro plaza"),
+                ("boyera", "centro plaza"),
+                ("el hatillo", "centro plaza"),
+                ("el recreo", "recreo"),
+                ("sambil", "sambil"),
+                ("caracas", "caracas"),
+                ("baruta", "baruta"),
+                ("maracaibo", "maracaibo"),
+                ("valencia", "valencia"),
+                ("barquisimeto", "barquisimeto"),
+                ("puerto la cruz", "puerto la cruz"),
+                ("maracay", "maracay"),
+                ("san cristobal", "san cristobal"),
+                ("zulia", "zulia"),
+                ("carabobo", "carabobo"),
+                ("lara", "lara"),
+                ("anzoategui", "anzoategui"),
+                ("aragua", "aragua"),
+                ("tachira", "tachira")
+            ]
+            for kw, target_q in territorial_hints:
+                if kw in text_lower:
+                    agencies = find_agencies_by_city_or_state(target_q, limit=3)
                     if agencies:
                         break
 

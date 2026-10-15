@@ -1966,11 +1966,18 @@
       }, 4000);
 
       try {
+        let pwaSessionId = sessionStorage.getItem('movilnet_pwa_session_id');
+        if (!pwaSessionId) {
+          pwaSessionId = 'pwa_' + (currentMsisdn || 'anon') + '_' + Math.random().toString(36).substring(2, 9);
+          sessionStorage.setItem('movilnet_pwa_session_id', pwaSessionId);
+        }
+
         const payload = {
           text: msg,
           message: msg,
           msisdn: currentMsisdn,
           phone: currentMsisdn,
+          session_id: pwaSessionId,
           channel: 'pwa_mobile'
         };
 

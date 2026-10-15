@@ -2080,10 +2080,11 @@ class MovilnetAPIService:
         else:
             sender_name_in = None
 
+        session_id_val = body.get("session_id") or (f"pwa-{normalized_phone}" if normalized_phone else None)
         agent_msg = AgentMessage(
             text=str(text).strip(),
             msisdn=normalized_phone,
-            session_id=body.get("session_id"),
+            session_id=session_id_val,
             channel=body.get("channel", "api"),
             subscriber_cid=normalized_cid,
             latitude=parsed_lat,
@@ -2102,6 +2103,13 @@ class MovilnetAPIService:
             "pwa", "pwa_mobile", "web", "pwa_stitch", "pwa_web", "mobile_pwa", "pwa_data"
         ] or bool(body.get("is_pwa"))
 
+        fp_res = fastpath_interceptor.intercept(
+            clean_text_in,
+            phone_for_guard,
+            latitude=parsed_lat,
+            longitude=parsed_lon
+        )
+
         if WebhookNoiseFilter.is_system_security_notice(clean_text_in):
             response = self.customer_care_agent.process_message(agent_msg)
             response.response_text = (
@@ -2117,6 +2125,34 @@ class MovilnetAPIService:
             response.tokens_consumed = 0
             response.cost_usd = 0.0
             response.metadata["guardrail"] = "NON_SOLICITED_PROPAGANDA_GUARD"
+        elif fp_res.can_intercept and fp_res.intent_detected == "OFF_TOPIC_TELCO_GUARD":
+            from api.agents.agent_customer_care import AgentResponse, AgentExecutionMode, IntentType
+            eff_session = session_id_val or f"sess-{phone_for_guard}"
+            response = AgentResponse(
+                response_text=fp_res.response_text,
+                intent=IntentType.UNKNOWN,
+                execution_mode=AgentExecutionMode.FAST_PATH,
+                latency_ms=round(fp_res.latency_ms, 2),
+                tokens_consumed=0,
+                cost_usd=0.0,
+                handoff_required=False,
+                target_agent=None,
+                interactive_options=[],
+                metadata={
+                    "data_source": fp_res.data_source,
+                    "fastpath_intent": fp_res.intent_detected,
+                    "channel": incoming_channel
+                },
+                session_id=eff_session
+            )
+            # Conservar memoria conversacional multi-turno en RAM
+            self.customer_care_agent.memory.add_turn(eff_session, role="user", content=clean_text_in)
+            self.customer_care_agent.memory.add_turn(
+                eff_session,
+                role="agent",
+                content=response.response_text,
+                intent=fp_res.intent_detected
+            )
         else:
             response = self.customer_care_agent.process_message(agent_msg)
             # Solo añadir enlace PWA si el usuario no está en PWA y si la consulta solicita app/web o en saldo inicial

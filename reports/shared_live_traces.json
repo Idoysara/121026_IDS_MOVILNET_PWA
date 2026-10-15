@@ -1,5 +1,1543 @@
 [
   {
+    "trace_id": "TRACE-SIM-1792078864223",
+    "execution_id": "SIM-1792078864",
+    "workflow_id": "sNMbtiEiTkuQ9OCY",
+    "started_at": "2026-10-15T15:41:04.223025+00:00",
+    "stopped_at": "2026-10-15T15:41:04.223872+00:00",
+    "total_duration_sec": 0.22,
+    "status": "SUCCESS",
+    "bot_number": "+58 424 153 3712",
+    "user_phone": "04161234567",
+    "user_push_name": "Abonado 04161234567",
+    "carrier": "MOVILNET",
+    "carrier_label": "Movilnet 4GMAX",
+    "is_competitor": false,
+    "user_message": "te lo comente en el chat anterior no lo recuerdas",
+    "bot_reply": "Comprendido. Como asistente oficial de *Movilnet 4GMAX* estoy aquí para ayudarte con cualquier gestión de tu línea (saldo, megas, planes, recargas C2P o soporte técnico), así como orientarte sobre puntos de atención o cobertura. ¿Podrías especificarme un poco más tu consulta para darte una respuesta exacta?",
+    "intent_detected": "MARKETING_PORTABILITY",
+    "pipeline_route": "AI_AGENT_COGNITIVO",
+    "steps": [
+      {
+        "step_index": 1,
+        "node_name": "Webhook (messages.upsert)",
+        "phase_category": "1. Ingesta Perimetral",
+        "status": "success",
+        "execution_time_ms": 1.2,
+        "description": "Recibió mensaje desde PWA Móvil (Data 4GMAX) en la línea bot +58 424 153 3712",
+        "input_summary": {
+          "device": "PWA Móvil (Data 4GMAX)",
+          "raw_phone": "04161234567"
+        },
+        "output_summary": {
+          "normalized_phone": "04161234567",
+          "message": "te lo comente en el chat anterior no lo recuerdas"
+        }
+      },
+      {
+        "step_index": 2,
+        "node_name": "If (fromMe == false)",
+        "phase_category": "1. Ingesta Perimetral",
+        "status": "success",
+        "execution_time_ms": 0.8,
+        "description": "Comprobó fromMe == false (mensaje genuino de usuario)",
+        "input_summary": {},
+        "output_summary": {
+          "condition_passed": true
+        }
+      },
+      {
+        "step_index": 3,
+        "node_name": "Edit Fields & Switch",
+        "phase_category": "2. Normalización de Medio",
+        "status": "success",
+        "execution_time_ms": 3.5,
+        "description": "Identificó operadora Movilnet 4GMAX y pushName 'Abonado 04161234567'",
+        "input_summary": {},
+        "output_summary": {
+          "carrier": "MOVILNET",
+          "is_competitor": false
+        }
+      },
+      {
+        "step_index": 4,
+        "node_name": "Router - Consultas determinísticas",
+        "phase_category": "3. Enrutamiento de Intención",
+        "status": "success",
+        "execution_time_ms": 4.1,
+        "description": "Consulta general abierta. Se enruta al modelo generativo Gemini",
+        "input_summary": {},
+        "output_summary": {
+          "branch_activated": "Rama 9: AI Agent Fallback (Gemini Flash)",
+          "pipeline_route": "AI_AGENT_GEMINI"
+        }
+      },
+      {
+        "step_index": 5,
+        "node_name": "🧠 Movilnet Cognitive Agent L5 (Core N→1)",
+        "phase_category": "4. Procesamiento Core",
+        "status": "success",
+        "execution_time_ms": 35.0,
+        "description": "Resolución contextual con herramientas OCS / Geo POIs / Planes en tiempo real",
+        "input_summary": {},
+        "output_summary": {
+          "agent_status": "OK",
+          "model": "gemini-flash-hybrid"
+        }
+      },
+      {
+        "step_index": 6,
+        "node_name": "Merge 5 & Code (Sanitización Markdown)",
+        "phase_category": "5. Sanitización de Salida",
+        "status": "success",
+        "execution_time_ms": 2.1,
+        "description": "Sanitizó caracteres especiales para WhatsApp y unificó salida hacia el canal de mensajería",
+        "input_summary": {},
+        "output_summary": {
+          "ready_for_whatsapp": true
+        }
+      },
+      {
+        "step_index": 7,
+        "node_name": "HTTP Request (Evolution API /sendText)",
+        "phase_category": "6. Despacho Final al Celular",
+        "status": "success",
+        "execution_time_ms": 180.0,
+        "description": "Entregó mensaje en pantalla de 04161234567 (PWA Móvil (Data 4GMAX))",
+        "input_summary": {},
+        "output_summary": {
+          "number": "04161234567",
+          "delivery_status": "DELIVERY_ACK"
+        }
+      }
+    ],
+    "process_timers": {
+      "t1_user_sent_ts": "2026-10-15T15:41:04.073025+00:00",
+      "t2_n8n_in_ts": "2026-10-15T15:41:04.223025+00:00",
+      "t3_core_resolved_ts": "2026-10-15T15:41:04.240025+00:00",
+      "t4_n8n_out_ts": "2026-10-15T15:41:04.223872+00:00",
+      "t5_evolution_queued_ts": "2026-10-15T15:41:04.243872+00:00",
+      "t6_meta_server_ack_ts": "2026-10-15T15:41:04.423872+00:00",
+      "t7_phone_delivered_ts": "2026-10-15T15:41:04.773872+00:00",
+      "t8_user_read_ts": "2026-10-15T15:41:05.973872+00:00",
+      "delta_inbound_sec": 0.15,
+      "delta_processing_sec": 0.001,
+      "delta_outbound_queue_sec": 0.2,
+      "delta_delivery_sec": 0.35,
+      "delta_e2e_total_sec": 0.701,
+      "delivery_state": "DELIVERY_ACK",
+      "delivery_badge": "✓✓ Entregado (E2E: 0.701s | n8n: 0.001s | Red: 0.7s)",
+      "queue_wait_sec": 0.0
+    }
+  },
+  {
+    "trace_id": "TRACE-SIM-1792078863779",
+    "execution_id": "SIM-1792078863",
+    "workflow_id": "sNMbtiEiTkuQ9OCY",
+    "started_at": "2026-10-15T15:41:03.778327+00:00",
+    "stopped_at": "2026-10-15T15:41:03.779356+00:00",
+    "total_duration_sec": 0.22,
+    "status": "SUCCESS",
+    "bot_number": "+58 424 153 3712",
+    "user_phone": "04161234567",
+    "user_push_name": "Abonado 04161234567",
+    "carrier": "MOVILNET",
+    "carrier_label": "Movilnet 4GMAX",
+    "is_competitor": false,
+    "user_message": "pero en los palos grandes",
+    "bot_reply": "📍 *Puntos de Referencia y Cobertura en Chacao / Caracas:*\n\nEn el Municipio Chacao cuentas con cobertura total *Movilnet 4GMAX* y acceso rápido a:\n\n• 🏢 *Sede Corporativa Movilnet:* Av. Venezuela, Torre Movilnet, Urb. El Rosal, Chacao.\n• 🛍️ *Centro Comercial Sambil Chacao:* Av. Libertador con calle Los Ángeles (con múltiples comercios, bancos y taquillas).\n• 🚇 *Acceso Metro:* Estaciones Chacao y Altamira (Línea 1).\n\n💡 *Recomendación:* Con tus datos móviles activos puedes navegar en Google Maps o Waze sin interrupciones. ¿Te gustaría consultar tu saldo o plan antes de salir?",
+    "intent_detected": "MARKETING_PORTABILITY",
+    "pipeline_route": "AI_AGENT_COGNITIVO",
+    "steps": [
+      {
+        "step_index": 1,
+        "node_name": "Webhook (messages.upsert)",
+        "phase_category": "1. Ingesta Perimetral",
+        "status": "success",
+        "execution_time_ms": 1.2,
+        "description": "Recibió mensaje desde PWA Móvil (Data 4GMAX) en la línea bot +58 424 153 3712",
+        "input_summary": {
+          "device": "PWA Móvil (Data 4GMAX)",
+          "raw_phone": "04161234567"
+        },
+        "output_summary": {
+          "normalized_phone": "04161234567",
+          "message": "pero en los palos grandes"
+        }
+      },
+      {
+        "step_index": 2,
+        "node_name": "If (fromMe == false)",
+        "phase_category": "1. Ingesta Perimetral",
+        "status": "success",
+        "execution_time_ms": 0.8,
+        "description": "Comprobó fromMe == false (mensaje genuino de usuario)",
+        "input_summary": {},
+        "output_summary": {
+          "condition_passed": true
+        }
+      },
+      {
+        "step_index": 3,
+        "node_name": "Edit Fields & Switch",
+        "phase_category": "2. Normalización de Medio",
+        "status": "success",
+        "execution_time_ms": 3.5,
+        "description": "Identificó operadora Movilnet 4GMAX y pushName 'Abonado 04161234567'",
+        "input_summary": {},
+        "output_summary": {
+          "carrier": "MOVILNET",
+          "is_competitor": false
+        }
+      },
+      {
+        "step_index": 4,
+        "node_name": "Router - Consultas determinísticas",
+        "phase_category": "3. Enrutamiento de Intención",
+        "status": "success",
+        "execution_time_ms": 4.1,
+        "description": "Consulta general abierta. Se enruta al modelo generativo Gemini",
+        "input_summary": {},
+        "output_summary": {
+          "branch_activated": "Rama 9: AI Agent Fallback (Gemini Flash)",
+          "pipeline_route": "AI_AGENT_GEMINI"
+        }
+      },
+      {
+        "step_index": 5,
+        "node_name": "🧠 Movilnet Cognitive Agent L5 (Core N→1)",
+        "phase_category": "4. Procesamiento Core",
+        "status": "success",
+        "execution_time_ms": 35.0,
+        "description": "Resolución contextual con herramientas OCS / Geo POIs / Planes en tiempo real",
+        "input_summary": {},
+        "output_summary": {
+          "agent_status": "OK",
+          "model": "gemini-flash-hybrid"
+        }
+      },
+      {
+        "step_index": 6,
+        "node_name": "Merge 5 & Code (Sanitización Markdown)",
+        "phase_category": "5. Sanitización de Salida",
+        "status": "success",
+        "execution_time_ms": 2.1,
+        "description": "Sanitizó caracteres especiales para WhatsApp y unificó salida hacia el canal de mensajería",
+        "input_summary": {},
+        "output_summary": {
+          "ready_for_whatsapp": true
+        }
+      },
+      {
+        "step_index": 7,
+        "node_name": "HTTP Request (Evolution API /sendText)",
+        "phase_category": "6. Despacho Final al Celular",
+        "status": "success",
+        "execution_time_ms": 180.0,
+        "description": "Entregó mensaje en pantalla de 04161234567 (PWA Móvil (Data 4GMAX))",
+        "input_summary": {},
+        "output_summary": {
+          "number": "04161234567",
+          "delivery_status": "DELIVERY_ACK"
+        }
+      }
+    ],
+    "process_timers": {
+      "t1_user_sent_ts": "2026-10-15T15:41:03.628327+00:00",
+      "t2_n8n_in_ts": "2026-10-15T15:41:03.778327+00:00",
+      "t3_core_resolved_ts": "2026-10-15T15:41:03.795327+00:00",
+      "t4_n8n_out_ts": "2026-10-15T15:41:03.779356+00:00",
+      "t5_evolution_queued_ts": "2026-10-15T15:41:03.799356+00:00",
+      "t6_meta_server_ack_ts": "2026-10-15T15:41:03.979356+00:00",
+      "t7_phone_delivered_ts": "2026-10-15T15:41:04.329356+00:00",
+      "t8_user_read_ts": "2026-10-15T15:41:05.529356+00:00",
+      "delta_inbound_sec": 0.15,
+      "delta_processing_sec": 0.001,
+      "delta_outbound_queue_sec": 0.2,
+      "delta_delivery_sec": 0.35,
+      "delta_e2e_total_sec": 0.701,
+      "delivery_state": "DELIVERY_ACK",
+      "delivery_badge": "✓✓ Entregado (E2E: 0.701s | n8n: 0.001s | Red: 0.7s)",
+      "queue_wait_sec": 0.0
+    }
+  },
+  {
+    "trace_id": "TRACE-SIM-1792078862914",
+    "execution_id": "SIM-1792078862",
+    "workflow_id": "sNMbtiEiTkuQ9OCY",
+    "started_at": "2026-10-15T15:41:02.913715+00:00",
+    "stopped_at": "2026-10-15T15:41:02.914214+00:00",
+    "total_duration_sec": 0.22,
+    "status": "SUCCESS",
+    "bot_number": "+58 424 153 3712",
+    "user_phone": "04161234567",
+    "user_push_name": "Abonado 04161234567",
+    "carrier": "MOVILNET",
+    "carrier_label": "Movilnet 4GMAX",
+    "is_competitor": false,
+    "user_message": "ubicate en caracas",
+    "bot_reply": "Comprendido. Como asistente oficial de *Movilnet 4GMAX* estoy aquí para ayudarte con cualquier gestión de tu línea (saldo, megas, planes, recargas C2P o soporte técnico), así como orientarte sobre puntos de atención o cobertura. ¿Podrías especificarme un poco más tu consulta para darte una respuesta exacta?",
+    "intent_detected": "MARKETING_PORTABILITY",
+    "pipeline_route": "AI_AGENT_COGNITIVO",
+    "steps": [
+      {
+        "step_index": 1,
+        "node_name": "Webhook (messages.upsert)",
+        "phase_category": "1. Ingesta Perimetral",
+        "status": "success",
+        "execution_time_ms": 1.2,
+        "description": "Recibió mensaje desde PWA Móvil (Data 4GMAX) en la línea bot +58 424 153 3712",
+        "input_summary": {
+          "device": "PWA Móvil (Data 4GMAX)",
+          "raw_phone": "04161234567"
+        },
+        "output_summary": {
+          "normalized_phone": "04161234567",
+          "message": "ubicate en caracas"
+        }
+      },
+      {
+        "step_index": 2,
+        "node_name": "If (fromMe == false)",
+        "phase_category": "1. Ingesta Perimetral",
+        "status": "success",
+        "execution_time_ms": 0.8,
+        "description": "Comprobó fromMe == false (mensaje genuino de usuario)",
+        "input_summary": {},
+        "output_summary": {
+          "condition_passed": true
+        }
+      },
+      {
+        "step_index": 3,
+        "node_name": "Edit Fields & Switch",
+        "phase_category": "2. Normalización de Medio",
+        "status": "success",
+        "execution_time_ms": 3.5,
+        "description": "Identificó operadora Movilnet 4GMAX y pushName 'Abonado 04161234567'",
+        "input_summary": {},
+        "output_summary": {
+          "carrier": "MOVILNET",
+          "is_competitor": false
+        }
+      },
+      {
+        "step_index": 4,
+        "node_name": "Router - Consultas determinísticas",
+        "phase_category": "3. Enrutamiento de Intención",
+        "status": "success",
+        "execution_time_ms": 4.1,
+        "description": "Consulta general abierta. Se enruta al modelo generativo Gemini",
+        "input_summary": {},
+        "output_summary": {
+          "branch_activated": "Rama 9: AI Agent Fallback (Gemini Flash)",
+          "pipeline_route": "AI_AGENT_GEMINI"
+        }
+      },
+      {
+        "step_index": 5,
+        "node_name": "🧠 Movilnet Cognitive Agent L5 (Core N→1)",
+        "phase_category": "4. Procesamiento Core",
+        "status": "success",
+        "execution_time_ms": 35.0,
+        "description": "Resolución contextual con herramientas OCS / Geo POIs / Planes en tiempo real",
+        "input_summary": {},
+        "output_summary": {
+          "agent_status": "OK",
+          "model": "gemini-flash-hybrid"
+        }
+      },
+      {
+        "step_index": 6,
+        "node_name": "Merge 5 & Code (Sanitización Markdown)",
+        "phase_category": "5. Sanitización de Salida",
+        "status": "success",
+        "execution_time_ms": 2.1,
+        "description": "Sanitizó caracteres especiales para WhatsApp y unificó salida hacia el canal de mensajería",
+        "input_summary": {},
+        "output_summary": {
+          "ready_for_whatsapp": true
+        }
+      },
+      {
+        "step_index": 7,
+        "node_name": "HTTP Request (Evolution API /sendText)",
+        "phase_category": "6. Despacho Final al Celular",
+        "status": "success",
+        "execution_time_ms": 180.0,
+        "description": "Entregó mensaje en pantalla de 04161234567 (PWA Móvil (Data 4GMAX))",
+        "input_summary": {},
+        "output_summary": {
+          "number": "04161234567",
+          "delivery_status": "DELIVERY_ACK"
+        }
+      }
+    ],
+    "process_timers": {
+      "t1_user_sent_ts": "2026-10-15T15:41:02.763715+00:00",
+      "t2_n8n_in_ts": "2026-10-15T15:41:02.913715+00:00",
+      "t3_core_resolved_ts": "2026-10-15T15:41:02.930715+00:00",
+      "t4_n8n_out_ts": "2026-10-15T15:41:02.914214+00:00",
+      "t5_evolution_queued_ts": "2026-10-15T15:41:02.934214+00:00",
+      "t6_meta_server_ack_ts": "2026-10-15T15:41:03.114214+00:00",
+      "t7_phone_delivered_ts": "2026-10-15T15:41:03.464214+00:00",
+      "t8_user_read_ts": "2026-10-15T15:41:04.664214+00:00",
+      "delta_inbound_sec": 0.15,
+      "delta_processing_sec": 0.0,
+      "delta_outbound_queue_sec": 0.2,
+      "delta_delivery_sec": 0.35,
+      "delta_e2e_total_sec": 0.7,
+      "delivery_state": "DELIVERY_ACK",
+      "delivery_badge": "✓✓ Entregado (E2E: 0.7s | n8n: 0.0s | Red: 0.7s)",
+      "queue_wait_sec": 0.0
+    }
+  },
+  {
+    "trace_id": "TRACE-SIM-1792078823457",
+    "execution_id": "SIM-1792078823",
+    "workflow_id": "sNMbtiEiTkuQ9OCY",
+    "started_at": "2026-10-15T15:40:23.443380+00:00",
+    "stopped_at": "2026-10-15T15:40:23.457509+00:00",
+    "total_duration_sec": 0.23,
+    "status": "SUCCESS",
+    "bot_number": "+58 424 153 3712",
+    "user_phone": "04160000001",
+    "user_push_name": "Abonado 04160000001",
+    "carrier": "MOVILNET",
+    "carrier_label": "Movilnet 4GMAX",
+    "is_competitor": false,
+    "user_message": "saldo",
+    "bot_reply": "Estimado abonado 04160000001: Su saldo disponible es Bs. 1650.00. Datos 4GMAX: 90.4 GB disponibles. Plan: Plan Básico Conecta 5GB.",
+    "intent_detected": "MARKETING_PORTABILITY",
+    "pipeline_route": "AI_AGENT_COGNITIVO",
+    "steps": [
+      {
+        "step_index": 1,
+        "node_name": "Webhook (messages.upsert)",
+        "phase_category": "1. Ingesta Perimetral",
+        "status": "success",
+        "execution_time_ms": 1.2,
+        "description": "Recibió mensaje desde PWA Móvil en la línea bot +58 424 153 3712",
+        "input_summary": {
+          "device": "PWA Móvil",
+          "raw_phone": "04160000001"
+        },
+        "output_summary": {
+          "normalized_phone": "04160000001",
+          "message": "saldo"
+        }
+      },
+      {
+        "step_index": 2,
+        "node_name": "If (fromMe == false)",
+        "phase_category": "1. Ingesta Perimetral",
+        "status": "success",
+        "execution_time_ms": 0.8,
+        "description": "Comprobó fromMe == false (mensaje genuino de usuario)",
+        "input_summary": {},
+        "output_summary": {
+          "condition_passed": true
+        }
+      },
+      {
+        "step_index": 3,
+        "node_name": "Edit Fields & Switch",
+        "phase_category": "2. Normalización de Medio",
+        "status": "success",
+        "execution_time_ms": 3.5,
+        "description": "Identificó operadora Movilnet 4GMAX y pushName 'Abonado 04160000001'",
+        "input_summary": {},
+        "output_summary": {
+          "carrier": "MOVILNET",
+          "is_competitor": false
+        }
+      },
+      {
+        "step_index": 4,
+        "node_name": "Router - Consultas determinísticas",
+        "phase_category": "3. Enrutamiento de Intención",
+        "status": "success",
+        "execution_time_ms": 4.1,
+        "description": "Intercepción determinística en frontera: SALDO_CUPO. Cable directo :8010 (0 tokens)",
+        "input_summary": {},
+        "output_summary": {
+          "branch_activated": "Rama 8: Movilnet Core - Fast-Path (SALDO_CUPO)",
+          "pipeline_route": "FAST_PATH_TELCO_ODA"
+        }
+      },
+      {
+        "step_index": 5,
+        "node_name": "🧠 Movilnet Cognitive Agent L5 (Core N→1)",
+        "phase_category": "4. Procesamiento Core",
+        "status": "success",
+        "execution_time_ms": 35.0,
+        "description": "Resolución contextual con herramientas OCS / Geo POIs / Planes en tiempo real",
+        "input_summary": {},
+        "output_summary": {
+          "agent_status": "OK",
+          "model": "gemini-flash-hybrid"
+        }
+      },
+      {
+        "step_index": 6,
+        "node_name": "Merge 5 & Code (Sanitización Markdown)",
+        "phase_category": "5. Sanitización de Salida",
+        "status": "success",
+        "execution_time_ms": 2.1,
+        "description": "Sanitizó caracteres especiales para WhatsApp y unificó salida hacia el canal de mensajería",
+        "input_summary": {},
+        "output_summary": {
+          "ready_for_whatsapp": true
+        }
+      },
+      {
+        "step_index": 7,
+        "node_name": "HTTP Request (Evolution API /sendText)",
+        "phase_category": "6. Despacho Final al Celular",
+        "status": "success",
+        "execution_time_ms": 180.0,
+        "description": "Entregó mensaje en pantalla de 04160000001 (PWA Móvil)",
+        "input_summary": {},
+        "output_summary": {
+          "number": "04160000001",
+          "delivery_status": "DELIVERY_ACK"
+        }
+      }
+    ],
+    "process_timers": {
+      "t1_user_sent_ts": "2026-10-15T15:40:23.293380+00:00",
+      "t2_n8n_in_ts": "2026-10-15T15:40:23.443380+00:00",
+      "t3_core_resolved_ts": "2026-10-15T15:40:23.460380+00:00",
+      "t4_n8n_out_ts": "2026-10-15T15:40:23.457509+00:00",
+      "t5_evolution_queued_ts": "2026-10-15T15:40:23.477509+00:00",
+      "t6_meta_server_ack_ts": "2026-10-15T15:40:23.657509+00:00",
+      "t7_phone_delivered_ts": "2026-10-15T15:40:24.007509+00:00",
+      "t8_user_read_ts": "2026-10-15T15:40:25.207509+00:00",
+      "delta_inbound_sec": 0.15,
+      "delta_processing_sec": 0.014,
+      "delta_outbound_queue_sec": 0.2,
+      "delta_delivery_sec": 0.35,
+      "delta_e2e_total_sec": 0.714,
+      "delivery_state": "DELIVERY_ACK",
+      "delivery_badge": "✓✓ Entregado (E2E: 0.714s | n8n: 0.014s | Red: 0.7s)",
+      "queue_wait_sec": 0.0
+    }
+  },
+  {
+    "trace_id": "TRACE-EXEC-PWA-1792077342646",
+    "execution_id": "PWA-1792077342646",
+    "workflow_id": "sNMbtiEiTkuQ9OCY",
+    "started_at": "2026-10-15T15:15:42.649142+00:00",
+    "stopped_at": "2026-10-15T15:15:42.649154+00:00",
+    "total_duration_sec": 4.9,
+    "status": "SUCCESS",
+    "bot_number": "+58 424 153 3712",
+    "user_phone": "04160000001",
+    "user_push_name": "Móvil QR (04160000001)",
+    "carrier": "MOVILNET",
+    "carrier_label": "Movilnet 4GMAX",
+    "is_competitor": false,
+    "user_message": "uhmmm",
+    "bot_reply": "¡Hola! 😊 Soy el Asistente Oficial de Movilnet. ¿En qué te puedo ayudar hoy con tu línea 0416 o 0426, o con nuestros planes 4GMAX?",
+    "intent_detected": "OMNICHANNEL_INTERACTION",
+    "pipeline_route": "AI_AGENT_COGNITIVO",
+    "steps": [],
+    "process_timers": {
+      "t1_user_sent_ts": "2026-10-15T15:15:42.499142+00:00",
+      "t2_n8n_in_ts": "2026-10-15T15:15:42.649142+00:00",
+      "t3_core_resolved_ts": "2026-10-15T15:15:42.666142+00:00",
+      "t4_n8n_out_ts": "2026-10-15T15:15:42.649154+00:00",
+      "t5_evolution_queued_ts": "2026-10-15T15:15:42.669154+00:00",
+      "t6_meta_server_ack_ts": "2026-10-15T15:15:42.849154+00:00",
+      "t7_phone_delivered_ts": null,
+      "t8_user_read_ts": null,
+      "delta_inbound_sec": 0.15,
+      "delta_processing_sec": 0.0,
+      "delta_outbound_queue_sec": 0.0,
+      "delta_delivery_sec": null,
+      "delta_e2e_total_sec": null,
+      "delivery_state": "EN_COLA_WHATSAPP",
+      "delivery_badge": "⏳ En cola WhatsApp (0.0s) (Esperando entrega al móvil)",
+      "queue_wait_sec": 0.0
+    }
+  },
+  {
+    "trace_id": "TRACE-SIM-1792077342478",
+    "execution_id": "SIM-1792077342",
+    "workflow_id": "sNMbtiEiTkuQ9OCY",
+    "started_at": "2026-10-15T15:15:42.477853+00:00",
+    "stopped_at": "2026-10-15T15:15:42.478113+00:00",
+    "total_duration_sec": 0.22,
+    "status": "SUCCESS",
+    "bot_number": "+58 424 153 3712",
+    "user_phone": "04160000001",
+    "user_push_name": "Abonado 04160000001",
+    "carrier": "MOVILNET",
+    "carrier_label": "Movilnet 4GMAX",
+    "is_competitor": false,
+    "user_message": "uhmmm",
+    "bot_reply": "¡Hola! 😊 Soy el Asistente Oficial de Movilnet. ¿En qué te puedo ayudar hoy con tu línea 0416 o 0426, o con nuestros planes 4GMAX?",
+    "intent_detected": "MARKETING_PORTABILITY",
+    "pipeline_route": "AI_AGENT_COGNITIVO",
+    "steps": [
+      {
+        "step_index": 1,
+        "node_name": "Webhook (messages.upsert)",
+        "phase_category": "1. Ingesta Perimetral",
+        "status": "success",
+        "execution_time_ms": 1.2,
+        "description": "Recibió mensaje desde PWA Móvil (Data 4GMAX) en la línea bot +58 424 153 3712",
+        "input_summary": {
+          "device": "PWA Móvil (Data 4GMAX)",
+          "raw_phone": "04160000001"
+        },
+        "output_summary": {
+          "normalized_phone": "04160000001",
+          "message": "uhmmm"
+        }
+      },
+      {
+        "step_index": 2,
+        "node_name": "If (fromMe == false)",
+        "phase_category": "1. Ingesta Perimetral",
+        "status": "success",
+        "execution_time_ms": 0.8,
+        "description": "Comprobó fromMe == false (mensaje genuino de usuario)",
+        "input_summary": {},
+        "output_summary": {
+          "condition_passed": true
+        }
+      },
+      {
+        "step_index": 3,
+        "node_name": "Edit Fields & Switch",
+        "phase_category": "2. Normalización de Medio",
+        "status": "success",
+        "execution_time_ms": 3.5,
+        "description": "Identificó operadora Movilnet 4GMAX y pushName 'Abonado 04160000001'",
+        "input_summary": {},
+        "output_summary": {
+          "carrier": "MOVILNET",
+          "is_competitor": false
+        }
+      },
+      {
+        "step_index": 4,
+        "node_name": "Router - Consultas determinísticas",
+        "phase_category": "3. Enrutamiento de Intención",
+        "status": "success",
+        "execution_time_ms": 4.1,
+        "description": "Consulta general abierta. Se enruta al modelo generativo Gemini",
+        "input_summary": {},
+        "output_summary": {
+          "branch_activated": "Rama 9: AI Agent Fallback (Gemini Flash)",
+          "pipeline_route": "AI_AGENT_GEMINI"
+        }
+      },
+      {
+        "step_index": 5,
+        "node_name": "🧠 Movilnet Cognitive Agent L5 (Core N→1)",
+        "phase_category": "4. Procesamiento Core",
+        "status": "success",
+        "execution_time_ms": 35.0,
+        "description": "Resolución contextual con herramientas OCS / Geo POIs / Planes en tiempo real",
+        "input_summary": {},
+        "output_summary": {
+          "agent_status": "OK",
+          "model": "gemini-flash-hybrid"
+        }
+      },
+      {
+        "step_index": 6,
+        "node_name": "Merge 5 & Code (Sanitización Markdown)",
+        "phase_category": "5. Sanitización de Salida",
+        "status": "success",
+        "execution_time_ms": 2.1,
+        "description": "Sanitizó caracteres especiales para WhatsApp y unificó salida hacia el canal de mensajería",
+        "input_summary": {},
+        "output_summary": {
+          "ready_for_whatsapp": true
+        }
+      },
+      {
+        "step_index": 7,
+        "node_name": "HTTP Request (Evolution API /sendText)",
+        "phase_category": "6. Despacho Final al Celular",
+        "status": "success",
+        "execution_time_ms": 180.0,
+        "description": "Entregó mensaje en pantalla de 04160000001 (PWA Móvil (Data 4GMAX))",
+        "input_summary": {},
+        "output_summary": {
+          "number": "04160000001",
+          "delivery_status": "DELIVERY_ACK"
+        }
+      }
+    ],
+    "process_timers": {
+      "t1_user_sent_ts": "2026-10-15T15:15:42.327853+00:00",
+      "t2_n8n_in_ts": "2026-10-15T15:15:42.477853+00:00",
+      "t3_core_resolved_ts": "2026-10-15T15:15:42.494853+00:00",
+      "t4_n8n_out_ts": "2026-10-15T15:15:42.478113+00:00",
+      "t5_evolution_queued_ts": "2026-10-15T15:15:42.498113+00:00",
+      "t6_meta_server_ack_ts": "2026-10-15T15:15:42.678113+00:00",
+      "t7_phone_delivered_ts": "2026-10-15T15:15:43.028113+00:00",
+      "t8_user_read_ts": "2026-10-15T15:15:44.228113+00:00",
+      "delta_inbound_sec": 0.15,
+      "delta_processing_sec": 0.0,
+      "delta_outbound_queue_sec": 0.2,
+      "delta_delivery_sec": 0.35,
+      "delta_e2e_total_sec": 0.7,
+      "delivery_state": "DELIVERY_ACK",
+      "delivery_badge": "✓✓ Entregado (E2E: 0.7s | n8n: 0.0s | Red: 0.7s)",
+      "queue_wait_sec": 0.0
+    }
+  },
+  {
+    "trace_id": "TRACE-EXEC-PWA-1792077329491",
+    "execution_id": "PWA-1792077329491",
+    "workflow_id": "sNMbtiEiTkuQ9OCY",
+    "started_at": "2026-10-15T15:15:29.494523+00:00",
+    "stopped_at": "2026-10-15T15:15:29.494533+00:00",
+    "total_duration_sec": 2.88,
+    "status": "SUCCESS",
+    "bot_number": "+58 424 153 3712",
+    "user_phone": "04160000001",
+    "user_push_name": "Móvil QR (04160000001)",
+    "carrier": "MOVILNET",
+    "carrier_label": "Movilnet 4GMAX",
+    "is_competitor": false,
+    "user_message": "te lo comente en el chat anterior no lo recuerdas",
+    "bot_reply": "¡Hola! Te pido una disculpa por el inconveniente; cada sesión inicia de forma independiente para proteger tu privacidad y seguridad, por lo que no guardo memoria de nuestros chats anteriores. \n\nCuéntame, ¿qué detalle o consulta me habías mencionado? Estoy aquí para ayudarte de inmediato con lo que necesites de Movilnet.",
+    "intent_detected": "OMNICHANNEL_INTERACTION",
+    "pipeline_route": "AI_AGENT_COGNITIVO",
+    "steps": [],
+    "process_timers": {
+      "t1_user_sent_ts": "2026-10-15T15:15:29.344523+00:00",
+      "t2_n8n_in_ts": "2026-10-15T15:15:29.494523+00:00",
+      "t3_core_resolved_ts": "2026-10-15T15:15:29.511523+00:00",
+      "t4_n8n_out_ts": "2026-10-15T15:15:29.494533+00:00",
+      "t5_evolution_queued_ts": "2026-10-15T15:15:29.514533+00:00",
+      "t6_meta_server_ack_ts": "2026-10-15T15:15:29.694533+00:00",
+      "t7_phone_delivered_ts": null,
+      "t8_user_read_ts": null,
+      "delta_inbound_sec": 0.15,
+      "delta_processing_sec": 0.0,
+      "delta_outbound_queue_sec": 0.0,
+      "delta_delivery_sec": null,
+      "delta_e2e_total_sec": null,
+      "delivery_state": "EN_COLA_WHATSAPP",
+      "delivery_badge": "⏳ En cola WhatsApp (0.0s) (Esperando entrega al móvil)",
+      "queue_wait_sec": 0.0
+    }
+  },
+  {
+    "trace_id": "TRACE-SIM-1792077329337",
+    "execution_id": "SIM-1792077329",
+    "workflow_id": "sNMbtiEiTkuQ9OCY",
+    "started_at": "2026-10-15T15:15:29.337313+00:00",
+    "stopped_at": "2026-10-15T15:15:29.337947+00:00",
+    "total_duration_sec": 0.22,
+    "status": "SUCCESS",
+    "bot_number": "+58 424 153 3712",
+    "user_phone": "04160000001",
+    "user_push_name": "Abonado 04160000001",
+    "carrier": "MOVILNET",
+    "carrier_label": "Movilnet 4GMAX",
+    "is_competitor": false,
+    "user_message": "te lo comente en el chat anterior no lo recuerdas",
+    "bot_reply": "¡Hola! Te pido una disculpa por el inconveniente; cada sesión inicia de forma independiente para proteger tu privacidad y seguridad, por lo que no guardo memoria de nuestros chats anteriores. \n\nCuéntame, ¿qué detalle o consulta me habías mencionado? Estoy aquí para ayudarte de inmediato con lo que necesites de Movilnet.",
+    "intent_detected": "MARKETING_PORTABILITY",
+    "pipeline_route": "AI_AGENT_COGNITIVO",
+    "steps": [
+      {
+        "step_index": 1,
+        "node_name": "Webhook (messages.upsert)",
+        "phase_category": "1. Ingesta Perimetral",
+        "status": "success",
+        "execution_time_ms": 1.2,
+        "description": "Recibió mensaje desde PWA Móvil (Data 4GMAX) en la línea bot +58 424 153 3712",
+        "input_summary": {
+          "device": "PWA Móvil (Data 4GMAX)",
+          "raw_phone": "04160000001"
+        },
+        "output_summary": {
+          "normalized_phone": "04160000001",
+          "message": "te lo comente en el chat anterior no lo recuerdas"
+        }
+      },
+      {
+        "step_index": 2,
+        "node_name": "If (fromMe == false)",
+        "phase_category": "1. Ingesta Perimetral",
+        "status": "success",
+        "execution_time_ms": 0.8,
+        "description": "Comprobó fromMe == false (mensaje genuino de usuario)",
+        "input_summary": {},
+        "output_summary": {
+          "condition_passed": true
+        }
+      },
+      {
+        "step_index": 3,
+        "node_name": "Edit Fields & Switch",
+        "phase_category": "2. Normalización de Medio",
+        "status": "success",
+        "execution_time_ms": 3.5,
+        "description": "Identificó operadora Movilnet 4GMAX y pushName 'Abonado 04160000001'",
+        "input_summary": {},
+        "output_summary": {
+          "carrier": "MOVILNET",
+          "is_competitor": false
+        }
+      },
+      {
+        "step_index": 4,
+        "node_name": "Router - Consultas determinísticas",
+        "phase_category": "3. Enrutamiento de Intención",
+        "status": "success",
+        "execution_time_ms": 4.1,
+        "description": "Consulta general abierta. Se enruta al modelo generativo Gemini",
+        "input_summary": {},
+        "output_summary": {
+          "branch_activated": "Rama 9: AI Agent Fallback (Gemini Flash)",
+          "pipeline_route": "AI_AGENT_GEMINI"
+        }
+      },
+      {
+        "step_index": 5,
+        "node_name": "🧠 Movilnet Cognitive Agent L5 (Core N→1)",
+        "phase_category": "4. Procesamiento Core",
+        "status": "success",
+        "execution_time_ms": 35.0,
+        "description": "Resolución contextual con herramientas OCS / Geo POIs / Planes en tiempo real",
+        "input_summary": {},
+        "output_summary": {
+          "agent_status": "OK",
+          "model": "gemini-flash-hybrid"
+        }
+      },
+      {
+        "step_index": 6,
+        "node_name": "Merge 5 & Code (Sanitización Markdown)",
+        "phase_category": "5. Sanitización de Salida",
+        "status": "success",
+        "execution_time_ms": 2.1,
+        "description": "Sanitizó caracteres especiales para WhatsApp y unificó salida hacia el canal de mensajería",
+        "input_summary": {},
+        "output_summary": {
+          "ready_for_whatsapp": true
+        }
+      },
+      {
+        "step_index": 7,
+        "node_name": "HTTP Request (Evolution API /sendText)",
+        "phase_category": "6. Despacho Final al Celular",
+        "status": "success",
+        "execution_time_ms": 180.0,
+        "description": "Entregó mensaje en pantalla de 04160000001 (PWA Móvil (Data 4GMAX))",
+        "input_summary": {},
+        "output_summary": {
+          "number": "04160000001",
+          "delivery_status": "DELIVERY_ACK"
+        }
+      }
+    ],
+    "process_timers": {
+      "t1_user_sent_ts": "2026-10-15T15:15:29.187313+00:00",
+      "t2_n8n_in_ts": "2026-10-15T15:15:29.337313+00:00",
+      "t3_core_resolved_ts": "2026-10-15T15:15:29.354313+00:00",
+      "t4_n8n_out_ts": "2026-10-15T15:15:29.337947+00:00",
+      "t5_evolution_queued_ts": "2026-10-15T15:15:29.357947+00:00",
+      "t6_meta_server_ack_ts": "2026-10-15T15:15:29.537947+00:00",
+      "t7_phone_delivered_ts": "2026-10-15T15:15:29.887947+00:00",
+      "t8_user_read_ts": "2026-10-15T15:15:31.087947+00:00",
+      "delta_inbound_sec": 0.15,
+      "delta_processing_sec": 0.001,
+      "delta_outbound_queue_sec": 0.2,
+      "delta_delivery_sec": 0.35,
+      "delta_e2e_total_sec": 0.701,
+      "delivery_state": "DELIVERY_ACK",
+      "delivery_badge": "✓✓ Entregado (E2E: 0.701s | n8n: 0.001s | Red: 0.7s)",
+      "queue_wait_sec": 0.0
+    }
+  },
+  {
+    "trace_id": "TRACE-EXEC-PWA-1792077304041",
+    "execution_id": "PWA-1792077304041",
+    "workflow_id": "sNMbtiEiTkuQ9OCY",
+    "started_at": "2026-10-15T15:15:04.064030+00:00",
+    "stopped_at": "2026-10-15T15:15:04.064042+00:00",
+    "total_duration_sec": 2.31,
+    "status": "SUCCESS",
+    "bot_number": "+58 424 153 3712",
+    "user_phone": "04160000001",
+    "user_push_name": "Móvil QR (04160000001)",
+    "carrier": "MOVILNET",
+    "carrier_label": "Movilnet 4GMAX",
+    "is_competitor": false,
+    "user_message": "pero en los palos grandes",
+    "bot_reply": "¡Hola! \n\nPara ubicarte las mejores opciones, farmacias, comercios o agentes autorizados Movilnet exactamente en Los Palos Grandes, te comento que en mi base de datos verificada no tengo registros específicos en esa zona exacta en este momento. \n\n¿Te gustaría que te recomiende los puntos más cercanos o alguna alternativa en un sector aledaño para atender tu solicitud?",
+    "intent_detected": "OMNICHANNEL_INTERACTION",
+    "pipeline_route": "AI_AGENT_COGNITIVO",
+    "steps": [],
+    "process_timers": {
+      "t1_user_sent_ts": "2026-10-15T15:15:03.914030+00:00",
+      "t2_n8n_in_ts": "2026-10-15T15:15:04.064030+00:00",
+      "t3_core_resolved_ts": "2026-10-15T15:15:04.081030+00:00",
+      "t4_n8n_out_ts": "2026-10-15T15:15:04.064042+00:00",
+      "t5_evolution_queued_ts": "2026-10-15T15:15:04.084042+00:00",
+      "t6_meta_server_ack_ts": "2026-10-15T15:15:04.264042+00:00",
+      "t7_phone_delivered_ts": null,
+      "t8_user_read_ts": null,
+      "delta_inbound_sec": 0.15,
+      "delta_processing_sec": 0.0,
+      "delta_outbound_queue_sec": 0.0,
+      "delta_delivery_sec": null,
+      "delta_e2e_total_sec": null,
+      "delivery_state": "EN_COLA_WHATSAPP",
+      "delivery_badge": "⏳ En cola WhatsApp (0.0s) (Esperando entrega al móvil)",
+      "queue_wait_sec": 0.0
+    }
+  },
+  {
+    "trace_id": "TRACE-SIM-1792077303891",
+    "execution_id": "SIM-1792077303",
+    "workflow_id": "sNMbtiEiTkuQ9OCY",
+    "started_at": "2026-10-15T15:15:03.891225+00:00",
+    "stopped_at": "2026-10-15T15:15:03.891564+00:00",
+    "total_duration_sec": 0.22,
+    "status": "SUCCESS",
+    "bot_number": "+58 424 153 3712",
+    "user_phone": "04160000001",
+    "user_push_name": "Abonado 04160000001",
+    "carrier": "MOVILNET",
+    "carrier_label": "Movilnet 4GMAX",
+    "is_competitor": false,
+    "user_message": "pero en los palos grandes",
+    "bot_reply": "¡Hola! \n\nPara ubicarte las mejores opciones, farmacias, comercios o agentes autorizados Movilnet exactamente en Los Palos Grandes, te comento que en mi base de datos verificada no tengo registros específicos en esa zona exacta en este momento. \n\n¿Te gustaría que te recomiende los puntos más cercanos o alguna alternativa en un sector aledaño para atender tu solicitud?",
+    "intent_detected": "MARKETING_PORTABILITY",
+    "pipeline_route": "AI_AGENT_COGNITIVO",
+    "steps": [
+      {
+        "step_index": 1,
+        "node_name": "Webhook (messages.upsert)",
+        "phase_category": "1. Ingesta Perimetral",
+        "status": "success",
+        "execution_time_ms": 1.2,
+        "description": "Recibió mensaje desde PWA Móvil (Data 4GMAX) en la línea bot +58 424 153 3712",
+        "input_summary": {
+          "device": "PWA Móvil (Data 4GMAX)",
+          "raw_phone": "04160000001"
+        },
+        "output_summary": {
+          "normalized_phone": "04160000001",
+          "message": "pero en los palos grandes"
+        }
+      },
+      {
+        "step_index": 2,
+        "node_name": "If (fromMe == false)",
+        "phase_category": "1. Ingesta Perimetral",
+        "status": "success",
+        "execution_time_ms": 0.8,
+        "description": "Comprobó fromMe == false (mensaje genuino de usuario)",
+        "input_summary": {},
+        "output_summary": {
+          "condition_passed": true
+        }
+      },
+      {
+        "step_index": 3,
+        "node_name": "Edit Fields & Switch",
+        "phase_category": "2. Normalización de Medio",
+        "status": "success",
+        "execution_time_ms": 3.5,
+        "description": "Identificó operadora Movilnet 4GMAX y pushName 'Abonado 04160000001'",
+        "input_summary": {},
+        "output_summary": {
+          "carrier": "MOVILNET",
+          "is_competitor": false
+        }
+      },
+      {
+        "step_index": 4,
+        "node_name": "Router - Consultas determinísticas",
+        "phase_category": "3. Enrutamiento de Intención",
+        "status": "success",
+        "execution_time_ms": 4.1,
+        "description": "Consulta general abierta. Se enruta al modelo generativo Gemini",
+        "input_summary": {},
+        "output_summary": {
+          "branch_activated": "Rama 9: AI Agent Fallback (Gemini Flash)",
+          "pipeline_route": "AI_AGENT_GEMINI"
+        }
+      },
+      {
+        "step_index": 5,
+        "node_name": "🧠 Movilnet Cognitive Agent L5 (Core N→1)",
+        "phase_category": "4. Procesamiento Core",
+        "status": "success",
+        "execution_time_ms": 35.0,
+        "description": "Resolución contextual con herramientas OCS / Geo POIs / Planes en tiempo real",
+        "input_summary": {},
+        "output_summary": {
+          "agent_status": "OK",
+          "model": "gemini-flash-hybrid"
+        }
+      },
+      {
+        "step_index": 6,
+        "node_name": "Merge 5 & Code (Sanitización Markdown)",
+        "phase_category": "5. Sanitización de Salida",
+        "status": "success",
+        "execution_time_ms": 2.1,
+        "description": "Sanitizó caracteres especiales para WhatsApp y unificó salida hacia el canal de mensajería",
+        "input_summary": {},
+        "output_summary": {
+          "ready_for_whatsapp": true
+        }
+      },
+      {
+        "step_index": 7,
+        "node_name": "HTTP Request (Evolution API /sendText)",
+        "phase_category": "6. Despacho Final al Celular",
+        "status": "success",
+        "execution_time_ms": 180.0,
+        "description": "Entregó mensaje en pantalla de 04160000001 (PWA Móvil (Data 4GMAX))",
+        "input_summary": {},
+        "output_summary": {
+          "number": "04160000001",
+          "delivery_status": "DELIVERY_ACK"
+        }
+      }
+    ],
+    "process_timers": {
+      "t1_user_sent_ts": "2026-10-15T15:15:03.741225+00:00",
+      "t2_n8n_in_ts": "2026-10-15T15:15:03.891225+00:00",
+      "t3_core_resolved_ts": "2026-10-15T15:15:03.908225+00:00",
+      "t4_n8n_out_ts": "2026-10-15T15:15:03.891564+00:00",
+      "t5_evolution_queued_ts": "2026-10-15T15:15:03.911564+00:00",
+      "t6_meta_server_ack_ts": "2026-10-15T15:15:04.091564+00:00",
+      "t7_phone_delivered_ts": "2026-10-15T15:15:04.441564+00:00",
+      "t8_user_read_ts": "2026-10-15T15:15:05.641564+00:00",
+      "delta_inbound_sec": 0.15,
+      "delta_processing_sec": 0.0,
+      "delta_outbound_queue_sec": 0.2,
+      "delta_delivery_sec": 0.35,
+      "delta_e2e_total_sec": 0.7,
+      "delivery_state": "DELIVERY_ACK",
+      "delivery_badge": "✓✓ Entregado (E2E: 0.7s | n8n: 0.0s | Red: 0.7s)",
+      "queue_wait_sec": 0.0
+    }
+  },
+  {
+    "trace_id": "TRACE-EXEC-PWA-1792077288989",
+    "execution_id": "PWA-1792077288989",
+    "workflow_id": "sNMbtiEiTkuQ9OCY",
+    "started_at": "2026-10-15T15:14:48.992588+00:00",
+    "stopped_at": "2026-10-15T15:14:48.992600+00:00",
+    "total_duration_sec": 1.94,
+    "status": "SUCCESS",
+    "bot_number": "+58 424 153 3712",
+    "user_phone": "04160000001",
+    "user_push_name": "Móvil QR (04160000001)",
+    "carrier": "MOVILNET",
+    "carrier_label": "Movilnet 4GMAX",
+    "is_competitor": false,
+    "user_message": "busca un restaurant para almorzar",
+    "bot_reply": "¡Con gusto te ayudo a buscar opciones para almorzar! 🍽️ Como te encuentras en la zona de Caracas, ¿hay algún tipo de comida en específico que te provoque (como criolla, rápida, italiana, etc.) o prefieres que te recomiende los lugares más destacados cercanos a tu ubicación?",
+    "intent_detected": "OMNICHANNEL_INTERACTION",
+    "pipeline_route": "AI_AGENT_COGNITIVO",
+    "steps": [],
+    "process_timers": {
+      "t1_user_sent_ts": "2026-10-15T15:14:48.842588+00:00",
+      "t2_n8n_in_ts": "2026-10-15T15:14:48.992588+00:00",
+      "t3_core_resolved_ts": "2026-10-15T15:14:49.009588+00:00",
+      "t4_n8n_out_ts": "2026-10-15T15:14:48.992600+00:00",
+      "t5_evolution_queued_ts": "2026-10-15T15:14:49.012600+00:00",
+      "t6_meta_server_ack_ts": "2026-10-15T15:14:49.192600+00:00",
+      "t7_phone_delivered_ts": null,
+      "t8_user_read_ts": null,
+      "delta_inbound_sec": 0.15,
+      "delta_processing_sec": 0.0,
+      "delta_outbound_queue_sec": 0.0,
+      "delta_delivery_sec": null,
+      "delta_e2e_total_sec": null,
+      "delivery_state": "EN_COLA_WHATSAPP",
+      "delivery_badge": "⏳ En cola WhatsApp (0.0s) (Esperando entrega al móvil)",
+      "queue_wait_sec": 0.0
+    }
+  },
+  {
+    "trace_id": "TRACE-SIM-1792077288794",
+    "execution_id": "SIM-1792077288",
+    "workflow_id": "sNMbtiEiTkuQ9OCY",
+    "started_at": "2026-10-15T15:14:48.794149+00:00",
+    "stopped_at": "2026-10-15T15:14:48.794518+00:00",
+    "total_duration_sec": 0.22,
+    "status": "SUCCESS",
+    "bot_number": "+58 424 153 3712",
+    "user_phone": "04160000001",
+    "user_push_name": "Abonado 04160000001",
+    "carrier": "MOVILNET",
+    "carrier_label": "Movilnet 4GMAX",
+    "is_competitor": false,
+    "user_message": "busca un restaurant para almorzar",
+    "bot_reply": "¡Con gusto te ayudo a buscar opciones para almorzar! 🍽️ Como te encuentras en la zona de Caracas, ¿hay algún tipo de comida en específico que te provoque (como criolla, rápida, italiana, etc.) o prefieres que te recomiende los lugares más destacados cercanos a tu ubicación?",
+    "intent_detected": "MARKETING_PORTABILITY",
+    "pipeline_route": "AI_AGENT_COGNITIVO",
+    "steps": [
+      {
+        "step_index": 1,
+        "node_name": "Webhook (messages.upsert)",
+        "phase_category": "1. Ingesta Perimetral",
+        "status": "success",
+        "execution_time_ms": 1.2,
+        "description": "Recibió mensaje desde PWA Móvil (Data 4GMAX) en la línea bot +58 424 153 3712",
+        "input_summary": {
+          "device": "PWA Móvil (Data 4GMAX)",
+          "raw_phone": "04160000001"
+        },
+        "output_summary": {
+          "normalized_phone": "04160000001",
+          "message": "busca un restaurant para almorzar"
+        }
+      },
+      {
+        "step_index": 2,
+        "node_name": "If (fromMe == false)",
+        "phase_category": "1. Ingesta Perimetral",
+        "status": "success",
+        "execution_time_ms": 0.8,
+        "description": "Comprobó fromMe == false (mensaje genuino de usuario)",
+        "input_summary": {},
+        "output_summary": {
+          "condition_passed": true
+        }
+      },
+      {
+        "step_index": 3,
+        "node_name": "Edit Fields & Switch",
+        "phase_category": "2. Normalización de Medio",
+        "status": "success",
+        "execution_time_ms": 3.5,
+        "description": "Identificó operadora Movilnet 4GMAX y pushName 'Abonado 04160000001'",
+        "input_summary": {},
+        "output_summary": {
+          "carrier": "MOVILNET",
+          "is_competitor": false
+        }
+      },
+      {
+        "step_index": 4,
+        "node_name": "Router - Consultas determinísticas",
+        "phase_category": "3. Enrutamiento de Intención",
+        "status": "success",
+        "execution_time_ms": 4.1,
+        "description": "Consulta general abierta. Se enruta al modelo generativo Gemini",
+        "input_summary": {},
+        "output_summary": {
+          "branch_activated": "Rama 9: AI Agent Fallback (Gemini Flash)",
+          "pipeline_route": "AI_AGENT_GEMINI"
+        }
+      },
+      {
+        "step_index": 5,
+        "node_name": "🧠 Movilnet Cognitive Agent L5 (Core N→1)",
+        "phase_category": "4. Procesamiento Core",
+        "status": "success",
+        "execution_time_ms": 35.0,
+        "description": "Resolución contextual con herramientas OCS / Geo POIs / Planes en tiempo real",
+        "input_summary": {},
+        "output_summary": {
+          "agent_status": "OK",
+          "model": "gemini-flash-hybrid"
+        }
+      },
+      {
+        "step_index": 6,
+        "node_name": "Merge 5 & Code (Sanitización Markdown)",
+        "phase_category": "5. Sanitización de Salida",
+        "status": "success",
+        "execution_time_ms": 2.1,
+        "description": "Sanitizó caracteres especiales para WhatsApp y unificó salida hacia el canal de mensajería",
+        "input_summary": {},
+        "output_summary": {
+          "ready_for_whatsapp": true
+        }
+      },
+      {
+        "step_index": 7,
+        "node_name": "HTTP Request (Evolution API /sendText)",
+        "phase_category": "6. Despacho Final al Celular",
+        "status": "success",
+        "execution_time_ms": 180.0,
+        "description": "Entregó mensaje en pantalla de 04160000001 (PWA Móvil (Data 4GMAX))",
+        "input_summary": {},
+        "output_summary": {
+          "number": "04160000001",
+          "delivery_status": "DELIVERY_ACK"
+        }
+      }
+    ],
+    "process_timers": {
+      "t1_user_sent_ts": "2026-10-15T15:14:48.644149+00:00",
+      "t2_n8n_in_ts": "2026-10-15T15:14:48.794149+00:00",
+      "t3_core_resolved_ts": "2026-10-15T15:14:48.811149+00:00",
+      "t4_n8n_out_ts": "2026-10-15T15:14:48.794518+00:00",
+      "t5_evolution_queued_ts": "2026-10-15T15:14:48.814518+00:00",
+      "t6_meta_server_ack_ts": "2026-10-15T15:14:48.994518+00:00",
+      "t7_phone_delivered_ts": "2026-10-15T15:14:49.344518+00:00",
+      "t8_user_read_ts": "2026-10-15T15:14:50.544518+00:00",
+      "delta_inbound_sec": 0.15,
+      "delta_processing_sec": 0.0,
+      "delta_outbound_queue_sec": 0.2,
+      "delta_delivery_sec": 0.35,
+      "delta_e2e_total_sec": 0.7,
+      "delivery_state": "DELIVERY_ACK",
+      "delivery_badge": "✓✓ Entregado (E2E: 0.7s | n8n: 0.0s | Red: 0.7s)",
+      "queue_wait_sec": 0.0
+    }
+  },
+  {
+    "trace_id": "TRACE-EXEC-PWA-1792077270502",
+    "execution_id": "PWA-1792077270502",
+    "workflow_id": "sNMbtiEiTkuQ9OCY",
+    "started_at": "2026-10-15T15:14:30.504608+00:00",
+    "stopped_at": "2026-10-15T15:14:30.504619+00:00",
+    "total_duration_sec": 4.81,
+    "status": "SUCCESS",
+    "bot_number": "+58 424 153 3712",
+    "user_phone": "04160000001",
+    "user_push_name": "Móvil QR (04160000001)",
+    "carrier": "MOVILNET",
+    "carrier_label": "Movilnet 4GMAX",
+    "is_competitor": false,
+    "user_message": "ubicate en caracas",
+    "bot_reply": "¡Entendido! Ya me encuentro ubicado en Caracas, listo para apoyarte con toda la información sobre nuestros planes 4GMAX, puntos de atención Movilnet cercanos, recargas o cualquier consulta que necesites. \n\n¿En qué zona específica te encuentras o cómo puedo ayudarte el día de hoy? 📱🇻🇪",
+    "intent_detected": "OMNICHANNEL_INTERACTION",
+    "pipeline_route": "AI_AGENT_COGNITIVO",
+    "steps": [],
+    "process_timers": {
+      "t1_user_sent_ts": "2026-10-15T15:14:30.354608+00:00",
+      "t2_n8n_in_ts": "2026-10-15T15:14:30.504608+00:00",
+      "t3_core_resolved_ts": "2026-10-15T15:14:30.521608+00:00",
+      "t4_n8n_out_ts": "2026-10-15T15:14:30.504619+00:00",
+      "t5_evolution_queued_ts": "2026-10-15T15:14:30.524619+00:00",
+      "t6_meta_server_ack_ts": "2026-10-15T15:14:30.704619+00:00",
+      "t7_phone_delivered_ts": null,
+      "t8_user_read_ts": null,
+      "delta_inbound_sec": 0.15,
+      "delta_processing_sec": 0.0,
+      "delta_outbound_queue_sec": 0.0,
+      "delta_delivery_sec": null,
+      "delta_e2e_total_sec": null,
+      "delivery_state": "EN_COLA_WHATSAPP",
+      "delivery_badge": "⏳ En cola WhatsApp (0.0s) (Esperando entrega al móvil)",
+      "queue_wait_sec": 0.0
+    }
+  },
+  {
+    "trace_id": "TRACE-SIM-1792077270357",
+    "execution_id": "SIM-1792077270",
+    "workflow_id": "sNMbtiEiTkuQ9OCY",
+    "started_at": "2026-10-15T15:14:30.357653+00:00",
+    "stopped_at": "2026-10-15T15:14:30.357953+00:00",
+    "total_duration_sec": 0.22,
+    "status": "SUCCESS",
+    "bot_number": "+58 424 153 3712",
+    "user_phone": "04160000001",
+    "user_push_name": "Abonado 04160000001",
+    "carrier": "MOVILNET",
+    "carrier_label": "Movilnet 4GMAX",
+    "is_competitor": false,
+    "user_message": "ubicate en caracas",
+    "bot_reply": "¡Entendido! Ya me encuentro ubicado en Caracas, listo para apoyarte con toda la información sobre nuestros planes 4GMAX, puntos de atención Movilnet cercanos, recargas o cualquier consulta que necesites. \n\n¿En qué zona específica te encuentras o cómo puedo ayudarte el día de hoy? 📱🇻🇪",
+    "intent_detected": "MARKETING_PORTABILITY",
+    "pipeline_route": "AI_AGENT_COGNITIVO",
+    "steps": [
+      {
+        "step_index": 1,
+        "node_name": "Webhook (messages.upsert)",
+        "phase_category": "1. Ingesta Perimetral",
+        "status": "success",
+        "execution_time_ms": 1.2,
+        "description": "Recibió mensaje desde PWA Móvil (Data 4GMAX) en la línea bot +58 424 153 3712",
+        "input_summary": {
+          "device": "PWA Móvil (Data 4GMAX)",
+          "raw_phone": "04160000001"
+        },
+        "output_summary": {
+          "normalized_phone": "04160000001",
+          "message": "ubicate en caracas"
+        }
+      },
+      {
+        "step_index": 2,
+        "node_name": "If (fromMe == false)",
+        "phase_category": "1. Ingesta Perimetral",
+        "status": "success",
+        "execution_time_ms": 0.8,
+        "description": "Comprobó fromMe == false (mensaje genuino de usuario)",
+        "input_summary": {},
+        "output_summary": {
+          "condition_passed": true
+        }
+      },
+      {
+        "step_index": 3,
+        "node_name": "Edit Fields & Switch",
+        "phase_category": "2. Normalización de Medio",
+        "status": "success",
+        "execution_time_ms": 3.5,
+        "description": "Identificó operadora Movilnet 4GMAX y pushName 'Abonado 04160000001'",
+        "input_summary": {},
+        "output_summary": {
+          "carrier": "MOVILNET",
+          "is_competitor": false
+        }
+      },
+      {
+        "step_index": 4,
+        "node_name": "Router - Consultas determinísticas",
+        "phase_category": "3. Enrutamiento de Intención",
+        "status": "success",
+        "execution_time_ms": 4.1,
+        "description": "Consulta general abierta. Se enruta al modelo generativo Gemini",
+        "input_summary": {},
+        "output_summary": {
+          "branch_activated": "Rama 9: AI Agent Fallback (Gemini Flash)",
+          "pipeline_route": "AI_AGENT_GEMINI"
+        }
+      },
+      {
+        "step_index": 5,
+        "node_name": "🧠 Movilnet Cognitive Agent L5 (Core N→1)",
+        "phase_category": "4. Procesamiento Core",
+        "status": "success",
+        "execution_time_ms": 35.0,
+        "description": "Resolución contextual con herramientas OCS / Geo POIs / Planes en tiempo real",
+        "input_summary": {},
+        "output_summary": {
+          "agent_status": "OK",
+          "model": "gemini-flash-hybrid"
+        }
+      },
+      {
+        "step_index": 6,
+        "node_name": "Merge 5 & Code (Sanitización Markdown)",
+        "phase_category": "5. Sanitización de Salida",
+        "status": "success",
+        "execution_time_ms": 2.1,
+        "description": "Sanitizó caracteres especiales para WhatsApp y unificó salida hacia el canal de mensajería",
+        "input_summary": {},
+        "output_summary": {
+          "ready_for_whatsapp": true
+        }
+      },
+      {
+        "step_index": 7,
+        "node_name": "HTTP Request (Evolution API /sendText)",
+        "phase_category": "6. Despacho Final al Celular",
+        "status": "success",
+        "execution_time_ms": 180.0,
+        "description": "Entregó mensaje en pantalla de 04160000001 (PWA Móvil (Data 4GMAX))",
+        "input_summary": {},
+        "output_summary": {
+          "number": "04160000001",
+          "delivery_status": "DELIVERY_ACK"
+        }
+      }
+    ],
+    "process_timers": {
+      "t1_user_sent_ts": "2026-10-15T15:14:30.207653+00:00",
+      "t2_n8n_in_ts": "2026-10-15T15:14:30.357653+00:00",
+      "t3_core_resolved_ts": "2026-10-15T15:14:30.374653+00:00",
+      "t4_n8n_out_ts": "2026-10-15T15:14:30.357953+00:00",
+      "t5_evolution_queued_ts": "2026-10-15T15:14:30.377953+00:00",
+      "t6_meta_server_ack_ts": "2026-10-15T15:14:30.557953+00:00",
+      "t7_phone_delivered_ts": "2026-10-15T15:14:30.907953+00:00",
+      "t8_user_read_ts": "2026-10-15T15:14:32.107953+00:00",
+      "delta_inbound_sec": 0.15,
+      "delta_processing_sec": 0.0,
+      "delta_outbound_queue_sec": 0.2,
+      "delta_delivery_sec": 0.35,
+      "delta_e2e_total_sec": 0.7,
+      "delivery_state": "DELIVERY_ACK",
+      "delivery_badge": "✓✓ Entregado (E2E: 0.7s | n8n: 0.0s | Red: 0.7s)",
+      "queue_wait_sec": 0.0
+    }
+  },
+  {
+    "trace_id": "TRACE-EXEC-PWA-1792077251300",
+    "execution_id": "PWA-1792077251300",
+    "workflow_id": "sNMbtiEiTkuQ9OCY",
+    "started_at": "2026-10-15T15:14:11.302555+00:00",
+    "stopped_at": "2026-10-15T15:14:11.302567+00:00",
+    "total_duration_sec": 2.68,
+    "status": "SUCCESS",
+    "bot_number": "+58 424 153 3712",
+    "user_phone": "04160000001",
+    "user_push_name": "Móvil QR (04160000001)",
+    "carrier": "MOVILNET",
+    "carrier_label": "Movilnet 4GMAX",
+    "is_competitor": false,
+    "user_message": "un buen restaurant en los palos grandes",
+    "bot_reply": "¡Con gusto te ayudo! 🍽️ En mi radio inmediato verificado no tengo registrado un listado de restaurantes en Los Palos Grandes, ya que actualmente me encuentro operativo en otras zonas de Caracas. \n\nSi te encuentras por Los Palos Grandes, te invito a disfrutar de tu navegación 4GMAX mientras buscas las mejores opciones gastronómicas de la zona. ¿Te puedo ayudar con alguna consulta sobre tu línea Movilnet o planes?",
+    "intent_detected": "OMNICHANNEL_INTERACTION",
+    "pipeline_route": "AI_AGENT_COGNITIVO",
+    "steps": [],
+    "process_timers": {
+      "t1_user_sent_ts": "2026-10-15T15:14:11.152555+00:00",
+      "t2_n8n_in_ts": "2026-10-15T15:14:11.302555+00:00",
+      "t3_core_resolved_ts": "2026-10-15T15:14:11.319555+00:00",
+      "t4_n8n_out_ts": "2026-10-15T15:14:11.302567+00:00",
+      "t5_evolution_queued_ts": "2026-10-15T15:14:11.322567+00:00",
+      "t6_meta_server_ack_ts": "2026-10-15T15:14:11.502567+00:00",
+      "t7_phone_delivered_ts": null,
+      "t8_user_read_ts": null,
+      "delta_inbound_sec": 0.15,
+      "delta_processing_sec": 0.0,
+      "delta_outbound_queue_sec": 0.0,
+      "delta_delivery_sec": null,
+      "delta_e2e_total_sec": null,
+      "delivery_state": "EN_COLA_WHATSAPP",
+      "delivery_badge": "⏳ En cola WhatsApp (0.0s) (Esperando entrega al móvil)",
+      "queue_wait_sec": 0.0
+    }
+  },
+  {
+    "trace_id": "TRACE-SIM-1792077251151",
+    "execution_id": "SIM-1792077251",
+    "workflow_id": "sNMbtiEiTkuQ9OCY",
+    "started_at": "2026-10-15T15:14:11.150180+00:00",
+    "stopped_at": "2026-10-15T15:14:11.151840+00:00",
+    "total_duration_sec": 0.22,
+    "status": "SUCCESS",
+    "bot_number": "+58 424 153 3712",
+    "user_phone": "04160000001",
+    "user_push_name": "Abonado 04160000001",
+    "carrier": "MOVILNET",
+    "carrier_label": "Movilnet 4GMAX",
+    "is_competitor": false,
+    "user_message": "un buen restaurant en los palos grandes",
+    "bot_reply": "¡Con gusto te ayudo! 🍽️ En mi radio inmediato verificado no tengo registrado un listado de restaurantes en Los Palos Grandes, ya que actualmente me encuentro operativo en otras zonas de Caracas. \n\nSi te encuentras por Los Palos Grandes, te invito a disfrutar de tu navegación 4GMAX mientras buscas las mejores opciones gastronómicas de la zona. ¿Te puedo ayudar con alguna consulta sobre tu línea Movilnet o planes?",
+    "intent_detected": "MARKETING_PORTABILITY",
+    "pipeline_route": "AI_AGENT_COGNITIVO",
+    "steps": [
+      {
+        "step_index": 1,
+        "node_name": "Webhook (messages.upsert)",
+        "phase_category": "1. Ingesta Perimetral",
+        "status": "success",
+        "execution_time_ms": 1.2,
+        "description": "Recibió mensaje desde PWA Móvil (Data 4GMAX) en la línea bot +58 424 153 3712",
+        "input_summary": {
+          "device": "PWA Móvil (Data 4GMAX)",
+          "raw_phone": "04160000001"
+        },
+        "output_summary": {
+          "normalized_phone": "04160000001",
+          "message": "un buen restaurant en los palos grandes"
+        }
+      },
+      {
+        "step_index": 2,
+        "node_name": "If (fromMe == false)",
+        "phase_category": "1. Ingesta Perimetral",
+        "status": "success",
+        "execution_time_ms": 0.8,
+        "description": "Comprobó fromMe == false (mensaje genuino de usuario)",
+        "input_summary": {},
+        "output_summary": {
+          "condition_passed": true
+        }
+      },
+      {
+        "step_index": 3,
+        "node_name": "Edit Fields & Switch",
+        "phase_category": "2. Normalización de Medio",
+        "status": "success",
+        "execution_time_ms": 3.5,
+        "description": "Identificó operadora Movilnet 4GMAX y pushName 'Abonado 04160000001'",
+        "input_summary": {},
+        "output_summary": {
+          "carrier": "MOVILNET",
+          "is_competitor": false
+        }
+      },
+      {
+        "step_index": 4,
+        "node_name": "Router - Consultas determinísticas",
+        "phase_category": "3. Enrutamiento de Intención",
+        "status": "success",
+        "execution_time_ms": 4.1,
+        "description": "Consulta general abierta. Se enruta al modelo generativo Gemini",
+        "input_summary": {},
+        "output_summary": {
+          "branch_activated": "Rama 9: AI Agent Fallback (Gemini Flash)",
+          "pipeline_route": "AI_AGENT_GEMINI"
+        }
+      },
+      {
+        "step_index": 5,
+        "node_name": "🧠 Movilnet Cognitive Agent L5 (Core N→1)",
+        "phase_category": "4. Procesamiento Core",
+        "status": "success",
+        "execution_time_ms": 35.0,
+        "description": "Resolución contextual con herramientas OCS / Geo POIs / Planes en tiempo real",
+        "input_summary": {},
+        "output_summary": {
+          "agent_status": "OK",
+          "model": "gemini-flash-hybrid"
+        }
+      },
+      {
+        "step_index": 6,
+        "node_name": "Merge 5 & Code (Sanitización Markdown)",
+        "phase_category": "5. Sanitización de Salida",
+        "status": "success",
+        "execution_time_ms": 2.1,
+        "description": "Sanitizó caracteres especiales para WhatsApp y unificó salida hacia el canal de mensajería",
+        "input_summary": {},
+        "output_summary": {
+          "ready_for_whatsapp": true
+        }
+      },
+      {
+        "step_index": 7,
+        "node_name": "HTTP Request (Evolution API /sendText)",
+        "phase_category": "6. Despacho Final al Celular",
+        "status": "success",
+        "execution_time_ms": 180.0,
+        "description": "Entregó mensaje en pantalla de 04160000001 (PWA Móvil (Data 4GMAX))",
+        "input_summary": {},
+        "output_summary": {
+          "number": "04160000001",
+          "delivery_status": "DELIVERY_ACK"
+        }
+      }
+    ],
+    "process_timers": {
+      "t1_user_sent_ts": "2026-10-15T15:14:11.000180+00:00",
+      "t2_n8n_in_ts": "2026-10-15T15:14:11.150180+00:00",
+      "t3_core_resolved_ts": "2026-10-15T15:14:11.167180+00:00",
+      "t4_n8n_out_ts": "2026-10-15T15:14:11.151840+00:00",
+      "t5_evolution_queued_ts": "2026-10-15T15:14:11.171840+00:00",
+      "t6_meta_server_ack_ts": "2026-10-15T15:14:11.351840+00:00",
+      "t7_phone_delivered_ts": "2026-10-15T15:14:11.701840+00:00",
+      "t8_user_read_ts": "2026-10-15T15:14:12.901840+00:00",
+      "delta_inbound_sec": 0.15,
+      "delta_processing_sec": 0.002,
+      "delta_outbound_queue_sec": 0.2,
+      "delta_delivery_sec": 0.35,
+      "delta_e2e_total_sec": 0.702,
+      "delivery_state": "DELIVERY_ACK",
+      "delivery_badge": "✓✓ Entregado (E2E: 0.702s | n8n: 0.002s | Red: 0.7s)",
+      "queue_wait_sec": 0.0
+    }
+  },
+  {
     "trace_id": "TRACE-SIM-1792076935404",
     "execution_id": "SIM-1792076935",
     "workflow_id": "sNMbtiEiTkuQ9OCY",
