@@ -30,7 +30,7 @@ Este repositorio alberga la plataforma de producción de **Telecomunicaciones Mo
 - **Despliegue y Orquestación:** Microservicio ODA en puerto local `:8010`, túnel Anycast global y n8n Cloud (`n8n.lpgtec.net`).
 - **Anexo Técnico Oficial:** [`docs/ANEXO_TECNICO_CLOUDFLARE_TUNNEL.md`](docs/ANEXO_TECNICO_CLOUDFLARE_TUNNEL.md) con auditoría de protocolos QUIC, TLS 1.3, curvas X25519MLKEM768 y guía de mantenimiento.
 - **Entregables Soberanos de Doble Clic:** Scripts `.command` para macOS (`reiniciar_todo_limpio.command`, `probar_geolocalizacion.command`, `verificar_whatsapp_sin_celular.command`).
-- **Respaldo Soberano Certificado:** `141026_Movilnet_Core_PWA` sellado con hash SHA-256 (Capítulos 1 al 207).
+- **Respaldo Soberano Certificado:** `141026_Movilnet_Core_PWA` sellado con hash SHA-256 (Capítulos 1 al 208).
 
 ---
 
