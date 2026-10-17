@@ -828,6 +828,17 @@ class MovilnetAPIService:
         except (ValueError, TypeError):
             parsed_lat, parsed_lon = None, None
 
+        if parsed_lat is None or parsed_lon is None:
+            gps_m = re.search(r"\[UBICACION_GPS:\s*lat=([0-9.-]+),\s*lon=([0-9.-]+)\]", str(text), re.IGNORECASE)
+            if not gps_m:
+                gps_m = re.search(r"(?:lat(?:itud)?|geo):\s*([0-9.-]+)[,\s]+(?:lon(?:gitud)?):\s*([0-9.-]+)", str(text), re.IGNORECASE)
+            if gps_m:
+                try:
+                    parsed_lat = float(gps_m.group(1))
+                    parsed_lon = float(gps_m.group(2))
+                except (ValueError, TypeError):
+                    pass
+
         device_info = body.get("device_info")
         if not isinstance(device_info, dict):
             device_info = None
@@ -882,7 +893,7 @@ class MovilnetAPIService:
             response.response_text = fp_guard.response_text
             response.tokens_consumed = 0
             response.cost_usd = 0.0
-        elif fp_res.can_intercept and fp_res.intent_detected == "EMERGENCY_DISPATCH_911":
+        elif fp_res.can_intercept and fp_res.intent_detected in ("EMERGENCY_DISPATCH_911", "CONSULTA_GEOESPACIAL_UBICACION", "LOCALIZADOR_OFICINAS_TELCO"):
             from api.agents.agent_customer_care import AgentResponse, AgentExecutionMode, IntentType
             eff_session = session_id_val or f"sess-{phone_for_guard}"
             response = AgentResponse(

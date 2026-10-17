@@ -18,6 +18,7 @@ Arquitectura Hexagonal Desacoplada por Capas:
 
 from __future__ import annotations
 
+import re
 import sys
 import time
 import uuid
@@ -107,8 +108,77 @@ class CustomerCareAgent:
         raw_text = message.text.strip()
         msisdn = message.msisdn
 
+        # Extracción automática de GPS embebido en raw_text si no vinieron en message
+        lat = message.latitude
+        lon = message.longitude
+        if lat is None or lon is None:
+            gps_m = re.search(r"\[UBICACION_GPS:\s*lat=([0-9.-]+),\s*lon=([0-9.-]+)\]", raw_text, re.IGNORECASE)
+            if not gps_m:
+                gps_m = re.search(r"(?:lat(?:itud)?|geo):\s*([0-9.-]+)[,\s]+(?:lon(?:gitud)?):\s*([0-9.-]+)", raw_text, re.IGNORECASE)
+            if gps_m:
+                try:
+                    lat = float(gps_m.group(1))
+                    lon = float(gps_m.group(2))
+                    message.latitude = lat
+                    message.longitude = lon
+                except (ValueError, TypeError):
+                    pass
+
         # Registrar turno del usuario en la memoria conversacional
         self.memory.add_turn(session_id, role="user", content=raw_text)
+
+        # PRIORIDAD ABSOLUTA: Despacho 911 / Emergencias
+        from core.emergency_dispatcher import EmergencyDispatcher, emergency_dispatcher
+        from core.carrier_funnel_classifier import CarrierFunnelClassifier
+        clean_user_msisdn = CarrierFunnelClassifier.clean_msisdn(msisdn or "") or msisdn or "04160000001"
+        if EmergencyDispatcher.is_emergency_trigger(raw_text) or (emergency_dispatcher.has_active_emergency(clean_user_msisdn) and (lat is not None or lon is not None)):
+            res_emerg = emergency_dispatcher.dispatch_emergency(clean_user_msisdn, raw_text, lat=lat, lon=lon)
+            resp_text = self._ensure_pwa_link_suffix(res_emerg.response_text, message.channel or "")
+            latency_ms = round((time.perf_counter() - start_time) * 1000, 3)
+            response = AgentResponse(
+                response_text=resp_text,
+                intent=IntentType.UNKNOWN,
+                execution_mode=AgentExecutionMode.FAST_PATH,
+                latency_ms=latency_ms,
+                tokens_consumed=0,
+                cost_usd=0.0,
+                handoff_required=False,
+                target_agent=None,
+                interactive_options=[],
+                metadata={"pipeline": "EMERGENCY_DISPATCH_UNIVERSAL", "status": res_emerg.status},
+                session_id=session_id
+            )
+            self.memory.add_turn(session_id, role="agent", content=resp_text, intent="EMERGENCY_DISPATCH_911")
+            return response
+
+        # Geolocalización Catastral Determinista Sub-5m (<5m, 0 tokens)
+        has_coords = (lat is not None and lon is not None)
+        is_explicit_location_inquiry = any(w in raw_text.lower() for w in [
+            "donde estoy", "dónde estoy", "donde me encuentro", "dónde me encuentro",
+            "mi ubicacion", "mi ubicación", "mis coordenadas"
+        ])
+        if has_coords or is_explicit_location_inquiry:
+            from core.fastpath_intent_interceptor import fastpath_interceptor
+            fp_eval = fastpath_interceptor.intercept(raw_text, clean_user_msisdn, latitude=lat, longitude=lon)
+            if fp_eval.can_intercept and fp_eval.intent_detected in ("CONSULTA_GEOESPACIAL_UBICACION", "LOCALIZADOR_OFICINAS_TELCO"):
+                resp_text = self._ensure_pwa_link_suffix(fp_eval.response_text, message.channel or "")
+                latency_ms = round((time.perf_counter() - start_time) * 1000, 3)
+                mapped_intent = IntentType.OFFICE_LOCATION_QUERY if fp_eval.intent_detected == "LOCALIZADOR_OFICINAS_TELCO" else IntentType.UNKNOWN
+                response = AgentResponse(
+                    response_text=resp_text,
+                    intent=mapped_intent,
+                    execution_mode=AgentExecutionMode.FAST_PATH,
+                    latency_ms=latency_ms,
+                    tokens_consumed=0,
+                    cost_usd=0.0,
+                    handoff_required=False,
+                    target_agent=None,
+                    interactive_options=[],
+                    metadata={"data_source": fp_eval.data_source, "fastpath_intent": fp_eval.intent_detected},
+                    session_id=session_id
+                )
+                self.memory.add_turn(session_id, role="agent", content=resp_text, intent=fp_eval.intent_detected)
+                return response
 
         # 1. Clasificación Sintáctica de Intención
         intent = self.fast_path.classify_intent(raw_text)

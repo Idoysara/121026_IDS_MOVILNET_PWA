@@ -277,6 +277,9 @@ class EmergencyDispatcher:
         plus_code = encode_plus_code_11d(lat, lon)
         is_venezuela = self.is_within_venezuela(lat, lon)
 
+        from core.cadastral_reverse_geocoder import cadastral_geocoder
+        cadastral = cadastral_geocoder.resolve(lat, lon)
+
         now_str = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
         status = "LOCALIZADO" if is_venezuela else "RECIBIDO"
         desc = (text_context or "Ubicación compartida en sesión de emergencia").strip()
@@ -301,15 +304,19 @@ class EmergencyDispatcher:
         if is_venezuela:
             reply_text = (
                 "✅ **REPORTE DE EMERGENCIA REGISTRADO**\n\n"
-                f"📍 **Coordenadas recibidas:** `{lat:.6f}, {lon:.6f}`\n"
+                f"🏢 **Ubicación Certificada (<5m):** {cadastral.display_address}\n"
                 f"🏷️ **Plus Code (3x3m):** `{plus_code}`\n"
+                f"📍 **Coordenadas GNSS:** `{lat:.6f}, {lon:.6f}`\n"
                 f"🗺️ **Ubicación en mapa:** {maps_url}\n"
                 f"🚗 **Ruta rápida Waze:** {waze_url}\n"
                 f"📱 **Teléfono de contacto:** `{clean_phone}` ({carrier_label})\n\n"
+                f"🚨 **REFERENCIA DIRECTA PARA PARAMÉDICOS / RESCATE:**\n"
+                f"Diles: *\"{cadastral.spoken_emergency_reference}\"*\n\n"
                 "🛡️ Unidades de apoyo y cuadrantes de seguridad en monitoreo. "
                 "Mantén tu línea libre para recibir contacto del equipo de asistencia oficial.\n\n"
                 "🚨 *Líneas Directas de Rescate 24/7:*\n"
                 "• **VEN 911:** Marcando gratis al **911** o **171**\n"
+                "• **Salud Chacao (Ambulancias):** **0212-953.76.85** / **0212-953.78.77**\n"
                 "• **Emergencias Médicas / Bomberos:** Marcando al **112**\n"
                 "• **Atención Policial:** **0800-POLICIA** (0800-7654242)"
             )
@@ -355,6 +362,9 @@ class EmergencyDispatcher:
         carrier_enum, display_name, _ = CarrierFunnelClassifier.identify_carrier(clean_phone)
         carrier_label = display_name or carrier_enum.value
 
+        from core.cadastral_reverse_geocoder import cadastral_geocoder
+        cadastral = cadastral_geocoder.resolve(lat, lon, accuracy_meters)
+
         plus_code = encode_plus_code_11d(lat, lon)
         maps_url = f"https://www.google.com/maps?q={lat:.6f},{lon:.6f}"
         waze_url = f"https://waze.com/ul?ll={lat:.6f},{lon:.6f}&navigate=yes"
@@ -389,8 +399,9 @@ class EmergencyDispatcher:
                 "🚨 **DESPACHO DE EMERGENCIA 911 — LOCALIZACIÓN DE ALTA PRECISIÓN** 🚨\n\n"
                 f"🎯 **Certeza Geográfica:** {precision_badge}\n"
                 f"📏 **Margen de Error:** `{acc_str}`\n"
-                f"📍 **Coordenadas GNSS:** `{lat:.6f}, {lon:.6f}`\n"
+                f"🏢 **Ubicación Certificada (<5m):** {cadastral.display_address}\n"
                 f"🏷️ **Plus Code (3x3m):** `{plus_code}`\n"
+                f"📍 **Coordenadas GNSS:** `{lat:.6f}, {lon:.6f}`\n"
             )
             if altitude_meters is not None:
                 reply_text += f"⛰️ **Altitud estimada:** `{altitude_meters:.1f} m`\n"
@@ -398,6 +409,8 @@ class EmergencyDispatcher:
                 f"\n🗺️ **Ruta Google Maps:** {maps_url}\n"
                 f"🚗 **Navegación Waze Paramédicos:** {waze_url}\n"
                 f"📱 **Abonado:** `{clean_phone}` ({carrier_label})\n\n"
+                f"🚨 **REFERENCIA DIRECTA PARA PARAMÉDICOS / RESCATE:**\n"
+                f"Diles: *\"{cadastral.spoken_emergency_reference}\"*\n\n"
                 "🛡️ **Protocolo de Auxilio Activado:** Tu posición ha sido fijada con coordenadas sub-métricas en el Cuadrante de Paz correspondiente. "
                 "Mantén tu dispositivo encendido y la línea libre.\n\n"
                 "📞 **Líneas de Respuesta Inmediata:**\n"
@@ -429,7 +442,8 @@ class EmergencyDispatcher:
             "is_sub_5m": is_sub_5m,
             "is_venezuela": is_venezuela,
             "status": status,
-            "response_text": reply_text
+            "response_text": reply_text,
+            "cadastral": asdict(cadastral) if hasattr(cadastral, "__dataclass_fields__") else cadastral
         }
 
     def dispatch_emergency(

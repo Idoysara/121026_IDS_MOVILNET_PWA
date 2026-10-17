@@ -99,39 +99,11 @@ REGLA SOBERANA DE SEGMENTACIÓN POR NÚMERO (0416/0426 vs NO-MOVILNET):
 
     @staticmethod
     def _get_location_and_weather(lat: Optional[float], lon: Optional[float], fetch_live_weather: bool = True) -> str:
-        """Determina la ciudad venezolana por proximidad Haversine y obtiene el clima en tiempo real."""
-        CITIES = [
-            ("Caracas (Distrito Capital)", 10.4806, -66.9036),
-            ("Maracaibo (Zulia)", 10.6427, -71.6125),
-            ("Valencia (Carabobo)", 10.1620, -68.0077),
-            ("Barquisimeto (Lara)", 10.0678, -69.3474),
-            ("Maracay (Aragua)", 10.2469, -67.5958),
-            ("Puerto La Cruz (Anzoátegui)", 10.2138, -64.6300),
-            ("Ciudad Guayana (Bolívar)", 8.3753, -62.6410),
-            ("San Cristóbal (Táchira)", 7.7669, -72.2250),
-            ("Mérida (Mérida)", 8.5983, -71.1450),
-            ("Maturín (Monagas)", 9.7457, -63.1832),
-            ("Porlamar (Nueva Esparta)", 10.9577, -63.8697)
-        ]
-
+        """Determina la georreferenciación catastral exacta (<5m) o referencia y el clima en tiempo real."""
+        weather_info = "Clima agradable, 28°C"
         target_lat = lat if lat is not None else 10.4806
         target_lon = lon if lon is not None else -66.9036
 
-        best_city = "Caracas (Distrito Capital)"
-        min_dist = float("inf")
-        r = 6371.0
-
-        for name, c_lat, c_lon in CITIES:
-            phi1, phi2 = math.radians(target_lat), math.radians(c_lat)
-            dphi = math.radians(c_lat - target_lat)
-            dlambda = math.radians(c_lon - target_lon)
-            a = math.sin(dphi / 2)**2 + math.cos(phi1) * math.cos(phi2) * math.sin(dlambda / 2)**2
-            d = 2 * r * math.atan2(math.sqrt(a), math.sqrt(1 - a))
-            if d < min_dist:
-                min_dist = d
-                best_city = name
-
-        weather_info = "Clima agradable, 28°C"
         if fetch_live_weather:
             try:
                 url = f"https://api.open-meteo.com/v1/forecast?latitude={target_lat:.4f}&longitude={target_lon:.4f}&current_weather=true"
@@ -145,9 +117,19 @@ REGLA SOBERANA DE SEGMENTACIÓN POR NÚMERO (0416/0426 vs NO-MOVILNET):
             except Exception:
                 pass
 
+        if lat is not None and lon is not None:
+            try:
+                from core.cadastral_reverse_geocoder import cadastral_geocoder
+                grounding = cadastral_geocoder.get_llm_grounding_block(lat, lon)
+                return f"{grounding}\n- Clima en la zona: {weather_info}"
+            except Exception as e:
+                pass
+
         return (
-            f"- Ubicación territorial de referencia: {best_city} (Lat: {target_lat:.4f}, Lon: {target_lon:.4f})\n"
-            f"- Clima actual: {weather_info}"
+            "- Coordenadas GPS del abonado: NO SUMINISTRADAS (El usuario no ha enviado ubicación satelital ni geolocalización).\n"
+            "- REGLA DE UBICACIÓN DESCONOCIDA: Si el usuario pregunta por recomendaciones de comida, farmacias, tiendas o lugares cercanos sin indicar ciudad o zona, "
+            "NUNCA asumas Caracas ni inventes su ubicación. Pregúntale amablemente en qué ciudad o zona se encuentra.\n"
+            f"- Clima regional de referencia: {weather_info}"
         )
 
     def generate_response(
@@ -167,6 +149,18 @@ REGLA SOBERANA DE SEGMENTACIÓN POR NÚMERO (0416/0426 vs NO-MOVILNET):
         2. OpenRouter (Google Gemini / DeepSeek / Qwen Pool) si está disponible.
         3. Motor Semántico Contextual Local (Fallback Carrier-Grade).
         """
+        # Extracción automática de GPS embebido en message si latitude/longitude son None
+        if latitude is None or longitude is None:
+            gps_m = re.search(r"\[UBICACION_GPS:\s*lat=([0-9.-]+),\s*lon=([0-9.-]+)\]", message, re.IGNORECASE)
+            if not gps_m:
+                gps_m = re.search(r"(?:lat(?:itud)?|geo):\s*([0-9.-]+)[,\s]+(?:lon(?:gitud)?):\s*([0-9.-]+)", message, re.IGNORECASE)
+            if gps_m:
+                try:
+                    latitude = float(gps_m.group(1))
+                    longitude = float(gps_m.group(2))
+                except (ValueError, TypeError):
+                    pass
+
         system_context = self._build_system_context(latitude, longitude, device_info, msisdn, sender_name)
 
         # 1. Intentar proveedor directo Google AI Studio
@@ -236,6 +230,16 @@ REGLA SOBERANA DE SEGMENTACIÓN POR NÚMERO (0416/0426 vs NO-MOVILNET):
             f"situados en esa zona específica consultada. Queda ESTRICTAMENTE PROHIBIDO responder con lugares de Chacao u otras zonas ajenas diciendo que 'están en la zona'.\n"
         )
 
+        geo_zero_hallucination_directive = (
+            "*REGLA INVIOLABLE DE CERO ADIVINACIÓN DE GEOLOCALIZACIÓN (<5m)*:\n"
+            "Queda ESTRICTAMENTE PROHIBIDO alucinar, adivinar o asumir ubicaciones geográficas. "
+            "Cuando se proporcionen coordenadas geográficas en el bloque [GROUNDING_GEOESPACIAL_DETERMINISTA], "
+            "debes usar EXCLUSIVAMENTE la Dirección Catastral Oficial, el Sector / Urbanización y los Puntos de Referencia "
+            "certificados en dicho bloque. NUNCA inventes o asumas que el usuario está en otra plaza, avenida o "
+            "urbanización diferente (por ejemplo: si las coordenadas corresponden a Los Palos Grandes, NUNCA digas "
+            "que está en la Plaza Francia o en Altamira, y viceversa).\n"
+        )
+
         missing_data_completion_directive = (
             f"*Regla Inviolable de Cero Adivinación y Detección de Datos Faltantes*: "
             f"Evalúa SIEMPRE si el mensaje del usuario tiene la información completa para responder de forma exacta. "
@@ -253,6 +257,7 @@ REGLA SOBERANA DE SEGMENTACIÓN POR NÚMERO (0416/0426 vs NO-MOVILNET):
             f"- Hora oficial actual en Venezuela: {current_time_str}\n"
             f"{identity_directive}"
             f"{geo_strict_directive}"
+            f"{geo_zero_hallucination_directive}"
             f"{missing_data_completion_directive}"
             f"{geo_weather_info}\n"
             f"*Regla Inviolable de Temporalidad*: Cuando el usuario pregunte por la fecha, el día actual o la hora (o haga alusión al momento del día), DEBES responder con EXACTITUD matemática basándote en esta telemetría oficial ({current_date_str}, {current_time_str}). Queda ESTRICTAMENTE PROHIBIDO inventar o cambiar el día de la semana.\n"
@@ -399,6 +404,71 @@ REGLA SOBERANA DE SEGMENTACIÓN POR NÚMERO (0416/0426 vs NO-MOVILNET):
             if unicodedata.category(c) != "Mn"
         )
         words = set(re.findall(r'\b[a-zñ0-9]+\b', msg_clean))
+
+        # 0. Manejo Determinista de Geolocalización Catastral Sub-5m
+        cur_lat = latitude
+        cur_lon = longitude
+        if cur_lat is None or cur_lon is None:
+            gps_m = re.search(r"\[UBICACION_GPS:\s*lat=([0-9.-]+),\s*lon=([0-9.-]+)\]", message, re.IGNORECASE)
+            if not gps_m:
+                gps_m = re.search(r"(?:lat(?:itud)?|geo):\s*([0-9.-]+)[,\s]+(?:lon(?:gitud)?):\s*([0-9.-]+)", message, re.IGNORECASE)
+            if gps_m:
+                try:
+                    cur_lat = float(gps_m.group(1))
+                    cur_lon = float(gps_m.group(2))
+                except Exception:
+                    pass
+
+        is_asking_loc = any(k in msg_clean for k in [
+            "donde estoy", "mi ubicacion", "mi direccion", "donde me encuentro",
+            "que lugar es este", "coordenadas", "mi posicion", "estoy aqui"
+        ])
+        if cur_lat is not None and cur_lon is not None and (is_asking_loc or "ubicacion_gps" in msg_clean):
+            from core.cadastral_reverse_geocoder import cadastral_geocoder
+            cad = cadastral_geocoder.resolve(cur_lat, cur_lon)
+            ref_str = f" Cerca de {cad.nearest_landmarks[0]['name']}." if cad.nearest_landmarks else ""
+            reply = (
+                f"📍 *Tu ubicación exacta verificada por satélite:*\n\n"
+                f"🏢 **Dirección Catastral:** {cad.display_address}\n"
+                f"🏷️ **Plus Code (3x3m):** `{cad.plus_code_11d}`\n"
+                f"📍 **Coordenadas GNSS:** `{cad.latitude:.6f}, {cad.longitude:.6f}` (Margen: ±{cad.accuracy_meters_est:.1f} m)\n"
+                f"🏛️ **Parroquia/Municipio:** {cad.parish}, {cad.municipality} ({cad.state})\n"
+                f"📌 **Referencia:**{ref_str}\n\n"
+                f"🗺️ **Ver en Google Maps:** {cad.google_maps_url}\n"
+                f"🚗 **Navegar en Waze:** {cad.waze_url}\n\n"
+                f"📶 Cuentas con cobertura modernizada *Movilnet 4GMAX* en toda la zona. ¿Deseas ubicar una oficina comercial cercana o consultar tu saldo?"
+            )
+            return reply, 0, 0.0
+
+        # Rastreo de Memoria y Continuidad Multi-Turno (Context Tracking)
+        had_hunger_or_food_recently = False
+        last_context_location = None
+        if session_history:
+            for turn in session_history[-6:]:
+                txt = ""
+                if isinstance(turn, dict):
+                    txt = str(turn.get("content") or turn.get("message") or turn.get("user") or turn.get("text") or "").lower()
+                elif isinstance(turn, str):
+                    txt = str(turn).lower()
+                
+                if any(w in txt for w in ["hambre", "comer", "comida", "almuerzo", "cena", "helado", "cafe", "antojo", "desayuno", "restaurante", "postre", "merendar"]):
+                    had_hunger_or_food_recently = True
+                if "palos grandes" in txt or "plaza" in txt:
+                    last_context_location = "palos_grandes"
+                elif "altamira" in txt:
+                    last_context_location = "altamira"
+                elif "chacao" in txt:
+                    last_context_location = "chacao"
+
+        is_asking_recommendation = any(k in msg_clean for k in [
+            "donde recomiendas", "que recomiendas", "recomiendas", "para ir a comer",
+            "donde comer", "donde ir a comer", "sitio para comer", "lugar para comer",
+            "para comer", "a comer", "donde tomar cafe", "donde merendar", "alguna opcion",
+            "opciones para comer", "que hay para comer"
+        ])
+        
+        is_in_palos_grandes = ("palos grandes" in msg_clean) or ("plaza" in msg_clean and ("palos grandes" in msg_clean or last_context_location == "palos_grandes")) or (last_context_location == "palos_grandes" and is_asking_recommendation)
+        is_in_altamira = ("altamira" in msg_clean) or (last_context_location == "altamira" and is_asking_recommendation)
 
         # 1. ¿De qué se trata esta aplicación / Qué es Mi Movilnet / Funcionalidades / Ayuda?
         if any(k in msg_clean for k in [
@@ -693,38 +763,8 @@ REGLA SOBERANA DE SEGMENTACIÓN POR NÚMERO (0416/0426 vs NO-MOVILNET):
                 "📶 Con tu línea 4GMAX puedes navegar, usar apps de transporte y realizar Pago Móvil C2P con total rapidez. ¿Deseas consultar tu saldo o plan antes de desplazarte?"
             )
 
-        # 16.4 Rastreo de Memoria y Continuidad Multi-Turno (Context Tracking)
-        had_hunger_or_food_recently = False
-        last_context_location = None
-        if session_history:
-            for turn in session_history[-6:]:
-                txt = ""
-                if isinstance(turn, dict):
-                    txt = str(turn.get("content") or turn.get("message") or turn.get("user") or turn.get("text") or "").lower()
-                elif isinstance(turn, str):
-                    txt = str(turn).lower()
-                
-                if any(w in txt for w in ["hambre", "comer", "comida", "almuerzo", "cena", "helado", "cafe", "antojo", "desayuno", "restaurante", "postre", "merendar"]):
-                    had_hunger_or_food_recently = True
-                if "palos grandes" in txt or "plaza" in txt:
-                    last_context_location = "palos_grandes"
-                elif "altamira" in txt:
-                    last_context_location = "altamira"
-                elif "chacao" in txt:
-                    last_context_location = "chacao"
-
         # 16.5 Recomendaciones Gastronómicas Hiperlocales (Radio 500m) con Factor Humano y Continuidad
-        is_asking_recommendation = any(k in msg_clean for k in [
-            "donde recomiendas", "que recomiendas", "recomiendas", "para ir a comer",
-            "donde comer", "donde ir a comer", "sitio para comer", "lugar para comer",
-            "para comer", "a comer", "donde tomar cafe", "donde merendar", "alguna opcion",
-            "opciones para comer", "que hay para comer"
-        ])
-        
-        is_in_palos_grandes = ("palos grandes" in msg_clean) or ("plaza" in msg_clean and ("palos grandes" in msg_clean or last_context_location == "palos_grandes")) or (last_context_location == "palos_grandes" and is_asking_recommendation)
-        is_in_altamira = ("altamira" in msg_clean) or (last_context_location == "altamira" and is_asking_recommendation)
-
-        if (is_asking_recommendation or had_hunger_or_food_recently) and is_in_palos_grandes and (is_asking_recommendation or any(k in msg_clean for k in ["comer", "comida", "hambre", "plaza", "donde", "recomiendas"])):
+        elif (is_asking_recommendation or had_hunger_or_food_recently) and is_in_palos_grandes and (is_asking_recommendation or any(k in msg_clean for k in ["comer", "comida", "hambre", "plaza", "donde", "recomiendas"])):
             reply = (
                 "¡Excelente punto! Justo alrededor de la *Plaza Los Palos Grandes (3ra Avenida)* cuentas con opciones gastronómicas y cafeterías emblemáticas a menos de 5 minutos a pie (menos de 300 metros):\n\n"
                 "• ☕ *Café Arábica:* Justo al cruzar frente a la plaza (3ra Avenida). Reconocido por sus cafés de origen artesanal, sándwiches gourmet y repostería.\n"

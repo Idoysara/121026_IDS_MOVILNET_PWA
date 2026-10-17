@@ -186,6 +186,19 @@ class N8nWebhookPayloadExtractor:
             or ""
         ).strip()
 
+        # Si no vinieron por locationMessage, extraer de raw_text si vienen embebidas
+        if (latitude is None or longitude is None) and raw_text:
+            gps_m = re.search(r"\[UBICACION_GPS:\s*lat=([0-9.-]+),\s*lon=([0-9.-]+)\]", raw_text, re.IGNORECASE)
+            if not gps_m:
+                gps_m = re.search(r"(?:lat(?:itud)?|geo):\s*([0-9.-]+)[,\s]+(?:lon(?:gitud)?):\s*([0-9.-]+)", raw_text, re.IGNORECASE)
+            if gps_m:
+                try:
+                    latitude = float(gps_m.group(1))
+                    longitude = float(gps_m.group(2))
+                    location_name = location_name or "Pin GPS Embebido"
+                except (ValueError, TypeError):
+                    pass
+
         if not raw_text and latitude is not None and longitude is not None:
             raw_text = f"[UBICACION_GPS: lat={latitude}, lon={longitude}]"
 
@@ -254,6 +267,17 @@ class N8nWebhookPayloadExtractor:
                 raw_text = f"[UBICACION_GPS: lat={latitude}, lon={longitude}]"
             else:
                 raw_text = message.get("text", {}).get("body", "").strip()
+                if (latitude is None or longitude is None) and raw_text:
+                    gps_m = re.search(r"\[UBICACION_GPS:\s*lat=([0-9.-]+),\s*lon=([0-9.-]+)\]", raw_text, re.IGNORECASE)
+                    if not gps_m:
+                        gps_m = re.search(r"(?:lat(?:itud)?|geo):\s*([0-9.-]+)[,\s]+(?:lon(?:gitud)?):\s*([0-9.-]+)", raw_text, re.IGNORECASE)
+                    if gps_m:
+                        try:
+                            latitude = float(gps_m.group(1))
+                            longitude = float(gps_m.group(2))
+                            location_name = location_name or "Pin GPS Embebido"
+                        except (ValueError, TypeError):
+                            pass
 
             national_phone, _ = cls.normalize_phone(raw_phone)
             from core.emergency_dispatcher import EmergencyDispatcher, emergency_dispatcher
@@ -329,6 +353,18 @@ class N8nWebhookPayloadExtractor:
             except (ValueError, TypeError):
                 pass
         location_name = actual_body.get("location_name") or loc.get("name") or loc.get("address")
+
+        if (latitude is None or longitude is None) and message_raw:
+            gps_m = re.search(r"\[UBICACION_GPS:\s*lat=([0-9.-]+),\s*lon=([0-9.-]+)\]", message_raw, re.IGNORECASE)
+            if not gps_m:
+                gps_m = re.search(r"(?:lat(?:itud)?|geo):\s*([0-9.-]+)[,\s]+(?:lon(?:gitud)?):\s*([0-9.-]+)", message_raw, re.IGNORECASE)
+            if gps_m:
+                try:
+                    latitude = float(gps_m.group(1))
+                    longitude = float(gps_m.group(2))
+                    location_name = location_name or "Pin GPS Embebido"
+                except (ValueError, TypeError):
+                    pass
 
         if latitude is not None and longitude is not None:
             intent = "LOCALIZADOR_OFICINAS_TELCO"
