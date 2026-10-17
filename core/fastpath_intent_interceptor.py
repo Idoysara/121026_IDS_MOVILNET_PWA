@@ -191,6 +191,12 @@ class FastPathIntentInterceptor:
         if not message_text:
             return None
 
+        # PRIORIDAD -1 (Módulo Universal de Emergencia y Despacho 911):
+        # Máxima prioridad absoluta: nunca debe ser bloqueado por filtros comerciales.
+        from core.emergency_dispatcher import EmergencyDispatcher
+        if EmergencyDispatcher.is_emergency_trigger(message_text):
+            return "EMERGENCY_DISPATCH_911"
+
         # PRIORIDAD 0 (Guardarraíl Anti-Propaganda e Invitaciones):
         # Debe evaluarse ANTES de saldo, megas, planes o recargas para evitar falsos positivos
         # con palabras aisladas como 'cupos limitados' o 'información'.
@@ -845,6 +851,34 @@ class FastPathIntentInterceptor:
         carrier_enum, _, is_comp = CarrierFunnelClassifier.identify_carrier(clean_phone)
         is_movilnet = (not is_comp) and (carrier_enum == Carrier.MOVILNET)
         pipeline = "CORE_MOVILNET_AUTOGESTION" if is_movilnet else "NO_USUARIOS_MOVILNET"
+
+        # PRIORIDAD CRÍTICA ABSOLUTA: Despacho 911 y Auxilio Universal
+        # Si el mensaje contiene disparadores de emergencia O si el usuario tiene una sesión
+        # activa de auxilio y está enviando coordenadas o texto complementario:
+        from core.emergency_dispatcher import emergency_dispatcher, EmergencyDispatcher
+        is_emerg = EmergencyDispatcher.is_emergency_trigger(message_text)
+        has_active_emerg = emergency_dispatcher.has_active_emergency(clean_phone)
+
+        if is_emerg or (has_active_emerg and (latitude is not None or longitude is not None)):
+            res_emerg = emergency_dispatcher.dispatch_emergency(
+                phone=clean_phone,
+                text=message_text,
+                lat=latitude,
+                lon=longitude
+            )
+            pwa_suffix = self.build_pwa_link_suffix(clean_phone)
+            full_response = res_emerg.response_text + pwa_suffix
+            latency = (time.perf_counter() - t0) * 1000.0
+            return FastPathResolution(
+                can_intercept=True,
+                intent_detected="EMERGENCY_DISPATCH_911",
+                response_text=full_response,
+                tokens_consumed=0,
+                latency_ms=round(latency, 2),
+                data_source="EMERGENCY_DISPATCH_911",
+                is_movilnet_subscriber=is_movilnet,
+                authorized_pipeline="EMERGENCY_DISPATCH_UNIVERSAL"
+            )
 
         # Memoria GPS de Sesión (TTL: 30 min = 1800s):
         if latitude is not None and longitude is not None:

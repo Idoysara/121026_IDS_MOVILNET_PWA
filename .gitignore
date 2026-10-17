@@ -39,6 +39,10 @@ htmlcov/
 *.tmp
 *.bak
 *.backup_test
+*.db
+*.db-wal
+*.db-shm
+
 
 # Excluir paquetes de respaldo pesados
 *.tar.gz

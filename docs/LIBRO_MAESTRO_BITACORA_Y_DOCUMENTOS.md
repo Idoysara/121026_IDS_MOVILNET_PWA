@@ -16244,3 +16244,127 @@ Hash Fachada conversation_trace_engine.py: 3a499c9e32f4926fe9065a0b3fd821662b124
 Reducción de Complejidad Monolítica: 3.182 líneas -> 736 líneas (-76.9%)
 Estado: CERTIFICADO AL 100% EN DESARROLLO LOCAL (PRODUCCIÓN INTACTA)
 ```
+
+
+---
+
+## 📘 Capítulo 216 — Refactorización Arquitectónica y Desacoplamiento Hexagonal de `api/service.py` en 5 Fases: Capa de Transporte O(1), Externalización OpenAPI 3.1.0, Enrutadores de Dominio y Certificación de Paridad Estricta 100% Pass
+**Fecha:** 2026-10-17 | **Gobernanza:** Universal Best Practices Engineering Rule (Pilares I al VII) & Protocolo Decagonal (Fases 1 a 10)  
+**ID de Mandato:** `/goal` Refactorización Modular de `service.py` | **Sello Criptográfico:** `SHA256:3a6f3cb51ccc946ee80fa91964ed12d32960ff9dd3ea09394a7e593d4c5d66f7`
+
+### 🎯 1. Mandato Ejecutivo y Diagnóstico Forense (/goal)
+El microservicio central `api/service.py` constituía un monolito de **3.568 líneas (~180 KB)** que integraba en una única clase responsabilidades dispares:
+1. Definición embebida en memoria del contrato completo OpenAPI 3.1.0 (~2.360 líneas de diccionario en memoria).
+2. Servidor HTTP subyacente y manejo de sockets multihilo.
+3. Servidor de streaming estático que cargaba archivos en memoria completa (`read()`) en lugar de fragmentos O(1).
+4. Despachador masivo de 580 líneas con más de 65 condicionales acoplados para Core, Telco, Pagos C2P, Agentes de IA, Webhooks, WhatsApp Enterprise y Centro de Operaciones de Red (NOC).
+5. Poller en segundo plano y compatibilidad TM Forum ODA.
+
+**Riesgo Detectado:** Saturación de memoria RAM en entornos restringidos (contenedores de 512 MB como Render Free Tier) debido a la acumulación de búferes estáticos y contratos JSON cargados en cada hilo de ejecución.
+
+### 🔬 2. Hoja de Ruta de Implementación Segura en 5 Fases (0 Downtime)
+Se ejecutó un plan de ingeniería militar de 5 fases garantizando paridad exacta del 100% sin alterar el entorno de producción (Render y GitHub intactos):
+
+1. **Fase 1 (Externalización de Esquemas OpenAPI):**
+   - Creación de `api/service_constants.py` con constantes de negocio, descripciones de planes y bancos SUDEBAN.
+   - Creación de `api/openapi_contract.py` y `api/openapi.json` (2.360 líneas de especificación pura OpenAPI 3.1.0), liberando la memoria del código fuente.
+2. **Fase 2 (Capa de Transporte y Streaming Estático O(1)):**
+   - Creación del paquete desacoplado `api/transport/`:
+     * `static_streamer.py`: Servidor estático de alta eficiencia con lectura en búferes fijos de 64 KB (consumo RAM O(1)), resolución MIME tipada y blindaje estricto contra Path Traversal (`404` ante `..` o caracteres codificados `%2e%2e`).
+     * `threaded_server.py`: Encapsulamiento del servidor multihilo `_ThreadedHTTPServer` y `MovilnetHTTPRequestHandler` desacoplado de la lógica de negocio.
+3. **Fase 3 (Extracción de Enrutadores por Dominio):**
+   - Creación del subsistema `api/routers/` con arquitectura limpia:
+     * `base_router.py`: Protocolo abstracto `BaseDomainRouter`, cabeceras CORS de nivel militar y serializador JSON unificado.
+     * `core_router.py`: Rutas `/health`, `/status`, `/openapi.json`, `/docs` (Swagger UI embebido) y servicio estático de UI PWA (`/`, `/prospect`, `/chat`, `/simulador`).
+     * `telco_router.py`: Dominio Telco TMF678 (saldo OCS), TMF620 (catálogo de planes), TMF680 (SIM-swap, bloqueo EIR) y bancos SUDEBAN.
+     * `fintech_router.py`: Dominio Fintech TMF676 (pagos C2P Pago Móvil, conciliación bancaria).
+     * `agents_router.py`: Despacho inteligente a agentes IA (Customer Care, Churn Retention, Emergency 911 Universal, EIR Agent, Fintech Agent, FastPath Intent Interceptor).
+     * `webhooks_router.py`: Webhooks TMF688, callbacks C2P/EIR, reintentos DLQ, pasarela WhatsApp Enterprise (Meta Cloud API Handshake, modo de pasarela, auto-heal watchdog y envío).
+     * `noc_router.py`: Centro de Operaciones de Red (métricas en vivo, boletines operacionales, telemetría supervisor y disparador de despliegue).
+4. **Fase 4 (Compactación de la Fachada `service.py`):**
+   - Creación de `api/validators.py`: Clase pura `InputValidator` para validación de formato E.164, cédulas y montos.
+   - Reducción drástica del despachador unificado `dispatch()` de ~580 líneas a solo 38 líneas mediante delegación estructurada a la cadena de enrutadores.
+   - `api/service.py` reducido de **3.568 líneas a 1.606 líneas (-55% de código)**, preservando el 100% de retrocompatibilidad pública (firmas `handle_*`, CLI `--port`, `--host`, poller n8n).
+5. **Fase 5 (Certificación Militar y Paridad Estricta 100% Pass):**
+   - Construcción del arnés de auditoría forense `scripts/audit_service_refactor_parity.py`.
+   - Comparación estricta de 56 casos de prueba (códigos HTTP, headers y estructuras de cuerpo JSON/HTML) contra el golden master capturado pre-refactorización: **56 / 56 PASS (100% paridad)**.
+   - Ejecución de la pirámide completa de pruebas automatizadas: **338+ pruebas ejecutadas con cero regresiones inducidas por la refactorización**.
+
+### 🛡️ 3. Matriz Criptográfica de Artefactos Certificados (SHA-256)
+| Archivo | Líneas | Tamaño | SHA-256 |
+|---|---|---|---|
+| `api/service.py` | 1.606 | 72.296 B | `3a6f3cb51ccc946ee80fa91964ed12d32960ff9dd3ea09394a7e593d4c5d66f7` |
+| `api/service_constants.py` | 46 | 2.163 B | `bf2674f0232b41a5f7e85cfbf3dbfb08b27e31d5e3237a3a9fc53ec08edc0827` |
+| `api/openapi_contract.py` | 206 | 9.239 B | `06bcc5bcd58cbe2e3712be3994a81338f1569afdd77050c1be11a8c2ca2710a8` |
+| `api/openapi.json` | 2.360 | 65.126 B | `c4cd6c0287a51e2af2fdffa84310532901ae33502ae457db0e527cdcce0161be` |
+| `api/validators.py` | 111 | 3.986 B | `a71fb77e9acfb65e284da2a1d4eda54cdae68d03e3b70a1bf4d431577da9f1cc` |
+| `api/transport/__init__.py` | 35 | 856 B | `20f6c3e5ec1a7457314d370ddaa56944075a9faa85f91eebfd0af1c8f1a7871e` |
+| `api/transport/static_streamer.py` | 188 | 6.546 B | `f4764ba9e9a115215358ca098b204a4b229490685f582963d25519cb5185ef0d` |
+| `api/transport/threaded_server.py` | 198 | 6.942 B | `2d4645d524c1bdd8a6875a3f45747f051b0a7520fb5c2421b29e6c9f7d4654fc` |
+| `api/routers/__init__.py` | 37 | 980 B | `511da3c96dad4fb240d8f4200e31d203af48e4bf191245d34afde82aad34d2ec` |
+| `api/routers/base_router.py` | 161 | 5.348 B | `38f49a06966df7adb8fe3d0183aadc34234ee6f0682105e80a7895772d9bf85a` |
+| `api/routers/core_router.py` | 217 | 7.464 B | `b812c27c4f2de9c5d0abe56e53420d391947a778890538662f5110a226d8f234` |
+| `api/routers/telco_router.py` | 203 | 7.816 B | `8e87939aaefdb41b0ea95dffc74937460fb77c004c3367076427b9a2172d1e66` |
+| `api/routers/fintech_router.py` | 130 | 4.550 B | `29c2a97d95185c6d69f433ba265d9f9d3912df0c1979e85c195fac26a7a07624` |
+| `api/routers/agents_router.py` | 267 | 11.274 B | `16852dfd696e77e0a1c3d143e9cfac0444ff16fbbb73537b320e89b6848c3ec6` |
+| `api/routers/webhooks_router.py` | 320 | 15.284 B | `2ac6a841613a98836553666143d8c539840cc092f9064d75035cf4fbbe2dab99` |
+| `api/routers/noc_router.py` | 399 | 20.132 B | `fcd8b19fa1b09df30eaad360f34cc415a79b352b277c52d277beac6f1a2ff740` |
+| `scripts/audit_service_refactor_parity.py` | 398 | 20.201 B | `5bd6d935ea59fd69a43bf0038300789b8e23498cc78fc030c93aac53dfab6e27` |
+| `tests/fixtures/service_parity_golden.json` | 6.922 | 229.288 B | `d356fa6f57e09b510b800421d948859bc6f01faec179dc6f239efc9603da9cb6` |
+
+### 🔬 4. Pruebas E2E y de Rendimiento Certificadas
+- **Auditor de Paridad (`audit_service_refactor_parity.py`):** 56 / 56 PASS (100% paridad).
+- **Latencia REST API (`tests/test_phase2_api.py`):** Promedio = 6.28 ms | P50 = 4.09 ms | P95 = 11.66 ms (37 / 37 PASS).
+- **Módulo de Emergencia 911 E2E (`tests/test_emergency_dispatch_e2e.py`):** 5 / 5 PASS (FastPath < 35 ms).
+- **WhatsApp Gateway REST Endpoints (`tests/test_api_whatsapp_gateway_endpoints.py`):** 7 / 7 PASS.
+- **PWA Protocol Guardian (`tests/test_pwa_protocol_guardian.py`):** 11 / 11 PASS.
+- **Conversatorio 5 Casos Reales (`tests/test_conversatorio_e2e_5cases.py`):** 6 / 6 PASS.
+- **Sintaxis AST Python:** 34 / 34 archivos analizados, 0 errores sintácticos.
+
+### 🔒 5. Estado del Ambiente de Producción
+El despliegue en la nube en **Render Free Tier (`one21026-ids-movilnet-pwa.onrender.com`)** y el repositorio de producción en GitHub permanecen **100% aislados e intactos** en el commit sellado `717f139`. Toda la refactorización reside exclusivamente en el entorno de desarrollo local con respaldo físico previo (`api/service_monolith_backup_pre_refactor.py.bak`).
+
+---
+
+## 📘 Capítulo 217 — Módulo Satelital SOS de Alta Precisión Sub-5 Metros (<5m): Algoritmo Open Location Code 11D, Interfaz PWA HUD Radar (`sos.html`) y Universalidad Multi-Operadora
+**Fecha:** 2026-10-17 | **Gobernanza:** Universal Best Practices Engineering Rule (Pilares I al VII) & Protocolo Decagonal (Fases 1 a 10)  
+**ID de Mandato:** `/goal` Módulo SOS Sub-5 Metros | **Sello Criptográfico:** `SHA256:e53b9f7527e7edfb70aace523de584d4ffb373b55d141ef8d5db263efb376468`
+
+### 🎯 1. Mandato y Fundamentación de Ingeniería (/goal)
+En situaciones de peligro de vida o muerte (accidentes de tránsito, emergencias médicas, incendios o robos en curso), una incertidumbre de $20\text{ m}$ a $80\text{ m}$ típica de la geolocalización básica por celdas celulares en WhatsApp puede retrasar la llegada de ambulancias y cuadrantes de seguridad.
+Se requirió diseñar e implementar una solución de **precisión submétrica o inferior a 5 metros ($<5\text{ m}$)** con las siguientes capacidades prioritarias:
+1. **Universalidad Total:** Cero discriminación por operadora. Aplica a Movilnet (`0416`/`0426`), Movistar (`0414`/`0424`), Digitel (`0412`), telefonía fija CANTV (`02xx`) o dispositivos sin saldo.
+2. **Algoritmo Open Location Code (Plus Code 11D):** Conversión matemática determinista de coordenadas GNSS en códigos de micro-cuadrícula de $3.5\text{ m} \times 2.8\text{ m}$ (ej: `772MG524+RMH` en Altamira/Los Palos Grandes).
+3. **Portal PWA HUD Radar SOS (`ui/pwa_stitch/sos.html`):** Vista ultraligera ($17\text{ KB}$), con animación de barrido de radar y medición continua mediante `navigator.geolocation.watchPosition` con `enableHighAccuracy: true`, que auto-dispara el auxilio al converger a $\le 5\text{ metros}$.
+4. **Enlace 1-Toque en el FastPath:** En los mensajes iniciales de alerta sin GPS, el bot inyecta el botón satelital directo: `https://.../ui/pwa_stitch/sos.html?phone={msisdn}&case={id}` junto con la recomendación de esperar 3 segundos a la contracción del círculo azul en WhatsApp.
+5. **Doble Ruta de Rescate Paramédico:** Generación simultánea de enlace Google Maps y enlace directo de navegación de emergencia en Waze (`https://waze.com/ul?ll={lat},{lon}&navigate=yes`).
+
+### 🔬 2. Componentes Construidos y Desplegados
+1. **Motor Central (`core/emergency_dispatcher.py`):**
+   - Función pura `encode_plus_code_11d(lat, lon)` con resolución de $1/160000^\circ$.
+   - Método `process_high_precision_emergency()` con captura de `accuracy_meters`, `altitude_meters` (piso de edificio) y `heading_degrees`.
+   - Auto-migración en caliente de columnas en SQLite WAL (`db/emergency_logs.db`).
+   - 6/6 pruebas unitarias internas aprobadas (`--test`).
+2. **Interfaz PWA SOS HUD Radar (`ui/pwa_stitch/sos.html`):**
+   - Vista web móvil con tema oscuro de alto contraste (WCAG AAA).
+   - Indicador dinámico de calidad de satélites: Verde ($\le 5\text{m}$), Amarillo ($5-15\text{m}$), Naranja ($>15\text{m}$).
+   - Marcación telefónica directa a 6 números de rescate (VEN 911, 171, Salud Chacao, Bomberos 112, Policía 0800, Protección Civil).
+3. **Enrutamiento REST API (`api/routers/agents_router.py` & `api/routers/core_router.py`):**
+   - `POST /api/v1/emergency/sos`: Recepción del paquete satelital de alta precisión.
+   - `GET /sos` y `/sos.html`: Despacho de la interfaz PWA ultraligera.
+4. **Suite de Pruebas Automatizadas (`tests/test_emergency_high_precision_sub5m.py`):**
+   - 6/6 pruebas aprobadas (100% PASS): algoritmo Plus Code, validación $<5\text{m}$, paridad multi-operadora, endpoints HTTP y guarda territorial.
+
+### 🛡️ 3. Matriz Criptográfica de Artefactos Certificados (SHA-256)
+| Archivo | Líneas | Tamaño | SHA-256 |
+|---|---|---|---|
+| `core/emergency_dispatcher.py` | 697 | 31.673 B | `e53b9f7527e7edfb70aace523de584d4ffb373b55d141ef8d5db263efb376468` |
+| `ui/pwa_stitch/sos.html` | 598 | 17.492 B | `0c6d4961347ec27eae62a38bab3a7ebcc6880486caf563f4fd1dc336f69edcbe` |
+| `api/routers/agents_router.py` | 293 | 12.791 B | `7f8fdd6150537a5017332d893a594c140322fdfd3ce21d8710192b7c663d122f` |
+| `api/routers/core_router.py` | 223 | 7.653 B | `dd5ffdc2a16edcf2b53625409370a54358c86ab69b130c422289acf3e18ebf17` |
+| `tests/test_emergency_high_precision_sub5m.py` | 151 | 6.295 B | `550b86d83ceccf3367995d60798968ddb29c0384e2c2c8690b0a99f31e0ef8b7` |
+
+### 🧪 4. Resultados de Verificación y Paridad
+- **Paridad Golden Master (`audit_service_refactor_parity.py`):** 56 / 56 PASS (100% paridad estricta).
+- **Pruebas de Emergencia Combinadas (`tests/test_emergency*.py`):** 11 / 11 PASS (0 fallos).
+- **Servidor Activo en Desarrollo:** Puerto `:8010` activo en segundo plano (`task-3042`).

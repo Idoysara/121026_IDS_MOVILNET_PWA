@@ -64,6 +64,7 @@ class N8nWebhookPayloadExtractor:
     """Motor algorítmico determinista de extracción de eventos de Webhook."""
 
     INTENT_KEYWORDS: Dict[str, List[str]] = {
+        "EMERGENCY_DISPATCH_911": ["911", "171", "emergencia", "emergencias", "auxilio", "socorro", "policia", "policía", "ambulancia", "ambulancias", "bomberos", "bombero", "me estan robando", "me están robando", "secuestro", "accidente grave", "herido", "heridos", "fuego", "incendio"],
         "CONTRACT_INFO": ["contrato", "informa contrato", "mi contrato", "plan contratado", "titular"],
         "BALANCE_CHECK": ["saldo", "cuanto debo", "megas", "datos", "debo", "cupo", "balance", "corte"],
         "RECHARGE_C2P": ["recarga", "recargar", "pago movil", "c2p", "pagar", "transferencia", "bcv"],
@@ -190,7 +191,10 @@ class N8nWebhookPayloadExtractor:
 
         national_phone, raw_phone = cls.normalize_phone(remote_jid)
 
-        if latitude is not None and longitude is not None:
+        from core.emergency_dispatcher import EmergencyDispatcher, emergency_dispatcher
+        if EmergencyDispatcher.is_emergency_trigger(raw_text) or (emergency_dispatcher.has_active_emergency(national_phone) and latitude is not None and longitude is not None):
+            intent = "EMERGENCY_DISPATCH_911"
+        elif latitude is not None and longitude is not None:
             intent = "LOCALIZADOR_OFICINAS_TELCO"
         else:
             intent = cls.classify_intent(raw_text)
@@ -248,12 +252,17 @@ class N8nWebhookPayloadExtractor:
                     longitude = float(lon_val)
                 location_name = loc.get("name") or loc.get("address") or "Pin GPS Meta WhatsApp"
                 raw_text = f"[UBICACION_GPS: lat={latitude}, lon={longitude}]"
-                intent = "LOCALIZADOR_OFICINAS_TELCO"
             else:
                 raw_text = message.get("text", {}).get("body", "").strip()
-                intent = cls.classify_intent(raw_text)
 
             national_phone, _ = cls.normalize_phone(raw_phone)
+            from core.emergency_dispatcher import EmergencyDispatcher, emergency_dispatcher
+            if EmergencyDispatcher.is_emergency_trigger(raw_text) or (emergency_dispatcher.has_active_emergency(national_phone) and latitude is not None and longitude is not None):
+                intent = "EMERGENCY_DISPATCH_911"
+            elif latitude is not None and longitude is not None:
+                intent = "LOCALIZADOR_OFICINAS_TELCO"
+            else:
+                intent = cls.classify_intent(raw_text)
             is_mov, prefix, pipeline, carrier, label = cls.evaluate_carrier_firewall(national_phone)
 
             return NormalizedInboundMessage(
