@@ -1,5 +1,5 @@
 {
-  "deployment_timestamp": "2026-10-16T11:16:32Z",
+  "deployment_timestamp": "2026-10-17T18:41:48Z",
   "overall_status": "SUCCESS",
   "target_environment": "DOCKER_N8N_5678",
   "total_workflows_scanned": 10,
@@ -77,10 +77,10 @@
       "workflow_name": "Viki_LPGTEC_v2_ids_Movilnet_Google_Suite_Full",
       "status": "DEPLOYED_READY_CERTIFIED",
       "active": true,
-      "nodes_count": 81,
+      "nodes_count": 82,
       "connections_count": 74,
-      "sha256_hash": "162c87da22be330eb76f7b9c3e4cf9c4b613fefe7ee9deb74fe5816aeee073ee",
-      "assigned_id": "WFL-LOCAL-162C87DA",
+      "sha256_hash": "f812fb52ed06a9defecbf9d7d6ba911bc59dfaaa2062abebe5e67addb2319145",
+      "assigned_id": "WFL-LOCAL-F812FB52",
       "webhook_path": "messages_upsert4"
     },
     {

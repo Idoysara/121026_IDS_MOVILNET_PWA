@@ -1,9 +1,9 @@
 {
-  "gatekeeper_id": "GK4-PHASE4-AUDIT-9AE74D1AD333",
+  "gatekeeper_id": "GK4-PHASE4-AUDIT-BEAFBA94E462",
   "phase": "FASE_4_UI_UX_IX_AX_NOC_DASHBOARD_AND_FINAL_DEPLOYMENT",
   "project": "AI_Movilnet_300926",
   "organization": "Telecomunicaciones Movilnet C.A.",
-  "timestamp": "2026-10-16T11:16:50.587693+00:00",
+  "timestamp": "2026-10-17T18:41:52.004168+00:00",
   "status": "PASSED_100%",
   "dimensions": {
     "dimension_1_step_certificates": {
@@ -108,9 +108,9 @@
       "checks": {
         "total_requests": 100,
         "success_rate_pct": 100.0,
-        "throughput_tps": 633.95,
-        "avg_latency_ms": 14.136,
-        "p95_latency_ms": 45.13,
+        "throughput_tps": 242.73,
+        "avg_latency_ms": 38.59,
+        "p95_latency_ms": 100.377,
         "success_rate_ge_99": true,
         "throughput_ge_50": true,
         "avg_latency_le_50": true,

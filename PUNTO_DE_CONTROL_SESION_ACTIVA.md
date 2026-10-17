@@ -13,21 +13,21 @@
 * **Hito 2 Completado (100% PASS):** Desacoplamiento Hexagonal de `core/conversation_trace_engine.py` (de **3.182 líneas** monolíticas a **736 líneas** de Fachada Orquestadora + 4 módulos autónomos en `core/`).
 * **Hito 3 Completado (100% PASS):** Refactorización Modular y Desacoplamiento Hexagonal de `api/service.py` (de **3.568 líneas** monolíticas a **1.606 líneas** [-55% de código] + 12 módulos autónomos en `api/transport/`, `api/routers/`, `api/openapi_contract.py`, `api/service_constants.py`, `api/validators.py`).
 * **Hito 4 Completado (100% PASS):** Módulo Satelital SOS de Alta Precisión Sub-5 Metros (<5m) (Plus Code 11D ~3.5m, HUD Radar `sos.html`, Doble Ruta Waze/Google Maps y Universalidad Multi-Operadora).
-* **Hito 5 Completado (100% PASS):** Pase a Producción Soberano y Certificación Cloud 24/7 en Render (`https://one21026-ids-movilnet-pwa.onrender.com`):
-  1. Commit GitHub `4230263` en rama `main` (`https://github.com/Idoysara/121026_IDS_MOVILNET_PWA`).
-  2. Servicio Render Web `121026_IDS_MOVILNET_PWA` (`srv-db8hhlvf3r2c73fd1qd0`) `Deploy succeeded | Live`.
-  3. Deploy Hook 1-Click oficial configurado: `https://api.render.com/deploy/srv-db8hhlvf3r2c73fd1qd0?key=D9UHCXDookE`.
-  4. Smoke tests en vivo 100% PASS (`/health`, `/sos`, `/ui/pwa_stitch/sos.html`, `/api/v1/emergency/sos`, `/openapi.json`, `/ui/pwa_stitch/index.html`).
-* **Capítulos de Bitácora Vigentes:** **1 al 218** (Sincronizados en `BITACORA_MOVILNET.md` y `LIBRO_MAESTRO_BITACORA_Y_DOCUMENTOS.md`).
+* **Hito 5 Completado (100% PASS):** Pase a Producción Soberano y Certificación Cloud 24/7 en Render (`https://one21026-ids-movilnet-pwa.onrender.com`), Commit GitHub `4230263`.
+* **Hito 33 Completado (100% PASS):** Motor de Geolocalización Catastral Sub-5m (<5m) con Regla Inviolable de Cero Adivinación (`core/cadastral_reverse_geocoder.py`, Plus Codes 11D 3x3m, FastPath 0 Tokens, 911 / Consultas Generales):
+  1. Commit GitHub `9dc3ceb` en rama `main` (`https://github.com/Idoysara/121026_IDS_MOVILNET_PWA`).
+  2. Certificación SHA-256 inmutable: `d832c8fd2673cf2eff447bf481c74b4e95c0a5084b1546e07a4a6751176c8065`.
+  3. Despacho directo a producción en Render (`dep-db9vmknbtjjs73d7rq0g`).
+  4. Suite de pruebas dedicada `test_geolocation_sub5m_zero_hallucination.py` 100% PASS (9/9) y regresión global 38/38 PASS.
+* **Capítulos de Bitácora Vigentes:** **1 al 219** (Sincronizados en `BITACORA_MOVILNET.md` y `LIBRO_MAESTRO_BITACORA_Y_DOCUMENTOS.md`).
 
 ---
 
 ## 2. Servicios e Infraestructura Activa
 * **Render Web Service 24/7 (PRODUCCIÓN LIVE):** `https://one21026-ids-movilnet-pwa.onrender.com` (HTTP 200)
 * **n8n Cloud Enterprise:** `https://n8n.lpgtec.net` (`sNMbtiEiTkuQ9OCY`)
-* **Local Backend API:** Puerto `:8010` (FastAPI / Uvicorn)
+* **Local Backend API:** Puerto `:8010` (Daemon activo verificado)
 * **Aislamiento de Puertos:** Puerto `:8000` (`dss_gps_*`) intacto bajo `agy-port-guardian`.
-
 
 ---
 
