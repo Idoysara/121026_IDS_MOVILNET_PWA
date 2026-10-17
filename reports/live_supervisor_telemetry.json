@@ -1,21 +1,21 @@
 {
   "supervisor_status": "ONLINE_SUPERVISING",
-  "started_at_utc": "2026-10-15T15:40:20.091366+00:00",
-  "last_check_utc": "2026-10-15T15:40:20.304133+00:00",
-  "total_interactions_audited": 329,
-  "sla_compliance_rate": 87.23,
-  "avg_latency_sec": 3.82,
+  "started_at_utc": "2026-10-15T16:55:06.307012+00:00",
+  "last_check_utc": "2026-10-15T16:55:06.407998+00:00",
+  "total_interactions_audited": 341,
+  "sla_compliance_rate": 87.39,
+  "avg_latency_sec": 3.756,
   "carrier_distribution": {
     "MOVISTAR": 272,
     "DIGITEL": 12,
-    "MOVILNET": 45
+    "MOVILNET": 57
   },
   "active_alerts": [
-    "42 interacciones excedieron el umbral SLA (>6.0s)."
+    "43 interacciones excedieron el umbral SLA (>6.0s)."
   ],
   "recent_interactions": [
     {
-      "interaction_id": "INT-13873-20294",
+      "interaction_id": "INT-13873-6398",
       "execution_id": "13873",
       "timestamp_utc": "2026-10-13T18:13:09.233Z",
       "sender_phone": "04142554590",
@@ -32,7 +32,7 @@
       "notes": "Evaluación de latencia y coherencia satisfactoria."
     },
     {
-      "interaction_id": "INT-13874-20294",
+      "interaction_id": "INT-13874-6398",
       "execution_id": "13874",
       "timestamp_utc": "2026-10-13T18:15:38.382Z",
       "sender_phone": "04142554590",
@@ -49,7 +49,7 @@
       "notes": "Evaluación de latencia y coherencia satisfactoria."
     },
     {
-      "interaction_id": "INT-13875-20294",
+      "interaction_id": "INT-13875-6398",
       "execution_id": "13875",
       "timestamp_utc": "2026-10-13T18:15:52.465Z",
       "sender_phone": "04142554590",
@@ -66,7 +66,7 @@
       "notes": "Evaluación de latencia y coherencia satisfactoria."
     },
     {
-      "interaction_id": "INT-13876-20293",
+      "interaction_id": "INT-13876-6397",
       "execution_id": "13876",
       "timestamp_utc": "2026-10-13T18:18:10.118Z",
       "sender_phone": "04141241044",
@@ -83,7 +83,7 @@
       "notes": "Evaluación de latencia y coherencia satisfactoria."
     },
     {
-      "interaction_id": "INT-13877-20293",
+      "interaction_id": "INT-13877-6397",
       "execution_id": "13877",
       "timestamp_utc": "2026-10-13T18:19:18.056Z",
       "sender_phone": "04141241044",
@@ -100,7 +100,7 @@
       "notes": "Evaluación de latencia y coherencia satisfactoria."
     },
     {
-      "interaction_id": "INT-13878-20293",
+      "interaction_id": "INT-13878-6397",
       "execution_id": "13878",
       "timestamp_utc": "2026-10-13T18:22:00.240Z",
       "sender_phone": "04141241044",
@@ -117,7 +117,7 @@
       "notes": "Evaluación de latencia y coherencia satisfactoria."
     },
     {
-      "interaction_id": "INT-13881-20293",
+      "interaction_id": "INT-13881-6397",
       "execution_id": "13881",
       "timestamp_utc": "2026-10-13T18:27:26.646Z",
       "sender_phone": "04142554590",
@@ -134,7 +134,7 @@
       "notes": "Evaluación de latencia y coherencia satisfactoria."
     },
     {
-      "interaction_id": "INT-13882-20292",
+      "interaction_id": "INT-13882-6397",
       "execution_id": "13882",
       "timestamp_utc": "2026-10-13T18:28:26.096Z",
       "sender_phone": "04142554590",
@@ -151,7 +151,7 @@
       "notes": "Evaluación de latencia y coherencia satisfactoria."
     },
     {
-      "interaction_id": "INT-13883-20292",
+      "interaction_id": "INT-13883-6397",
       "execution_id": "13883",
       "timestamp_utc": "2026-10-13T18:28:54.632Z",
       "sender_phone": "04142554590",
@@ -168,7 +168,7 @@
       "notes": "Evaluación de latencia y coherencia satisfactoria."
     },
     {
-      "interaction_id": "INT-13885-20292",
+      "interaction_id": "INT-13885-6397",
       "execution_id": "13885",
       "timestamp_utc": "2026-10-13T18:51:23.078Z",
       "sender_phone": "04142554590",
@@ -185,7 +185,7 @@
       "notes": "Evaluación de latencia y coherencia satisfactoria."
     },
     {
-      "interaction_id": "INT-13886-20292",
+      "interaction_id": "INT-13886-6397",
       "execution_id": "13886",
       "timestamp_utc": "2026-10-13T20:52:22.670Z",
       "sender_phone": "04142554590",
@@ -202,7 +202,7 @@
       "notes": "Evaluación de latencia y coherencia satisfactoria."
     },
     {
-      "interaction_id": "INT-13887-20292",
+      "interaction_id": "INT-13887-6397",
       "execution_id": "13887",
       "timestamp_utc": "2026-10-13T20:52:55.076Z",
       "sender_phone": "04142554590",
@@ -219,7 +219,7 @@
       "notes": "Evaluación de latencia y coherencia satisfactoria."
     },
     {
-      "interaction_id": "INT-13889-20291",
+      "interaction_id": "INT-13889-6397",
       "execution_id": "13889",
       "timestamp_utc": "2026-10-13T20:53:49.818Z",
       "sender_phone": "04142554590",
@@ -236,7 +236,7 @@
       "notes": "Evaluación de latencia y coherencia satisfactoria."
     },
     {
-      "interaction_id": "INT-13890-20291",
+      "interaction_id": "INT-13890-6396",
       "execution_id": "13890",
       "timestamp_utc": "2026-10-13T20:56:47.786Z",
       "sender_phone": "04142554590",
@@ -253,7 +253,7 @@
       "notes": "Evaluación de latencia y coherencia satisfactoria."
     },
     {
-      "interaction_id": "INT-13891-20291",
+      "interaction_id": "INT-13891-6396",
       "execution_id": "13891",
       "timestamp_utc": "2026-10-13T20:57:09.650Z",
       "sender_phone": "04142554590",
@@ -270,7 +270,7 @@
       "notes": "Evaluación de latencia y coherencia satisfactoria."
     },
     {
-      "interaction_id": "INT-13892-20291",
+      "interaction_id": "INT-13892-6396",
       "execution_id": "13892",
       "timestamp_utc": "2026-10-13T20:57:41.276Z",
       "sender_phone": "04142554590",
@@ -287,7 +287,7 @@
       "notes": "Evaluación de latencia y coherencia satisfactoria."
     },
     {
-      "interaction_id": "INT-13893-20291",
+      "interaction_id": "INT-13893-6396",
       "execution_id": "13893",
       "timestamp_utc": "2026-10-13T20:58:03.379Z",
       "sender_phone": "04142554590",
@@ -304,7 +304,7 @@
       "notes": "Evaluación de latencia y coherencia satisfactoria."
     },
     {
-      "interaction_id": "INT-13894-20291",
+      "interaction_id": "INT-13894-6396",
       "execution_id": "13894",
       "timestamp_utc": "2026-10-13T20:58:27.793Z",
       "sender_phone": "04142554590",
@@ -321,7 +321,7 @@
       "notes": "Evaluación de latencia y coherencia satisfactoria."
     },
     {
-      "interaction_id": "INT-13923-20290",
+      "interaction_id": "INT-13923-6396",
       "execution_id": "13923",
       "timestamp_utc": "2026-10-13T22:20:35.652Z",
       "sender_phone": "04142554590",
@@ -338,7 +338,7 @@
       "notes": "Evaluación de latencia y coherencia satisfactoria."
     },
     {
-      "interaction_id": "INT-13924-20290",
+      "interaction_id": "INT-13924-6396",
       "execution_id": "13924",
       "timestamp_utc": "2026-10-13T22:20:55.244Z",
       "sender_phone": "04142554590",
@@ -355,7 +355,7 @@
       "notes": "Evaluación de latencia y coherencia satisfactoria."
     },
     {
-      "interaction_id": "INT-13925-20290",
+      "interaction_id": "INT-13925-6396",
       "execution_id": "13925",
       "timestamp_utc": "2026-10-13T22:21:32.685Z",
       "sender_phone": "04142554590",
@@ -372,7 +372,7 @@
       "notes": "Evaluación de latencia y coherencia satisfactoria."
     },
     {
-      "interaction_id": "INT-PWA-1791930122808-20290",
+      "interaction_id": "INT-PWA-1791930122808-6396",
       "execution_id": "PWA-1791930122808",
       "timestamp_utc": "2026-10-13T22:22:03.058158+00:00",
       "sender_phone": "04142554590",
@@ -389,7 +389,7 @@
       "notes": "Evaluación de latencia y coherencia satisfactoria."
     },
     {
-      "interaction_id": "INT-PWA-1791930139044-20290",
+      "interaction_id": "INT-PWA-1791930139044-6396",
       "execution_id": "PWA-1791930139044",
       "timestamp_utc": "2026-10-13T22:22:19.283740+00:00",
       "sender_phone": "04142554590",
@@ -406,7 +406,7 @@
       "notes": "Evaluación de latencia y coherencia satisfactoria."
     },
     {
-      "interaction_id": "INT-13926-20290",
+      "interaction_id": "INT-13926-6396",
       "execution_id": "13926",
       "timestamp_utc": "2026-10-13T22:22:19.538Z",
       "sender_phone": "04142554590",
@@ -423,7 +423,7 @@
       "notes": "Evaluación de latencia y coherencia satisfactoria."
     },
     {
-      "interaction_id": "INT-PWA-1791930156250-20290",
+      "interaction_id": "INT-PWA-1791930156250-6396",
       "execution_id": "PWA-1791930156250",
       "timestamp_utc": "2026-10-13T22:22:36.503071+00:00",
       "sender_phone": "04142554590",
@@ -440,5 +440,5 @@
       "notes": "Evaluación de latencia y coherencia satisfactoria."
     }
   ],
-  "sha256_seal": "588a1ccbf032f24737766d0c8f2070a1900d20b3fdd87613cdcdb56d2b42b7ee"
+  "sha256_seal": "e7e4b75171ccb3eecb67ae94e787388b2b8edca774282b4db65839aa57da0b68"
 }

@@ -1550,300 +1550,13 @@
     let lastRenderedLastMsgId = null;
     let unreadNewMessagesCount = 0;
 
-    // SEMILLAS INICIALES DE RESPALDO (Por si opera offline)
-    const seedThreads = [
-      {
-        phone_key: "04142554590",
-        display_phone: "0414-2554590",
-        user_name: "Ids",
-        carrier: "MOVISTAR",
-        carrier_label: "Movistar Venezuela",
-        is_competitor: true,
-        messages_count: 11,
-        last_seen: "2026-10-07T21:00:35.745Z",
-        last_message: "Hola probando de. Un ob",
-        last_reply: "¡Buenas noches, Ids! Te damos la bienvenida al canal oficial de Movilnet.\n\nDetectamos que te comunicas desde una línea Movistar Venezuela (+58 414 255 4590).\n\n¿En qué te podemos ayudar hoy?\n• Escribe 'Saldo' o 'Planes' para consultar tarifas y servicios.\n• Escribe 'Portabilidad' para cambiarte GRATIS a Movilnet 4GMAX con eSIM digital y 10GB de bono de bienvenida.\n• Escribe 'Recarga' para realizar recargas con Pago Móvil C2P.",
-        last_route: "FUNNEL_MARKETING_PORTABILIDAD",
-        last_duration: "0.05s",
-        last_status: "SUCCESS",
-        messages: [
-          {
-            trace_id: "TRACE-EXEC-9635",
-            execution_id: "9635",
-            timestamp: "2026-10-07T16:46:15.267Z",
-            started_at: "2026-10-07T16:46:15.267Z",
-            time_display: "12:46 PM",
-            user_message: "Podemos probar si estás funcionando",
-            bot_reply: "Estoy funcionando correctamente. ¿Hay algo específico en lo que te gustaría que te ayude para probar?",
-            pipeline_route: "AI_AGENT_GEMINI",
-            duration_sec: 2.85,
-            status: "SUCCESS"
-          },
-          {
-            trace_id: "TRACE-EXEC-9636",
-            execution_id: "9636",
-            timestamp: "2026-10-07T19:13:44.776Z",
-            started_at: "2026-10-07T19:13:44.776Z",
-            time_display: "03:13 PM",
-            user_message: "Hokaaaaaaa",
-            bot_reply: "¡Hola! ¿En qué puedo ayudarte?",
-            pipeline_route: "AI_AGENT_GEMINI",
-            duration_sec: 1.81,
-            status: "SUCCESS"
-          },
-          {
-            trace_id: "TRACE-EXEC-9637",
-            execution_id: "9637",
-            timestamp: "2026-10-07T19:26:44.939Z",
-            started_at: "2026-10-07T19:26:44.939Z",
-            time_display: "03:26 PM",
-            user_message: "Que novedad tenemos",
-            bot_reply: "Aunque no tengo una sección específica de 'novedades', puedo proporcionarte algunas noticias actuales...",
-            pipeline_route: "AI_AGENT_GEMINI",
-            duration_sec: 7.66,
-            status: "SUCCESS"
-          },
-          {
-            trace_id: "TRACE-EXEC-9640",
-            execution_id: "9640",
-            timestamp: "2026-10-07T20:14:50.178Z",
-            started_at: "2026-10-07T20:14:50.178Z",
-            time_display: "04:14 PM",
-            user_message: "Hola",
-            bot_reply: "[Fallo externo en Google AI Studio: HTTP 503 Service Unavailable tras 52s]",
-            pipeline_route: "AI_AGENT_GEMINI",
-            duration_sec: 52.36,
-            status: "ERROR"
-          },
-          {
-            trace_id: "TRACE-EXEC-9642",
-            execution_id: "9642",
-            timestamp: "2026-10-07T20:18:23.243Z",
-            started_at: "2026-10-07T20:18:23.243Z",
-            time_display: "04:18 PM",
-            user_message: "Hola",
-            bot_reply: "¡Hola! ¿En qué puedo ayudarte hoy?",
-            pipeline_route: "AI_AGENT_GEMINI",
-            duration_sec: 36.33,
-            status: "SUCCESS"
-          },
-          {
-            trace_id: "TRACE-EXEC-9643",
-            execution_id: "9643",
-            timestamp: "2026-10-07T20:19:14.699Z",
-            started_at: "2026-10-07T20:19:14.699Z",
-            time_display: "04:19 PM",
-            user_message: "Quiero ir al cine",
-            bot_reply: "No tengo acceso a información sobre cines o cartelera de películas.",
-            pipeline_route: "AI_AGENT_GEMINI",
-            duration_sec: 26.06,
-            status: "SUCCESS"
-          },
-          {
-            trace_id: "TRACE-EXEC-9644",
-            execution_id: "9644",
-            timestamp: "2026-10-07T20:20:11.797Z",
-            started_at: "2026-10-07T20:20:11.797Z",
-            time_display: "04:20 PM",
-            user_message: "Pero cómo está el tiempo en caracas",
-            bot_reply: "[Fallo externo en Google AI Studio: HTTP 503 Service Unavailable]",
-            pipeline_route: "AI_AGENT_GEMINI",
-            duration_sec: 3.50,
-            status: "ERROR"
-          },
-          {
-            trace_id: "TRACE-EXEC-9645",
-            execution_id: "9645",
-            timestamp: "2026-10-07T21:15:24.224Z",
-            started_at: "2026-10-07T21:15:24.224Z",
-            time_display: "05:15 PM",
-            user_message: "Hola",
-            bot_reply: "¡Hola! ¿En qué puedo ayudarte?",
-            pipeline_route: "AI_AGENT_GEMINI",
-            duration_sec: 1.64,
-            status: "SUCCESS"
-          },
-          {
-            trace_id: "TRACE-EXEC-9647",
-            execution_id: "9647",
-            timestamp: "2026-10-07T21:36:29.888Z",
-            started_at: "2026-10-07T21:36:29.888Z",
-            time_display: "05:36 PM",
-            user_message: "Hikaaaaa",
-            bot_reply: "¡Hola! ¿En qué puedo ayudarte?",
-            pipeline_route: "AI_AGENT_GEMINI",
-            duration_sec: 2.97,
-            status: "SUCCESS"
-          },
-          {
-            trace_id: "TRACE-EXEC-9652",
-            execution_id: "9652",
-            timestamp: "2026-10-07T20:20:15.120Z",
-            started_at: "2026-10-07T20:20:15.120Z",
-            time_display: "08:20 PM",
-            user_message: "Buenas noches cómo estás. Siento que estamos a punto de carameko",
-            bot_reply: "¡Buenas noches, Ids! Te damos la bienvenida al canal oficial de Movilnet.\n\nDetectamos que te comunicas desde una línea Movistar Venezuela (+58 414 255 4590).\n\n¿En qué te podemos ayudar hoy?\n• Escribe 'Saldo' o 'Planes' para consultar tarifas y servicios.\n• Escribe 'Portabilidad' para cambiarte GRATIS a Movilnet 4GMAX con eSIM digital y 10GB de bono de bienvenida.\n• Escribe 'Recarga' para realizar recargas con Pago Móvil C2P.",
-            pipeline_route: "FUNNEL_MARKETING_PORTABILIDAD",
-            duration_sec: 0.05,
-            status: "SUCCESS"
-          },
-          {
-            trace_id: "TRACE-EXEC-9656",
-            execution_id: "9656",
-            timestamp: "2026-10-07T21:00:35.745Z",
-            started_at: "2026-10-07T21:00:35.745Z",
-            time_display: "09:00 PM",
-            user_message: "Hola probando de. Un ob",
-            bot_reply: "¡Buenas noches, Ids! Te damos la bienvenida al canal oficial de Movilnet.\n\nDetectamos que te comunicas desde una línea Movistar Venezuela (+58 414 255 4590).\n\n¿En qué te podemos ayudar hoy?\n• Escribe 'Saldo' o 'Planes' para consultar tarifas y servicios.\n• Escribe 'Portabilidad' para cambiarte GRATIS a Movilnet 4GMAX con eSIM digital y 10GB de bono de bienvenida.\n• Escribe 'Recarga' para realizar recargas con Pago Móvil C2P.",
-            pipeline_route: "FUNNEL_MARKETING_PORTABILIDAD",
-            duration_sec: 0.05,
-            status: "SUCCESS"
-          },
-          {
-            trace_id: "TRACE-EXEC-9820",
-            execution_id: "9820",
-            timestamp: "2026-10-09T15:29:34.633Z",
-            started_at: "2026-10-09T15:29:34.633Z",
-            time_display: "11:29 AM",
-            user_message: "Antes una receta para esta noche para dos personas es una cena romantica",
-            bot_reply: "¡Con todo gusto! Aquí tienes una propuesta clásica, elegante y deliciosa para impresionar en una velada especial:\\n\\n🍷 Pechugas de Pollo en Salsa Cremosa de Champiñones al Ajillo\\n• Tiempo: ~30 min | 2 personas\\n• Acompañamiento: Fettuccine al dente con vino blanco bien frío 🥂\\n\\nSi luego deseas chequear saldo, megas o planes de Movilnet 4GMAX, ¡avísame y lo revisamos al tiro! ✨",
-            pipeline_route: "AI_AGENT_COGNITIVE_FASTPATH",
-            duration_sec: 20.98,
-            status: "SUCCESS"
-          }
-        ]
-      },
-      {
-        phone_key: "04142650088",
-        display_phone: "0414-2650088",
-        user_name: "Francisco Landaeta",
-        carrier: "MOVISTAR",
-        carrier_label: "Movistar Venezuela",
-        is_competitor: true,
-        messages_count: 4,
-        last_seen: "2026-10-14T16:23:49.857Z",
-        last_message: "Me puedes indicar qué oficina de Movilnet es la más cercana a Los Palos Grandes?",
-        last_reply: "🏢 Oficinas de Atención Comercial Movilnet 4GMAX: Centro Comercial Centro Plaza, Av. Francisco de Miranda, Nivel 4, Los Palos Grandes, Caracas.",
-        last_route: "FUNNEL_MARKETING_PORTABILIDAD",
-        last_duration: "0.22s",
-        last_status: "SUCCESS",
-        messages: [
-          {
-            trace_id: "TRACE-EXEC-14038",
-            execution_id: "14038",
-            timestamp: "2026-10-14T16:16:30.000Z",
-            started_at: "2026-10-14T16:16:30.000Z",
-            time_display: "12:16 PM",
-            user_message: "Planes",
-            bot_reply: "¡Buenas tardes, Francisco Landaeta! Te damos la bienvenida a Movilnet 4GMAX. Contamos con planes Inteliplan 10GB y Plan Conecta 5GB.",
-            pipeline_route: "CATALOGO_PLANES_4GMAX",
-            duration_sec: 0.18,
-            status: "SUCCESS"
-          },
-          {
-            trace_id: "TRACE-EXEC-14039",
-            execution_id: "14039",
-            timestamp: "2026-10-14T16:17:11.591Z",
-            started_at: "2026-10-14T16:17:11.591Z",
-            time_display: "12:17 PM",
-            user_message: "Quiero chatear con operador",
-            bot_reply: "Estimado usuario (+58 414 2650088): Bienvenido al Centro de Atención Digital Movilnet 4GMAX.",
-            pipeline_route: "FUNNEL_MARKETING_PORTABILIDAD",
-            duration_sec: 0.22,
-            status: "SUCCESS"
-          },
-          {
-            trace_id: "TRACE-EXEC-14040",
-            execution_id: "14040",
-            timestamp: "2026-10-14T16:17:43.309Z",
-            started_at: "2026-10-14T16:17:43.309Z",
-            time_display: "12:17 PM",
-            user_message: "Cómo puedo recargar mi saldo de Movilnet",
-            bot_reply: "👋 ¡Buenas tardes, Francisco Landaeta! Para recargas Movilnet vía Pago Móvil C2P puedes hacerlo indicando tu número y cédula.",
-            pipeline_route: "FINTECH_C2P_PAGO_MOVIL",
-            duration_sec: 0.25,
-            status: "SUCCESS"
-          },
-          {
-            trace_id: "TRACE-EXEC-14041",
-            execution_id: "14041",
-            timestamp: "2026-10-14T16:23:49.857Z",
-            started_at: "2026-10-14T16:23:49.857Z",
-            time_display: "12:23 PM",
-            user_message: "Me puedes indicar qué oficina de Movilnet es la más cercana a Los Palos Grandes?",
-            bot_reply: "🏢 Oficinas de Atención Comercial Movilnet 4GMAX: Centro Comercial Centro Plaza, Av. Francisco de Miranda, Nivel 4, Los Palos Grandes, Caracas. Horario: L-V 8:00 AM - 4:00 PM.",
-            pipeline_route: "FUNNEL_MARKETING_PORTABILIDAD",
-            duration_sec: 0.28,
-            status: "SUCCESS"
-          }
-        ]
-      },
-      {
-        phone_key: "04241329949",
-        display_phone: "0424-1329949",
-        user_name: "Dios Guia",
-        carrier: "MOVISTAR",
-        carrier_label: "Movistar Venezuela",
-        is_competitor: true,
-        messages_count: 1,
-        last_seen: "2026-10-09T15:34:02.742Z",
-        last_message: "Hola Viky, hablame fenómeno del súper niño",
-        last_reply: "¡Hola! Con mucho gusto te cuento sobre eso 🌊☀️\\nEl 'Súper El Niño' es una versión excepcionalmente intensa del fenómeno climático ENOS... Por cierto, si necesitas chequear saldo o planes Movilnet 4GMAX, ¡avísame!",
-        last_route: "AI_AGENT_COGNITIVE_FASTPATH",
-        last_duration: "9.6s",
-        last_status: "SUCCESS",
-        messages: [
-          {
-            trace_id: "TRACE-EXEC-9822",
-            execution_id: "9822",
-            timestamp: "2026-10-09T15:34:02.742Z",
-            started_at: "2026-10-09T15:34:02.742Z",
-            time_display: "11:34 AM",
-            user_message: "Hola Viky, hablame fenómeno del súper niño",
-            bot_reply: "¡Hola! Con mucho gusto te cuento sobre eso 🌊☀️\\nEl 'Súper El Niño' es como los científicos y meteorólogos llaman a una versión excepcionalmente intensa del fenómeno climático de El Niño (ENOS).\\n\\n1. ¿Qué es exactamente?\\nDurante un 'Súper El Niño', la anomalía de temperatura en el Pacífico ecuatorial supera los +2.0 °C por encima del promedio.\\n\\n2. ¿Cómo impacta en Venezuela?\\n☀️ Suele provocar sequías prolongadas, disminución de lluvias y calor intenso.\\n\\nPor cierto, si necesitas chequear tu saldo, consultar tus megas o ver los planes de Movilnet 4GMAX, ¡avísame y lo revisamos al tiro! 😉📲",
-            pipeline_route: "AI_AGENT_COGNITIVE_FASTPATH",
-            duration_sec: 9.65,
-            status: "SUCCESS"
-          }
-        ]
-      },
-      {
-        phone_key: "04141234567",
-        display_phone: "0414-1234567",
-        user_name: "Carlos Movistar",
-        carrier: "MOVISTAR",
-        carrier_label: "Movistar Venezuela",
-        is_competitor: true,
-        messages_count: 1,
-        last_seen: "2026-10-07T17:05:00.000Z",
-        last_message: "Quiero cambiarme a Movilnet con eSIM",
-        last_reply: "¡Hola Carlos! Te damos la bienvenida a Movilnet 4GMAX. Al portar tu número Movistar recibes tu eSIM GRATIS + 10GB de bono de bienvenida. ¿Deseas iniciar tu activación ahora?",
-        last_route: "FUNNEL_MARKETING_PORTABILIDAD",
-        last_duration: "0.22ms",
-        last_status: "SUCCESS",
-        messages: [
-          {
-            trace_id: "TRACE-PORTA-01",
-            execution_id: "PORTA-01",
-            timestamp: "2026-10-07T17:05:00.000Z",
-            started_at: "2026-10-07T17:05:00.000Z",
-            time_display: "05:05 PM",
-            user_message: "Quiero cambiarme a Movilnet con eSIM",
-            bot_reply: "¡Hola Carlos! Te damos la bienvenida a Movilnet 4GMAX. Al portar tu número Movistar recibes tu eSIM GRATIS + 10GB de bono de bienvenida.",
-            pipeline_route: "FUNNEL_MARKETING_PORTABILIDAD",
-            duration_sec: 0.002,
-            status: "SUCCESS"
-          }
-        ]
-      }
-    ];
+    // SEMILLAS INICIALES VACÍAS (Cero ruido histórico — Fuente de verdad 100% en vivo)
+    const seedThreads = [];
 
     window.addEventListener('DOMContentLoaded', () => {
-      groupedThreads = seedThreads;
+      groupedThreads = [];
       renderContactsList();
-      if (groupedThreads.length > 0) {
-        selectContact(groupedThreads[0].phone_key);
-      }
+      renderActiveChat(true);
       
       const chatArea = document.getElementById('chatMessagesArea');
       if (chatArea) {
@@ -1902,7 +1615,7 @@
         let localData = null;
         let responseOk = false;
 
-        // 1. Intento primario: Endpoint del microservicio local (:8010)
+        // 1. Intento primario: Endpoint del microservicio (:8010 o Render Cloud)
         try {
           const localRes = await fetch('/api/v1/monitor/conversations?t=' + ts);
           if (localRes.ok) {
@@ -1913,7 +1626,7 @@
           console.warn('[Conversatorio] Error consultando /api/v1/monitor/conversations local:', localErr);
         }
 
-        // 2. Si no es localhost o falló el local (ej. PWA estática externa), consultar Render como fallback
+        // 2. Si no es localhost o falló el local, consultar Render como fallback
         if (!responseOk && !isLocal) {
           try {
             const controller = new AbortController();
@@ -1945,10 +1658,13 @@
 
         const serverThreads = localData.grouped_threads || localData.threads || [];
         if (Array.isArray(serverThreads) && serverThreads.length > 0) {
-          groupedThreads = mergeThreadsWithSeeds(groupedThreads, serverThreads);
+          groupedThreads = mergeThreadsWithSeeds([], serverThreads);
         } else if (localData && Array.isArray(localData.conversations) && localData.conversations.length > 0) {
           const aggregated = aggregateTracesLocally(localData.conversations);
-          groupedThreads = mergeThreadsWithSeeds(groupedThreads, aggregated);
+          groupedThreads = mergeThreadsWithSeeds([], aggregated);
+        } else {
+          groupedThreads = [];
+          selectedPhoneKey = null;
         }
 
         const poller = localData.n8n_poller_telemetry || {};
@@ -2372,7 +2088,39 @@
 
     function renderActiveChat(forceScroll = false) {
       const thread = groupedThreads.find(t => t.phone_key === selectedPhoneKey) || groupedThreads[0];
-      if (!thread) return;
+      if (!thread) {
+        const titleEl = document.getElementById('activePhoneTitle');
+        if (titleEl) {
+          titleEl.innerHTML = `
+            <span>Esperando nuevos mensajes (+58 424 153 3712)</span>
+            <span class="badge-cert-header" title="Bandeja Limpia">
+              <span class="material-symbols-outlined" style="font-size:13px;">check_circle</span>
+              0 Ruido Histórico
+            </span>
+          `;
+        }
+        const subEl = document.getElementById('activeCarrierSubtitle');
+        if (subEl) subEl.innerText = 'Bandeja limpia (0 conversaciones previas) • Escuchando Webhook WhatsApp 00584241533712 en tiempo real';
+        const badgeEl = document.getElementById('activeThreadBadge');
+        if (badgeEl) badgeEl.innerText = '0 mensajes en el hilo';
+        const chatArea = document.getElementById('chatMessagesArea');
+        if (chatArea) {
+          chatArea.innerHTML = `
+            <div style="padding: 48px 24px; text-align: center; color: var(--text-secondary); display: flex; flex-direction: column; align-items: center; gap: 12px;">
+              <span class="material-symbols-outlined" style="font-size: 42px; color: #16a34a;">mark_chat_read</span>
+              <div style="font-weight: 800; font-size: 1rem; color: var(--text-main);">Bandeja de Conversaciones Limpia (0 Ruido Histórico)</div>
+              <div style="max-width: 520px; font-size: 0.84rem; line-height: 1.5; color: var(--text-muted);">
+                Todas las conversaciones anteriores han sido respaldadas y limpiadas (corte activo <code>#14220</code>).<br>
+                Envía un mensaje real por WhatsApp al <strong>+58 424 153 3712</strong> (<code>00584241533712</code>) para visualizarlo aquí en tiempo real.
+              </div>
+            </div>
+          `;
+        }
+        lastRenderedThreadId = null;
+        lastRenderedMsgsCount = 0;
+        lastRenderedLastMsgId = null;
+        return;
+      }
 
       document.getElementById('activePhoneTitle').innerHTML = `
         <span>${thread.display_phone} (${thread.user_name})</span>
@@ -2909,11 +2657,14 @@
           body: JSON.stringify({ min_execution_id: 14220 })
         });
         if (res.ok) {
-          allThreads = [];
-          activePhoneKey = null;
-          renderSidebar();
-          renderActiveChat();
-          await loadConversations();
+          groupedThreads = [];
+          selectedPhoneKey = null;
+          lastRenderedThreadId = null;
+          lastRenderedMsgsCount = 0;
+          lastRenderedLastMsgId = null;
+          renderContactsList();
+          renderActiveChat(true);
+          await loadConversationsFromServer();
         }
       } catch (err) {
         console.error('[Conversatorio] Error al limpiar conversaciones:', err);
