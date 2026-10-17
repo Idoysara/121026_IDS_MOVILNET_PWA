@@ -44,9 +44,13 @@ Eres el Asistente Oficial e Inteligente de Telecomunicaciones Movilnet C.A. (Ven
 Tu misión primordial es representar a Movilnet, brindar soporte de excelencia en telecomunicaciones (líneas 0416/0426, planes 4GMAX, saldo, recargas C2P, APN, reposición SIM, portabilidad y puntos de atención presencial) y orientar el embudo de mercadeo de forma armónica y respetuosa.
 
 DIRECTRICES DE ROL Y ALCANCE DE ATENCIÓN (CORE DOMAIN TELCO):
-1. ESPECIALIDAD Y ENFOQUE EXCLUSIVO: Eres un asistente corporativo de telecomunicaciones. NO eres un directorio gastronómico, turístico ni de compras comerciales externas.
-2. DELIMITACIÓN ANTE CONSULTAS OFF-TOPIC: Si el usuario pregunta por restaurantes, comidas, farmacias ajenas, delivery, hoteles u ocio, aclara de forma breve y cortés que tu función oficial es la conectividad y soporte de telecomunicaciones Movilnet, e invítale a utilizar mapas o aplicaciones locales desde su navegación 4GMAX. NUNCA inventes recomendaciones gastronómicas, ni ofrezcas menús de comida criolla, rápida o italiana.
-3. CONTEXTO MULTI-TURNO Y CONTINUIDAD: Tienes acceso al historial reciente de la conversación (`session_history`). Si el usuario hace referencia a algo conversado previamente ('como te dije', 'lo recuerdas', 'te comenté antes'), revisa los turnos anteriores para responder con coherencia y empatía sin decir que cada sesión inicia de cero.
+1. ESPECIALIDAD Y ENFOQUE EXCLUSIVO: Eres un asistente corporativo de telecomunicaciones con un trato cálido, empático, natural y humano.
+2. FACTOR HUMANO, CONTINUIDAD Y GEOLOCALIZACIÓN HIPERLOCAL (RADIO 500M):
+   - Si el usuario menciona hambre, comida o antojos y en turnos siguientes consulta dónde ir o qué recomiendas en un punto específico (ej: 'Estoy en los palos grandes en la plaza donde recomiendas' o 'Para ir a comer'):
+     a) Muestra calidez y factor humano manteniendo la memoria y continuidad de la conversación (NO cortes bruscamente diciendo que no atiendes comida ni desvíes a puntos corporativos lejanos a kilómetros de distancia).
+     b) Brinda sugerencias gastronómicas emblemáticas y reales a distancia caminable (radio de 500 metros), como Café Arábica justo frente a la Plaza Los Palos Grandes (3ra Avenida), Pastelería Saint Honoré o cafés y bistrós de la zona.
+     c) Conecta de forma natural con el ecosistema Movilnet: resalta que puede desplazarse a pie navegando con Google Maps en tiempo real con la velocidad de la red Movilnet 4GMAX, pagar con Pago Móvil C2P interbancario en cualquiera de esos comercios, y pregúntale si desea consultar su saldo o si le apoyas con su cambio a Movilnet con eSIM digital y 10 GB de bienvenida (si es de otra operadora).
+3. CONTEXTO MULTI-TURNO Y CONTINUIDAD: Tienes acceso al historial reciente de la conversación (`session_history`). Si el usuario hace referencia a algo conversado previamente ('como te dije', 'lo recuerdas', 'te comenté antes', o preguntas concatenadas), revisa los turnos anteriores para responder con total coherencia y empatía humana sin reiniciar la conversación desde cero.
 4. ARMONÍA Y NO REPETICIÓN: Sé natural, empático y profesional. No hagas spam comercial en cada mensaje: solo ofrece recargas o paquetes de datos si el usuario lo solicita o si su consulta está vinculada a saldo o megas.
 5. CONCORDANCIA CON EL SALDO: Si el usuario ya tiene suficientes megas o saldo activo, NUNCA le sugieras comprar 'más megas' ni le digas 'para que no te quedes sin datos'; en su lugar, invítale a disfrutar de su navegación 4GMAX.
 6. CIERRE CONCISO: Responde de forma completa sin dejar oraciones a medio terminar (2 a 4 oraciones bien redactadas).
@@ -687,6 +691,67 @@ REGLA SOBERANA DE SEGMENTACIÓN POR NÚMERO (0416/0426 vs NO-MOVILNET):
                 "• 🚇 *Acceso Metro:* Estaciones Petare, Palo Verde y La California (Línea 1).\n"
                 "• 🏥 *Servicios de Salud:* Hospital Dr. Domingo Luciani (El Llanito) y clínicas de la zona.\n\n"
                 "📶 Con tu línea 4GMAX puedes navegar, usar apps de transporte y realizar Pago Móvil C2P con total rapidez. ¿Deseas consultar tu saldo o plan antes de desplazarte?"
+            )
+
+        # 16.4 Rastreo de Memoria y Continuidad Multi-Turno (Context Tracking)
+        had_hunger_or_food_recently = False
+        last_context_location = None
+        if session_history:
+            for turn in session_history[-6:]:
+                txt = ""
+                if isinstance(turn, dict):
+                    txt = str(turn.get("content") or turn.get("message") or turn.get("user") or turn.get("text") or "").lower()
+                elif isinstance(turn, str):
+                    txt = str(turn).lower()
+                
+                if any(w in txt for w in ["hambre", "comer", "comida", "almuerzo", "cena", "helado", "cafe", "antojo", "desayuno", "restaurante", "postre", "merendar"]):
+                    had_hunger_or_food_recently = True
+                if "palos grandes" in txt or "plaza" in txt:
+                    last_context_location = "palos_grandes"
+                elif "altamira" in txt:
+                    last_context_location = "altamira"
+                elif "chacao" in txt:
+                    last_context_location = "chacao"
+
+        # 16.5 Recomendaciones Gastronómicas Hiperlocales (Radio 500m) con Factor Humano y Continuidad
+        is_asking_recommendation = any(k in msg_clean for k in [
+            "donde recomiendas", "que recomiendas", "recomiendas", "para ir a comer",
+            "donde comer", "donde ir a comer", "sitio para comer", "lugar para comer",
+            "para comer", "a comer", "donde tomar cafe", "donde merendar", "alguna opcion",
+            "opciones para comer", "que hay para comer"
+        ])
+        
+        is_in_palos_grandes = ("palos grandes" in msg_clean) or ("plaza" in msg_clean and ("palos grandes" in msg_clean or last_context_location == "palos_grandes")) or (last_context_location == "palos_grandes" and is_asking_recommendation)
+        is_in_altamira = ("altamira" in msg_clean) or (last_context_location == "altamira" and is_asking_recommendation)
+
+        if (is_asking_recommendation or had_hunger_or_food_recently) and is_in_palos_grandes and (is_asking_recommendation or any(k in msg_clean for k in ["comer", "comida", "hambre", "plaza", "donde", "recomiendas"])):
+            reply = (
+                "¡Excelente punto! Justo alrededor de la *Plaza Los Palos Grandes (3ra Avenida)* cuentas con opciones gastronómicas y cafeterías emblemáticas a menos de 5 minutos a pie (menos de 300 metros):\n\n"
+                "• ☕ *Café Arábica:* Justo al cruzar frente a la plaza (3ra Avenida). Reconocido por sus cafés de origen artesanal, sándwiches gourmet y repostería.\n"
+                "• 🥐 *Pastelería Saint Honoré:* A 150 metros hacia la Av. Andrés Bello con 1ra Transversal. Famosa por sus hojaldres franceses, postres y comida ligera.\n"
+                "• 🍕 *Restaurantes y Bistrós de la 2da y 3ra Avenida:* Opciones como *El Cine*, pizzerías artesanales y heladerías a pocos pasos del parque.\n\n"
+                "📱 *Ventajas y Soporte Movilnet 4GMAX:*\n"
+                "• Puedes desplazarte a pie consultando tu ruta en Google Maps en tiempo real con la velocidad de nuestra red 4GMAX.\n"
+                "• En todos estos comercios puedes cancelar tu consumo de forma rápida mediante *Pago Móvil C2P interbancario*.\n\n"
+                "¿Deseas verificar tu saldo disponible o prefieres que coordinemos tu cambio a Movilnet con tu eSIM digital y 10 GB de bienvenida?"
+            )
+        elif (is_asking_recommendation or had_hunger_or_food_recently) and is_in_altamira and (is_asking_recommendation or any(k in msg_clean for k in ["comer", "comida", "hambre", "plaza", "donde", "recomiendas"])):
+            reply = (
+                "¡Muy buena ubicación! Alrededor de la *Plaza Altamira (Plaza Francia)* tienes excelentes opciones a menos de 500 metros caminando:\n\n"
+                "• ☕ *Cafeterías y Bistrós de la Av. San Juan Bosco:* Varios locales con café gourmet, pastas y sándwiches a 2 cuadras al norte.\n"
+                "• 🍕 *Locales de la Av. Luis Roche:* Pizzerías tradicionales, delis y heladerías a pocos minutos a pie.\n"
+                "• 🌭 *Carritos Tradicionales de Altamira Sur:* En la salida sur de la plaza hacia la Av. Francisco de Miranda, clásicos para comida rápida.\n\n"
+                "📱 *Conectividad Movilnet 4GMAX:*\n"
+                "• Navega sin interrupciones y paga directamente con *Pago Móvil C2P* desde tu celular.\n\n"
+                "¿Te gustaría consultar tu saldo o activar tu eSIM 4GMAX con 10 GB de bono de bienvenida?"
+            )
+        elif (is_asking_recommendation or ("para ir a comer" in msg_clean or "donde comer" in msg_clean)) and had_hunger_or_food_recently:
+            reply = (
+                "🍽️ En el Municipio Chacao cuentas con dos de los mejores ejes gastronómicos a pie con total cobertura *Movilnet 4GMAX*:\n\n"
+                "1. 🌳 *Eje Los Palos Grandes (Plaza 3ra Av):* Cafeterías de autor (Café Arábica), pastelerías (Saint Honoré) y bistrós gourmet.\n"
+                "2. 🛍️ *Eje Sambil Chacao / Av. Libertador:* Amplia feria de comida internacional, restaurantes y heladerías.\n\n"
+                "💡 Puedes llegar fácilmente caminando guiándote con mapas en tu móvil. En todos los comercios puedes pagar de inmediato con *Pago Móvil C2P interbancario*.\n\n"
+                "¿En cuál de estas dos zonas te encuentras o deseas verificar tu saldo antes de salir?"
             )
 
         # 17. Ubicación, Zonas Urbanas, Transporte y Puntos en Chacao

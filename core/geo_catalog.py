@@ -379,6 +379,24 @@ def init_geo_database(db_file: Path = DB_PATH) -> None:
             None, "18:00 - 02:00", 0, '{"especialidad": "Hamburguesas y perros callejeros"}'
         ),
         (
+            "POI-CCS-GAST-001", 10304, "Café Arábica Los Palos Grandes", "gastronomia", "cafeteria_artesanal",
+            "Miranda", "Chacao", "Chacao", 10.4962, -66.8502,
+            "3ra Avenida de Los Palos Grandes, frente a la Plaza Los Palos Grandes, Chacao, Caracas",
+            "+58 212-2853995", "07:30 - 20:00", 0, '{"especialidad": "Café de origen, repostería y sándwiches gourmet", "pago_movil_c2p": true, "distancia_plaza_m": 30}'
+        ),
+        (
+            "POI-CCS-GAST-002", 10305, "Pastelería Saint Honoré", "gastronomia", "panaderia_pasteleria",
+            "Miranda", "Chacao", "Chacao", 10.4975, -66.8510,
+            "Av. Andrés Bello con 1ra Transversal de Los Palos Grandes, Chacao, Caracas",
+            "+58 212-2835232", "07:00 - 21:00", 0, '{"especialidad": "Pastelería fina, hojaldres y comida mediterránea", "pago_movil_c2p": true, "distancia_plaza_m": 150}'
+        ),
+        (
+            "POI-CCS-GAST-003", 10306, "El Cine Restaurant Los Palos Grandes", "gastronomia", "restaurante_fusion",
+            "Miranda", "Chacao", "Chacao", 10.4985, -66.8500,
+            "4ta Transversal con 3ra Avenida de Los Palos Grandes, Chacao, Caracas",
+            "+58 212-2856421", "12:00 - 23:00", 0, '{"especialidad": "Comida asiática, sushi y platos de autor", "pago_movil_c2p": true, "distancia_plaza_m": 250}'
+        ),
+        (
             "POI-CCS-COM-003", 10303, "Centro Comercial Sambil Chacao", "comercio", "centro_comercial",
             "Miranda", "Chacao", "Chacao", 10.4905, -66.8580,
             "Av. Libertador con calle Los Ángeles, Chacao, Caracas",
