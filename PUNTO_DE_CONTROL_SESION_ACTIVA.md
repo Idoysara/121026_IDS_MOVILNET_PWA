@@ -19,7 +19,8 @@
   2. Certificación SHA-256 inmutable: `d832c8fd2673cf2eff447bf481c74b4e95c0a5084b1546e07a4a6751176c8065`.
   3. Despacho directo a producción en Render (`dep-db9vmknbtjjs73d7rq0g`).
   4. Suite de pruebas dedicada `test_geolocation_sub5m_zero_hallucination.py` 100% PASS (9/9) y regresión global 38/38 PASS.
-* **Capítulos de Bitácora Vigentes:** **1 al 219** (Sincronizados en `BITACORA_MOVILNET.md` y `LIBRO_MAESTRO_BITACORA_Y_DOCUMENTOS.md`).
+* **Capítulo 220 — Blindaje Militar y Bloqueo Total de Algoritmo:** Conforme a la orden soberana del usuario, se activa la Regla Inviolable `.agents/rules/regla-inviolable-blindaje-produccion-bloqueo.md` (Production Code Freeze hasta nueva orden expresa).
+* **Capítulos de Bitácora Vigentes:** **1 al 220** (Sincronizados en `BITACORA_MOVILNET.md` y `LIBRO_MAESTRO_BITACORA_Y_DOCUMENTOS.md`).
 
 ---
 

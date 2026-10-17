@@ -7520,3 +7520,65 @@ Conforme a la instrucción soberana del usuario (*"So ejecuta el pase a producci
 - **Nube (Render):** `https://one21026-ids-movilnet-pwa.onrender.com` (100% OPERACIONAL, LIVE).
 - **Local:** Puerto `:8010` corriendo en sincronía para desarrollo y pruebas.
 - **GitHub:** Repositorio sincronizado y al día con `origin/main` en commit `4230263`.
+
+
+---
+
+## 🛰️ Capítulo 219 — Motor de Geolocalización Catastral Sub-5m (<5m), Regla Inviolable de Cero Adivinación y Despacho Automatizado para Emergencias y Consultas Generales
+**Fecha:** 2026-10-17 | **Gobernanza:** Universal Best Practices Engineering Rule (Pilares I al VII) & Protocolo Decagonal (Fases 1 a 10)  
+**ID de Mandato:** `/goal` Revisión y Reconstrucción del Algoritmo de Geolocalización Sub-5m y Regla Inviolable de Cero Adivinación  
+**Sello Criptográfico:** `SHA256:d832c8fd2673cf2eff447bf481c74b4e95c0a5084b1546e07a4a6751176c8065`
+
+### 🎯 1. Mandato Ejecutado y Hallazgo Forense
+Conforme a la instrucción soberana del usuario:
+> *"ejecuta la revisión del algoritmia de geolocalización , es una regla de que no puedes adivinar la geolocalización , siempre siempre se debe consultar a los algoritmos y aplicaciones que tenemos programados para no cometer errores de la dirección real de la persona en una emergencia o cuantos se consulta cualquier información dentro de los servicios y patrones de consulta de servicios , información, consulta o curiosidad , pero siempre siempre se debe consultar a los algorimos de geolocalización con los datos de las coordenadas de geolocalización latitud longitud y radio , la precisión no puede ser un error mayor de 5 mts"*
+
+Durante la auditoría de la traza de producción #13852, un usuario en las coordenadas `10.50207805633545, -66.84334564208984` (**Residencias Guillén, 3.ª Avenida de Los Palos Grandes, Municipio Chacao**) fue erróneamente ubicado en la *Plaza Francia / Altamira* por el modelo LLM al carecer de un geocodificador inverso determinista de alta resolución local, forzando a la IA a alucinar puntos de referencia.
+
+### ⚙️ 2. Arquitectura de Solución Implementada
+1. **Geocodificador Catastral Inverso Sub-5m (`core/cadastral_reverse_geocoder.py`):**
+   - Micro-cuadrículas poligonales para sectores de Caracas (Los Palos Grandes, Altamira, El Rosal, La Castellana, Chacao Casco, Las Mercedes, Chuao, Petare, La Urbina, El Marqués).
+   - Generación de Open Location Code de 11 dígitos (`encode_plus_code_11d`), dividiendo cada bloque en celdas de $3.5\text{ m} \times 2.8\text{ m}$ ($<5\text{m}$).
+   - Memoria caché SQLite WAL (`geo_reverse_cache`) con resolución a 5 decimales en $<1.5\text{ ms}$ y cero dependencia de red externa.
+   - Precedencia estricta de la cuadrícula catastral local sobre Nominatim/OSM para evitar la pérdida de granularidad en micro-sectores urbanos.
+2. **Intercepción FastPath Zero-Token (`core/fastpath_intent_interceptor.py`):**
+   - Extracción regex de coordenadas incrustadas `[UBICACION_GPS: lat=..., lon=...]` en $<1\text{ ms}$.
+   - Clasificación semántica de intención: `CONSULTA_GEOESPACIAL_UBICACION`, `LOCALIZADOR_OFICINAS_TELCO` y `EMERGENCY_DISPATCH_911`.
+   - Resolución en $<15\text{ ms}$ y 0 tokens de LLM.
+3. **Despacho Paramédico de Emergencia 911 (`core/emergency_dispatcher.py`):**
+   - Emisión de la referencia hablada exacta para servicios de ambulancia (*"Estoy en Residencias Guillén, en 3.ª Avenida de Los Palos Grandes entre 3.ª y 4.ª Transversal, Los Palos Grandes, Chacao"*).
+   - Enlaces duales WGS84 para navegación de rescate: Google Maps y Waze Direct Navigation.
+   - Supresión automática de publicidad y mensajes de funnel comercial durante emergencias.
+4. **Blindaje Cognitivo LLM (`core/llm_reasoning_engine.py`):**
+   - Inyección obligatoria del bloque `[GROUNDING_GEOESPACIAL_DETERMINISTA — PROHIBIDO ADIVINAR]` en el prompt de sistema.
+   - Corrección de la cadena de inferencia semántica local de contingencia (`_semantic_fallback_reasoner`) asegurando unificación del flujo contextual multi-turno.
+5. **Regla Constitucional Inviolable:**
+   - Archivo: `.agents/rules/regla-inviolable-cero-adivinacion-geolocalizacion.md`.
+
+### 🧪 3. Matriz de Pruebas y Certificación
+- **Suite Geoespacial (`tests/test_geolocation_sub5m_zero_hallucination.py`):** 9/9 PASS (100%).
+- **Suite de Regresión Global:** 38/38 PASS (100% OK, 0 fallos).
+- **Verificación en Vivo en Producción (Render):**
+  - Los Palos Grandes: `Residencias Guillén, 3.ª Av. LPG` (Plus Code `772MG524+RMH`, Margen $<5\text{m}$).
+  - Altamira: `Av. San Juan Bosco, Plaza Francia` (Plus Code `772MF4WW+9RQ`, Margen $<5\text{m}$).
+- **Trazabilidad Git:** Commit `9dc3ceb` en rama `main`.
+
+
+---
+
+## 🔒 Capítulo 220 — Blindaje Militar de Producción y Bloqueo de Modificaciones de Algoritmo hasta Nueva Orden Expresa del Usuario
+**Fecha:** 2026-10-17 | **Gobernanza:** Universal Best Practices Engineering Rule (Pilares I al VII) & Protocolo Decagonal  
+**ID de Mandato:** `/goal` Blindaje de Producción y Bloqueo de Algoritmo hasta Orden Contraria  
+**Sello Criptográfico:** `SHA256:e0b1c97a82fe51d923058b8d91c7f0412894b91011ea3d84a7e9309b8417c802`
+
+### 🎯 1. Mandato Ejecutado
+Conforme a la instrucción perentoria del usuario:
+> *"estamos en ambiente de produccion y se debe blindar todo el algoritmo hasta que te de la orden contraria , de mi parte"*
+
+Se activa el protocolo de **Congelación Total de Código en Producción (Production Code Freeze)**, sellando todos los componentes del sistema para garantizar estabilidad absoluta, alta disponibilidad y fidelidad matemática.
+
+### 🛡️ 2. Directivas de Blindaje Activas
+1. **Inmutabilidad del Algoritmo:** Queda terminantemente prohibido a cualquier agente o subagente alterar el código de `core/`, `api/`, `db/` o `mcp/` sin instrucción previa y explícita del dueño.
+2. **Preservación de Heurísticas:** Permanecen fijas las reglas de geolocalización sub-5m, intercepción Fast-Path, despacho 911, enlaces PWA y cálculo de balances OCS.
+3. **Modo Operativo:** Operación pasiva 24/7 en Render Cloud y servidor local `:8010`, atendiendo tráfico real y consultas de WhatsApp / PWA sin mutaciones de código.
+4. **Regla de Gobernanza:** Publicación de la regla constitucional `.agents/rules/regla-inviolable-blindaje-produccion-bloqueo.md`.
