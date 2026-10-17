@@ -148,6 +148,8 @@ class N8nWebhookPayloadExtractor:
         data = body.get("data", {})
         key = data.get("key", {})
         remote_jid = key.get("remoteJid", "")
+        if "4166251587" in str(remote_jid) or "4166251587" in str(body):
+            return None
         msg_id = key.get("id", "")
         push_name = data.get("pushName", "Abonado")
         source = data.get("source", "whatsapp")
@@ -286,6 +288,10 @@ class N8nWebhookPayloadExtractor:
         """
         # 1. Si el payload viene envuelto en la llave 'body' de n8n
         actual_body = webhook_payload.get("body", webhook_payload)
+
+        # Invariante Inviolable: Erradicación y Bloqueo de Línea Legacy Prohibida 0416-6251587 (Capítulo 164)
+        if "4166251587" in str(webhook_payload):
+            return None
 
         # 2. Intentar parsear como Evolution API
         evo = cls.extract_from_evolution_api(actual_body)

@@ -113,6 +113,7 @@ class ConversationTraceEngine:
             shared_file=self.SHARED_FILE,
             lock=self._lock,
             state_ref=self._sync_state,
+            poller_telemetry=self._n8n_poller_telemetry,
         )
 
     def sync_with_n8n(self, limit: int = 10) -> int:

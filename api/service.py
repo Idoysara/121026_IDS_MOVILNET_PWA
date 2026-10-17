@@ -2050,6 +2050,14 @@ class MovilnetAPIService:
             }
 
         msisdn_raw = body.get("msisdn") or body.get("phone")
+        if "4166251587" in re.sub(r"\D", "", str(msisdn_raw or "")) or "4166251587" in str(body):
+            return 200, {
+                "status": "dropped",
+                "reason": "PROHIBITED_SENDER_04166251587",
+                "message": "Número decommissioned/prohibido descartado en la frontera según Capítulo 164",
+                "reply": "",
+                "response": ""
+            }
         normalized_phone = InputValidator.normalize_msisdn(msisdn_raw) if msisdn_raw else None
         if not normalized_phone and msisdn_raw:
             try:
@@ -2254,6 +2262,14 @@ class MovilnetAPIService:
         Punto de Entrada Integrado para n8n:
         Movilnet (Abonado) ↔ Input (n8n) ↔ Nodos (n8n) ↔ Output (n8n) ↔ Movilnet
         """
+        # Invariante Inviolable: Erradicación y Bloqueo de Línea Legacy Prohibida 0416-6251587 (Capítulo 164)
+        if "4166251587" in str(body):
+            return 200, {
+                "status": "dropped",
+                "reason": "PROHIBITED_SENDER_04166251587",
+                "message": "Evento de línea prohibida 0416-6251587 descartado de raíz en frontera (Capítulo 164)"
+            }
+
         from api.agents.agent_n8n_dispatcher import N8nDispatcherAgent
         from core.webhook_live_feed import webhook_feed_manager
         dispatcher = N8nDispatcherAgent(self.repo)

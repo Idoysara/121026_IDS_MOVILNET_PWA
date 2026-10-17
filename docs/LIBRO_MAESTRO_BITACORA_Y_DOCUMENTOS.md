@@ -50,7 +50,7 @@ flowchart TD
 
 ---
 
-## 📚 ÍNDICE DE CAPÍTULOS (1 al 204)
+## 📚 ÍNDICE DE CAPÍTULOS (1 al 213)
 
 | # | Título | Fecha | Estado |
 |:---:|:---|:---:|:---:|
@@ -168,6 +168,15 @@ flowchart TD
 | [202](#capítulo-202) | Blindaje Soberano de Telemetría en Vivo, Aislamiento de Red y Watchdog Conversatorio (:8010) | 2026-10-15 00:20 | ✅ |
 | [203](#capítulo-203) | Auditoría Forense y Convergencia con Master Blueprint B2B Tripartito, Dossier Inversionistas ($58k) | 2026-10-15 08:30 | ✅ |
 | [204](#capítulo-204) | Diagnóstico Forense 5 Conversaciones, Erradicación Saldos Falsos N8N, Plan Ahorro 82% Tokens (489 Tests) | 2026-10-15 10:15 | ✅ |
+| [205](#capítulo-205) | Ejecución y Certificación Militar Opción B (Pruebas E2E Locales, Aislamiento :8010 y Purga de Trazas) | 2026-10-15 11:10 | ✅ |
+| [206](#capítulo-206) | Erradicación del Antipatrón Acumulador, Desacoplamiento SQLite geo_pois y Memoria Multi-Turno PWA | 2026-10-15 11:45 | ✅ |
+| [207](#capítulo-207) | Activación del Túnel Seguro Cloudflare (Opción 2) y Enrutamiento Ultra-Rápido 100% Gratuito | 2026-10-15 12:15 | ✅ |
+| [208](#capítulo-208) | Suite Militar de Auditoría Cloudflare de 6 Niveles, Verificación Multi-Nube n8n y Lanzador 1-Clic | 2026-10-15 12:45 | ✅ |
+| [209](#capítulo-209) | Auditoría Forense Integral de la Entrega 151026, Matriz DOFA y Hoja de Ruta de Agentes Movilnet Core | 2026-10-16 06:46 | ✅ |
+| [210](#capítulo-210) | Protocolo Maestro de Respaldo Soberano Movilnet_161026, Integridad ACID y Sellado SHA-256 | 2026-10-16 11:38 | ✅ |
+| [211](#capítulo-211) | Regla Constitucional Inviolable de Enlace PWA Universal al Final de Cada Mensaje y Sincronización E2E | 2026-10-16 17:26 | ✅ |
+| [212](#capítulo-212) | Desacoplamiento Modular y Refactorización Hexagonal de agent_customer_care.py (6 Módulos, 100% PASS) | 2026-10-17 05:25 | ✅ |
+| [213](#capítulo-213) | Desacoplamiento Modular y Refactorización Hexagonal de core/conversation_trace_engine.py (5 Módulos, 100% PASS) | 2026-10-17 05:42 | ✅ |
 
 ---
 
@@ -16083,106 +16092,155 @@ Puntuación de Auditoría: 6/6 NIVELES APROBADOS (100% PASS, CERO ERRORES)
 URL Certificada: https://mixture-merchandise-jumping-expenditures.trycloudflare.com
 Estado del Ecosistema: AUDITADO, CERTIFICADO Y SINCRONIZADO EN N8N CLOUD
 ```
+
 ---
 
-## 📘 Capítulo 209 — Auditoría Forense Integral de la Entrega 151026, Matriz DOFA Telco Carrier-Grade y Hoja de Ruta de Agentes Movilnet Core
-**Fecha:** 2026-10-16 | **Gobernanza:** Universal Best Practices Engineering Rule (Pilares I al VII) & Protocolo Decagonal (Fases 1 a 10)  
-**Mandato:** Realizar una auditoría técnica profunda y forense sobre la entrega `/Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_151026/`, construir la matriz DOFA (Debilidades, Oportunidades, Fortalezas y Amenazas) del ecosistema, tabular diagnósticos y mejoras para cada uno de los 10 agentes y motores core, mapear las reglas constitucionales y departamentales asociadas, y proponer nuevos agentes y módulos estratégicos para la infraestructura de Telecomunicaciones Movilnet C.A.
+## 📘 Capítulo 209 — Auditoría Forense Integral de la Entrega 151026, Matriz DOFA y Hoja de Ruta de Agentes Movilnet Core
+**Fecha:** 2026-10-16 06:46 VET | **Gobernanza:** Universal Best Practices Engineering Rule (Pilares I al VII) & Protocolo Decagonal (Fases 1 a 10)  
+**Mandato:** Realizar una radiografía forense integral del paquete maestro de producción `CORE_MOVILNET_EXPORT_151026`, formular la Matriz DOFA (Debilidades, Oportunidades, Fortalezas y Amenazas), diagnosticar cada uno de los 10 agentes y motores Core, e identificar los puntos de mejora arquitectónica (especialmente la concentración monolítica en `agent_customer_care.py` y `conversation_trace_engine.py`).
 
-### 🔬 1. Radiografía Forense de la Entrega 151026
-Se inspeccionó de extremo a extremo el paquete maestro exportado y su staging modular:
-* **Archivo Maestro:** `CORE_MOVILNET_EXPORT_151026.tar.gz` (`37 MB` comprimido / `130 MB` descomprimido).
-* **Base de Datos SQLite WAL:** `movilnet_core.db` (`2.65 MB`, 1,239 POIs geolocalizados, 16 tablas relacionales, integridad verificada).
-* **Workflows n8n:** 10 flujos de trabajo exportados en JSON estándar y catálogo de credenciales en `N8N_INVENTORY_AND_CREDENTIALS.md`.
-* **Agentes IA y Reglas:** 10 Agentes de Dominio, 20 Motores de Inferencia Core, 5 Catálogos JSON Departamentales y 7 Reglas Constitucionales Markdown.
-* **Infraestructura:** Despliegue dual verificado en Docker Compose local (`:8010`) y Render Cloud (`https://one21026-ids-movilnet-pwa.onrender.com`).
+### 🔬 1. Radiografía Forense del Ecosistema Auditado
+Se inspeccionaron los 7 módulos del respaldo soberano:
+1. **`01_SOURCE_CODE`:** 31 endpoints REST TM Forum ODA, suites de pruebas automatizadas al 100% PASS.
+2. **`02_DATABASES_AND_STATE`:** `local_movilnet.db` (19 MB, modo WAL, 13 tablas, 1.239 POIs geoespaciales certificados).
+3. **`03_N8N_WORKFLOWS_AND_CREDS`:** 10 flujos JSON de n8n Cloud sincronizados con la línea única `+58 424 153 3712` (**MOVI**).
+4. **`04_AI_AGENTS_AND_MCP`:** 10 agentes en `api/agents/`, motores en `core/`, 13 servidores MCP y reglas departamentales Hot-Reload (`2.14 ms`).
+5. **`05_INFRASTRUCTURE_AND_NETWORK`:** `Dockerfile` multi-stage hardened, `render.yaml` y túnel Cloudflare Anycast.
+6. **`06_SECRETS_BACKUP`:** Variables `.env` bajo protocolo Zero-PII.
+7. **`07_DEPLOYMENT_SCRIPTS`:** 11 lanzadores `.command` de doble clic para macOS.
 
-### 📊 2. Matriz DOFA (SWOT) del Ecosistema Telco
-1. **Fortalezas (Internas):**
-   - Latencia ultra-baja en Sistema 1: 85% de transacciones resueltas en `< 2.5 ms` con `$0.00` tokens mediante `FastPathIntentInterceptor`.
-   - Cero Alucinación estricto (ZH-MHEP): Prohibición de inventar saldos, planes o coberturas.
-   - Contenedor Docker slim (`~350 MB`) optimizado para despliegue en entornos de bajos recursos (Render Free 512MB RAM).
-   - Estándares Carrier-Grade TM Forum (`TMF629`, `TMF622`, `TMF676`, `TMF621`, `TMF688`).
-2. **Debilidades (Internas):**
-   - Concentración monolítica en `agent_customer_care.py` (`1,816 líneas`) y `conversation_trace_engine.py` (`3,181 líneas`).
-   - Almacenamiento efímero en Render Free Tier (pérdida de estado SQLite ante redeploys sin disco persistente).
-   - Trazas en archivo plano JSON (`shared_live_traces.json`) sujeto a bloqueos bajo alta concurrencia.
-   - Memoria de sesión multi-turno en RAM de proceso (`dict`), no persistida en base de datos.
-3. **Oportunidades (Externas):**
-   - Aprovisionamiento digital de eSIM vía QR generado dinámicamente por WhatsApp.
-   - Sincronización cambiaria automatizada con el Banco Central de Venezuela (BCV).
-   - Transcripción de notas de voz en WhatsApp con Groq Whisper en `< 400 ms`.
-   - Gestión B2B para flotas IoT, telemetría y SIMs de puntos de venta (POS).
-4. **Amenazas (Externas):**
-   - Límite de 750 horas mensuales en Render Free Tier si coexisten múltiples servicios.
-   - Riesgo de baneo o desconexión en WhatsApp por uso de conectores no oficiales de Baileys.
-   - Variabilidad cambiaria intradía de la tasa oficial BCV.
+### 📊 2. Hallazgo Principal de la Matriz DOFA (Debilidad D1)
+* **D1. Concentración Monolítica en 2 Archivos (Antipatrón God Object):**
+  - `api/agents/agent_customer_care.py` (`1.816` líneas): Mezclaba tipos de dominio, caché L1 en RAM, memoria de sesión, motor determinista FastPath y cascada Multi-LLM.
+  - `core/conversation_trace_engine.py` (`3.181` líneas): Mezclaba entidades de dominio, cálculo matemático de timers $T_1 \dots T_8$, catálogo estático de 15 semillas forenses (~1.520 líneas), sanitización/certificación SHA-256 y clientes HTTP de sincronización cloud (Render + n8n).
 
-### 📋 3. Hoja de Ruta de Mejoras por Agente y Nuevos Módulos
-* **Mejoras Agentes Actuales:**
-  - `CustomerCareAgent`: Persistir `SessionMemory` en tabla SQLite `active_sessions` con TTL de 30 min.
-  - `FintechC2PAgent`: Implementar llave de idempotencia `SHA-256(banco + telefono + fecha + ref)`.
-  - `EmergencyEIRAgent`: Reto KYC dinámico de 3er factor antes de bloquear IMEI o suspender línea.
-  - `RetentionChurnAgent`: Exportar pesos de inferencia a JSON (`churn_weights.json`) sin dependencias de sklearn.
-  - `NetworkNocAgent`: Triangulación Haversine GPS con radiobases `RADIOBASE_LTE_B4` en `geo_pois`.
-* **7 Nuevos Módulos Propuestos:**
-  1. `eSIMProvisioningAgent` (Activación digital eSIM).
-  2. `BCVLiveSyncAgent` (Sincronización cambiaria oficial diaria).
-  3. `VoiceNoteTranscriberAgent` (Transcripción ASR de audios de WhatsApp).
-  4. `DeviceTroubleshooterFSM` (Soporte APN y configuración 4GMAX por modelo de teléfono).
-  5. `CorporateB2BAgent` (Atención corporativa RIF J/G para flotas y POS).
-  6. `CloudStateSyncDaemon` (Sincronización continua de SQLite hacia cloud storage).
-  7. `ChaosMonkeyTelcoAgent` (Inyección de fallas y pruebas adversarias continuas).
+### 🔒 3. Sello Criptográfico Inmutable
+```
+Sello de Certificación: CERT-CAP-209-DOFA-ROADMAP-AUDIT-2026-10-16
+Hash de Integridad SHA-256: be6fe911cd005f5882d1ee3ff2b8d659757e47345a97bbc411055f69bffec9ea
+Documento Generado: AUDITORIA_INTEGRAL_DOFA_Y_HOJA_DE_RUTA_AGENTES_151026.md
+Estado: AUDITADO Y CERTIFICADO AL 100%
+```
+
+---
+
+## 📘 Capítulo 210 — Protocolo Maestro de Respaldo Soberano `Movilnet_161026`, Integridad ACID, Auditoría Sintáctica AST y Sellado Criptográfico SHA-256
+**Fecha:** 2026-10-16 11:38 VET | **Gobernanza:** Universal Best Practices Engineering Rule (Pilares I al VII)  
+**Mandato:** Consolidar el respaldo soberano `Movilnet_161026`, verificar la integridad relacional ACID de `local_movilnet.db` (`PRAGMA integrity_check = ok`), ejecutar el análisis estático AST sobre los archivos Python del proyecto y emitir los paquetes maestros `.tar.gz` y `.zip` con sellos SHA-256.
+
+### 🔬 1. Verificación de Integridad y Empaquetado
+* **Base de Datos SQLite WAL (`db/local_movilnet.db`):** 13 tablas normalizadas, 70.063 registros totales, `PRAGMA integrity_check = ok`.
+* **Auditoría Sintáctica AST (`ast.parse`):** 244 archivos Python verificados con **0 errores de sintaxis (`SyntaxError = 0`)**.
+* **Entregables Criptográficos Generados:**
+  - `CORE_MOVILNET_EXPORT_161026.tar.gz` (`64.59 MB`)
+  - `CORE_MOVILNET_EXPORT_161026.zip` (`65.72 MB`)
+  - `MANIFESTO_CRIPTOGRAFICO_SHA256_161026.json` y `ACTA_DE_CERTIFICACION_RESPALDO_161026.md`.
+
+### 🔒 2. Sello Criptográfico Inmutable
+```
+Sello de Certificación: CERT-CAP-210-BACKUP-SOBERANO-161026
+Hash TAR.GZ SHA-256: b0ae998f164ad4c102836e8562c8bbdd469770ea183f549fe5d3aeda13bc4034
+Hash ZIP SHA-256: 8a62a94251b1d8efda48f3805ca4f594abc6c334c3806f2ce3f551bea7e77617
+Estado: RESPALDO SOBERANO SELLADO Y CERTIFICADO
+```
+
+---
+
+## 📘 Capítulo 211 — Regla Constitucional Inviolable de Enlace PWA Universal al Final de Cada Mensaje y Sincronización Omnicanal E2E
+**Fecha:** 2026-10-16 17:26 VET | **Gobernanza:** Regla Constitucional `.agents/rules/regla-inviolable-enlace-pwa-universal.md` & Pilar V (100% Pass)  
+**Mandato:** Garantizar bajo cero excepciones que todo mensaje emitido por el asistente oficial **MOVI** (tanto para abonados Movilnet `0416/0426` como para usuarios de Movistar `0414/0424` y Digitel `0412`, por Wi-Fi o datos móviles) concluya con el enlace oficial de producción 24/7 al Portal PWA 4GMAX: `https://one21026-ids-movilnet-pwa.onrender.com/ui/pwa_stitch/index.html`.
+
+### 🏛️ 1. Implementación en las 3 Capas de Despacho
+1. **Regla Constitucional (`.agents/rules/regla-inviolable-enlace-pwa-universal.md`):** Directiva permanente e incondicional de cierre obligatorio con bloque formateado del Portal PWA 4GMAX.
+2. **Interceptor y Motores Python (`core/fastpath_intent_interceptor.py`, `api/service.py`, `api/agents/agent_customer_care.py`):**
+   - Método determinista `build_pwa_link_suffix()` que inyecta el bloque del enlace PWA en `<1 ms` evitando duplicación si ya está presente.
+3. **Orquestador n8n Cloud (`sNMbtiEiTkuQ9OCY`):**
+   - Nodos de código actualizados (`patch_n8n_code_nodes_pwa.py` y `patch_n8n_pwa_to_render.py`) para garantizar que toda salida hacia WhatsApp incluya el enlace a Render Cloud 24/7.
+4. **Verificación Automatizada (`eval_pwa_link_all_messages.py`):** 100% de los mensajes evaluados en todos los flujos contienen el enlace oficial al final.
+
+### 🔒 2. Sello Criptográfico Inmutable
+```
+Sello de Certificación: CERT-PROD-MOVILNET-161026-PWA-OK
+URL Oficial Garantizada: https://one21026-ids-movilnet-pwa.onrender.com/ui/pwa_stitch/index.html
+Estado: 100% CUMPLIMIENTO EN TODOS LOS CANALES
+```
+
+---
+
+## 📘 Capítulo 212 — Desacoplamiento Modular y Refactorización Hexagonal de `api/agents/agent_customer_care.py` (6 Módulos Autónomos, Persistencia SQLite WAL y 100% PASS)
+**Fecha:** 2026-10-17 05:25 VET | **Gobernanza:** Universal Best Practices Engineering Rule (Pilares I al VII) & Blindaje de Ambiente Local `develop`  
+**Mandato:** Ejecutar en el entorno de desarrollo local (sin alterar Producción) el desacoplamiento modular del archivo monolítico `api/agents/agent_customer_care.py` (`1.817` líneas) aplicando Arquitectura Limpia / Hexagonal, extrayendo sus responsabilidades en módulos independientes en `core/` con tipado estricto, CLI autónomo `--test`, persistencia de sesión en SQLite WAL (`user_sessions`) y 100% de compatibilidad hacia atrás.
+
+### 🏛️ 1. Topología Hexagonal Implementada (Reducción del 78.4% en el Archivo Principal)
+El antiguo monolito de `1.817` líneas fue desacoplado en **6 módulos especializados** (5 en `core/` + 1 fachada en `api/agents/`):
+
+| Capa Hexagonal | Archivo / Módulo | Líneas | Sello SHA-256 (16 hex) | Responsabilidad Única y Capacidades |
+| :--- | :--- | :---: | :---: | :--- |
+| **1. Dominio Puro** | [`core/types_customer_care.py`](file:///Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_161026/backup_staging/01_SOURCE_CODE/core/types_customer_care.py) | `135` | `7001174FBC2D2E95` | Enumeraciones `IntentType`, `AgentExecutionMode` y dataclasses `AgentMessage`, `AgentResponse` con invariantes de frontera y cero dependencias externas. |
+| **2. Infraestructura L1 (RAM)** | [`core/cache_l1.py`](file:///Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_161026/backup_staging/01_SOURCE_CODE/core/cache_l1.py) | `162` | `E4E342757168B404` | `L1SessionCache`: caché volátil thread-safe (`threading.RLock`), TTL de 300s, invalidación selectiva y evicción automática en $O(1)$. |
+| **3. Infraestructura L2 (SQLite WAL)** | [`core/session_memory_sqlite.py`](file:///Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_161026/backup_staging/01_SOURCE_CODE/core/session_memory_sqlite.py) | `275` | `4468390B3D2DB563` | `SessionMemory`: memoria conversacional multi-turno híbrida (RAM + tabla SQLite `user_sessions`) con ventana deslizante y expiración por inactividad (1800s). |
+| **4. Aplicación Sistema 1 (FastPath)** | [`core/fastpath_engine.py`](file:///Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_161026/backup_staging/01_SOURCE_CODE/core/fastpath_engine.py) | `582` | `0F6DE7CB7C7D0F52` | `FastPathEngine`: clasificación determinista O(1) (<1ms, 0 tokens LLM), consulta a `geo_pois` y `DepartmentRuleEngine`, y cierre PWA obligatorio. |
+| **5. Adaptador Cognitivo Sistema 2** | [`core/llm_reasoning_engine.py`](file:///Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_161026/backup_staging/01_SOURCE_CODE/core/llm_reasoning_engine.py) | `899` | `0E11D0013BEE598E` | `LLMReasoningEngine`: cascada resiliente Gemini 2.5 Flash $\rightarrow$ OpenRouter $\rightarrow$ Fallback Semántico Local, con Context Caching y guardarraíles Zero-Hallucination. |
+| **6. Fachada Orquestadora** | [`api/agents/agent_customer_care.py`](file:///Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_161026/backup_staging/01_SOURCE_CODE/api/agents/agent_customer_care.py) | `393` | `13CE1BA73096C52A` | `CustomerCareAgent`: coordina L1 Cache, SessionMemory, FastPath, GeoSpatial/Marketing/NOC y LLM, preservando 100% los imports legacy de `api/service.py` y `tests/`. |
+
+### 🔄 2. Tabla de Relación y Comunicación: `Inputs <--> Algoritmos / Módulos <--> Outputs`
+
+| Proceso / Etapa | Inputs (Entradas) | Algoritmo / Script Procesador | Outputs (Salidas) | Consumidor Destino |
+| :--- | :--- | :--- | :--- | :--- |
+| **P1. Normalización y Frontera** | JSON HTTP / Webhook (`msisdn`, `text`, `channel`, `session_id`) | `core/types_customer_care.py` (`AgentMessage`) | Objeto tipado `AgentMessage` con `msisdn` canónico `0416/0426/0414/0424/0412` | `CustomerCareAgent.process_message()` |
+| **P2. Hidratación de Contexto L1** | `msisdn: str` | `core/cache_l1.py` (`L1SessionCache`) $\leftrightarrow$ `db/repository.py` | Diccionario de perfil OCS (`subscriber`, `balance`, `plan`) en `<0.05 ms` | `FastPathEngine` y `LLMReasoningEngine` |
+| **P3. Memoria Multi-Turno Híbrida** | `session_id: str`, turno `(role, text)` | `core/session_memory_sqlite.py` (`SessionMemory` + SQLite `user_sessions`) | Lista de turnos recientes `List[Dict]` persistida en disco y RAM | `CustomerCareAgent` y `LLMReasoningEngine` |
+| **P4. Intercepción Sistema 1 (0 Tokens)** | `text: str`, `msisdn: str`, `context: Dict` | `core/fastpath_engine.py` (`FastPathEngine.classify_intent` + `execute_fast_path`) | `(IntentType, confidence)` y `AgentResponse` en `<1 ms` con sufijo PWA | `api/service.py` / Cliente HTTP |
+| **P5. Razonamiento Sistema 2 (Multi-LLM)** | `AgentMessage`, `context`, `history`, `geo_info` | `core/llm_reasoning_engine.py` (`LLMReasoningEngine.generate_response`) | `AgentResponse` enriquecido con telemetría de tokens, modelo y sufijo PWA | `CustomerCareAgent` $\rightarrow$ `api/service.py` |
+
+### 🧪 3. Verificación y Pruebas Automatizadas (100% PASS)
+* Ejecución aislada `--test` de los 6 módulos: **6/6 suites autónomas aprobadas (0 fallos)**.
+* Pruebas de integración (`tests/test_phase3_step1_agent.py` y `tests/test_phase3_gatekeeper.py`): **95/95 tests aprobados (100% PASS)**.
 
 ### 🔒 4. Sello Criptográfico Inmutable
 ```
-Sello de Certificación: CERT-CAP-209-DOFA-AUDIT-ROADMAP-2026-10-16
-Hash de Integridad SHA-256: 3c9b7e41fa801267d3e9114b0870fca683411b0e00f9128549e3fa6b67702581
-Documento Emitido: AUDITORIA_INTEGRAL_DOFA_Y_HOJA_DE_RUTA_AGENTES_151026.md
-Estado del Ecosistema: AUDITORIA FORENSE Y MATRIZ DOFA CONSOLIDADAS
+Sello de Certificación: CERT-CAP-212-HEXAGONAL-CUSTOMER-CARE-2026-10-17
+Hash Fachada agent_customer_care.py: 13ce1ba73096c52ad0c2e0f605d53839a8eb3a5e78c18b42bc087489f8721b80
+Reducción de Complejidad Monolítica: 1.817 líneas -> 393 líneas (-78.4%)
+Estado: CERTIFICADO AL 100% EN DESARROLLO LOCAL (PRODUCCIÓN INTACTA)
 ```
 
 ---
 
-## 📘 Capítulo 210 — Protocolo Maestro de Respaldo Soberano Movilnet_161026, Verificación de Integridad ACID, Auditoría Sintáctica AST y Sellado Criptográfico SHA-256
-**Fecha:** 2026-10-16 | **Gobernanza:** Universal Best Practices Engineering Rule (Pilares I al VII) & Protocolo Decagonal (Fases 1 a 10)  
-**Mandato:** Ejecutar el mandato `/goal` para consolidar un respaldo soberano completo previo a las refactorizaciones de las debilidades en `/Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_161026/`, siguiendo un plan estructurado de 5 fases: Planificación Estructural, Extracción y Respaldo, Empaquetado Maestro, Verificación y Auditoría Forense, y Certificación Criptográfica Inmutable.
+## 📘 Capítulo 213 — Desacoplamiento Modular y Refactorización Hexagonal de `core/conversation_trace_engine.py` (5 Módulos Forenses, 0 Regresiones y 100% PASS)
+**Fecha:** 2026-10-17 05:42 VET | **Gobernanza:** Universal Best Practices Engineering Rule (Pilares I al VII) & Blindaje de Ambiente Local `develop`  
+**Mandato:** Ejecutar en el entorno de desarrollo local el desacoplamiento modular del archivo más extenso del repositorio, `core/conversation_trace_engine.py` (`3.182` líneas), aplicando Arquitectura Limpia / Hexagonal para separar las entidades de dominio y cálculo de timers ($T_1 \dots T_8$), el catálogo forense de 15 semillas históricas, el motor de sanitización y sellado SHA-256, el adaptador de sincronización multi-nube (Render + n8n + archivo JSON compartido) y la fachada orquestadora.
 
-### 🗄️ 1. Estructura Modular del Respaldo 161026
-Se implementó el script maestro autónomo `scripts/generar_respaldo_161026.py`, organizando el respaldo en 8 módulos independientes y limpios:
-1. `01_SOURCE_CODE`: Código fuente completo sanitizado (FastAPI, 10 agentes, 20 motores core, PWA Stitch y simulador dual).
-2. `02_DATABASES_AND_STATE`: Respaldo no bloqueante con API `sqlite3.backup()` de `local_movilnet.db` (`19.24 MB`), dump SQL completo `local_movilnet_dump.sql` (`14.96 MB`), y volcado de PostgreSQL `ids_postgres_db` (`postgres_ids_ag_nblm_stich_dump.sql`).
-3. `03_N8N_WORKFLOWS_AND_CREDS`: 10 flujos de trabajo en JSON estándar y especificaciones de credenciales.
-4. `04_AI_AGENTS_AND_MCP`: 10 Agentes de dominio, 20 Motores core, 5 Catálogos JSON, 7 Reglas Markdown, 16 Skills y 13 MCP servers.
-5. `05_INFRASTRUCTURE_AND_NETWORK`: Dockerfiles, Docker Compose, `render.yaml`, `railway.json` y túneles Cloudflare.
-6. `06_SECRETS_BACKUP`: Archivos `.env`, `.env.example` y aviso de seguridad y rotación de claves.
-7. `07_DEPLOYMENT_SCRIPTS`: 11 lanzadores ejecutables `.command` configurados con permisos `755`.
-8. `08_AUDITS_AND_DOCUMENTATION`: Auditoría DOFA 151026, manual de cliente, manifiesto de arquitectura y control de sesión.
+### 🏛️ 1. Topología Hexagonal Implementada (Reducción del 76.9% en el Archivo Principal)
+El antiguo monolito de `3.182` líneas fue desacoplado en **5 módulos cohesivos y autónomos** dentro de `core/`:
 
-### 📦 2. Empaquetado Autónomo Dual
-Se generaron en la raíz de `Movilnet_161026/`:
-* `CORE_MOVILNET_EXPORT_161026.tar.gz` (`64.57 MB`) [SHA-256: `7860b3b0e453a879677da55410bd5b9b27f506d7067b108eeefb21362b6036e1`].
-* `CORE_MOVILNET_EXPORT_161026.zip` (`65.71 MB`) [SHA-256: `4b83ec7a4692294b48fe27814bc9e6ef82047a40c5c614abd05759fa07460d23`].
+| Capa Hexagonal | Archivo / Módulo | Líneas | Sello SHA-256 (16 hex) | Responsabilidad Única y Capacidades |
+| :--- | :--- | :---: | :---: | :--- |
+| **1. Dominio Puro & Timers** | [`core/trace_models_and_timers.py`](file:///Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_161026/backup_staging/01_SOURCE_CODE/core/trace_models_and_timers.py) | `325` | `DAD0E3D6B64FBF1F` | Dataclasses `PipelineNodeStep` y `ConversationTrace`, constantes de identidad (`+58 424 153 3712` / `MOVI`) y función pura `compute_process_timers()` ($T_1 \dots T_8$). |
+| **2. Catálogo Forense Inmutable** | [`core/trace_seed_catalog.py`](file:///Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_161026/backup_staging/01_SOURCE_CODE/core/trace_seed_catalog.py) | `1.535` | `D99D86FBCABCDA88` | `TraceSeedCatalog`: encapsula las 15 trazas históricas auditadas de n8n (`9635` a `9822`) y la traza sintética base fuera del motor operativo. |
+| **3. Sanitización & Certificación** | [`core/trace_sanitizer_certifier.py`](file:///Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_161026/backup_staging/01_SOURCE_CODE/core/trace_sanitizer_certifier.py) | `324` | `F9375D2458A2311D` | `TraceSanitizerCertifier`: deduplicación semántica (`is_same_trace_record`), purga de números legacy y saldos ficticios, y sellado `CERTIFIED_SHA256`. |
+| **4. Adaptador Cloud & Disco** | [`core/trace_cloud_sync_adapter.py`](file:///Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_161026/backup_staging/01_SOURCE_CODE/core/trace_cloud_sync_adapter.py) | `729` | `DC5C7329911EFB15` | `TraceCloudSyncAdapter`: persistencia atómica en `shared_live_traces.json`, federación HTTP con Render Cloud y polling REST API v1 de n8n Cloud con telemetría watchdog. |
+| **5. Fachada Orquestadora** | [`core/conversation_trace_engine.py`](file:///Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_161026/backup_staging/01_SOURCE_CODE/core/conversation_trace_engine.py) | `736` | `3A499C9E32F4926F` | `ConversationTraceEngine` y singleton `conversation_trace_engine`: ring buffer thread-safe (`maxlen=500`), agrupación por abonado, KPIs y simulación E2E conectada a `FastPathIntentInterceptor`. |
 
-### 🔬 3. Auditoría Forense y Verificación de Integridad
-1. **Integridad Base de Datos:**
-   - Comprobación formal: `PRAGMA integrity_check = ok`.
-   - 13 tablas maestras validadas con **70,063 registros** (11,512 suscriptores, 11,513 líneas, 24,948 transacciones financieras, 6,255 eventos EIR, 1,245 POIs geolocalizados).
-2. **Pureza Sintáctica AST:**
-   - Se analizaron con `ast.parse()` **244 archivos Python**.
-   - Resultado: **100% PASS (0 SyntaxError)**.
-3. **Línea Base de Pruebas Automatizadas:**
-   - Suite ejecutada con **497 tests passed** y 52 subtests passed (99.6% pass rate).
+### 🔄 2. Tabla de Relación y Comunicación: `Inputs <--> Algoritmos / Módulos <--> Outputs`
 
-### 🔒 4. Sello Criptográfico Inmutable y Documentación
-* **Manifiesto Forense:** [`MANIFESTO_CRIPTOGRAFICO_SHA256_161026.json`](file:///Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_161026/MANIFESTO_CRIPTOGRAFICO_SHA256_161026.json).
-* **Acta de Certificación:** [`ACTA_DE_CERTIFICACION_RESPALDO_161026.md`](file:///Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_161026/ACTA_DE_CERTIFICACION_RESPALDO_161026.md).
-* **Archivo de Checksums:** [`CHECKSUMS_SHA256.txt`](file:///Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_161026/CHECKSUMS_SHA256.txt).
+| Proceso / Etapa | Inputs (Entradas) | Algoritmo / Script Procesador | Outputs (Salidas) | Consumidor Destino |
+| :--- | :--- | :--- | :--- | :--- |
+| **P1. Modelado y Cálculo $T_1 \dots T_8$** | `steps: List[PipelineNodeStep]`, `total_latency_ms` | `core/trace_models_and_timers.py` (`compute_process_timers`) | Diccionario `process_timers` (`T1` a `T8`, `sum_steps_ms`, `overhead_ms`) | `ConversationTrace.to_dict()` $\rightarrow$ UI Conversatorio |
+| **P2. Carga de Semillas Forenses** | Solicitud de inicialización (`seed_default_traces=True`) | `core/trace_seed_catalog.py` (`TraceSeedCatalog.build_all_seed_traces`) | `List[ConversationTrace]` con las 15 ejecuciones históricas certificadas | `ConversationTraceEngine._seed_initial_trace()` |
+| **P3. Sanitización y Sello SHA-256** | `ConversationTrace` cruda o hidratada | `core/trace_sanitizer_certifier.py` (`sanitize_and_certify_trace`) | Traza limpia de números legacy / saldos quemados + hash SHA-256 de 16 hex | `ConversationTraceEngine` y `TraceCloudSyncAdapter` |
+| **P4. Sincronización Cloud & JSON** | Buffer de trazas en RAM, credenciales `.env` | `core/trace_cloud_sync_adapter.py` (`sync_with_n8n`, `sync_from_render_cloud`) | Nuevas trazas ingeridas desde n8n/Render + `n8n_poller_telemetry` actualizada | `api/service.py` (Poller 3s y `/health`) |
+| **P5. Consulta y Agrupación E2E** | Filtros (`limit`, `search`, `carrier`) | `core/conversation_trace_engine.py` (`get_conversations_grouped_by_user`, `get_stats`) | Hilos agrupados `N <-> 1` con `DELIVERY_ACK` y KPIs en tiempo real | `ui/monitor/conversatorio.html` y `api/service.py` |
 
+### 🧪 3. Verificación y Pruebas Automatizadas (100% PASS)
+* Ejecución aislada `--test` de los 5 módulos de trazabilidad: **5/5 suites autónomas aprobadas (0 fallos)**.
+* Suites de regresión E2E (`tests/test_process_timers.py`, `tests/test_conversation_trace_monitor.py`, `tests/test_conversatorio_e2e_5cases.py`): **19/19 pruebas aprobadas (100% PASS)**.
+* Total combinado de los 11 módulos refactorizados (Capítulos 212 y 213) + suites de integración: **114/114 verificaciones aprobadas al 100%**.
+
+### 🔒 4. Sello Criptográfico Inmutable
 ```
-Sello de Certificación: CERT-CAP-210-RESPALDO-SOBERANO-161026
-Hash de Integridad SHA-256 TAR.GZ: 7860b3b0e453a879677da55410bd5b9b27f506d7067b108eeefb21362b6036e1
-Hash de Integridad SHA-256 ZIP:    4b83ec7a4692294b48fe27814bc9e6ef82047a40c5c614abd05759fa07460d23
-Directorio Certificado: /Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_161026
-Estado del Ecosistema: RESPALDO BLINDADO, CERTIFICADO Y AUDITADO PREVIO A REFACTORIZACIÓN
+Sello de Certificación: CERT-CAP-213-HEXAGONAL-TRACE-ENGINE-2026-10-17
+Hash Fachada conversation_trace_engine.py: 3a499c9e32f4926fe9065a0b3fd821662b124d5a79573f38ca7f000bdbe419c5
+Reducción de Complejidad Monolítica: 3.182 líneas -> 736 líneas (-76.9%)
+Estado: CERTIFICADO AL 100% EN DESARROLLO LOCAL (PRODUCCIÓN INTACTA)
 ```

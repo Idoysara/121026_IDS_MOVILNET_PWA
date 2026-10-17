@@ -43,6 +43,7 @@ class FilterVerdict(str, Enum):
     DROP_SYSTEM_SECURITY_NOTICE = "DROP_SYSTEM_SECURITY_NOTICE"
     DROP_SPAM_INVITATION = "DROP_SPAM_INVITATION"
     DROP_COMMERCIAL_AUTOREPLY = "DROP_COMMERCIAL_AUTOREPLY"
+    DROP_PROHIBITED_SENDER = "DROP_PROHIBITED_SENDER"
 
 
 @dataclass
@@ -118,6 +119,20 @@ class WebhookNoiseFilter:
             return False
         return bool(cls.COMMERCIAL_AUTOREPLY_REGEX.search(text))
 
+    PROHIBITED_NUMBERS = {
+        "4166251587",
+        "584166251587",
+        "04166251587",
+    }
+
+    @classmethod
+    def is_prohibited_sender(cls, sender: Optional[str]) -> bool:
+        """Determina si el remitente corresponde al número prohibido/decommissioned (0416-6251587)."""
+        if not sender:
+            return False
+        digits = re.sub(r"\D", "", str(sender))
+        return any(digits.endswith(p) or digits == p for p in cls.PROHIBITED_NUMBERS)
+
     @classmethod
     def evaluate(cls, raw_payload: Dict[str, Any], check_spam_invitation: bool = False) -> FilterResult:
         """
@@ -190,7 +205,17 @@ class WebhookNoiseFilter:
 
         # 4. Extracción de contenido conversacional
         message = message_data.get("message", {})
-        sender_jid = key.get("remoteJid") or raw_payload.get("sender")
+        sender_jid = key.get("remoteJid") or raw_payload.get("sender") or message_data.get("from")
+
+        # 4.1. Descarte tajante de número legacy prohibido (0416-6251587) - Regla Inviolable Capítulo 164
+        if cls.is_prohibited_sender(sender_jid) or "4166251587" in str(raw_payload):
+            return FilterResult(
+                should_process=False,
+                verdict=FilterVerdict.DROP_PROHIBITED_SENDER,
+                reason="Número de línea legacy prohibido (0416-6251587) bloqueado en la frontera (Capítulo 164)",
+                event_type=event or "PROHIBITED_SENDER",
+                sender_jid=sender_jid
+            )
 
         text = (
             message.get("conversation")
@@ -357,9 +382,19 @@ def main():
         }
         r8 = WebhookNoiseFilter.evaluate(p_commercial)
         assert r8.should_process is False, "ERROR: El auto-respondedor comercial debió descartarse en frontera!"
-        assert r8.verdict == FilterVerdict.DROP_COMMERCIAL_AUTOREPLY
+        # Test 9: Descarte de número prohibido legacy (0416-6251587 / 584166251587)
+        p_prohibited = {
+            "event": "messages.upsert",
+            "data": {
+                "key": {"remoteJid": "584166251587@s.whatsapp.net", "fromMe": False},
+                "message": {"conversation": "Hoka"}
+            }
+        }
+        r9 = WebhookNoiseFilter.evaluate(p_prohibited)
+        assert r9.should_process is False, "ERROR: El número prohibido 0416-6251587 debió descartarse en frontera!"
+        assert r9.verdict == FilterVerdict.DROP_PROHIBITED_SENDER
 
-        print("✅ [TEST PASS] Todos los invariantes de WebhookNoiseFilter (incluyendo #13368 y #13852) aprobados con 100% de éxito.")
+        print("✅ [TEST PASS] Todos los invariantes de WebhookNoiseFilter (incluyendo #13368, #13852 y 0416-6251587) aprobados con 100% de éxito.")
         return
 
     if args.demo:

@@ -11,10 +11,30 @@ import json
 import time
 from pathlib import Path
 from datetime import datetime, timezone, timedelta
+import math
 try:
     import pytest
 except ImportError:
-    pytest = None
+    class _Approx:
+        def __init__(self, val, rel=1e-2):
+            self.val = val
+            self.rel = rel
+        def __eq__(self, other):
+            return math.isclose(self.val, other, rel_tol=self.rel, abs_tol=1e-4)
+    class _FallbackPytest:
+        approx = staticmethod(_Approx)
+        @staticmethod
+        def main(args):
+            inst = TestProcessTimersE2E()
+            passed = 0
+            for name in sorted(dir(inst)):
+                if name.startswith("test_"):
+                    getattr(inst, name)()
+                    print(f"  [PASS] TestProcessTimersE2E.{name}")
+                    passed += 1
+            print(f"✅ {passed}/{passed} pruebas en test_process_timers.py 100% PASS")
+            return 0
+    pytest = _FallbackPytest
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 if str(PROJECT_ROOT) not in sys.path:

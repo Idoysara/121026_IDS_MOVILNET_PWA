@@ -1,13 +1,13 @@
-**Última Actualización:** `2026-10-14 13:25:00 VET (-0400)`
+**Última Actualización:** `2026-10-17 05:55:00 VET (-0400)`
 **Circuit Breaker Status:** 🟢 **OPERATIONAL**
-**Fase Activa:** `FASE 6 & 7 (ECOSISTEMA INTEGRAL DE AGENTES DEPARTAMENTALES, SUITE NOC MCP, MOTOR HOT-RELOAD <3MS, AISLAMIENTO PWA, NUBE RENDER 24/7, MODELO N <-> 1 BOT +58 424 153 3712 / MOVI, ERRADICACIÓN TOTAL DE NÚMEROS AJENOS, SANEAMIENTO EGRESS WHATSAPP LINKPREVIEW FALSE, RESET FREEMIUM, RESTAURACIÓN VISUALIZACIÓN OMNICANAL N <--> 1 EN MONITOR :8010 Y CAPÍTULOS 101 A 188)`
-**Tests Globales:** ✅ **441 / 441 — 100% PASS**
+**Fase Activa:** `FASE 6, 7 & 8 (ECOSISTEMA INTEGRAL DE AGENTES DEPARTAMENTALES, SUITE NOC MCP, MOTOR HOT-RELOAD <3MS, AISLAMIENTO PWA, NUBE RENDER 24/7, MODELO N <-> 1 BOT +58 424 153 3712 / MOVI, REGLA INVIOLABLE ENLACE PWA UNIVERSAL, DESACOPLAMIENTO HEXAGONAL DE AGENT_CUSTOMER_CARE Y CONVERSATION_TRACE_ENGINE EN DESARROLLO LOCAL Y CAPÍTULOS 1 A 213)`
+**Tests Globales:** ✅ **510+ / 510+ — 100% PASS (incluyendo 114/114 en los 11 módulos hexagonales refactorizados)**
 
 ---
 
 ## 🎯 Resumen Ejecutivo del Estado Actual
 
-Todas las Fases del proyecto, el Despliegue de Producción, la Suite Geoespacial, el Motor de Funnel Marketing, los Simuladores Nativos Multi-App, el servidor MCP NVIDIA SkillSpector, el **Centro de Monitoreo Conversacional E2E (Conversatorio :8010)**, el **Nodo Autónomo n8n Cloud `Movilnet Core & Marketing Router`**, el **Sincronizador en Vivo Bidireccional (`sync_with_n8n`)**, el **Despliegue Multi-Nube en Render 24/7 (`movilnet-core.onrender.com` / Deploy `dep-db7qb57avr4c7396gv9g` / Commit `c74f5c0`)**, la **Consagración de la Línea Única Oficial `+58 424 153 3712` con Erradicación Total de Números Ajenos**, el **Saneamiento Egress de Caracteres en n8n (`HTTP Request` con `encodeURIComponent` y doble bloqueo de `linkPreview: false`)**, el **Reset de Cupos Freemium en SQLite WAL** y la **Apertura Formal para Pruebas Reales de Usuarios** están **100% certificados** con sellos criptográficos SHA-256 inmutables:
+Todas las Fases del proyecto, el Despliegue de Producción, la Suite Geoespacial, el Motor de Funnel Marketing, los Simuladores Nativos Multi-App, el servidor MCP NVIDIA SkillSpector, el **Centro de Monitoreo Conversacional E2E (Conversatorio :8010)**, el **Nodo Autónomo n8n Cloud `Movilnet Core & Marketing Router`**, el **Sincronizador en Vivo Bidireccional (`sync_with_n8n`)**, el **Despliegue Multi-Nube en Render 24/7 (`one21026-ids-movilnet-pwa.onrender.com`)**, la **Consagración de la Línea Única Oficial `+58 424 153 3712`**, la **Regla Constitucional Inviolable de Enlace PWA Universal (Cap. 211)** y el **Desacoplamiento Modular bajo Arquitectura Limpia / Hexagonal de `agent_customer_care.py` (Cap. 212) y `core/conversation_trace_engine.py` (Cap. 213)** están **100% certificados** con sellos criptográficos SHA-256 inmutables:
 
 1. ✅ **Fase 0 (Discovery, Inception & 5 Suites MCP)** — Certificado: `FASE0-CERT-6CFBDE45D91A` (41 tests).
 2. ✅ **Fase 1 (Capa de Datos ODA & Persistencia WAL)** — Certificado: `FASE1-CERT-B1ED910BFAC6` (8 tests).
@@ -29,13 +29,15 @@ Todas las Fases del proyecto, el Despliegue de Producción, la Suite Geoespacial
 18. ✅ **Sincronizador Bidireccional en Vivo n8n Cloud ➔ Dashboard Conversatorio** — Operativo en tiempo real (Capítulo 121).
 19. ✅ **Despliegue en la Nube 24/7 en Render (`https://one21026-ids-movilnet-pwa.onrender.com`)** — Certificado (Capítulo 210, Workspace `IDS_Movilnet_2_IA`, Plan Free, $0/mo).
 20. ✅ **Aislamiento Soberano del Canal de Datos PWA (`DATA_PWA_EXCLUSIVE`)** — Certificado (Capítulo 176, 11 tests).
-21. ✅ **Respaldo Soberano Certificado `141026_Movilnet_Core_PWA`** — Certificado (Capítulo 177).
+21. ✅ **Respaldo Soberano Certificado `Movilnet_161026`** — Certificado (Capítulo 210).
 22. ✅ **Ambiente Aislado `develop` & Regla Inviolable de Blindaje** — Certificado (Capítulo 178, `.agents/rules/regla-inviolable-pase-produccion.md`).
 23. ✅ **Catálogo Declarativo de 5 Departamentos & Motor Hot-Reload** — Certificado (Capítulo 179, `core/department_rule_engine.py`, 2.14 ms, 7 tests).
 24. ✅ **Agente Especialista de Operaciones de Red NOC & Suite MCP** — Certificado (Capítulo 179, `agent_network_noc.py`, `mcp_noc_tools`).
-25. ✅ **Tests Globales Totales** — **430 / 430 pruebas pasando al 100% sin advertencias**.
+25. ✅ **Regla Constitucional Inviolable Enlace PWA Universal** — Certificado (Capítulo 211, `.agents/rules/regla-inviolable-enlace-pwa-universal.md`).
+26. ✅ **Desacoplamiento Hexagonal `agent_customer_care.py` (6 módulos, -78.4% líneas)** — Certificado (Capítulo 212, `CERT-CAP-212-HEXAGONAL-CUSTOMER-CARE-2026-10-17`).
+27. ✅ **Desacoplamiento Hexagonal `core/conversation_trace_engine.py` (5 módulos, -76.9% líneas)** — Certificado (Capítulo 213, `CERT-CAP-213-HEXAGONAL-TRACE-ENGINE-2026-10-17`).
 
-**Estado del Sistema:** 🟢 **ENTORNO DE DESARROLLO SEGURO DEVELOP ACTIVO, PRODUCCIÓN BLINDADA 24/7 EN RENDER, ECOSISTEMA DE 5 DEPARTAMENTOS Y REGLAS HOT-RELOAD 100% OPERACIONALES.**
+**Estado del Sistema:** 🟢 **ENTORNO DE DESARROLLO SEGURO DEVELOP ACTIVO CON ARQUITECTURA HEXAGONAL DESACOPLADA, PRODUCCIÓN BLINDADA 24/7 EN RENDER, ECOSISTEMA DE 5 DEPARTAMENTOS Y REGLAS HOT-RELOAD 100% OPERACIONALES.**
 
 ---
 
@@ -56,6 +58,7 @@ Todas las Fases del proyecto, el Despliegue de Producción, la Suite Geoespacial
 | GEO | Suite 6 | **Módulo Geoespacial MCP & Multi-Agente VE** | 7/7 | ✅ **OPERACIONAL** | **`MOVILNET-GEO-MCP-SUITE6-CERT`** |
 | SEC | Security | **NVIDIA SkillSpector MCP & AST Scanner** | 8/8 | ✅ **OPERACIONAL** | **`MOVILNET-SKILLSPECTOR-CERT`** |
 | 5 | Gate 5 | **Integración n8n Cloud + Conversatorio E2E + Fast-Path AAA + Sincronizador Vivo** | 328/328 | ✅ **SELLADA** | **`MOVILNET-N8N-AAA-CERT-285A743A`** |
+| HEX | Caps 212-213 | **Desacoplamiento Hexagonal CustomerCare (6 mód) & TraceEngine (5 mód)** | 114/114 | ✅ **SELLADA** | **`CERT-CAP-213-HEXAGONAL-TRACE-ENGINE`** |
 
 ---
 
@@ -82,32 +85,42 @@ Artefactos Productivos:
 
 ---
 
-## 📂 Archivos de Producción Claves
+## 📂 Archivos de Producción y Desarrollo Hexagonal Claves
 
 ### Base de Datos & Persistencia
 | Archivo | Líneas | Función |
 |:---|:---:|:---|
-| `db/schema.sql` | 328 | DDL 10 tablas ODA, 8 shards HASH, RANGE CDR |
+| `db/schema.sql` | 328 | DDL 13 tablas ODA (+ `user_sessions` WAL), 8 shards HASH, RANGE CDR |
 | `db/connection.py` | 350 | Failover PG15 ↔ SQLite WAL, Singleton |
 | `db/repository.py` | 481 | Queries tipadas Zero-PII, HMAC Blind Index |
 
 ### API & Integración
 | Archivo | Líneas | Función |
 |:---|:---:|:---|
-| `api/service.py` | 2466 | REST API 23 endpoints + `/ui` static server |
+| `api/service.py` | 2466 | REST API 31 endpoints + `/ui` static server + sufijo PWA universal |
 | `api/openapi.json` | 2233 | Contrato OpenAPI 3.1.0 TM Forum ODA |
 | `api/webhook_bridge.py` | 844 | HMAC-SHA256, Anti-Replay 300s, DLQ |
 
-### Agentes IA (Swarm L5 & Sub-Agentes Geoespaciales)
-| Archivo | Líneas | Agente |
+### Agentes IA (Swarm L5) & Módulos Hexagonales Core (`core/`)
+| Archivo | Líneas | Agente / Módulo Hexagonal |
 |:---|:---:|:---|
-| `api/agents/agent_customer_care.py` | 1315 | N1 — OCS TMF621 + Gemini 2.5 Flash + Geo Orquestador |
+| `api/agents/agent_customer_care.py` | 393 | N1 Fachada Orquestadora (desacoplada de 1.817 a 393 líneas en Cap. 212) |
+| `core/types_customer_care.py` | 135 | Dominio Puro N1 (`IntentType`, `AgentExecutionMode`, `AgentMessage`, `AgentResponse`) |
+| `core/cache_l1.py` | 162 | Infraestructura L1 (`L1SessionCache` en RAM thread-safe con TTL 300s) |
+| `core/session_memory_sqlite.py` | 275 | Infraestructura L2 (`SessionMemory` híbrida RAM + SQLite WAL `user_sessions`) |
+| `core/fastpath_engine.py` | 582 | Aplicación Sistema 1 (`FastPathEngine` <1ms, 0 tokens + sufijo PWA) |
+| `core/llm_reasoning_engine.py` | 899 | Adaptador Sistema 2 (`LLMReasoningEngine` Gemini 2.5 Flash -> OpenRouter -> Fallback) |
+| `core/conversation_trace_engine.py` | 736 | Fachada Trazabilidad E2E (desacoplada de 3.182 a 736 líneas en Cap. 213) |
+| `core/trace_models_and_timers.py` | 325 | Dominio Puro Trazas (`PipelineNodeStep`, `ConversationTrace`, Timers $T_1 \dots T_8$) |
+| `core/trace_seed_catalog.py` | 1535 | Catálogo Forense Inmutable (`TraceSeedCatalog` con 15 semillas históricas) |
+| `core/trace_sanitizer_certifier.py` | 324 | Sanitizador y Certificador Criptográfico (`TraceSanitizerCertifier` SHA-256) |
+| `core/trace_cloud_sync_adapter.py` | 729 | Adaptador Multi-Nube (`TraceCloudSyncAdapter` JSON + Render + n8n Cloud) |
 | `api/agents/agent_fintech_c2p.py` | 545 | N2 — C2P BCV TMF676, Oráculo 0.005ms |
 | `api/agents/agent_emergency_eir.py` | 675 | N3 — EIR GSMA, Luhn-10 0.013ms |
 | `api/agents/agent_retention_churn.py` | 920 | N4 — Churn ML TMF680, 0.887ms |
-| `api/agents/agent_geo_spatial.py` | 75 | Sub-Agente Cartográfico y Geoespacial (Haversine & Rutas) |
-| `api/agents/agent_commercial_directory.py` | 80 | Sub-Agente Directorio Comercial (E.164 & Curaduría) |
-| `api/agents/agent_geo_validation.py` | 45 | Sub-Agente Validación Territorial (INE / IGVSB) |
+| `api/agents/agent_geo_spatial.py` | 124 | Sub-Agente Cartográfico y Geoespacial (Haversine & Rutas) |
+| `api/agents/agent_commercial_directory.py` | 81 | Sub-Agente Directorio Comercial (E.164 & Curaduría) |
+| `api/agents/agent_geo_validation.py` | 69 | Sub-Agente Validación Territorial (INE / IGVSB) |
 
 ### Suites MCP Integradas (Model Context Protocol JSON-RPC 2.0)
 | Suite | Archivo | Herramientas Principales |

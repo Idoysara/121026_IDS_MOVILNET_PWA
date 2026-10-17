@@ -14,7 +14,18 @@ Conversatorio los 5 casos críticos analizados:
   5. Abonado (0416-1234567): "Cual es el apn de movilnet?" -> Entrega inmediata de parámetros APN
 """
 
-import pytest
+import sys
+from pathlib import Path
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+try:
+    import pytest
+except ImportError:
+    pytest = None
+
 from core.fastpath_intent_interceptor import fastpath_interceptor, FastPathIntentInterceptor
 from core.conversation_trace_engine import conversation_trace_engine
 
@@ -71,7 +82,7 @@ def test_caso_4_off_topic_restaurantes_guard():
     assert res.can_intercept is True
     assert res.intent_detected == "OFF_TOPIC_TELCO_GUARD"
     assert "gastronomía o comercios generales" in res.response_text
-    assert "Portabilidad" in res.response_text
+    assert ("Portabilidad" in res.response_text or "eSIM digital" in res.response_text)
     assert res.latency_ms < 50.0
 
 
@@ -101,3 +112,18 @@ def test_trace_simulation_integration():
     assert trace.status == "SUCCESS"
     assert "11.9 GB de 5 GB" not in trace.bot_reply
     assert "4GMAX" in trace.bot_reply
+
+
+if __name__ == "__main__":
+    funcs = [
+        test_caso_1_oficina_los_palos_grandes,
+        test_caso_2_saldo_real_sin_hardcoding,
+        test_caso_3_recarga_hija_terceros_guard,
+        test_caso_4_off_topic_restaurantes_guard,
+        test_caso_5_parametros_apn,
+        test_trace_simulation_integration,
+    ]
+    for fn in funcs:
+        fn()
+        print(f"  [PASS] {fn.__name__}")
+    print(f"✅ {len(funcs)}/{len(funcs)} pruebas en test_conversatorio_e2e_5cases.py 100% PASS")

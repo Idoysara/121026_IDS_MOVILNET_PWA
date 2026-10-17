@@ -2047,7 +2047,7 @@
     {
       "parameters": {
         "description": "Obtiene los datos bancarios oficiales para recargas de saldo instantáneas mediante Pago Móvil C2P SUDEBAN. Úsala cuando el usuario pregunte cómo recargar, pagar o abonar saldo.",
-        "jsCode": "return JSON.stringify({\n  metodo: \"Pago Móvil C2P SUDEBAN Directo\",\n  banco_receptor: \"Banco de Venezuela (Código 0102)\",\n  rif_titular: \"G-20000012-3 (Telecomunicaciones Movilnet C.A.)\",\n  telefono_asociado: \"0416-6251587\",\n  monto_minimo: \"Bs. 150,00\",\n  instrucciones: \"Realizar el pago móvil desde la app de tu banco nacional e indicar el monto deseado. El saldo se acredita en menos de 30 segundos.\"\n});"
+        "jsCode": "return JSON.stringify({\n  metodo: \"Pago Móvil C2P SUDEBAN Directo\",\n  banco_receptor: \"Banco de Venezuela (Código 0102)\",\n  rif_titular: \"G-20000012-3 (Telecomunicaciones Movilnet C.A.)\",\n  telefono_asociado: \"0424-1533712\",\n  monto_minimo: \"Bs. 150,00\",\n  instrucciones: \"Realizar el pago móvil desde la app de tu banco nacional e indicar el monto deseado. El saldo se acredita en menos de 30 segundos.\"\n});"
       },
       "id": "a3e223b7-a232-4d37-818a-de8fc4518dc7",
       "name": "PagoC2P",
@@ -5436,7 +5436,7 @@
       {
         "parameters": {
           "description": "Obtiene los datos bancarios oficiales para recargas de saldo instantáneas mediante Pago Móvil C2P SUDEBAN. Úsala cuando el usuario pregunte cómo recargar, pagar o abonar saldo.",
-          "jsCode": "return JSON.stringify({\n  metodo: \"Pago Móvil C2P SUDEBAN Directo\",\n  banco_receptor: \"Banco de Venezuela (Código 0102)\",\n  rif_titular: \"G-20000012-3 (Telecomunicaciones Movilnet C.A.)\",\n  telefono_asociado: \"0416-6251587\",\n  monto_minimo: \"Bs. 150,00\",\n  instrucciones: \"Realizar el pago móvil desde la app de tu banco nacional e indicar el monto deseado. El saldo se acredita en menos de 30 segundos.\"\n});"
+          "jsCode": "return JSON.stringify({\n  metodo: \"Pago Móvil C2P SUDEBAN Directo\",\n  banco_receptor: \"Banco de Venezuela (Código 0102)\",\n  rif_titular: \"G-20000012-3 (Telecomunicaciones Movilnet C.A.)\",\n  telefono_asociado: \"0424-1533712\",\n  monto_minimo: \"Bs. 150,00\",\n  instrucciones: \"Realizar el pago móvil desde la app de tu banco nacional e indicar el monto deseado. El saldo se acredita en menos de 30 segundos.\"\n});"
         },
         "id": "a3e223b7-a232-4d37-818a-de8fc4518dc7",
         "name": "PagoC2P",

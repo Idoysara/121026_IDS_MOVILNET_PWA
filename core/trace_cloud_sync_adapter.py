@@ -252,7 +252,9 @@ class TraceCloudSyncAdapter:
                     },
                     method="POST",
                 )
-                with urllib.request.urlopen(req, timeout=3.5) as resp:
+                import ssl
+                ctx = ssl._create_unverified_context()
+                with urllib.request.urlopen(req, timeout=8.0, context=ctx) as resp:
                     if resp.status == 200:
                         pushed += 1
             except Exception:
@@ -265,26 +267,39 @@ class TraceCloudSyncAdapter:
         traces_cache: List[ConversationTrace],
         shared_file: Path,
         lock: threading.RLock,
-        state_ref: Dict[str, Any]
+        state_ref: Dict[str, Any],
+        poller_telemetry: Optional[Dict[str, Any]] = None
     ) -> int:
         """Sincroniza en tiempo real las trazas capturadas en la nube (Render) por celulares externos vía QR."""
         if os.environ.get("RENDER"):
             return 0
         now = time.time()
         last_cloud = state_ref.get("last_cloud_sync_time", 0.0)
-        if now - last_cloud < 2.5:
+        if now - last_cloud < 2.0:
             return 0
         state_ref["last_cloud_sync_time"] = now
 
         try:
+            import ssl
+            ctx = ssl._create_unverified_context()
             req = urllib.request.Request(
                 f"{cls.PUBLIC_RENDER_BASE_URL}/api/v1/monitor/conversations",
                 headers={"Accept": "application/json", "User-Agent": "MovilnetCore-LocalSync/1.0"}
             )
-            with urllib.request.urlopen(req, timeout=2.5) as resp:
+            with urllib.request.urlopen(req, timeout=10.0, context=ctx) as resp:
                 if resp.status != 200:
                     return 0
                 payload = json.loads(resp.read().decode("utf-8"))
+
+            if poller_telemetry is not None:
+                cloud_poller = payload.get("n8n_poller_telemetry")
+                if cloud_poller and cloud_poller.get("is_connected"):
+                    with lock:
+                        poller_telemetry["is_connected"] = True
+                        poller_telemetry["network_status"] = "ONLINE (Sync Render Cloud)"
+                        poller_telemetry["last_successful_sync_utc"] = cloud_poller.get("last_successful_sync_utc") or datetime.now(timezone.utc).isoformat()
+                        poller_telemetry["consecutive_failures"] = 0
+                        poller_telemetry["last_error"] = None
 
             with lock:
                 known_ids = {str(t.execution_id) for t in traces_cache if t.execution_id}.union(

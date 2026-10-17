@@ -82,21 +82,33 @@ flowchart TB
 * **`api/webhook_bridge.py`:**  
   Puente de seguridad para webhooks entrantes y salientes con validación de firmas criptográficas HMAC-SHA256, marcas de tiempo y control de entrega idempotente.
 * **`api/agents/` — Enjambre Autónomo Swarm Nivel 5:**
-  * `agent_customer_care.py`: Agente N1 de Atención al Cliente. Maneja consultas de saldo, cupo de navegación, catálogo de planes y bienvenida por Fast-Path.
+  * `agent_customer_care.py` (`393` líneas — Fachada Hexagonal Cap. 212): Agente N1 de Atención al Cliente. Orquesta `types_customer_care.py`, `cache_l1.py`, `session_memory_sqlite.py`, `fastpath_engine.py` y `llm_reasoning_engine.py` con 100% compatibilidad hacia atrás.
   * `agent_fintech_c2p.py`: Agente N2 de FinTech y Pagos Móviles C2P SUDEBAN. Valida pagos directos y consulta la tasa oficial del Banco Central de Venezuela (BCV).
   * `agent_emergency_eir.py`: Agente N3 de Emergencias y Seguridad EIR. Bloqueo de líneas y validación matemática de código IMEI mediante el algoritmo de Luhn.
   * `agent_retention_churn.py`: Agente N4 de Retención y Prevención de Churn. Predicción analítica de fuga de clientes mediante modelo Scikit-Learn.
   * `agent_network_noc.py`: Agente N5 de Operaciones de Red y NOC. Detección zonal de incidencias, boletines proactivos y mitigación de tickets falsos.
 * **`api/n8n_workflows/`:**  
-  Workflows versionados de n8n Cloud. Destaca `viki_lpgtec_v2_ids_instant_dispatch.json`, con despacho instantáneo (`delay: 0`) y datos bancarios oficiales actualizados a `0424-1533712`.
+  Workflows versionados de n8n Cloud. Destaca `viki_lpgtec_v2_ids_instant_dispatch.json`, con despacho instantáneo (`delay: 0`), datos bancarios oficiales actualizados a `0424-1533712` y sufijo PWA obligatorio.
 
 ---
 
 ### 🧠 B. Directorio `core/` — Capa de Dominio Puro, Algoritmos e Invariantes
+* **Subsistema Hexagonal `CustomerCareAgent` (Capítulo 212):**
+  * **`core/types_customer_care.py` (`135` líneas):** Tipos puros de dominio (`IntentType`, `AgentExecutionMode`, `AgentMessage`, `AgentResponse`).
+  * **`core/cache_l1.py` (`162` líneas):** Caché L1 thread-safe (`L1SessionCache`) con TTL de 300s y evicción en $O(1)$.
+  * **`core/session_memory_sqlite.py` (`275` líneas):** Memoria conversacional multi-turno híbrida RAM + SQLite WAL (`user_sessions`).
+  * **`core/fastpath_engine.py` (`582` líneas):** Motor determinista `FastPathEngine` (<1ms, 0 tokens LLM) con enlace PWA universal.
+  * **`core/llm_reasoning_engine.py` (`899` líneas):** Cascada cognitiva `LLMReasoningEngine` (Gemini 2.5 Flash $\rightarrow$ OpenRouter $\rightarrow$ Fallback Semántico Local).
+* **Subsistema Hexagonal `ConversationTraceEngine` (Capítulo 213):**
+  * **`core/trace_models_and_timers.py` (`325` líneas):** Entidades `PipelineNodeStep`, `ConversationTrace` y cálculo matemático `compute_process_timers()` ($T_1 \dots T_8$).
+  * **`core/trace_seed_catalog.py` (`1.535` líneas):** Catálogo forense inmutable `TraceSeedCatalog` con las 15 trazas históricas auditadas (`9635` a `9822`).
+  * **`core/trace_sanitizer_certifier.py` (`324` líneas):** Motor `TraceSanitizerCertifier` de deduplicación semántica, purga de saldos/números legacy y sellado SHA-256.
+  * **`core/trace_cloud_sync_adapter.py` (`729` líneas):** Adaptador `TraceCloudSyncAdapter` de persistencia JSON compartida y sincronización con Render Cloud y n8n Cloud.
+  * **`core/conversation_trace_engine.py` (`736` líneas):** Fachada orquestadora `ConversationTraceEngine` con ring buffer multihilo `threading.RLock()` y simulación E2E.
 * **`core/carrier_funnel_classifier.py`:**  
   Clasificador matemático de operadores según regulaciones de CONATEL. Identifica números `0416/0426` (Movilnet), `0414/0424` (Movistar) y `0412` (Digitel), orquestando el embudo de portabilidad hacia eSIM 4GMAX.
 * **`core/fastpath_intent_interceptor.py`:**  
-  Motor heurístico determinista que resuelve consultas frecuentes en menos de $15\text{ ms}$ consumiendo exactamente $0$ tokens de LLM.
+  Motor heurístico determinista que resuelve consultas frecuentes en menos de $15\text{ ms}$ consumiendo exactamente $0$ tokens de LLM e inyectando el enlace PWA universal.
 * **`core/n8n_webhook_resolver.py`:**  
   Resolutor central de webhooks de n8n. Contiene los guardarraíles de aislamiento PWA y la sustitución atómica de la línea legacy `0416-6251587` por `0424-1533712` (`MOVI`).
 * **`core/session_identity_isolator.py`:**  
@@ -105,8 +117,6 @@ flowchart TB
   Caché semántico en dos niveles (L1 en RAM, L2 en SQLite) con hash SHA-256 y TTL diferenciado por categorías (Geografía, Planes, Tasa BCV).
 * **`core/webhook_noise_filter.py`:**  
   Guardián de frontera que descarta eventos de presencia, grupos y ecos `fromMe=True`, protegiendo la cuota de procesamiento en n8n Cloud.
-* **`core/conversation_trace_engine.py`:**  
-  Motor de trazabilidad omnicanal con cerrojo multihilo `threading.RLock()`, búfer de 1,000 trazas, deduplicación de ejecuciones y cálculo de los 8 process timers ($T_1 \dots T_8$).
 * **`core/pwa_protocol_guardian.py`:**  
   Auditor de 14 puntos del protocolo PWA. Certifica paridad con la línea oficial del bot, actualización de Service Worker y tokens criptográficos de sesión.
 * **`core/phone_migration_orchestrator.py` y `phone_migration_models.py`:**  

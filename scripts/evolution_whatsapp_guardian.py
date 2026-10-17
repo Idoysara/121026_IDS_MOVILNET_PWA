@@ -6,7 +6,7 @@ Proyecto: AI_Movilnet_300926 — Telecomunicaciones Movilnet C.A.
 Gobernanza: Universal Best Practices Engineering Rule (Pilares I al VII)
 
 Monitorea, audita y valida continuamente el canal de comunicación WhatsApp del Bot
-(+58 416 625 1587) y la instancia Evolution API / n8n:
+(+58 424 153 3712 / MOVI) y la instancia Evolution API / n8n:
   1. Sanitización estricta de números telefónicos (remueve @s.whatsapp.net, @lid, caracteres especiales).
   2. Detección de mensajes represados con estado 'PENDING' (relojito / falta de entrega al móvil).
   3. Diagnóstico de desconexión del teléfono físico del Bot (Wi-Fi/4G o sesión cerrada).

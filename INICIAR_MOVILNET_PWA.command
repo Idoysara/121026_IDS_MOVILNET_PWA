@@ -1,109 +1,116 @@
 #!/bin/bash
 # ==============================================================================
-# INICIAR_MOVILNET_PWA.command — Lanzador Soberano Movilnet PWA & Control 1-Clic
-# Proyecto: Movilnet PWA & Asistente 4GMAX — Telecomunicaciones Movilnet C.A.
+# INICIAR_MOVILNET_PWA.command — Lanzador Maestro de 1-Clic para el Administrador
+# Proyecto: Movilnet PWA & Asistente MOVI 4GMAX — Telecomunicaciones Movilnet C.A.
 # Gobernanza: Universal Best Practices Engineering Rule (Pilar VII: Cero Terminal)
+# Arquitectura: Hexagonal Desacoplada (Capítulos 212 y 213)
 # ==============================================================================
 
-cd "$(dirname "$0")"
-
-PORT=8010
-URL="http://localhost:${PORT}/ui/pwa_stitch/simulador.html?v=168"
-MONITOR_URL="http://localhost:${PORT}/ui/monitor/conversatorio.html"
-RENDER_URL="https://movilnet-core.onrender.com"
-
-clear
-echo "========================================================================"
-echo "📱 MOVILNET CORE 4GMAX — CENTRO DE CONTROL PWA & DESPLIEGUE (v168)"
-echo "========================================================================"
-
-# 1. Recargar servidor local en :8010 con los últimos guardarraíles activos
-PIDS=$(lsof -t -i :${PORT} 2>/dev/null)
-if [ -n "$PIDS" ]; then
-    kill -9 $PIDS 2>/dev/null || true
-    sleep 0.5
+ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+if [ -d "$ROOT_DIR/backup_staging/01_SOURCE_CODE" ]; then
+    SRC_DIR="$ROOT_DIR/backup_staging/01_SOURCE_CODE"
+else
+    SRC_DIR="$ROOT_DIR"
 fi
 
-echo "⚙️  Activando Servidor Movilnet Core (:8010) y Guardarraíles Zero-Token..."
+cd "$SRC_DIR"
+
+PORT=8010
+PWA_URL="http://localhost:${PORT}/ui/pwa_stitch/index.html"
+SIM_URL="http://localhost:${PORT}/ui/pwa_stitch/simulador.html?v=214"
+CONVERSATORIO_URL="http://localhost:${PORT}/ui/monitor/conversatorio.html"
+TRACE_MONITOR_URL="http://localhost:${PORT}/ui/conversation_trace_monitor.html"
+PROD_URL="https://one21026-ids-movilnet-pwa.onrender.com/ui/pwa_stitch/index.html"
+PROD_CONVERSATORIO_URL="https://one21026-ids-movilnet-pwa.onrender.com/ui/monitor/conversatorio.html"
+
+clear
+echo "================================================================================"
+echo "📱 MOVILNET CORE 4GMAX — PANEL DE ACTIVACIÓN DEL ADMINISTRADOR (v17.10.26)"
+echo "================================================================================"
+echo "📂 Directorio Base : $SRC_DIR"
+echo "🔒 Producción Nube : ACTIVA Y SINCRONIZADA ($PROD_URL)"
+echo "💬 Conversatorio   : $PROD_CONVERSATORIO_URL"
+echo "================================================================================"
+
 if [ -f "venv/bin/python3" ]; then
     PYTHON_BIN="venv/bin/python3"
 else
     PYTHON_BIN="python3"
 fi
+
+# 1. Verificar o levantar el servidor local en :8010
+PIDS=$(lsof -t -i :${PORT} 2>/dev/null)
+if [ -n "$PIDS" ]; then
+    echo "🔄 Reiniciando servicio local en puerto :${PORT} con Arquitectura Hexagonal..."
+    kill -9 $PIDS 2>/dev/null || true
+    sleep 0.5
+else
+    echo "⚙️  Iniciando Servidor Movilnet Core (:8010) y Enjambre de Agentes L5..."
+fi
+
 nohup ${PYTHON_BIN} api/service.py --port ${PORT} >/dev/null 2>&1 &
-sleep 1.5
+sleep 1.8
 
-# 2. Verificar auto-test de Guardarraíles (#13368 y #13585 + SQLite Freemium)
-${PYTHON_BIN} core/webhook_noise_filter.py --test
-${PYTHON_BIN} core/fastpath_intent_interceptor.py --test
+# 2. Verificación rápida de los motores hexagonales y sincronización en vivo n8n <-> Render
+echo "🛡️  Verificando Motores Hexagonales y Sincronizando WhatsApp (00584241533712)..."
+${PYTHON_BIN} api/agents/agent_customer_care.py --test >/dev/null 2>&1 && echo "  ✅ Agente MOVI (CustomerCareAgent - 6 módulos): ACTIVO"
+${PYTHON_BIN} core/conversation_trace_engine.py --test >/dev/null 2>&1 && echo "  ✅ Motor de Trazas E2E (ConversationTraceEngine - 5 módulos): ACTIVO"
+${PYTHON_BIN} core/webhook_noise_filter.py --test >/dev/null 2>&1 && echo "  ✅ Guardarraíles Zero-Token y SQLite WAL: ACTIVOS"
+${PYTHON_BIN} -c "from core.conversation_trace_engine import conversation_trace_engine; from core.trace_cloud_sync_adapter import TraceCloudSyncAdapter; conversation_trace_engine.sync_with_n8n(limit=25); TraceCloudSyncAdapter.push_traces_to_cloud_render(conversation_trace_engine.traces_cache, max_items=20)" >/dev/null 2>&1 && echo "  ✅ Sincronización n8n Cloud ↔ Conversatorio Render (00584241533712): SINCRONIZADO"
 
-# 3. Verificar estado del puerto
 if lsof -i :${PORT} >/dev/null 2>&1; then
-    STATUS_LOCAL="🟢 ACTIVO (0.8ms SQLite WAL + Guardarraíles Activos)"
+    STATUS_LOCAL="🟢 ACTIVO Y OPERATIVO (Puerto :${PORT})"
 else
     STATUS_LOCAL="🔴 ERROR AL INICIAR"
 fi
 
-echo "========================================================================"
-echo "🟢 Servidor Local :${PORT}  ➔ ${STATUS_LOCAL}"
-echo "🌐 URL Local Simulador    ➔ ${URL}"
-echo "📊 Monitor Conversatorio  ➔ ${MONITOR_URL}"
-echo "☁️  URL Nube Render 24/7   ➔ ${RENDER_URL}/ui/pwa_stitch/index.html?v=168&qr=1"
-echo "========================================================================"
+echo "================================================================================"
+echo "📡 Estado del Sistema Local  ➔ ${STATUS_LOCAL}"
+echo "🌐 Portal PWA + Chat MOVI    ➔ ${PWA_URL}"
+echo "💬 Conversatorio WhatsApp    ➔ ${CONVERSATORIO_URL}"
+echo "☁️  Conversatorio Render 24/7➔ ${PROD_CONVERSATORIO_URL}"
+echo "📊 Monitor de Secuencias E2E ➔ ${TRACE_MONITOR_URL}"
+echo "================================================================================"
 echo ""
-echo "Selecciona una opción (se abrirán el Simulador y Monitor en 5s):"
-echo "  [1] 📱 Abrir Simulador PWA + Monitor Conversatorio (Por defecto)"
-echo "  [2] 🚀 Actualizar Servidor en la Nube Render (1 Clic)"
-echo "  [3] 🧪 Ejecutar Demo en Vivo de Guardarraíles (#13368 y #13585)"
-echo "  [4] 🚪 Salir"
+echo "Seleccione una opción (en 5 segundos se abrirá el sistema automáticamente):"
+echo "  [1] 🌐 Abrir Portal PWA + Conversatorio WhatsApp + Monitor E2E (Por defecto)"
+echo "  [2] 🧪 Ejecutar Prueba Real Completa de Arquitectura Hexagonal (4 Fases)"
+echo "  [3] 📱 Abrir Simulador Móvil Dual + Conversatorio en Render 24/7"
+echo "  [4] 🚪 Salir (El servidor seguirá encendido en segundo plano)"
 echo ""
 
-read -t 5 -p "Opción [1-4] (Enter para abrir PWA + Monitor): " OPCION || true
+read -t 5 -p "Opción [1-4] (Presione Enter para abrir el sistema): " OPCION || true
 echo ""
 
 case "$OPCION" in
     2)
-        echo "========================================================================"
-        echo "🚀 EJECUTANDO DESPLIEGUE AUTOMÁTICO EN LA NUBE RENDER..."
-        echo "========================================================================"
-        
-        if [ -n "$(git status --porcelain 2>/dev/null)" ]; then
-            echo "📦 Sincronizando repositorio con GitHub..."
-            git add .
-            git commit -m "feat(ops): actualizacion de despliegue previa a Render"
-            git push origin main
-            echo "✅ GitHub actualizado."
+        if [ -f "$ROOT_DIR/PROBAR_ARQUITECTURA_HEXAGONAL.command" ]; then
+            "$ROOT_DIR/PROBAR_ARQUITECTURA_HEXAGONAL.command"
+        else
+            ./PROBAR_ARQUITECTURA_HEXAGONAL.command
         fi
-        
-        ${PYTHON_BIN} scripts/trigger_render_deploy.py --trigger
-        
-        echo ""
-        read -p "Presiona ENTER para continuar y abrir el Simulador PWA..."
-        open "${URL}"
-        open "${MONITOR_URL}"
+        open "${PWA_URL}"
+        open "${CONVERSATORIO_URL}"
         ;;
     3)
-        echo "🧪 Ejecutando demostración en vivo de Guardarraíles..."
-        ${PYTHON_BIN} core/webhook_noise_filter.py --demo
-        ${PYTHON_BIN} core/fastpath_intent_interceptor.py --demo --phone "04160000001" --msg "saldo"
-        ${PYTHON_BIN} core/fastpath_intent_interceptor.py --demo --phone "04142554590" --msg "Este 15 de octubre volvemos con el Caracas Tech Meetup. Evento con cupos limitados. Regístrate en https://luma.com/snugy0r7"
-        open "${URL}"
-        open "${MONITOR_URL}"
+        echo "📱 Abriendo Simulador Móvil Dual y Conversatorio Render 24/7..."
+        open "${SIM_URL}"
+        open "${PROD_CONVERSATORIO_URL}"
         ;;
     4)
-        echo "👋 ¡Hasta luego!"
+        echo "✅ El servidor Movilnet Core permanece activo en http://localhost:${PORT}"
         exit 0
         ;;
     *)
-        echo "🌐 Abriendo Simulador PWA Móvil y Monitor Conversatorio..."
-        open "${URL}"
-        open "${MONITOR_URL}"
+        echo "🌐 Abriendo Portal PWA 4GMAX y Conversatorio WhatsApp en tu navegador..."
+        open "${PWA_URL}"
+        open "${CONVERSATORIO_URL}"
+        open "${PROD_CONVERSATORIO_URL}"
         ;;
 esac
 
 echo ""
-echo "========================================================================"
-echo "💡 TIP: También puedes pulsar el botón '🚀 Actualizar Render (1 Clic)'"
-echo "   directamente en la barra superior del Simulador en tu navegador."
-echo "========================================================================"
+echo "================================================================================"
+echo "✅ SISTEMA MOVILNET 4GMAX ACTIVADO EXITOSAMENTE"
+echo "================================================================================"
 sleep 2

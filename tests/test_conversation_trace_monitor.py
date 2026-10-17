@@ -12,7 +12,21 @@ from pathlib import Path
 try:
     import pytest
 except ImportError:
-    pytest = None
+    class _FallbackPytest:
+        @staticmethod
+        def main(args):
+            inst = TestConversationTraceMonitor()
+            if hasattr(inst, "setup_method"):
+                inst.setup_method()
+            passed = 0
+            for name in sorted(dir(inst)):
+                if name.startswith("test_"):
+                    getattr(inst, name)()
+                    print(f"  [PASS] TestConversationTraceMonitor.{name}")
+                    passed += 1
+            print(f"✅ {passed}/{passed} pruebas en test_conversation_trace_monitor.py 100% PASS")
+            return 0
+    pytest = _FallbackPytest
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 if str(PROJECT_ROOT) not in sys.path:

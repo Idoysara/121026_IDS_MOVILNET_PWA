@@ -1626,20 +1626,30 @@
           console.warn('[Conversatorio] Error consultando /api/v1/monitor/conversations local:', localErr);
         }
 
-        // 2. Si no es localhost o falló el local, consultar Render como fallback
-        if (!responseOk && !isLocal) {
-          try {
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 15000);
-            const renderRes = await fetch('https://one21026-ids-movilnet-pwa.onrender.com/api/v1/monitor/conversations?t=' + ts, { signal: controller.signal });
-            clearTimeout(timeoutId);
-            if (renderRes.ok) {
-              localData = await renderRes.json();
-              responseOk = true;
-            }
-          } catch (renderErr) {
-            console.warn('[Conversatorio] Fallback Render no disponible:', renderErr);
+        // 2. Consultar Render Cloud para sincronización bidireccional y tolerancia a fallos
+        let renderData = null;
+        try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 6000);
+          const renderRes = await fetch('https://one21026-ids-movilnet-pwa.onrender.com/api/v1/monitor/conversations?t=' + ts, { signal: controller.signal });
+          clearTimeout(timeoutId);
+          if (renderRes.ok) {
+            renderData = await renderRes.json();
           }
+        } catch (renderErr) {
+          console.warn('[Conversatorio] Render Cloud sync no disponible:', renderErr);
+        }
+
+        // 3. Fusión inteligente de fuentes (Local :8010 + Render Cloud)
+        if (localData && renderData) {
+          const localThreads = localData.grouped_threads || localData.threads || [];
+          const cloudThreads = renderData.grouped_threads || renderData.threads || [];
+          localData.grouped_threads = mergeThreadsWithSeeds(localThreads, cloudThreads);
+          if (renderData.n8n_poller_telemetry && renderData.n8n_poller_telemetry.is_connected) {
+            localData.n8n_poller_telemetry = renderData.n8n_poller_telemetry;
+          }
+        } else if (!localData && renderData) {
+          localData = renderData;
         }
 
         if (!localData) {

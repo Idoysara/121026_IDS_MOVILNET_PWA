@@ -1,1 +1,2150 @@
-[]
+[
+  {
+    "trace_id": "TRACE-EXEC-14233",
+    "execution_id": "14233",
+    "workflow_id": "sNMbtiEiTkuQ9OCY",
+    "started_at": "2026-10-17T16:20:56.165Z",
+    "stopped_at": "2026-10-17T16:20:56.165Z",
+    "total_duration_sec": 7.31,
+    "status": "SUCCESS",
+    "bot_number": "+58 424 153 3712",
+    "user_phone": "04142554590",
+    "user_push_name": "Ids",
+    "carrier": "MOVISTAR",
+    "carrier_label": "Movistar Venezuela",
+    "is_competitor": true,
+    "user_message": "Ya es tarde son las 2 pm",
+    "bot_reply": "¡Sí, a esta hora ya el mercadito va recogiendo sus puestos! 😅 \nPero no te preocupes, estás en una de las mejores zonas gastronómicas: perfecto para almorzar rico en Los Palos Grandes o Altamira (pastas, sushi, hamburguesas o una buena comida casera) y luego rematar con un buen café. 🍽️☕\nY para estar siempre conectado y con señal al máximo, recuerda que puedes traerte tu número a *Movilnet 4GMAX* con *eSIM digital gratis y 10GB de bienvenida*. ¿Qué tipo de comida te provoca almorzar hoy? 😎📲\n\n🌐 *Portal PWA 4GMAX (Acceso libre por Wi-Fi o Datos Móviles — Cualquier Operadora):*\n👉 https://one21026-ids-movilnet-pwa.onrender.com/ui/pwa_stitch/index.html?carrier=digitel&phone=584142554590&token=425545904gmax",
+    "intent_detected": "EXTERNAL_MOBILE_QR",
+    "pipeline_route": "AI_AGENT_GEMINI",
+    "steps": [
+      {
+        "step_index": 1,
+        "node_name": "QR Mobile Global Gateway (Render Cloud)",
+        "phase_category": "1. Ingesta Perimetral Móvil",
+        "status": "success",
+        "execution_time_ms": 1.5,
+        "description": "Recibió mensaje desde dispositivo móvil externo (04142554590) vía QR Cloud",
+        "input_summary": {
+          "source": "QR_EXTERNAL_MOBILE",
+          "phone": "04142554590"
+        },
+        "output_summary": {
+          "user_message": "Ya es tarde son las 2 pm"
+        }
+      },
+      {
+        "step_index": 2,
+        "node_name": "🧠 Movilnet Cognitive Agent L5 (Core N→1)",
+        "phase_category": "4. Procesamiento Core",
+        "status": "success",
+        "execution_time_ms": 7310.0,
+        "description": "Procesó solicitud desde celular externo y sincronizó con Dashboard Local (:8010)",
+        "input_summary": {},
+        "output_summary": {
+          "route": "AI_AGENT_GEMINI",
+          "reply_ready": true
+        }
+      },
+      {
+        "step_index": 3,
+        "node_name": "HTTP Request (Omni-Channel Delivery ACK)",
+        "phase_category": "6. Despacho Final al Celular",
+        "status": "success",
+        "execution_time_ms": 45.0,
+        "description": "Entregó respuesta en pantalla del celular externo 04142554590",
+        "input_summary": {},
+        "output_summary": {
+          "number": "04142554590",
+          "delivery_status": "DELIVERY_ACK"
+        }
+      }
+    ],
+    "process_timers": {
+      "t1_user_sent_ts": "2026-10-17T16:20:55+00:00",
+      "t2_n8n_in_ts": "2026-10-17T16:20:56.165000+00:00",
+      "t3_core_resolved_ts": "2026-10-17T16:21:02.378000+00:00",
+      "t4_n8n_out_ts": "2026-10-17T16:21:03.475000+00:00",
+      "t5_evolution_queued_ts": "2026-10-17T16:21:03.495000+00:00",
+      "t6_meta_server_ack_ts": "2026-10-17T16:21:03.675000+00:00",
+      "t7_phone_delivered_ts": "2026-10-17T16:21:03.475Z",
+      "t8_user_read_ts": "2026-10-17T16:21:05.225000+00:00",
+      "delta_inbound_sec": 0.04,
+      "delta_processing_sec": 0.15,
+      "delta_outbound_queue_sec": 0.2,
+      "delta_delivery_sec": 0.03,
+      "delta_e2e_total_sec": 7.31,
+      "delivery_state": "DELIVERY_ACK",
+      "delivery_badge": "✓✓ Entregado (E2E: 9.025s | n8n: 7.31s | Red: 1.72s)",
+      "queue_wait_sec": 0.0
+    }
+  },
+  {
+    "trace_id": "TRACE-EXEC-14231",
+    "execution_id": "14231",
+    "workflow_id": "sNMbtiEiTkuQ9OCY",
+    "started_at": "2026-10-17T15:20:48.074Z",
+    "stopped_at": "2026-10-17T15:20:48.074Z",
+    "total_duration_sec": 6.09,
+    "status": "SUCCESS",
+    "bot_number": "+58 424 153 3712",
+    "user_phone": "04142554590",
+    "user_push_name": "Ids",
+    "carrier": "MOVISTAR",
+    "carrier_label": "Movistar Venezuela",
+    "is_competitor": true,
+    "user_message": "Hola cómo estás",
+    "bot_reply": "¡Hola, Ids! ¡Excelente por acá y con la mejor energía! 😊\nVeo que nos contactas desde tu línea Movistar Venezuela. ¿Cómo te podemos asesorar hoy para traerte tu número a *Movilnet 4GMAX* con tu *eSIM digital gratis* y *bono de 10GB de bienvenida*, o en qué otra consulta te puedo colaborar este sábado? ¡A tu completa orden! 📲✨\n\n🌐 *Portal PWA 4GMAX (Acceso libre por Wi-Fi o Datos Móviles — Cualquier Operadora):*\n👉 https://one21026-ids-movilnet-pwa.onrender.com/ui/pwa_stitch/index.html?carrier=digitel&phone=584142554590&token=425545904gmax",
+    "intent_detected": "EXTERNAL_MOBILE_QR",
+    "pipeline_route": "AI_AGENT_GEMINI",
+    "steps": [
+      {
+        "step_index": 1,
+        "node_name": "QR Mobile Global Gateway (Render Cloud)",
+        "phase_category": "1. Ingesta Perimetral Móvil",
+        "status": "success",
+        "execution_time_ms": 1.5,
+        "description": "Recibió mensaje desde dispositivo móvil externo (04142554590) vía QR Cloud",
+        "input_summary": {
+          "source": "QR_EXTERNAL_MOBILE",
+          "phone": "04142554590"
+        },
+        "output_summary": {
+          "user_message": "Hola cómo estás"
+        }
+      },
+      {
+        "step_index": 2,
+        "node_name": "🧠 Movilnet Cognitive Agent L5 (Core N→1)",
+        "phase_category": "4. Procesamiento Core",
+        "status": "success",
+        "execution_time_ms": 6090.0,
+        "description": "Procesó solicitud desde celular externo y sincronizó con Dashboard Local (:8010)",
+        "input_summary": {},
+        "output_summary": {
+          "route": "AI_AGENT_GEMINI",
+          "reply_ready": true
+        }
+      },
+      {
+        "step_index": 3,
+        "node_name": "HTTP Request (Omni-Channel Delivery ACK)",
+        "phase_category": "6. Despacho Final al Celular",
+        "status": "success",
+        "execution_time_ms": 45.0,
+        "description": "Entregó respuesta en pantalla del celular externo 04142554590",
+        "input_summary": {},
+        "output_summary": {
+          "number": "04142554590",
+          "delivery_status": "DELIVERY_ACK"
+        }
+      }
+    ],
+    "process_timers": {
+      "t1_user_sent_ts": "2026-10-17T15:20:47+00:00",
+      "t2_n8n_in_ts": "2026-10-17T15:20:48.074000+00:00",
+      "t3_core_resolved_ts": "2026-10-17T15:20:53.255000+00:00",
+      "t4_n8n_out_ts": "2026-10-17T15:20:54.169000+00:00",
+      "t5_evolution_queued_ts": "2026-10-17T15:20:54.189000+00:00",
+      "t6_meta_server_ack_ts": "2026-10-17T15:20:54.369000+00:00",
+      "t7_phone_delivered_ts": "2026-10-17T15:20:54.169Z",
+      "t8_user_read_ts": "2026-10-17T15:20:55.919000+00:00",
+      "delta_inbound_sec": 0.04,
+      "delta_processing_sec": 0.15,
+      "delta_outbound_queue_sec": 0.2,
+      "delta_delivery_sec": 0.03,
+      "delta_e2e_total_sec": 6.09,
+      "delivery_state": "DELIVERY_ACK",
+      "delivery_badge": "✓✓ Entregado (E2E: 7.719s | n8n: 6.095s | Red: 1.62s)",
+      "queue_wait_sec": 0.0
+    }
+  },
+  {
+    "trace_id": "TRACE-EXEC-14230",
+    "execution_id": "14230",
+    "workflow_id": "sNMbtiEiTkuQ9OCY",
+    "started_at": "2026-10-17T15:03:15.497Z",
+    "stopped_at": "2026-10-17T15:03:15.497Z",
+    "total_duration_sec": 1.19,
+    "status": "SUCCESS",
+    "bot_number": "+58 424 153 3712",
+    "user_phone": "04142554590",
+    "user_push_name": "Ids",
+    "carrier": "MOVISTAR",
+    "carrier_label": "Movistar Venezuela",
+    "is_competitor": true,
+    "user_message": "Hola",
+    "bot_reply": "👋 ¡Buenos días, Ids! Te damos la bienvenida al canal oficial de *Movilnet 4GMAX*.\nDetectamos que te comunicas desde una línea *Movistar Venezuela* (+58 414 2554590).\n🚀 *Módulo de Nuevos Usuarios & Portabilidad 4GMAX:*\n• 🔄 *Cámbiate GRATIS a Movilnet:* Conserva tu mismo número con eSIM digital inmediata.\n• 🎁 *Bono de Bienvenida:* 10 GB de navegación gratis durante tu primer mes.\n• 💰 *Ahorro Comprobado:* Hasta 60% menos en tu renta mensual.\n¿Qué deseas realizar hoy?\n• Escribe *'Portabilidad'* para tramitar tu eSIM gratis con 10GB de bono.\n• Escribe *'Planes'* para conocer tarifas y comparar tu ahorro.\n• Escribe *'Recarga'* si deseas recargar la línea de un tercero Movilnet con Pago Móvil C2P.\n• O hazme cualquier pregunta sobre servicios, tecnología o dudas generales.\n🌐 *Portal PWA 4GMAX (Acceso libre por Wi-Fi o Datos Móviles - Cualquier Operadora):* https://one21026-ids-movilnet-pwa.onrender.com/ui/pwa_stitch/index.html?carrier=movistar&phone=584142554590&token=425545904gmax",
+    "intent_detected": "EXTERNAL_MOBILE_QR",
+    "pipeline_route": "FUNNEL_MARKETING_NO_USUARIOS_MOVILNET",
+    "steps": [
+      {
+        "step_index": 1,
+        "node_name": "QR Mobile Global Gateway (Render Cloud)",
+        "phase_category": "1. Ingesta Perimetral Móvil",
+        "status": "success",
+        "execution_time_ms": 1.5,
+        "description": "Recibió mensaje desde dispositivo móvil externo (04142554590) vía QR Cloud",
+        "input_summary": {
+          "source": "QR_EXTERNAL_MOBILE",
+          "phone": "04142554590"
+        },
+        "output_summary": {
+          "user_message": "Hola"
+        }
+      },
+      {
+        "step_index": 2,
+        "node_name": "🧠 Movilnet Cognitive Agent L5 (Core N→1)",
+        "phase_category": "4. Procesamiento Core",
+        "status": "success",
+        "execution_time_ms": 1190.0,
+        "description": "Procesó solicitud desde celular externo y sincronizó con Dashboard Local (:8010)",
+        "input_summary": {},
+        "output_summary": {
+          "route": "FUNNEL_MARKETING_NO_USUARIOS_MOVILNET",
+          "reply_ready": true
+        }
+      },
+      {
+        "step_index": 3,
+        "node_name": "HTTP Request (Omni-Channel Delivery ACK)",
+        "phase_category": "6. Despacho Final al Celular",
+        "status": "success",
+        "execution_time_ms": 45.0,
+        "description": "Entregó respuesta en pantalla del celular externo 04142554590",
+        "input_summary": {},
+        "output_summary": {
+          "number": "04142554590",
+          "delivery_status": "DELIVERY_ACK"
+        }
+      }
+    ],
+    "process_timers": {
+      "t1_user_sent_ts": "2026-10-17T15:03:15+00:00",
+      "t2_n8n_in_ts": "2026-10-17T15:03:15.497000+00:00",
+      "t3_core_resolved_ts": "2026-10-17T15:03:16.505000+00:00",
+      "t4_n8n_out_ts": "2026-10-17T15:03:16.683000+00:00",
+      "t5_evolution_queued_ts": "2026-10-17T15:03:16.703000+00:00",
+      "t6_meta_server_ack_ts": "2026-10-17T15:03:16.883000+00:00",
+      "t7_phone_delivered_ts": "2026-10-17T15:03:16.683Z",
+      "t8_user_read_ts": "2026-10-17T15:03:18.433000+00:00",
+      "delta_inbound_sec": 0.04,
+      "delta_processing_sec": 0.15,
+      "delta_outbound_queue_sec": 0.2,
+      "delta_delivery_sec": 0.03,
+      "delta_e2e_total_sec": 1.19,
+      "delivery_state": "DELIVERY_ACK",
+      "delivery_badge": "✓✓ Entregado (E2E: 2.233s | n8n: 1.186s | Red: 1.05s)",
+      "queue_wait_sec": 0.0
+    }
+  },
+  {
+    "trace_id": "TRACE-EXEC-14229",
+    "execution_id": "14229",
+    "workflow_id": "sNMbtiEiTkuQ9OCY",
+    "started_at": "2026-10-17T15:02:05.908Z",
+    "stopped_at": "2026-10-17T15:02:05.908Z",
+    "total_duration_sec": 5.13,
+    "status": "SUCCESS",
+    "bot_number": "+58 424 153 3712",
+    "user_phone": "04142554590",
+    "user_push_name": "Ids",
+    "carrier": "MOVISTAR",
+    "carrier_label": "Movistar Venezuela",
+    "is_competitor": true,
+    "user_message": "Hellloooo",
+    "bot_reply": "¡Helloooo, Ids! 😄 ¡Qué energía tan buena! \nVeo que nos sigues contactando desde tu línea Movistar Venezuela. ¿Cómo te podemos asesorar hoy para traerte tu número a *Movilnet 4GMAX* con tu *eSIM digital gratis* y *bono de 10GB de bienvenida*, o en qué más te puedo colaborar en este sábado? ¡Estoy a tu orden! 😎📲✨\n\n🌐 *Portal PWA 4GMAX (Acceso libre por Wi-Fi o Datos Móviles — Cualquier Operadora):*\n👉 https://one21026-ids-movilnet-pwa.onrender.com/ui/pwa_stitch/index.html?carrier=digitel&phone=584142554590&token=425545904gmax",
+    "intent_detected": "EXTERNAL_MOBILE_QR",
+    "pipeline_route": "AI_AGENT_GEMINI",
+    "steps": [
+      {
+        "step_index": 1,
+        "node_name": "QR Mobile Global Gateway (Render Cloud)",
+        "phase_category": "1. Ingesta Perimetral Móvil",
+        "status": "success",
+        "execution_time_ms": 1.5,
+        "description": "Recibió mensaje desde dispositivo móvil externo (04142554590) vía QR Cloud",
+        "input_summary": {
+          "source": "QR_EXTERNAL_MOBILE",
+          "phone": "04142554590"
+        },
+        "output_summary": {
+          "user_message": "Hellloooo"
+        }
+      },
+      {
+        "step_index": 2,
+        "node_name": "🧠 Movilnet Cognitive Agent L5 (Core N→1)",
+        "phase_category": "4. Procesamiento Core",
+        "status": "success",
+        "execution_time_ms": 5130.0,
+        "description": "Procesó solicitud desde celular externo y sincronizó con Dashboard Local (:8010)",
+        "input_summary": {},
+        "output_summary": {
+          "route": "AI_AGENT_GEMINI",
+          "reply_ready": true
+        }
+      },
+      {
+        "step_index": 3,
+        "node_name": "HTTP Request (Omni-Channel Delivery ACK)",
+        "phase_category": "6. Despacho Final al Celular",
+        "status": "success",
+        "execution_time_ms": 45.0,
+        "description": "Entregó respuesta en pantalla del celular externo 04142554590",
+        "input_summary": {},
+        "output_summary": {
+          "number": "04142554590",
+          "delivery_status": "DELIVERY_ACK"
+        }
+      }
+    ],
+    "process_timers": {
+      "t1_user_sent_ts": "2026-10-17T15:02:05+00:00",
+      "t2_n8n_in_ts": "2026-10-17T15:02:05.908000+00:00",
+      "t3_core_resolved_ts": "2026-10-17T15:02:10.271000+00:00",
+      "t4_n8n_out_ts": "2026-10-17T15:02:11.041000+00:00",
+      "t5_evolution_queued_ts": "2026-10-17T15:02:11.061000+00:00",
+      "t6_meta_server_ack_ts": "2026-10-17T15:02:11.241000+00:00",
+      "t7_phone_delivered_ts": "2026-10-17T15:02:11.041Z",
+      "t8_user_read_ts": "2026-10-17T15:02:12.791000+00:00",
+      "delta_inbound_sec": 0.04,
+      "delta_processing_sec": 0.15,
+      "delta_outbound_queue_sec": 0.2,
+      "delta_delivery_sec": 0.03,
+      "delta_e2e_total_sec": 5.13,
+      "delivery_state": "DELIVERY_ACK",
+      "delivery_badge": "✓✓ Entregado (E2E: 6.591s | n8n: 5.133s | Red: 1.46s)",
+      "queue_wait_sec": 0.0
+    }
+  },
+  {
+    "trace_id": "TRACE-EXEC-14228",
+    "execution_id": "14228",
+    "workflow_id": "sNMbtiEiTkuQ9OCY",
+    "started_at": "2026-10-17T15:02:05.461Z",
+    "stopped_at": "2026-10-17T15:02:05.461Z",
+    "total_duration_sec": 9.7,
+    "status": "SUCCESS",
+    "bot_number": "+58 424 153 3712",
+    "user_phone": "04142554590",
+    "user_push_name": "Ids",
+    "carrier": "MOVISTAR",
+    "carrier_label": "Movistar Venezuela",
+    "is_competitor": true,
+    "user_message": "Donde queda el mercadito de los palos grandes",
+    "bot_reply": "El tradicional mercadito a cielo abierto de los sábados se instala en la *3ra Avenida de Los Palos Grandes* (entre la 1ra y 2da transversal), a solo una cuadra de la Plaza Los Palos Grandes. Funciona desde temprano hasta aproximadamente la 1:00 p.m. o 2:00 p.m., ideal para comprar frutas frescas, quesos, panes artesanales o comerse algo rico al paso. 🧺🥖\n¡Aprovecha y cámbiate a *Movilnet 4GMAX* conservando tu mismo número con *eSIM digital gratis y 10GB de bono de bienvenida* para estar siempre conectado! ¿Te gustaría que te ayude a activar tu portabilidad express? 😎📲\n\n🌐 *Portal PWA 4GMAX (Acceso libre por Wi-Fi o Datos Móviles — Cualquier Operadora):*\n👉 https://one21026-ids-movilnet-pwa.onrender.com/ui/pwa_stitch/index.html?carrier=digitel&phone=584142554590&token=425545904gmax",
+    "intent_detected": "EXTERNAL_MOBILE_QR",
+    "pipeline_route": "AI_AGENT_GEMINI",
+    "steps": [
+      {
+        "step_index": 1,
+        "node_name": "QR Mobile Global Gateway (Render Cloud)",
+        "phase_category": "1. Ingesta Perimetral Móvil",
+        "status": "success",
+        "execution_time_ms": 1.5,
+        "description": "Recibió mensaje desde dispositivo móvil externo (04142554590) vía QR Cloud",
+        "input_summary": {
+          "source": "QR_EXTERNAL_MOBILE",
+          "phone": "04142554590"
+        },
+        "output_summary": {
+          "user_message": "Donde queda el mercadito de los palos grandes"
+        }
+      },
+      {
+        "step_index": 2,
+        "node_name": "🧠 Movilnet Cognitive Agent L5 (Core N→1)",
+        "phase_category": "4. Procesamiento Core",
+        "status": "success",
+        "execution_time_ms": 9700.0,
+        "description": "Procesó solicitud desde celular externo y sincronizó con Dashboard Local (:8010)",
+        "input_summary": {},
+        "output_summary": {
+          "route": "AI_AGENT_GEMINI",
+          "reply_ready": true
+        }
+      },
+      {
+        "step_index": 3,
+        "node_name": "HTTP Request (Omni-Channel Delivery ACK)",
+        "phase_category": "6. Despacho Final al Celular",
+        "status": "success",
+        "execution_time_ms": 45.0,
+        "description": "Entregó respuesta en pantalla del celular externo 04142554590",
+        "input_summary": {},
+        "output_summary": {
+          "number": "04142554590",
+          "delivery_status": "DELIVERY_ACK"
+        }
+      }
+    ],
+    "process_timers": {
+      "t1_user_sent_ts": "2026-10-17T15:02:05+00:00",
+      "t2_n8n_in_ts": "2026-10-17T15:02:05.461000+00:00",
+      "t3_core_resolved_ts": "2026-10-17T15:02:13.709000+00:00",
+      "t4_n8n_out_ts": "2026-10-17T15:02:15.165000+00:00",
+      "t5_evolution_queued_ts": "2026-10-17T15:02:15.185000+00:00",
+      "t6_meta_server_ack_ts": "2026-10-17T15:02:15.365000+00:00",
+      "t7_phone_delivered_ts": "2026-10-17T15:02:15.165Z",
+      "t8_user_read_ts": "2026-10-17T15:02:16.915000+00:00",
+      "delta_inbound_sec": 0.04,
+      "delta_processing_sec": 0.15,
+      "delta_outbound_queue_sec": 0.2,
+      "delta_delivery_sec": 0.03,
+      "delta_e2e_total_sec": 9.7,
+      "delivery_state": "DELIVERY_ACK",
+      "delivery_badge": "✓✓ Entregado (E2E: 10.715s | n8n: 9.704s | Red: 1.01s)",
+      "queue_wait_sec": 0.0
+    }
+  },
+  {
+    "trace_id": "TRACE-EXEC-14227",
+    "execution_id": "14227",
+    "workflow_id": "sNMbtiEiTkuQ9OCY",
+    "started_at": "2026-10-17T14:37:36.506Z",
+    "stopped_at": "2026-10-17T14:37:36.506Z",
+    "total_duration_sec": 5.68,
+    "status": "SUCCESS",
+    "bot_number": "+58 424 153 3712",
+    "user_phone": "04142554590",
+    "user_push_name": "Ids",
+    "carrier": "MOVISTAR",
+    "carrier_label": "Movistar Venezuela",
+    "is_competitor": true,
+    "user_message": "Estoy en Altamira",
+    "bot_reply": "¡Qué buen punto, Ids! En Altamira tienes a tiro la Plaza Francia para una buena caminata, el rico café de *Arte París*, o una parada clásica para almorzar o tomar algo fresco por los alrededores de la Av. San Juan Bosco. ☕🏙️\n¿Buscas alguna recomendación específica de comida o entretenimiento por allí? Y recuerda que para navegar a máxima velocidad en toda Caracas, puedes traerte tu número a *Movilnet 4GMAX* con *eSIM gratis y 10GB de bienvenida*. ¡A tu orden! 😎📲\n\n🌐 *Portal PWA 4GMAX (Acceso libre por Wi-Fi o Datos Móviles — Cualquier Operadora):*\n👉 https://one21026-ids-movilnet-pwa.onrender.com/ui/pwa_stitch/index.html?carrier=digitel&phone=584142554590&token=425545904gmax",
+    "intent_detected": "EXTERNAL_MOBILE_QR",
+    "pipeline_route": "AI_AGENT_GEMINI",
+    "steps": [
+      {
+        "step_index": 1,
+        "node_name": "QR Mobile Global Gateway (Render Cloud)",
+        "phase_category": "1. Ingesta Perimetral Móvil",
+        "status": "success",
+        "execution_time_ms": 1.5,
+        "description": "Recibió mensaje desde dispositivo móvil externo (04142554590) vía QR Cloud",
+        "input_summary": {
+          "source": "QR_EXTERNAL_MOBILE",
+          "phone": "04142554590"
+        },
+        "output_summary": {
+          "user_message": "Estoy en Altamira"
+        }
+      },
+      {
+        "step_index": 2,
+        "node_name": "🧠 Movilnet Cognitive Agent L5 (Core N→1)",
+        "phase_category": "4. Procesamiento Core",
+        "status": "success",
+        "execution_time_ms": 5680.0,
+        "description": "Procesó solicitud desde celular externo y sincronizó con Dashboard Local (:8010)",
+        "input_summary": {},
+        "output_summary": {
+          "route": "AI_AGENT_GEMINI",
+          "reply_ready": true
+        }
+      },
+      {
+        "step_index": 3,
+        "node_name": "HTTP Request (Omni-Channel Delivery ACK)",
+        "phase_category": "6. Despacho Final al Celular",
+        "status": "success",
+        "execution_time_ms": 45.0,
+        "description": "Entregó respuesta en pantalla del celular externo 04142554590",
+        "input_summary": {},
+        "output_summary": {
+          "number": "04142554590",
+          "delivery_status": "DELIVERY_ACK"
+        }
+      }
+    ],
+    "process_timers": {
+      "t1_user_sent_ts": "2026-10-17T14:37:36+00:00",
+      "t2_n8n_in_ts": "2026-10-17T14:37:36.506000+00:00",
+      "t3_core_resolved_ts": "2026-10-17T14:37:41.337000+00:00",
+      "t4_n8n_out_ts": "2026-10-17T14:37:42.190000+00:00",
+      "t5_evolution_queued_ts": "2026-10-17T14:37:42.210000+00:00",
+      "t6_meta_server_ack_ts": "2026-10-17T14:37:42.390000+00:00",
+      "t7_phone_delivered_ts": "2026-10-17T14:37:42.190Z",
+      "t8_user_read_ts": "2026-10-17T14:37:43.940000+00:00",
+      "delta_inbound_sec": 0.04,
+      "delta_processing_sec": 0.15,
+      "delta_outbound_queue_sec": 0.2,
+      "delta_delivery_sec": 0.03,
+      "delta_e2e_total_sec": 5.68,
+      "delivery_state": "DELIVERY_ACK",
+      "delivery_badge": "✓✓ Entregado (E2E: 6.74s | n8n: 5.684s | Red: 1.06s)",
+      "queue_wait_sec": 0.0
+    }
+  },
+  {
+    "trace_id": "TRACE-EXEC-14226",
+    "execution_id": "14226",
+    "workflow_id": "sNMbtiEiTkuQ9OCY",
+    "started_at": "2026-10-17T14:37:16.373Z",
+    "stopped_at": "2026-10-17T14:37:16.373Z",
+    "total_duration_sec": 5.96,
+    "status": "SUCCESS",
+    "bot_number": "+58 424 153 3712",
+    "user_phone": "04142554590",
+    "user_push_name": "Ids",
+    "carrier": "MOVISTAR",
+    "carrier_label": "Movistar Venezuela",
+    "is_competitor": true,
+    "user_message": "Holaaaaaaa",
+    "bot_reply": "¡Holaaaaa, Ids! ¡Qué buena vibra! 😄 \nVeo que nos escribes desde tu línea Movistar Venezuela. ¿Cómo te podemos asesorar hoy para traerte tu número a *Movilnet 4GMAX* con tu *eSIM gratis* y *bono de 10GB de bienvenida*, o en qué más te colaboro para disfrutar este sábado? ¡A tu completa orden! 📲✨\n\n🌐 *Portal PWA 4GMAX (Acceso libre por Wi-Fi o Datos Móviles — Cualquier Operadora):*\n👉 https://one21026-ids-movilnet-pwa.onrender.com/ui/pwa_stitch/index.html?carrier=digitel&phone=584142554590&token=425545904gmax",
+    "intent_detected": "EXTERNAL_MOBILE_QR",
+    "pipeline_route": "AI_AGENT_GEMINI",
+    "steps": [
+      {
+        "step_index": 1,
+        "node_name": "QR Mobile Global Gateway (Render Cloud)",
+        "phase_category": "1. Ingesta Perimetral Móvil",
+        "status": "success",
+        "execution_time_ms": 1.5,
+        "description": "Recibió mensaje desde dispositivo móvil externo (04142554590) vía QR Cloud",
+        "input_summary": {
+          "source": "QR_EXTERNAL_MOBILE",
+          "phone": "04142554590"
+        },
+        "output_summary": {
+          "user_message": "Holaaaaaaa"
+        }
+      },
+      {
+        "step_index": 2,
+        "node_name": "🧠 Movilnet Cognitive Agent L5 (Core N→1)",
+        "phase_category": "4. Procesamiento Core",
+        "status": "success",
+        "execution_time_ms": 5960.0,
+        "description": "Procesó solicitud desde celular externo y sincronizó con Dashboard Local (:8010)",
+        "input_summary": {},
+        "output_summary": {
+          "route": "AI_AGENT_GEMINI",
+          "reply_ready": true
+        }
+      },
+      {
+        "step_index": 3,
+        "node_name": "HTTP Request (Omni-Channel Delivery ACK)",
+        "phase_category": "6. Despacho Final al Celular",
+        "status": "success",
+        "execution_time_ms": 45.0,
+        "description": "Entregó respuesta en pantalla del celular externo 04142554590",
+        "input_summary": {},
+        "output_summary": {
+          "number": "04142554590",
+          "delivery_status": "DELIVERY_ACK"
+        }
+      }
+    ],
+    "process_timers": {
+      "t1_user_sent_ts": "2026-10-17T14:37:16+00:00",
+      "t2_n8n_in_ts": "2026-10-17T14:37:16.373000+00:00",
+      "t3_core_resolved_ts": "2026-10-17T14:37:21.441000+00:00",
+      "t4_n8n_out_ts": "2026-10-17T14:37:22.335000+00:00",
+      "t5_evolution_queued_ts": "2026-10-17T14:37:22.355000+00:00",
+      "t6_meta_server_ack_ts": "2026-10-17T14:37:22.535000+00:00",
+      "t7_phone_delivered_ts": "2026-10-17T14:37:22.335Z",
+      "t8_user_read_ts": "2026-10-17T14:37:24.085000+00:00",
+      "delta_inbound_sec": 0.04,
+      "delta_processing_sec": 0.15,
+      "delta_outbound_queue_sec": 0.2,
+      "delta_delivery_sec": 0.03,
+      "delta_e2e_total_sec": 5.96,
+      "delivery_state": "DELIVERY_ACK",
+      "delivery_badge": "✓✓ Entregado (E2E: 6.885s | n8n: 5.962s | Red: 0.92s)",
+      "queue_wait_sec": 0.0
+    }
+  },
+  {
+    "trace_id": "TRACE-EXEC-14225",
+    "execution_id": "14225",
+    "workflow_id": "sNMbtiEiTkuQ9OCY",
+    "started_at": "2026-10-17T14:34:31.958Z",
+    "stopped_at": "2026-10-17T14:34:31.958Z",
+    "total_duration_sec": 9.5,
+    "status": "SUCCESS",
+    "bot_number": "+58 424 153 3712",
+    "user_phone": "04142554590",
+    "user_push_name": "Ids",
+    "carrier": "MOVISTAR",
+    "carrier_label": "Movistar Venezuela",
+    "is_competitor": true,
+    "user_message": "Estoy en los palos grandes en la plaza donde recomiendas",
+    "bot_reply": "¡Estando justo ahí en la plaza tienes opciones geniales a pie! 🌳☕\nPara un buen café o algo dulce, cruza hacia *Franca* (en la 2da transversal) o disfruta del ambiente en *Café Nu*. Si te provoca un toque refrescante, no dejes de probar los helados artesanales venezolanos de *Fragolate* o date un gusto tradicional en la *Pastelería Mozart*. Además, la biblioteca y las áreas verdes de la plaza son perfectas para relajarse un rato.\n¡Aprovecha y pásate a *Movilnet 4GMAX* conservando tu mismo número con *eSIM gratis y 10GB de bienvenida* para navegar con todo! ¿Qué te provoca hacer a esta hora? 😎📲\n\n🌐 *Portal PWA 4GMAX (Acceso libre por Wi-Fi o Datos Móviles — Cualquier Operadora):*\n👉 https://one21026-ids-movilnet-pwa.onrender.com/ui/pwa_stitch/index.html?carrier=digitel&phone=584142554590&token=425545904gmax",
+    "intent_detected": "EXTERNAL_MOBILE_QR",
+    "pipeline_route": "AI_AGENT_GEMINI",
+    "steps": [
+      {
+        "step_index": 1,
+        "node_name": "QR Mobile Global Gateway (Render Cloud)",
+        "phase_category": "1. Ingesta Perimetral Móvil",
+        "status": "success",
+        "execution_time_ms": 1.5,
+        "description": "Recibió mensaje desde dispositivo móvil externo (04142554590) vía QR Cloud",
+        "input_summary": {
+          "source": "QR_EXTERNAL_MOBILE",
+          "phone": "04142554590"
+        },
+        "output_summary": {
+          "user_message": "Estoy en los palos grandes en la plaza donde recomiendas"
+        }
+      },
+      {
+        "step_index": 2,
+        "node_name": "🧠 Movilnet Cognitive Agent L5 (Core N→1)",
+        "phase_category": "4. Procesamiento Core",
+        "status": "success",
+        "execution_time_ms": 9500.0,
+        "description": "Procesó solicitud desde celular externo y sincronizó con Dashboard Local (:8010)",
+        "input_summary": {},
+        "output_summary": {
+          "route": "AI_AGENT_GEMINI",
+          "reply_ready": true
+        }
+      },
+      {
+        "step_index": 3,
+        "node_name": "HTTP Request (Omni-Channel Delivery ACK)",
+        "phase_category": "6. Despacho Final al Celular",
+        "status": "success",
+        "execution_time_ms": 45.0,
+        "description": "Entregó respuesta en pantalla del celular externo 04142554590",
+        "input_summary": {},
+        "output_summary": {
+          "number": "04142554590",
+          "delivery_status": "DELIVERY_ACK"
+        }
+      }
+    ],
+    "process_timers": {
+      "t1_user_sent_ts": "2026-10-17T14:34:31.808000+00:00",
+      "t2_n8n_in_ts": "2026-10-17T14:34:31.958000+00:00",
+      "t3_core_resolved_ts": "2026-10-17T14:34:40.036000+00:00",
+      "t4_n8n_out_ts": "2026-10-17T14:34:41.462000+00:00",
+      "t5_evolution_queued_ts": "2026-10-17T14:34:41.482000+00:00",
+      "t6_meta_server_ack_ts": "2026-10-17T14:34:41.662000+00:00",
+      "t7_phone_delivered_ts": "2026-10-17T14:34:41.462Z",
+      "t8_user_read_ts": "2026-10-17T14:34:43.212000+00:00",
+      "delta_inbound_sec": 0.04,
+      "delta_processing_sec": 0.15,
+      "delta_outbound_queue_sec": 0.2,
+      "delta_delivery_sec": 0.03,
+      "delta_e2e_total_sec": 9.5,
+      "delivery_state": "DELIVERY_ACK",
+      "delivery_badge": "✓✓ Entregado (E2E: 10.204s | n8n: 9.504s | Red: 0.7s)",
+      "queue_wait_sec": 0.0
+    }
+  },
+  {
+    "trace_id": "TRACE-EXEC-14224",
+    "execution_id": "14224",
+    "workflow_id": "sNMbtiEiTkuQ9OCY",
+    "started_at": "2026-10-17T14:34:31.165Z",
+    "stopped_at": "2026-10-17T14:34:31.165Z",
+    "total_duration_sec": 5.94,
+    "status": "SUCCESS",
+    "bot_number": "+58 424 153 3712",
+    "user_phone": "04142554590",
+    "user_push_name": "Ids",
+    "carrier": "MOVISTAR",
+    "carrier_label": "Movistar Venezuela",
+    "is_competitor": true,
+    "user_message": "Tengo hambre",
+    "bot_reply": "¡Ese apetito de media mañana no perdona! 🤤 \nSi sigues por Los Palos Grandes, puedes resolver de una con unas buenas empanadas criollas en la panadería *Aida*, unos pastelitos en *Danubio* (Chacao), o si buscas almuerzo temprano, una buena hamburguesa o pizza en la zona. ¿Qué tipo de comida te provoca en este momento?\nY para que siempre busques los mejores sitios con señal rápida, vente a *Movilnet 4GMAX* conservando tu número con *eSIM gratis y 10GB de bienvenida*. ¡Buen provecho! 🍔🥟📲\n\n🌐 *Portal PWA 4GMAX (Acceso libre por Wi-Fi o Datos Móviles — Cualquier Operadora):*\n👉 https://one21026-ids-movilnet-pwa.onrender.com/ui/pwa_stitch/index.html?carrier=digitel&phone=584142554590&token=425545904gmax",
+    "intent_detected": "EXTERNAL_MOBILE_QR",
+    "pipeline_route": "AI_AGENT_GEMINI",
+    "steps": [
+      {
+        "step_index": 1,
+        "node_name": "QR Mobile Global Gateway (Render Cloud)",
+        "phase_category": "1. Ingesta Perimetral Móvil",
+        "status": "success",
+        "execution_time_ms": 1.5,
+        "description": "Recibió mensaje desde dispositivo móvil externo (04142554590) vía QR Cloud",
+        "input_summary": {
+          "source": "QR_EXTERNAL_MOBILE",
+          "phone": "04142554590"
+        },
+        "output_summary": {
+          "user_message": "Tengo hambre"
+        }
+      },
+      {
+        "step_index": 2,
+        "node_name": "🧠 Movilnet Cognitive Agent L5 (Core N→1)",
+        "phase_category": "4. Procesamiento Core",
+        "status": "success",
+        "execution_time_ms": 5940.0,
+        "description": "Procesó solicitud desde celular externo y sincronizó con Dashboard Local (:8010)",
+        "input_summary": {},
+        "output_summary": {
+          "route": "AI_AGENT_GEMINI",
+          "reply_ready": true
+        }
+      },
+      {
+        "step_index": 3,
+        "node_name": "HTTP Request (Omni-Channel Delivery ACK)",
+        "phase_category": "6. Despacho Final al Celular",
+        "status": "success",
+        "execution_time_ms": 45.0,
+        "description": "Entregó respuesta en pantalla del celular externo 04142554590",
+        "input_summary": {},
+        "output_summary": {
+          "number": "04142554590",
+          "delivery_status": "DELIVERY_ACK"
+        }
+      }
+    ],
+    "process_timers": {
+      "t1_user_sent_ts": "2026-10-17T14:34:31.015000+00:00",
+      "t2_n8n_in_ts": "2026-10-17T14:34:31.165000+00:00",
+      "t3_core_resolved_ts": "2026-10-17T14:34:36.214000+00:00",
+      "t4_n8n_out_ts": "2026-10-17T14:34:37.105000+00:00",
+      "t5_evolution_queued_ts": "2026-10-17T14:34:37.125000+00:00",
+      "t6_meta_server_ack_ts": "2026-10-17T14:34:37.305000+00:00",
+      "t7_phone_delivered_ts": "2026-10-17T14:34:37.105Z",
+      "t8_user_read_ts": "2026-10-17T14:34:38.855000+00:00",
+      "delta_inbound_sec": 0.04,
+      "delta_processing_sec": 0.15,
+      "delta_outbound_queue_sec": 0.2,
+      "delta_delivery_sec": 0.03,
+      "delta_e2e_total_sec": 5.94,
+      "delivery_state": "DELIVERY_ACK",
+      "delivery_badge": "✓✓ Entregado (E2E: 6.64s | n8n: 5.94s | Red: 0.7s)",
+      "queue_wait_sec": 0.0
+    }
+  },
+  {
+    "trace_id": "TRACE-SIM-1792246735487",
+    "execution_id": "SIM-1792246735",
+    "workflow_id": "sNMbtiEiTkuQ9OCY",
+    "started_at": "2026-10-17T14:18:55.487599+00:00",
+    "stopped_at": "2026-10-17T14:18:55.487599+00:00",
+    "total_duration_sec": 0.22,
+    "status": "SUCCESS",
+    "bot_number": "+58 424 153 3712",
+    "user_phone": "04142554590",
+    "user_push_name": "Ids",
+    "carrier": "MOVISTAR",
+    "carrier_label": "Movistar Venezuela",
+    "is_competitor": true,
+    "user_message": "Para ir a comer",
+    "bot_reply": "👋 En **Movilnet** nos especializamos en tu conectividad móvil, planes de datos 4GMAX, recargas y soporte de telecomunicaciones. Para consultas de compras externas, gastronomía o comercios generales, te sugerimos consultar guías y directorios locales especializados.\n\n¡Aprovecha y cámbiate gratis a Movilnet 4GMAX con tu eSIM digital y 10GB de bono de bienvenida!\n\n🌐 *Portal PWA 4GMAX (Acceso libre por Wi-Fi o Plan de Datos desde cualquier operadora):*\nhttps://one21026-ids-movilnet-pwa.onrender.com/ui/pwa_stitch/index.html?carrier=MOVISTAR&phone=04142554590&token=98e23123beab2762\n🎁 Incluye 1.000 tokens de bienvenida y solicitud de eSIM digital inmediata.",
+    "intent_detected": "EXTERNAL_MOBILE_QR",
+    "pipeline_route": "AI_AGENT_COGNITIVO",
+    "steps": [
+      {
+        "step_index": 1,
+        "node_name": "QR Mobile Global Gateway (Render Cloud)",
+        "phase_category": "1. Ingesta Perimetral Móvil",
+        "status": "success",
+        "execution_time_ms": 1.5,
+        "description": "Recibió mensaje desde dispositivo móvil externo (04142554590) vía QR Cloud",
+        "input_summary": {
+          "source": "QR_EXTERNAL_MOBILE",
+          "phone": "04142554590"
+        },
+        "output_summary": {
+          "user_message": "Para ir a comer"
+        }
+      },
+      {
+        "step_index": 2,
+        "node_name": "🧠 Movilnet Cognitive Agent L5 (Core N→1)",
+        "phase_category": "4. Procesamiento Core",
+        "status": "success",
+        "execution_time_ms": 220.0,
+        "description": "Procesó solicitud desde celular externo y sincronizó con Dashboard Local (:8010)",
+        "input_summary": {},
+        "output_summary": {
+          "route": "AI_AGENT_COGNITIVO",
+          "reply_ready": true
+        }
+      },
+      {
+        "step_index": 3,
+        "node_name": "HTTP Request (Omni-Channel Delivery ACK)",
+        "phase_category": "6. Despacho Final al Celular",
+        "status": "success",
+        "execution_time_ms": 45.0,
+        "description": "Entregó respuesta en pantalla del celular externo 04142554590",
+        "input_summary": {},
+        "output_summary": {
+          "number": "04142554590",
+          "delivery_status": "DELIVERY_ACK"
+        }
+      }
+    ],
+    "process_timers": {
+      "t1_user_sent_ts": "2026-10-17T14:18:55.337599+00:00",
+      "t2_n8n_in_ts": "2026-10-17T14:18:55.487599+00:00",
+      "t3_core_resolved_ts": "2026-10-17T14:18:55.504599+00:00",
+      "t4_n8n_out_ts": "2026-10-17T14:18:55.487776+00:00",
+      "t5_evolution_queued_ts": "2026-10-17T14:18:55.507776+00:00",
+      "t6_meta_server_ack_ts": "2026-10-17T14:18:55.687776+00:00",
+      "t7_phone_delivered_ts": "2026-10-17T14:18:55.487776+00:00",
+      "t8_user_read_ts": "2026-10-17T14:18:57.237776+00:00",
+      "delta_inbound_sec": 0.04,
+      "delta_processing_sec": 0.15,
+      "delta_outbound_queue_sec": 0.2,
+      "delta_delivery_sec": 0.03,
+      "delta_e2e_total_sec": 0.22,
+      "delivery_state": "DELIVERY_ACK",
+      "delivery_badge": "✓✓ Entregado (E2E: 0.7s | n8n: 0.0s | Red: 0.7s)",
+      "queue_wait_sec": 0.0
+    }
+  },
+  {
+    "trace_id": "TRACE-SIM-1792246714773",
+    "execution_id": "SIM-1792246714",
+    "workflow_id": "sNMbtiEiTkuQ9OCY",
+    "started_at": "2026-10-17T14:18:34.772276+00:00",
+    "stopped_at": "2026-10-17T14:18:34.772276+00:00",
+    "total_duration_sec": 0.22,
+    "status": "SUCCESS",
+    "bot_number": "+58 424 153 3712",
+    "user_phone": "04142554590",
+    "user_push_name": "Ids",
+    "carrier": "MOVISTAR",
+    "carrier_label": "Movistar Venezuela",
+    "is_competitor": true,
+    "user_message": "Estoy en los palos grandes en la plaza donde recomiendas",
+    "bot_reply": "📍 *Puntos de Referencia y Cobertura en Chacao / Caracas:*\n\nEn el Municipio Chacao cuentas con cobertura total *Movilnet 4GMAX* y acceso rápido a:\n\n• 🏢 *Sede Corporativa Movilnet:* Av. Venezuela, Torre Movilnet, Urb. El Rosal, Chacao.\n• 🛍️ *Centro Comercial Sambil Chacao:* Av. Libertador con calle Los Ángeles (con múltiples comercios, bancos y taquillas).\n• 🚇 *Acceso Metro:* Estaciones Chacao y Altamira (Línea 1).\n\n💡 *Recomendación:* Con tus datos móviles activos puedes navegar en Google Maps o Waze sin interrupciones. ¿Te gustaría consultar tu saldo o plan antes de salir?\n\n🌐 Portal PWA 4GMAX (Acceso libre por Wi-Fi o Datos Móviles — Cualquier Operadora):\n👉 https://one21026-ids-movilnet-pwa.onrender.com/ui/pwa_stitch/index.html",
+    "intent_detected": "EXTERNAL_MOBILE_QR",
+    "pipeline_route": "AI_AGENT_COGNITIVO",
+    "steps": [
+      {
+        "step_index": 1,
+        "node_name": "QR Mobile Global Gateway (Render Cloud)",
+        "phase_category": "1. Ingesta Perimetral Móvil",
+        "status": "success",
+        "execution_time_ms": 1.5,
+        "description": "Recibió mensaje desde dispositivo móvil externo (04142554590) vía QR Cloud",
+        "input_summary": {
+          "source": "QR_EXTERNAL_MOBILE",
+          "phone": "04142554590"
+        },
+        "output_summary": {
+          "user_message": "Estoy en los palos grandes en la plaza donde recomiendas"
+        }
+      },
+      {
+        "step_index": 2,
+        "node_name": "🧠 Movilnet Cognitive Agent L5 (Core N→1)",
+        "phase_category": "4. Procesamiento Core",
+        "status": "success",
+        "execution_time_ms": 220.0,
+        "description": "Procesó solicitud desde celular externo y sincronizó con Dashboard Local (:8010)",
+        "input_summary": {},
+        "output_summary": {
+          "route": "AI_AGENT_COGNITIVO",
+          "reply_ready": true
+        }
+      },
+      {
+        "step_index": 3,
+        "node_name": "HTTP Request (Omni-Channel Delivery ACK)",
+        "phase_category": "6. Despacho Final al Celular",
+        "status": "success",
+        "execution_time_ms": 45.0,
+        "description": "Entregó respuesta en pantalla del celular externo 04142554590",
+        "input_summary": {},
+        "output_summary": {
+          "number": "04142554590",
+          "delivery_status": "DELIVERY_ACK"
+        }
+      }
+    ],
+    "process_timers": {
+      "t1_user_sent_ts": "2026-10-17T14:18:34.622276+00:00",
+      "t2_n8n_in_ts": "2026-10-17T14:18:34.772276+00:00",
+      "t3_core_resolved_ts": "2026-10-17T14:18:34.789276+00:00",
+      "t4_n8n_out_ts": "2026-10-17T14:18:34.773796+00:00",
+      "t5_evolution_queued_ts": "2026-10-17T14:18:34.793796+00:00",
+      "t6_meta_server_ack_ts": "2026-10-17T14:18:34.973796+00:00",
+      "t7_phone_delivered_ts": "2026-10-17T14:18:34.773796+00:00",
+      "t8_user_read_ts": "2026-10-17T14:18:36.523796+00:00",
+      "delta_inbound_sec": 0.04,
+      "delta_processing_sec": 0.15,
+      "delta_outbound_queue_sec": 0.2,
+      "delta_delivery_sec": 0.03,
+      "delta_e2e_total_sec": 0.22,
+      "delivery_state": "DELIVERY_ACK",
+      "delivery_badge": "✓✓ Entregado (E2E: 0.702s | n8n: 0.002s | Red: 0.7s)",
+      "queue_wait_sec": 0.0
+    }
+  },
+  {
+    "trace_id": "TRACE-SIM-1792246688865",
+    "execution_id": "SIM-1792246688",
+    "workflow_id": "sNMbtiEiTkuQ9OCY",
+    "started_at": "2026-10-17T14:18:08.863702+00:00",
+    "stopped_at": "2026-10-17T14:18:08.863702+00:00",
+    "total_duration_sec": 0.22,
+    "status": "SUCCESS",
+    "bot_number": "+58 424 153 3712",
+    "user_phone": "04142554590",
+    "user_push_name": "Ids",
+    "carrier": "MOVISTAR",
+    "carrier_label": "Movistar Venezuela",
+    "is_competitor": true,
+    "user_message": "Tengo hambre",
+    "bot_reply": "🍦 ¡Un helado o un buen café siempre es una excelente idea!\n\nEn la zona comercial de Chacao tienes excelentes opciones como en el *Centro Comercial Sambil Chacao* o en los locales y cafeterías de *Los Palos Grandes*.\n\n📱 Con tu línea *Movilnet 4GMAX* puedes buscar las mejores heladerías en redes sociales, ordenar por delivery o pagar directamente con Pago Móvil C2P interbancario.\n\n¿Deseas verificar tu saldo en bolívares para saber cuánto tienes disponible?\n\n🌐 Portal PWA 4GMAX (Acceso libre por Wi-Fi o Datos Móviles — Cualquier Operadora):\n👉 https://one21026-ids-movilnet-pwa.onrender.com/ui/pwa_stitch/index.html",
+    "intent_detected": "EXTERNAL_MOBILE_QR",
+    "pipeline_route": "AI_AGENT_COGNITIVO",
+    "steps": [
+      {
+        "step_index": 1,
+        "node_name": "QR Mobile Global Gateway (Render Cloud)",
+        "phase_category": "1. Ingesta Perimetral Móvil",
+        "status": "success",
+        "execution_time_ms": 1.5,
+        "description": "Recibió mensaje desde dispositivo móvil externo (04142554590) vía QR Cloud",
+        "input_summary": {
+          "source": "QR_EXTERNAL_MOBILE",
+          "phone": "04142554590"
+        },
+        "output_summary": {
+          "user_message": "Tengo hambre"
+        }
+      },
+      {
+        "step_index": 2,
+        "node_name": "🧠 Movilnet Cognitive Agent L5 (Core N→1)",
+        "phase_category": "4. Procesamiento Core",
+        "status": "success",
+        "execution_time_ms": 220.0,
+        "description": "Procesó solicitud desde celular externo y sincronizó con Dashboard Local (:8010)",
+        "input_summary": {},
+        "output_summary": {
+          "route": "AI_AGENT_COGNITIVO",
+          "reply_ready": true
+        }
+      },
+      {
+        "step_index": 3,
+        "node_name": "HTTP Request (Omni-Channel Delivery ACK)",
+        "phase_category": "6. Despacho Final al Celular",
+        "status": "success",
+        "execution_time_ms": 45.0,
+        "description": "Entregó respuesta en pantalla del celular externo 04142554590",
+        "input_summary": {},
+        "output_summary": {
+          "number": "04142554590",
+          "delivery_status": "DELIVERY_ACK"
+        }
+      }
+    ],
+    "process_timers": {
+      "t1_user_sent_ts": "2026-10-17T14:18:08.713702+00:00",
+      "t2_n8n_in_ts": "2026-10-17T14:18:08.863702+00:00",
+      "t3_core_resolved_ts": "2026-10-17T14:18:08.880702+00:00",
+      "t4_n8n_out_ts": "2026-10-17T14:18:08.865446+00:00",
+      "t5_evolution_queued_ts": "2026-10-17T14:18:08.885446+00:00",
+      "t6_meta_server_ack_ts": "2026-10-17T14:18:09.065446+00:00",
+      "t7_phone_delivered_ts": "2026-10-17T14:18:08.865446+00:00",
+      "t8_user_read_ts": "2026-10-17T14:18:10.615446+00:00",
+      "delta_inbound_sec": 0.04,
+      "delta_processing_sec": 0.15,
+      "delta_outbound_queue_sec": 0.2,
+      "delta_delivery_sec": 0.03,
+      "delta_e2e_total_sec": 0.22,
+      "delivery_state": "DELIVERY_ACK",
+      "delivery_badge": "✓✓ Entregado (E2E: 0.702s | n8n: 0.002s | Red: 0.7s)",
+      "queue_wait_sec": 0.0
+    }
+  },
+  {
+    "trace_id": "TRACE-SIM-1792246423141",
+    "execution_id": "SIM-1792246423",
+    "workflow_id": "sNMbtiEiTkuQ9OCY",
+    "started_at": "2026-10-17T14:13:43.135095+00:00",
+    "stopped_at": "2026-10-17T14:13:43.135095+00:00",
+    "total_duration_sec": 0.22,
+    "status": "SUCCESS",
+    "bot_number": "+58 424 153 3712",
+    "user_phone": "04142554590",
+    "user_push_name": "Ids",
+    "carrier": "MOVISTAR",
+    "carrier_label": "Movistar Venezuela",
+    "is_competitor": true,
+    "user_message": "Probando",
+    "bot_reply": "Entendido. Con mucho gusto te oriento desde *Movilnet 4GMAX*. Identifico que tu línea actual pertenece a Movistar Venezuela (04142554590). Puedo apoyarte con información de nuestra cobertura nacional 4GMAX, puntos comerciales, o coordinar el cambio a Movilnet con tu mismo número y 10 GB de bienvenida. ¿Podrías indicarme con un poco más de detalle qué trámite, ubicación o consulta deseas realizar?\n\n🌐 Portal PWA 4GMAX (Acceso libre por Wi-Fi o Datos Móviles — Cualquier Operadora):\n👉 https://one21026-ids-movilnet-pwa.onrender.com/ui/pwa_stitch/index.html",
+    "intent_detected": "EXTERNAL_MOBILE_QR",
+    "pipeline_route": "AI_AGENT_COGNITIVO",
+    "steps": [
+      {
+        "step_index": 1,
+        "node_name": "QR Mobile Global Gateway (Render Cloud)",
+        "phase_category": "1. Ingesta Perimetral Móvil",
+        "status": "success",
+        "execution_time_ms": 1.5,
+        "description": "Recibió mensaje desde dispositivo móvil externo (04142554590) vía QR Cloud",
+        "input_summary": {
+          "source": "QR_EXTERNAL_MOBILE",
+          "phone": "04142554590"
+        },
+        "output_summary": {
+          "user_message": "Probando"
+        }
+      },
+      {
+        "step_index": 2,
+        "node_name": "🧠 Movilnet Cognitive Agent L5 (Core N→1)",
+        "phase_category": "4. Procesamiento Core",
+        "status": "success",
+        "execution_time_ms": 220.0,
+        "description": "Procesó solicitud desde celular externo y sincronizó con Dashboard Local (:8010)",
+        "input_summary": {},
+        "output_summary": {
+          "route": "AI_AGENT_COGNITIVO",
+          "reply_ready": true
+        }
+      },
+      {
+        "step_index": 3,
+        "node_name": "HTTP Request (Omni-Channel Delivery ACK)",
+        "phase_category": "6. Despacho Final al Celular",
+        "status": "success",
+        "execution_time_ms": 45.0,
+        "description": "Entregó respuesta en pantalla del celular externo 04142554590",
+        "input_summary": {},
+        "output_summary": {
+          "number": "04142554590",
+          "delivery_status": "DELIVERY_ACK"
+        }
+      }
+    ],
+    "process_timers": {
+      "t1_user_sent_ts": "2026-10-17T14:13:42.985095+00:00",
+      "t2_n8n_in_ts": "2026-10-17T14:13:43.135095+00:00",
+      "t3_core_resolved_ts": "2026-10-17T14:13:43.152095+00:00",
+      "t4_n8n_out_ts": "2026-10-17T14:13:43.141933+00:00",
+      "t5_evolution_queued_ts": "2026-10-17T14:13:43.161933+00:00",
+      "t6_meta_server_ack_ts": "2026-10-17T14:13:43.341933+00:00",
+      "t7_phone_delivered_ts": "2026-10-17T14:13:43.141933+00:00",
+      "t8_user_read_ts": "2026-10-17T14:13:44.891933+00:00",
+      "delta_inbound_sec": 0.04,
+      "delta_processing_sec": 0.15,
+      "delta_outbound_queue_sec": 0.2,
+      "delta_delivery_sec": 0.03,
+      "delta_e2e_total_sec": 0.22,
+      "delivery_state": "DELIVERY_ACK",
+      "delivery_badge": "✓✓ Entregado (E2E: 0.707s | n8n: 0.007s | Red: 0.7s)",
+      "queue_wait_sec": 0.0
+    }
+  },
+  {
+    "trace_id": "TRACE-EXEC-14223",
+    "execution_id": "14223",
+    "workflow_id": "sNMbtiEiTkuQ9OCY",
+    "started_at": "2026-10-17T14:13:00.802Z",
+    "stopped_at": "2026-10-17T14:13:05.219Z",
+    "total_duration_sec": 1.0,
+    "status": "SUCCESS",
+    "bot_number": "+58 424 153 3712",
+    "user_phone": "04142554590",
+    "user_push_name": "Ids",
+    "carrier": "MOVISTAR",
+    "carrier_label": "Movistar Venezuela",
+    "is_competitor": true,
+    "user_message": "Nuevamente",
+    "bot_reply": "¡Qué gusto saludarte de nuevo, Ids! Veo que nos contactas desde tu línea Movistar Venezuela. \n¿Cómo te podemos asesorar hoy para traerte tu número a *Movilnet 4GMAX* con tu *eSIM gratis* y *bono de 10GB de bienvenida*, o en qué otra consulta o plan para hoy te colaboro? ¡Siempre a tu orden! 😎📲✨\n\n🌐 *Portal PWA 4GMAX (Acceso libre por Wi-Fi o Datos Móviles — Cualquier Operadora):*\n👉 https://one21026-ids-movilnet-pwa.onrender.com/ui/pwa_stitch/index.html?carrier=digitel&phone=584142554590&token=425545904gmax",
+    "intent_detected": "CONVERSACION_LIBRE",
+    "pipeline_route": "AI_AGENT_GEMINI",
+    "steps": [
+      {
+        "step_index": 1,
+        "node_name": "Webhook",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo Webhook en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 2,
+        "node_name": "If",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo If en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 3,
+        "node_name": "Edit Fields",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo Edit Fields en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 4,
+        "node_name": "Edge Carrier Firewall (0416/0426)",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo Edge Carrier Firewall (0416/0426) en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 5,
+        "node_name": "Switch",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo Switch en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 6,
+        "node_name": "Captura Texto",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo Captura Texto en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 7,
+        "node_name": "Chat",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo Chat en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 8,
+        "node_name": "If1",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo If1 en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 9,
+        "node_name": "Router - Consultas determinísticas",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo Router - Consultas determinísticas en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 10,
+        "node_name": "Postgres Chat Memory",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo Postgres Chat Memory en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 11,
+        "node_name": "Google Gemini Chat Model",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo Google Gemini Chat Model en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 12,
+        "node_name": "AI Agent",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo AI Agent en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 13,
+        "node_name": "Rescate Fallback AI Agent",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo Rescate Fallback AI Agent en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 14,
+        "node_name": "Merge - Respuestas 7",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo Merge - Respuestas 7 en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 15,
+        "node_name": "Merge - Respuestas 5",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo Merge - Respuestas 5 en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 16,
+        "node_name": "Code",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo Code en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 17,
+        "node_name": "Sync Monitor Render Cloud",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo Sync Monitor Render Cloud en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 18,
+        "node_name": "HTTP Request",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo HTTP Request en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "DELIVERY_ACK"
+        }
+      }
+    ],
+    "process_timers": {
+      "t1_user_sent_ts": "2026-10-17T14:13:00+00:00",
+      "t2_n8n_in_ts": "2026-10-17T14:13:00.802000+00:00",
+      "t3_core_resolved_ts": "2026-10-17T14:13:04.556000+00:00",
+      "t4_n8n_out_ts": "2026-10-17T14:13:05.219000+00:00",
+      "t5_evolution_queued_ts": "2026-10-17T14:13:05.239000+00:00",
+      "t6_meta_server_ack_ts": "2026-10-17T14:13:05.419000+00:00",
+      "t7_phone_delivered_ts": "2026-10-17T14:13:05.769000+00:00",
+      "t8_user_read_ts": "2026-10-17T14:13:06.969000+00:00",
+      "delta_inbound_sec": 0.802,
+      "delta_processing_sec": 4.417,
+      "delta_outbound_queue_sec": 0.2,
+      "delta_delivery_sec": 0.35,
+      "delta_e2e_total_sec": 5.769,
+      "delivery_state": "DELIVERY_ACK",
+      "delivery_badge": "✓✓ Entregado (E2E: 5.769s | n8n: 4.417s | Red: 1.35s)",
+      "queue_wait_sec": 0.0
+    }
+  },
+  {
+    "trace_id": "TRACE-EXEC-14222",
+    "execution_id": "14222",
+    "workflow_id": "sNMbtiEiTkuQ9OCY",
+    "started_at": "2026-10-17T13:21:46.484Z",
+    "stopped_at": "2026-10-17T13:21:58.102Z",
+    "total_duration_sec": 1.0,
+    "status": "SUCCESS",
+    "bot_number": "+58 424 153 3712",
+    "user_phone": "04142554590",
+    "user_push_name": "Ids",
+    "carrier": "MOVISTAR",
+    "carrier_label": "Movistar Venezuela",
+    "is_competitor": true,
+    "user_message": "Esta imagen es una captura de pantalla de un teléfono iPhone que muestra una aplicación web móvil (PWA) de autogestión de telecomunicaciones (aparentemente de **Movilnet**):\n\n### 1. Barra superior y encabezado\n* **Hora y estado:** 9:21 AM, conexión LTE, 54% de batería.\n* **Cabecera del sitio:**\n  * Botón para **Volver**.\n  * Logotipo de **Movilnet**, indicador de latencia (**0.3 ms**) y distintivo de **4GMAX**.\n  * Número de línea seleccionada: **04142554590 (Ids - Movistar)**.\n\n---\n\n### 2. Consumo en tiempo real (TMF678 • LIVE OCS)\n* **Datos 4GMAX:** **10.0 GB (Bono de Bienvenida)** con una barra de progreso en color rojo.\n* **Beneficios adicionales:** \"eSIM Digital Inmediata\" y \"WhatsApp Libre\".\n* **Minutos Movilnet:** **840 Min**.\n* **SMS Nacionales:** **920 SMS**.\n\n---\n\n### 3. Funciones y seguridad activadas\n* **Candado SIM Antifraude:** *Bloqueo ante cambio de IMSI no autorizado* (con casilla marcada en rojo).\n* **VoLTE HD Voice:** *Llamadas de alta definición sobre LTE* (con casilla marcada en rojo).\n\n---\n\n### 4. Menú de navegación inferior\n* **Dashboard O(1)** (pestaña activa).\n* **Servicios & C2P**.\n* **Asistente IA**.\n\n---\n\n### 5. Navegador (Safari)\n* Barra de dirección web alojada en: `t-pwa.onrender.com`.",
+    "bot_reply": "¡Buenos días, Ids! Te comunicas desde una línea *Movistar Venezuela* (+58 414 2554590).\n📶 En *Movilnet 4GMAX* puedes disfrutar de *Inteliplan 10 GB* por solo Bs. 295/mes + *10 GB de Bono de Bienvenida GRATIS* y WhatsApp libre al portar tu número.\nEscribe *Portabilidad* para solicitar tu eSIM digital gratuita.\n🌐 *Portal PWA 4GMAX (Acceso libre por Wi-Fi o Datos Móviles - Cualquier Operadora):* https://one21026-ids-movilnet-pwa.onrender.com/ui/pwa_stitch/index.html?carrier=movistar&phone=584142554590&token=425545904gmax",
+    "intent_detected": "FAST_PATH_TELCO",
+    "pipeline_route": "FUNNEL_MARKETING_NO_USUARIOS_MOVILNET",
+    "steps": [
+      {
+        "step_index": 1,
+        "node_name": "Webhook",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo Webhook en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 2,
+        "node_name": "If",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo If en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 3,
+        "node_name": "Edit Fields",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo Edit Fields en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 4,
+        "node_name": "Edge Carrier Firewall (0416/0426)",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo Edge Carrier Firewall (0416/0426) en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 5,
+        "node_name": "Switch",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo Switch en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 6,
+        "node_name": "Capturar Imagen",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo Capturar Imagen en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 7,
+        "node_name": "Convertir Imagen",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo Convertir Imagen en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 8,
+        "node_name": "Analyze image",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo Analyze image en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 9,
+        "node_name": "Chat",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo Chat en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 10,
+        "node_name": "If1",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo If1 en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 11,
+        "node_name": "Router - Consultas determinísticas",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo Router - Consultas determinísticas en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 12,
+        "node_name": "Movilnet Core & Marketing Router",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo Movilnet Core & Marketing Router en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 13,
+        "node_name": "Merge - Respuestas 5",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo Merge - Respuestas 5 en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 14,
+        "node_name": "Code",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo Code en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 15,
+        "node_name": "Sync Monitor Render Cloud",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo Sync Monitor Render Cloud en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 16,
+        "node_name": "HTTP Request",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo HTTP Request en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "DELIVERY_ACK"
+        }
+      }
+    ],
+    "process_timers": {
+      "t1_user_sent_ts": "2026-10-17T13:21:46+00:00",
+      "t2_n8n_in_ts": "2026-10-17T13:21:46.484000+00:00",
+      "t3_core_resolved_ts": "2026-10-17T13:21:56.359000+00:00",
+      "t4_n8n_out_ts": "2026-10-17T13:21:58.102000+00:00",
+      "t5_evolution_queued_ts": "2026-10-17T13:21:58.122000+00:00",
+      "t6_meta_server_ack_ts": "2026-10-17T13:21:58.302000+00:00",
+      "t7_phone_delivered_ts": "2026-10-17T13:21:58.652000+00:00",
+      "t8_user_read_ts": "2026-10-17T13:21:59.852000+00:00",
+      "delta_inbound_sec": 0.484,
+      "delta_processing_sec": 11.618,
+      "delta_outbound_queue_sec": 0.2,
+      "delta_delivery_sec": 0.35,
+      "delta_e2e_total_sec": 12.652,
+      "delivery_state": "DELIVERY_ACK",
+      "delivery_badge": "✓✓ Entregado (E2E: 12.652s | n8n: 11.618s | Red: 1.03s)",
+      "queue_wait_sec": 0.0
+    }
+  },
+  {
+    "trace_id": "TRACE-SIM-1792243171168",
+    "execution_id": "SIM-1792243171",
+    "workflow_id": "sNMbtiEiTkuQ9OCY",
+    "started_at": "2026-10-17T13:19:31.161895+00:00",
+    "stopped_at": "2026-10-17T13:19:31.161895+00:00",
+    "total_duration_sec": 0.22,
+    "status": "SUCCESS",
+    "bot_number": "+58 424 153 3712",
+    "user_phone": "04142554590",
+    "user_push_name": "Ids",
+    "carrier": "MOVISTAR",
+    "carrier_label": "Movistar Venezuela",
+    "is_competitor": true,
+    "user_message": "como estas. probandoprobando desde el whatsapp web MBP",
+    "bot_reply": "Entendido. Con mucho gusto te oriento desde *Movilnet 4GMAX*. Identifico que tu línea actual pertenece a Movistar Venezuela (04142554590). Puedo apoyarte con información de nuestra cobertura nacional 4GMAX, puntos comerciales, o coordinar el cambio a Movilnet con tu mismo número y 10 GB de bienvenida. ¿Podrías indicarme con un poco más de detalle qué trámite, ubicación o consulta deseas realizar?\n\n🌐 Portal PWA 4GMAX (Acceso libre por Wi-Fi o Datos Móviles — Cualquier Operadora):\n👉 https://one21026-ids-movilnet-pwa.onrender.com/ui/pwa_stitch/index.html",
+    "intent_detected": "EXTERNAL_MOBILE_QR",
+    "pipeline_route": "AI_AGENT_COGNITIVO",
+    "steps": [
+      {
+        "step_index": 1,
+        "node_name": "QR Mobile Global Gateway (Render Cloud)",
+        "phase_category": "1. Ingesta Perimetral Móvil",
+        "status": "success",
+        "execution_time_ms": 1.5,
+        "description": "Recibió mensaje desde dispositivo móvil externo (04142554590) vía QR Cloud",
+        "input_summary": {
+          "source": "QR_EXTERNAL_MOBILE",
+          "phone": "04142554590"
+        },
+        "output_summary": {
+          "user_message": "como estas. probandoprobando desde el whatsapp web MBP"
+        }
+      },
+      {
+        "step_index": 2,
+        "node_name": "🧠 Movilnet Cognitive Agent L5 (Core N→1)",
+        "phase_category": "4. Procesamiento Core",
+        "status": "success",
+        "execution_time_ms": 220.0,
+        "description": "Procesó solicitud desde celular externo y sincronizó con Dashboard Local (:8010)",
+        "input_summary": {},
+        "output_summary": {
+          "route": "AI_AGENT_COGNITIVO",
+          "reply_ready": true
+        }
+      },
+      {
+        "step_index": 3,
+        "node_name": "HTTP Request (Omni-Channel Delivery ACK)",
+        "phase_category": "6. Despacho Final al Celular",
+        "status": "success",
+        "execution_time_ms": 45.0,
+        "description": "Entregó respuesta en pantalla del celular externo 04142554590",
+        "input_summary": {},
+        "output_summary": {
+          "number": "04142554590",
+          "delivery_status": "DELIVERY_ACK"
+        }
+      }
+    ],
+    "process_timers": {
+      "t1_user_sent_ts": "2026-10-17T13:19:31.011895+00:00",
+      "t2_n8n_in_ts": "2026-10-17T13:19:31.161895+00:00",
+      "t3_core_resolved_ts": "2026-10-17T13:19:31.178895+00:00",
+      "t4_n8n_out_ts": "2026-10-17T13:19:31.168707+00:00",
+      "t5_evolution_queued_ts": "2026-10-17T13:19:31.188707+00:00",
+      "t6_meta_server_ack_ts": "2026-10-17T13:19:31.368707+00:00",
+      "t7_phone_delivered_ts": "2026-10-17T13:19:31.168707+00:00",
+      "t8_user_read_ts": "2026-10-17T13:19:32.918707+00:00",
+      "delta_inbound_sec": 0.04,
+      "delta_processing_sec": 0.15,
+      "delta_outbound_queue_sec": 0.2,
+      "delta_delivery_sec": 0.03,
+      "delta_e2e_total_sec": 0.22,
+      "delivery_state": "DELIVERY_ACK",
+      "delivery_badge": "✓✓ Entregado (E2E: 0.707s | n8n: 0.007s | Red: 0.7s)",
+      "queue_wait_sec": 0.0
+    }
+  },
+  {
+    "trace_id": "TRACE-SIM-1792243065015",
+    "execution_id": "SIM-1792243065",
+    "workflow_id": "sNMbtiEiTkuQ9OCY",
+    "started_at": "2026-10-17T13:17:44.990548+00:00",
+    "stopped_at": "2026-10-17T13:17:45.015701+00:00",
+    "total_duration_sec": 0.24,
+    "status": "SUCCESS",
+    "bot_number": "+58 424 153 3712",
+    "user_phone": "04160000001",
+    "user_push_name": "Abonado 04160000001",
+    "carrier": "MOVILNET",
+    "carrier_label": "Movilnet 4GMAX",
+    "is_competitor": false,
+    "user_message": "saldo",
+    "bot_reply": "Estimado abonado 04160000001: Su saldo disponible es Bs. 1650.00. Datos 4GMAX: 91.9 GB disponibles. Plan: Plan Básico Conecta 5GB.",
+    "intent_detected": "MARKETING_PORTABILITY",
+    "pipeline_route": "AI_AGENT_COGNITIVO",
+    "steps": [
+      {
+        "step_index": 1,
+        "node_name": "Webhook (messages.upsert)",
+        "phase_category": "1. Ingesta Perimetral",
+        "status": "success",
+        "execution_time_ms": 1.2,
+        "description": "Recibió mensaje desde PWA Móvil en la línea bot +58 424 153 3712",
+        "input_summary": {
+          "device": "PWA Móvil",
+          "raw_phone": "04160000001"
+        },
+        "output_summary": {
+          "normalized_phone": "04160000001",
+          "message": "saldo"
+        }
+      },
+      {
+        "step_index": 2,
+        "node_name": "If (fromMe == false)",
+        "phase_category": "1. Ingesta Perimetral",
+        "status": "success",
+        "execution_time_ms": 0.8,
+        "description": "Comprobó fromMe == false (mensaje genuino de usuario)",
+        "input_summary": {},
+        "output_summary": {
+          "condition_passed": true
+        }
+      },
+      {
+        "step_index": 3,
+        "node_name": "Edit Fields & Switch",
+        "phase_category": "2. Normalización de Medio",
+        "status": "success",
+        "execution_time_ms": 3.5,
+        "description": "Identificó operadora Movilnet 4GMAX y pushName 'Abonado 04160000001'",
+        "input_summary": {},
+        "output_summary": {
+          "carrier": "MOVILNET",
+          "is_competitor": false
+        }
+      },
+      {
+        "step_index": 4,
+        "node_name": "Router - Consultas determinísticas",
+        "phase_category": "3. Enrutamiento de Intención",
+        "status": "success",
+        "execution_time_ms": 4.1,
+        "description": "Intercepción determinística en frontera: SALDO_CUPO. Cable directo :8010 (0 tokens)",
+        "input_summary": {},
+        "output_summary": {
+          "branch_activated": "Rama 8: Movilnet Core - Fast-Path (SALDO_CUPO)",
+          "pipeline_route": "FAST_PATH_TELCO_ODA"
+        }
+      },
+      {
+        "step_index": 5,
+        "node_name": "🧠 Movilnet Cognitive Agent L5 (Core N→1)",
+        "phase_category": "4. Procesamiento Core",
+        "status": "success",
+        "execution_time_ms": 35.0,
+        "description": "Resolución contextual con herramientas OCS / Geo POIs / Planes en tiempo real",
+        "input_summary": {},
+        "output_summary": {
+          "agent_status": "OK",
+          "model": "gemini-flash-hybrid"
+        }
+      },
+      {
+        "step_index": 6,
+        "node_name": "Merge 5 & Code (Sanitización Markdown)",
+        "phase_category": "5. Sanitización de Salida",
+        "status": "success",
+        "execution_time_ms": 2.1,
+        "description": "Sanitizó caracteres especiales para WhatsApp y unificó salida hacia el canal de mensajería",
+        "input_summary": {},
+        "output_summary": {
+          "ready_for_whatsapp": true
+        }
+      },
+      {
+        "step_index": 7,
+        "node_name": "HTTP Request (Evolution API /sendText)",
+        "phase_category": "6. Despacho Final al Celular",
+        "status": "success",
+        "execution_time_ms": 180.0,
+        "description": "Entregó mensaje en pantalla de 04160000001 (PWA Móvil)",
+        "input_summary": {},
+        "output_summary": {
+          "number": "04160000001",
+          "delivery_status": "DELIVERY_ACK"
+        }
+      }
+    ],
+    "process_timers": {
+      "t1_user_sent_ts": "2026-10-17T13:17:44.840548+00:00",
+      "t2_n8n_in_ts": "2026-10-17T13:17:44.990548+00:00",
+      "t3_core_resolved_ts": "2026-10-17T13:17:45.011548+00:00",
+      "t4_n8n_out_ts": "2026-10-17T13:17:45.015701+00:00",
+      "t5_evolution_queued_ts": "2026-10-17T13:17:45.035701+00:00",
+      "t6_meta_server_ack_ts": "2026-10-17T13:17:45.215701+00:00",
+      "t7_phone_delivered_ts": "2026-10-17T13:17:45.565701+00:00",
+      "t8_user_read_ts": "2026-10-17T13:17:46.765701+00:00",
+      "delta_inbound_sec": 0.15,
+      "delta_processing_sec": 0.025,
+      "delta_outbound_queue_sec": 0.2,
+      "delta_delivery_sec": 0.35,
+      "delta_e2e_total_sec": 0.725,
+      "delivery_state": "DELIVERY_ACK",
+      "delivery_badge": "✓✓ Entregado (E2E: 0.725s | n8n: 0.025s | Red: 0.7s)",
+      "queue_wait_sec": 0.0
+    }
+  },
+  {
+    "trace_id": "TRACE-EXEC-14221",
+    "execution_id": "14221",
+    "workflow_id": "sNMbtiEiTkuQ9OCY",
+    "started_at": "2026-10-17T13:14:42.127Z",
+    "stopped_at": "2026-10-17T13:14:47.811Z",
+    "total_duration_sec": 1.0,
+    "status": "SUCCESS",
+    "bot_number": "+58 424 153 3712",
+    "user_phone": "04142554590",
+    "user_push_name": "Ids",
+    "carrier": "MOVISTAR",
+    "carrier_label": "Movistar Venezuela",
+    "is_competitor": true,
+    "user_message": "Ur ame te provando y ejecutando un sábado de alegría y hambre",
+    "bot_reply": "¡Esa es la actitud, Ids! Nada mejor que arrancar el sábado matando ese antojo criollo y pasándola bien. 🌽🤤🔥\n¡Sigue disfrutando al máximo de ese día! Y ya sabes que para compartir cada momento sin quedarte sin datos, en *Movilnet 4GMAX* te esperamos con tu *eSIM gratis y 10GB de bienvenida* conservando tu número. ¡Buen provecho! 😎📲\n\n🌐 *Portal PWA 4GMAX (Acceso libre por Wi-Fi o Datos Móviles — Cualquier Operadora):*\n👉 https://one21026-ids-movilnet-pwa.onrender.com/ui/pwa_stitch/index.html?carrier=digitel&phone=584142554590&token=425545904gmax",
+    "intent_detected": "CONVERSACION_LIBRE",
+    "pipeline_route": "AI_AGENT_GEMINI",
+    "steps": [
+      {
+        "step_index": 1,
+        "node_name": "Webhook",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo Webhook en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 2,
+        "node_name": "If",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo If en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 3,
+        "node_name": "Edit Fields",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo Edit Fields en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 4,
+        "node_name": "Edge Carrier Firewall (0416/0426)",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo Edge Carrier Firewall (0416/0426) en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 5,
+        "node_name": "Switch",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo Switch en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 6,
+        "node_name": "Captura Texto",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo Captura Texto en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 7,
+        "node_name": "Chat",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo Chat en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 8,
+        "node_name": "If1",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo If1 en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 9,
+        "node_name": "Router - Consultas determinísticas",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo Router - Consultas determinísticas en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 10,
+        "node_name": "Postgres Chat Memory",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo Postgres Chat Memory en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 11,
+        "node_name": "Google Gemini Chat Model",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo Google Gemini Chat Model en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 12,
+        "node_name": "AI Agent",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo AI Agent en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 13,
+        "node_name": "Rescate Fallback AI Agent",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo Rescate Fallback AI Agent en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 14,
+        "node_name": "Merge - Respuestas 7",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo Merge - Respuestas 7 en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 15,
+        "node_name": "Merge - Respuestas 5",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo Merge - Respuestas 5 en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 16,
+        "node_name": "Code",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo Code en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 17,
+        "node_name": "Sync Monitor Render Cloud",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo Sync Monitor Render Cloud en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "OK"
+        }
+      },
+      {
+        "step_index": 18,
+        "node_name": "HTTP Request",
+        "phase_category": "Procesamiento n8n Cloud",
+        "status": "success",
+        "execution_time_ms": 100.0,
+        "description": "Ejecución del nodo HTTP Request en n8n Cloud (Canal 584241533712@s.whatsapp.net)",
+        "input_summary": {
+          "sender_gateway": "584241533712@s.whatsapp.net"
+        },
+        "output_summary": {
+          "event": "messages.upsert",
+          "delivery_status": "DELIVERY_ACK"
+        }
+      }
+    ],
+    "process_timers": {
+      "t1_user_sent_ts": "2026-10-17T13:14:41+00:00",
+      "t2_n8n_in_ts": "2026-10-17T13:14:42.127000+00:00",
+      "t3_core_resolved_ts": "2026-10-17T13:14:46.958000+00:00",
+      "t4_n8n_out_ts": "2026-10-17T13:14:47.811000+00:00",
+      "t5_evolution_queued_ts": "2026-10-17T13:14:47.831000+00:00",
+      "t6_meta_server_ack_ts": "2026-10-17T13:14:48.011000+00:00",
+      "t7_phone_delivered_ts": "2026-10-17T13:14:48.361000+00:00",
+      "t8_user_read_ts": "2026-10-17T13:14:49.561000+00:00",
+      "delta_inbound_sec": 1.127,
+      "delta_processing_sec": 5.684,
+      "delta_outbound_queue_sec": 0.2,
+      "delta_delivery_sec": 0.35,
+      "delta_e2e_total_sec": 7.361,
+      "delivery_state": "DELIVERY_ACK",
+      "delivery_badge": "✓✓ Entregado (E2E: 7.361s | n8n: 5.684s | Red: 1.68s)",
+      "queue_wait_sec": 0.0
+    }
+  }
+]
