@@ -2155,13 +2155,12 @@ class MovilnetAPIService:
             )
         else:
             response = self.customer_care_agent.process_message(agent_msg)
-            # Solo añadir enlace PWA si el usuario no está en PWA y si la consulta solicita app/web o en saldo inicial
-            if not is_pwa_channel:
-                is_pwa_relevant = any(k in clean_text_in.lower() for k in ["pwa", "web", "aplicacion", "app", "portal", "link", "enlace", "autoservicio", "saldo", "planes"])
-                if is_pwa_relevant:
-                    pwa_suffix = FastPathIntentInterceptor.build_pwa_link_suffix(phone_for_guard)
-                    if "https://movilnet-core.onrender.com" not in response.response_text:
-                        response.response_text = f"{response.response_text}{pwa_suffix}"
+
+        # Regla Inviolable: Finalizar SIEMPRE todo mensaje fuera de PWA con el link PWA (Wi-Fi o Datos Móviles)
+        if not is_pwa_channel and response and response.response_text:
+            if "ui/pwa" not in response.response_text:
+                pwa_suffix = FastPathIntentInterceptor.build_pwa_link_suffix(phone_for_guard)
+                response.response_text = f"{response.response_text}{pwa_suffix}"
 
         # Registro en vivo para Monitores y Dashboard NOC (:8010 y :8012)
         if not os.environ.get("PYTEST_CURRENT_TEST"):
@@ -2284,7 +2283,8 @@ class MovilnetAPIService:
                 phone_number=phone_val,
                 message_text=str(msg_val),
                 sender_name=sender_val,
-                device_type="Celular WhatsApp / n8n"
+                device_type="Celular WhatsApp / n8n",
+                reply_override=reply_val if reply_val else None,
             )
         except Exception:
             pass
@@ -3075,6 +3075,29 @@ class MovilnetAPIService:
                 )
                 dispatch_res = whatsapp_enterprise_gateway.dispatch(out_msg)
 
+                try:
+                    from core.conversation_trace_engine import conversation_trace_engine
+                    from core.webhook_live_feed import webhook_feed_manager
+
+                    conversation_trace_engine.simulate_trace(
+                        phone_number=inbound.sender_phone,
+                        message_text=inbound.text_body,
+                        sender_name=inbound.sender_name or "Abonado",
+                        device_type="Celular WhatsApp (00584241533712)",
+                        reply_override=reply_text,
+                        delivered=bool(getattr(dispatch_res, "success", True)),
+                    )
+                    webhook_feed_manager.record_event(
+                        phone_number=inbound.sender_phone,
+                        message_text=inbound.text_body,
+                        sender_name=inbound.sender_name or "Abonado",
+                        device_type="Celular WhatsApp (00584241533712)",
+                        reply_override=reply_text,
+                        latency_ms=35.0,
+                    )
+                except Exception:
+                    pass
+
                 return 200, resp_headers, json.dumps({
                     "status": "processed",
                     "inbound_sender": inbound.sender_phone,
@@ -3231,6 +3254,8 @@ class MovilnetAPIService:
                 dur_in = float(json_body.get("duration_sec", 1.0))
                 stat_in = json_body.get("status", "SUCCESS")
 
+                started_in = json_body.get("started_at")
+
                 tr = conversation_trace_engine.record_live_execution(
                     execution_id=exec_id,
                     phone=phone_in,
@@ -3239,7 +3264,8 @@ class MovilnetAPIService:
                     sender_name=name_in,
                     route=route_in,
                     duration_sec=dur_in,
-                    status=stat_in
+                    status=stat_in,
+                    started_at=started_in,
                 )
                 webhook_feed_manager.record_event(
                     phone_number=phone_in,
@@ -3250,6 +3276,17 @@ class MovilnetAPIService:
                     latency_ms=dur_in * 1000.0
                 )
                 return 200, resp_headers, json.dumps({"success": True, "trace": tr.to_dict()}).encode("utf-8")
+
+            if clean_path in [
+                "/api/v1/monitor/clear-conversations",
+                "/monitor/clear-conversations",
+                "/api/v1/monitor/clear",
+                "/monitor/clear",
+            ]:
+                from core.conversation_trace_engine import conversation_trace_engine
+                min_exec_in = int(json_body.get("min_execution_id", 14220))
+                res_clear = conversation_trace_engine.clear_all_conversations(min_execution_id=min_exec_in)
+                return 200, resp_headers, json.dumps(res_clear).encode("utf-8")
 
             if clean_path in ["/api/v1/ops/render-deploy", "/ops/render-deploy"]:
                 from scripts.trigger_render_deploy import trigger_render_deploy, save_deploy_hook_url

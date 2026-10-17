@@ -160,19 +160,18 @@ class FastPathIntentInterceptor:
         clean_phone = CarrierFunnelClassifier.clean_msisdn(phone) or "04160000001"
         carrier_enum, _, is_competitor = CarrierFunnelClassifier.identify_carrier(clean_phone)
         token = cls.generate_session_token(clean_phone)
-        base_url = os.environ.get("MOVILNET_PUBLIC_PWA_URL", "https://movilnet-core.onrender.com").rstrip("/")
+        base_url = os.environ.get("MOVILNET_PUBLIC_PWA_URL", "https://one21026-ids-movilnet-pwa.onrender.com").rstrip("/")
 
         if not is_competitor and carrier_enum == Carrier.MOVILNET:
             return (
-                f"\n\n🌐 Si prefieres una experiencia visual o interactiva, continúa tu consulta en nuestra PWA oficial: "
+                f"\n\n🌐 *Portal PWA 4GMAX (Acceso libre por Wi-Fi o Plan de Datos):*\n"
                 f"{base_url}/ui/pwa_stitch/index.html?carrier=movilnet&phone={clean_phone}&token={token}"
             )
         carrier_slug = carrier_enum.value.upper()
         return (
-            f"\n\n🎁 Tienes acceso a 1,000 tokens de prueba (máx. 3 consultas/mes) para interactuar con nuestra IA "
-            f"y descubrir por qué cambiarte a Movilnet 4GMAX: "
-            f"{base_url}/ui/pwa_stitch/index.html?carrier={carrier_slug}&phone={clean_phone}&token={token}"
-            f"\n\n📲 *Portabilidad Express en este Chat:* Responde *Portabilidad* por aquí para tramitar tu eSIM Digital gratis con 10GB de bienvenida sin salir de WhatsApp."
+            f"\n\n🌐 *Portal PWA 4GMAX (Acceso libre por Wi-Fi o Plan de Datos desde cualquier operadora):*\n"
+            f"{base_url}/ui/pwa_stitch/index.html?carrier={carrier_slug}&phone={clean_phone}&token={token}\n"
+            f"🎁 Incluye 1.000 tokens de bienvenida y solicitud de eSIM digital inmediata."
         )
 
     @classmethod

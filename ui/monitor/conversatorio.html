@@ -1376,6 +1376,11 @@
         <span class="material-symbols-outlined" style="font-size:15px;">tune</span>
         <span>Monitor NOC</span>
       </a>
+
+      <button type="button" onclick="clearAllConversations()" class="top-action-btn" title="Limpiar conversaciones previas para pruebas en limpio" style="cursor:pointer; border:1px solid rgba(255,255,255,0.35); background:rgba(0,0,0,0.18); color:#fff;">
+        <span class="material-symbols-outlined" style="font-size:15px;">delete_sweep</span>
+        <span>Limpiar</span>
+      </button>
     </div>
   </header>
 
@@ -1912,8 +1917,8 @@
         if (!responseOk && !isLocal) {
           try {
             const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 4000);
-            const renderRes = await fetch('https://movilnet-core.onrender.com/api/v1/monitor/conversations?t=' + ts, { signal: controller.signal });
+            const timeoutId = setTimeout(() => controller.abort(), 15000);
+            const renderRes = await fetch('https://one21026-ids-movilnet-pwa.onrender.com/api/v1/monitor/conversations?t=' + ts, { signal: controller.signal });
             clearTimeout(timeoutId);
             if (renderRes.ok) {
               localData = await renderRes.json();
@@ -2895,6 +2900,25 @@
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') closeProcessTimersModal();
     });
+
+    async function clearAllConversations() {
+      try {
+        const res = await fetch('/api/v1/monitor/clear-conversations', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ min_execution_id: 14220 })
+        });
+        if (res.ok) {
+          allThreads = [];
+          activePhoneKey = null;
+          renderSidebar();
+          renderActiveChat();
+          await loadConversations();
+        }
+      } catch (err) {
+        console.error('[Conversatorio] Error al limpiar conversaciones:', err);
+      }
+    }
   </script>
 
   <!-- MODAL DE INSPECCIÓN DE PROCESS TIMERS Y 7 HITOS TEMPORALES -->

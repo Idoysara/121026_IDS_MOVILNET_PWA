@@ -19,5 +19,7 @@ services:
         value: https://n8n.lpgtec.net
       - key: N8N_WEBHOOK_URL
         value: https://n8n.lpgtec.net/webhook/messages_upsert4
+      - key: N8N_WORKFLOW_ID
+        value: sNMbtiEiTkuQ9OCY
       - key: MOVILNET_PUBLIC_URL
-        value: https://movilnet-core.onrender.com
+        value: https://one21026-ids-movilnet-pwa.onrender.com
