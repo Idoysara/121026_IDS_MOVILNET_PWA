@@ -141,75 +141,86 @@
         padding-top: max(env(safe-area-inset-top, 0px), 12px);
       }
       .pt-safe-top {
-        padding-top: calc(max(env(safe-area-inset-top, 0px), 52px) + var(--browser-top-offset, 0px)) !important;
+        padding-top: calc(max(env(safe-area-inset-top, 0px), 16px) + var(--browser-top-offset, 0px)) !important;
       }
       .pb-safe {
         padding-bottom: max(env(safe-area-inset-bottom, 0px), 10px);
       }
       /* Variables Dinámicas Universales de Viewport y Resguardo por Navegador */
       :root {
-        --vvh: 100vh;
+        --vvh: 100dvh;
         --vvt: 0px;
         --browser-top-offset: 0px;
-        --browser-bottom-offset: 92px; /* Margen de resguardo universal por defecto para móviles */
+        --browser-bottom-offset: 0px; /* En dispositivos móviles reales la barra nativa ya está fuera del viewport */
         --composer-dock-elevation: 0px;
+        --bottom-nav-total-height: calc(56px + max(env(safe-area-inset-bottom, 0px), 10px) + var(--browser-bottom-offset, 0px));
       }
       /* =========================================================================
-         CONFIGURACIÓN DE RESGUARDO MULTI-NAVEGADOR (SAFARI, CHROME, OPERA, BRAVE, YAHOO, SAMSUNG)
+         CONFIGURACIÓN DE RESGUARDO PARA SIMULADOR EMBEBIDO (IFRAME SIMULADOR.HTML)
+         En celulares reales (window.self === window.top) --browser-bottom-offset es 0px
          ========================================================================= */
-      .browser-mode-safari {
+      html.in-simulator-frame.browser-mode-safari {
         --browser-top-offset: 0px;
-        --browser-bottom-offset: 94px; /* Barra flotante AA + controles de iOS Safari */
+        --browser-bottom-offset: 94px; /* Barra simulada AA + controles de iOS Safari en simulador */
       }
-      .browser-mode-chrome {
-        --browser-top-offset: 52px;    /* Omnibox superior de Chrome */
-        --browser-bottom-offset: 28px; /* Barra inferior de navegación gestual */
+      html.in-simulator-frame.browser-mode-chrome {
+        --browser-top-offset: 52px;    /* Omnibox superior simulado de Chrome */
+        --browser-bottom-offset: 28px; /* Barra inferior simulada de navegación gestual */
       }
-      .browser-mode-opera {
+      html.in-simulator-frame.browser-mode-opera {
         --browser-top-offset: 0px;
-        --browser-bottom-offset: 88px; /* Barra Fast-Action con botón O de Opera */
+        --browser-bottom-offset: 88px; /* Barra Fast-Action simulada de Opera */
       }
-      .browser-mode-brave {
+      html.in-simulator-frame.browser-mode-brave {
         --browser-top-offset: 0px;
-        --browser-bottom-offset: 86px; /* Barra de herramientas Brave Shields */
+        --browser-bottom-offset: 86px; /* Barra simulada Brave Shields */
       }
-      .browser-mode-yahoo {
-        --browser-top-offset: 46px;    /* Cabecera morada de búsqueda Yahoo! */
-        --browser-bottom-offset: 80px; /* Barra de lectura y herramientas Yahoo! */
+      html.in-simulator-frame.browser-mode-yahoo {
+        --browser-top-offset: 46px;    /* Cabecera simulada Yahoo! */
+        --browser-bottom-offset: 80px; /* Barra inferior simulada Yahoo! */
       }
-      .browser-mode-samsung {
-        --browser-top-offset: 44px;    /* Barra de navegación Samsung Internet */
-        --browser-bottom-offset: 82px; /* Barra inferior de herramientas Samsung */
+      html.in-simulator-frame.browser-mode-samsung {
+        --browser-top-offset: 44px;    /* Barra superior simulada Samsung Internet */
+        --browser-bottom-offset: 82px; /* Barra inferior simulada Samsung */
       }
+      html.in-simulator-frame.browser-mode-standalone,
       .browser-mode-standalone {
         --browser-top-offset: 0px;
-        --browser-bottom-offset: 8px;  /* Pantalla completa pura instalada */
+        --browser-bottom-offset: 0px;
       }
 
       /* Ajuste dinámico de los contenedores para nunca ser tapados por barras de navegación */
       #chat-input-bar {
-        padding-bottom: calc(max(env(safe-area-inset-bottom, 0px), 12px) + var(--browser-bottom-offset, 0px) + var(--composer-dock-elevation, 0px)) !important;
+        padding-bottom: calc(10px + var(--composer-dock-elevation, 0px)) !important;
       }
       #bottom-nav {
         padding-bottom: calc(max(env(safe-area-inset-bottom, 0px), 10px) + var(--browser-bottom-offset, 0px)) !important;
       }
       #tab-dashboard,
       #tab-c2p {
-        padding-bottom: calc(96px + var(--browser-bottom-offset, 0px)) !important;
+        padding-bottom: calc(88px + max(env(safe-area-inset-bottom, 0px), 10px) + var(--browser-bottom-offset, 0px)) !important;
       }
 
-      /* Habilitar selección de texto y evitar zoom automático de iOS en inputs */
+      /* Habilitar selección de texto, evitar zoom automático de iOS en inputs y asegurar respuesta táctil inmediata en botones */
       input, textarea, select {
         -webkit-user-select: text !important;
         user-select: text !important;
         font-size: 16px !important; /* REGLA CLAVE IOS: 16px evita auto-zoom */
         touch-action: manipulation;
       }
+      button, .nav-btn {
+        touch-action: manipulation !important;
+        -webkit-tap-highlight-color: transparent;
+        cursor: pointer;
+      }
+      .nav-btn * {
+        pointer-events: none !important;
+      }
     }
     ::-webkit-scrollbar { display: none; }
-    .tab-content { display: none; }
-    .tab-content.active { display: flex; }
-    .nav-btn.active { color: var(--color-primary); font-weight: 700; }
+    .tab-content { display: none !important; }
+    .tab-content.active { display: flex !important; }
+    .nav-btn.active { color: var(--color-primary) !important; font-weight: 700; }
     .chat-wallpaper {
       background-color: var(--chat-wallpaper-bg);
       background-image: radial-gradient(var(--chat-wallpaper-dot) 1px, transparent 1px);
@@ -231,13 +242,16 @@
     #tab-assistant {
       position: fixed;
       top: var(--vvt, 0px);
-      left: 50% !important;
-      transform: translateX(-50%);
+      left: 0 !important;
+      right: 0 !important;
+      margin-left: auto;
+      margin-right: auto;
+      transform: none !important;
       width: 100%;
       max-width: 480px;
-      height: var(--vvh, 100dvh);
-      max-height: var(--vvh, 100dvh);
-      bottom: auto !important;
+      height: calc(var(--vvh, 100dvh) - var(--bottom-nav-total-height, 66px));
+      max-height: calc(var(--vvh, 100dvh) - var(--bottom-nav-total-height, 66px));
+      bottom: var(--bottom-nav-total-height, 66px) !important;
       overflow: hidden;
       display: none;
       flex-direction: column;
@@ -245,7 +259,7 @@
       transition: height 0.15s ease-out;
     }
     #tab-assistant.active {
-      display: flex;
+      display: flex !important;
     }
 
     /* Cápsula Flotante Ergonómica de Escritura (Anti-Bloqueo Universal) */
@@ -269,7 +283,7 @@
     }
     .composer-dock-top #chat-messages {
       order: 2 !important;
-      padding-bottom: calc(max(env(safe-area-inset-bottom, 0px), 16px) + var(--browser-bottom-offset, 0px)) !important;
+      padding-bottom: 16px !important;
     }
 
     /* ESTILO DE BOTONES DE ILUMINACIÓN */
@@ -291,20 +305,20 @@
   <!-- ========================================================================
        TOP APP HEADER ESTÁNDAR (VISIBLE EN DASHBOARD Y SERVICIOS)
        ======================================================================== -->
-  <header id="main-header" class="fixed top-0 w-full max-w-[480px] left-1/2 -translate-x-1/2 z-30 pt-safe bg-surface/95 backdrop-blur-xl border-b border-surface-container shadow-sm transition-colors">
-    <div class="px-3 pb-2 flex flex-col gap-1.5">
+  <header id="main-header" class="fixed top-0 left-0 right-0 mx-auto w-full max-w-[480px] z-30 pt-safe bg-surface/95 backdrop-blur-xl border-b border-surface-container shadow-sm transition-colors">
+    <div class="px-2.5 pb-2 flex flex-col gap-1.5">
       <!-- Fila Superior: Botón Volver, Logo Oficial, Iluminación, Telemetría y Badge 4GMAX -->
       <div class="flex items-center justify-between h-9 gap-1">
-        <div class="flex items-center gap-1.5 min-w-0">
+        <div class="flex items-center gap-1 min-w-0 shrink">
           <!-- BOTÓN REGRESAR A LA PÁGINA ANTERIOR -->
-          <button onclick="handleGoBack()" id="btn-back-header" class="h-8 px-2 rounded-lg bg-surface-container-high hover:bg-surface-container text-on-surface text-xs font-bold flex items-center gap-1 border border-surface-container active:scale-95 transition-all shrink-0" title="Volver a la pantalla anterior">
-            <span class="material-symbols-outlined text-[18px]">arrow_back</span>
-            <span class="hidden xs:inline text-[11px]">Volver</span>
+          <button type="button" onclick="handleGoBack()" id="btn-back-header" class="h-7 px-1.5 rounded-lg bg-surface-container-high hover:bg-surface-container text-on-surface text-xs font-bold flex items-center gap-0.5 border border-surface-container active:scale-95 transition-all shrink-0" title="Volver a la pantalla anterior">
+            <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+            <span class="hidden sm:inline text-[11px]">Volver</span>
           </button>
 
-          <!-- LOGO OFICIAL MOVILNET CON ALTA VISIBILIDAD -->
-          <div class="flex items-center gap-1.5 shrink-0 pl-0.5">
-            <img id="pwa-header-logo" src="/ui/assets/logos/movilnet_logo_color.svg" alt="Movilnet Oficial" class="h-6 sm:h-7 w-auto object-contain drop-shadow-sm transition-all"/>
+          <!-- LOGO OFICIAL MOVILNET CON ALTA VISIBILIDAD SIN SOLAPAMIENTO EN IPHONE -->
+          <div class="flex items-center gap-1 min-w-0 shrink pl-0.5">
+            <img id="pwa-header-logo" src="/ui/assets/logos/movilnet_logo_color.svg" alt="Movilnet Oficial" class="h-5 xs:h-5.5 sm:h-7 max-w-[88px] xs:max-w-[102px] sm:max-w-none w-auto object-contain drop-shadow-sm transition-all"/>
             <div class="hidden sm:flex flex-col">
               <span class="text-[9px] font-extrabold text-primary tracking-tight leading-none">CORE N→1 :8010</span>
               <span class="text-[8px] text-secondary font-mono leading-tight">O(1) SQLite WAL</span>
@@ -312,18 +326,18 @@
           </div>
         </div>
 
-        <div class="flex items-center gap-1.5 shrink-0">
+        <div class="flex items-center gap-1 shrink-0">
           <!-- SELECTOR DE INTENSIDAD DE ILUMINACIÓN (LIGHT / MEDIUM / DARK) -->
           <div class="illumination-box flex items-center bg-surface-container-high rounded-full p-0.5 border border-surface-container shadow-inner" title="Intensidad de Iluminación Visual">
-            <button onclick="setIllumination('light')" data-theme-btn="light" class="theme-btn-pwa px-2 py-0.5 rounded-full text-[10px] font-bold flex items-center gap-0.5 transition-all" title="Modo Claro">
+            <button type="button" onclick="setIllumination('light')" data-theme-btn="light" class="theme-btn-pwa px-1.5 py-0.5 rounded-full text-[10px] font-bold flex items-center gap-0.5 transition-all" title="Modo Claro">
               <span class="material-symbols-outlined text-[13px]">light_mode</span>
               <span class="hidden sm:inline">Light</span>
             </button>
-            <button onclick="setIllumination('medium')" data-theme-btn="medium" class="theme-btn-pwa px-2 py-0.5 rounded-full text-[10px] font-bold flex items-center gap-0.5 transition-all" title="Modo Medio (Dark/Light)">
+            <button type="button" onclick="setIllumination('medium')" data-theme-btn="medium" class="theme-btn-pwa px-1.5 py-0.5 rounded-full text-[10px] font-bold flex items-center gap-0.5 transition-all" title="Modo Medio (Dark/Light)">
               <span class="material-symbols-outlined text-[13px]">tonality</span>
               <span class="hidden sm:inline">Med</span>
             </button>
-            <button onclick="setIllumination('dark')" data-theme-btn="dark" class="theme-btn-pwa px-2 py-0.5 rounded-full text-[10px] font-bold flex items-center gap-0.5 transition-all" title="Modo Oscuro Profundo">
+            <button type="button" onclick="setIllumination('dark')" data-theme-btn="dark" class="theme-btn-pwa px-1.5 py-0.5 rounded-full text-[10px] font-bold flex items-center gap-0.5 transition-all" title="Modo Oscuro Profundo">
               <span class="material-symbols-outlined text-[13px]">dark_mode</span>
               <span class="hidden sm:inline">Dark</span>
             </button>
@@ -339,7 +353,7 @@
           </div>
 
           <!-- Badge 4GMAX Oficial -->
-          <img id="logo-4gmax" src="/ui/assets/logos/boton_4gmax_oficial.svg" alt="4GMAX" class="h-6 w-auto object-contain cursor-pointer active:scale-95 transition-transform" onclick="goToTab('dashboard')" title="Movilnet 4GMAX"/>
+          <img id="logo-4gmax" src="/ui/assets/logos/boton_4gmax_oficial.svg" alt="4GMAX" class="h-5.5 sm:h-6 w-auto object-contain cursor-pointer active:scale-95 transition-transform" onclick="goToTab('dashboard')" title="Movilnet 4GMAX"/>
         </div>
       </div>
 
@@ -818,23 +832,23 @@
   </main>
 
   <!-- ========================================================================
-       BARRA INFERIOR DE NAVEGACIÓN FIJA (VISIBLE EN DASHBOARD Y SERVICIOS)
+       BARRA INFERIOR DE NAVEGACIÓN FIJA UNIVERSAL (Z-INDEX 60, ZERO-TRANSLATE, MÁXIMA ERGONOMÍA)
        ======================================================================== -->
-  <nav id="bottom-nav" class="fixed bottom-0 w-full max-w-[480px] left-1/2 -translate-x-1/2 z-30 pb-safe bg-surface/95 backdrop-blur-xl border-t border-surface-container shadow-lg">
-    <div class="flex justify-around items-center h-14 px-2">
-      <button onclick="goToTab('dashboard')" id="nav-dashboard" class="nav-btn active flex flex-col items-center justify-center min-w-[54px] min-h-[44px] text-secondary transition-colors">
-        <span class="material-symbols-outlined text-[22px]">speed</span>
-        <span class="text-[10px] mt-0.5">Dashboard O(1)</span>
+  <nav id="bottom-nav" class="fixed bottom-0 left-0 right-0 mx-auto w-full max-w-[480px] z-[60] pb-safe bg-surface/95 backdrop-blur-xl border-t border-surface-container shadow-2xl select-none">
+    <div class="flex justify-around items-stretch h-14 px-1">
+      <button type="button" data-tab="dashboard" onclick="goToTab('dashboard')" id="nav-dashboard" class="nav-btn active flex-1 h-full flex flex-col items-center justify-center py-1 text-secondary transition-colors cursor-pointer select-none">
+        <span class="material-symbols-outlined text-[22px] pointer-events-none">speed</span>
+        <span class="text-[10px] mt-0.5 font-semibold pointer-events-none">Dashboard O(1)</span>
       </button>
 
-      <button onclick="goToTab('c2p')" id="nav-c2p" class="nav-btn flex flex-col items-center justify-center min-w-[54px] min-h-[44px] text-secondary transition-colors">
-        <span class="material-symbols-outlined text-[22px]">account_balance_wallet</span>
-        <span class="text-[10px] mt-0.5">Servicios & C2P</span>
+      <button type="button" data-tab="c2p" onclick="goToTab('c2p')" id="nav-c2p" class="nav-btn flex-1 h-full flex flex-col items-center justify-center py-1 text-secondary transition-colors cursor-pointer select-none">
+        <span class="material-symbols-outlined text-[22px] pointer-events-none">account_balance_wallet</span>
+        <span class="text-[10px] mt-0.5 font-semibold pointer-events-none">Servicios & C2P</span>
       </button>
 
-      <button onclick="goToTab('assistant')" id="nav-assistant" class="nav-btn flex flex-col items-center justify-center min-w-[54px] min-h-[44px] text-secondary transition-colors">
-        <span class="material-symbols-outlined text-[22px]">smart_toy</span>
-        <span class="text-[10px] mt-0.5">Asistente IA</span>
+      <button type="button" data-tab="assistant" onclick="goToTab('assistant')" id="nav-assistant" class="nav-btn flex-1 h-full flex flex-col items-center justify-center py-1 text-secondary transition-colors cursor-pointer select-none">
+        <span class="material-symbols-outlined text-[22px] pointer-events-none">smart_toy</span>
+        <span class="text-[10px] mt-0.5 font-semibold pointer-events-none">Asistente IA</span>
       </button>
     </div>
   </nav>
@@ -982,7 +996,7 @@
     if ('caches' in window) {
       caches.keys().then(keys => {
         keys.forEach(k => {
-          if (k !== 'movilnet-pwa-v168-network-first') {
+          if (k !== 'movilnet-pwa-v170-network-first') {
             caches.delete(k);
           }
         });
@@ -990,7 +1004,7 @@
     }
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/ui/pwa_stitch/sw.js?v=168').then(reg => {
+        navigator.serviceWorker.register('/ui/pwa_stitch/sw.js?v=170').then(reg => {
           reg.update();
         }).catch(e => console.warn(e));
       });
@@ -1004,12 +1018,16 @@
       document.documentElement.style.setProperty('--vvh', `${vHeight}px`);
       document.documentElement.style.setProperty('--vvt', `${vOffsetTop}px`);
 
+      const bottomNav = document.getElementById('bottom-nav');
+      const navH = bottomNav ? bottomNav.offsetHeight : 66;
+
       const assistant = document.getElementById('tab-assistant');
       if (assistant && assistant.classList.contains('active')) {
-        assistant.style.height = `${vHeight}px`;
-        assistant.style.maxHeight = `${vHeight}px`;
+        const chatH = Math.max(vHeight - navH, 200);
+        assistant.style.height = `${chatH}px`;
+        assistant.style.maxHeight = `${chatH}px`;
         assistant.style.top = `${vOffsetTop}px`;
-        assistant.style.bottom = 'auto';
+        assistant.style.bottom = `${navH}px`;
         const chatBox = document.getElementById('chat-messages');
         if (chatBox) {
           chatBox.scrollTop = chatBox.scrollHeight;
@@ -1064,38 +1082,47 @@
       if (chatInput) chatInput.focus();
     }
 
-    // 2. Conmutador de Pestañas SPA
+    // 2. Conmutador de Pestañas SPA Universal (Resistente en Móviles Reales y Simulador)
     function goToTab(tabName) {
-      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(el => {
+        el.classList.remove('active');
+        el.style.display = 'none';
+      });
       document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
 
       const mainHeader = document.getElementById('main-header');
       const pwaBanner = document.getElementById('pwa-install-banner');
       const bottomNav = document.getElementById('bottom-nav');
 
-      if (tabName === 'dashboard') {
-        mainHeader.style.display = 'block';
-        pwaBanner.style.display = 'block';
+      // Garantizar que la barra de navegación inferior esté siempre visible para conmutar libremente
+      if (bottomNav) {
         bottomNav.style.display = 'block';
-        document.getElementById('tab-dashboard').classList.add('active');
-        document.getElementById('nav-dashboard').classList.add('active');
+      }
+
+      if (tabName === 'dashboard') {
+        if (mainHeader) mainHeader.style.display = 'block';
+        if (pwaBanner) pwaBanner.style.display = 'block';
+        const tabDash = document.getElementById('tab-dashboard');
+        if (tabDash) { tabDash.classList.add('active'); tabDash.style.display = 'flex'; }
+        const btnDash = document.getElementById('nav-dashboard');
+        if (btnDash) btnDash.classList.add('active');
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else if (tabName === 'c2p') {
-        mainHeader.style.display = 'block';
-        pwaBanner.style.display = 'none';
-        bottomNav.style.display = 'block';
-        document.getElementById('tab-c2p').classList.add('active');
-        document.getElementById('nav-c2p').classList.add('active');
+        if (mainHeader) mainHeader.style.display = 'block';
+        if (pwaBanner) pwaBanner.style.display = 'none';
+        const tabC2p = document.getElementById('tab-c2p');
+        if (tabC2p) { tabC2p.classList.add('active'); tabC2p.style.display = 'flex'; }
+        const btnC2p = document.getElementById('nav-c2p');
+        if (btnC2p) btnC2p.classList.add('active');
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else if (tabName === 'assistant') {
-        // Modo Chat Completo Omni-Chat Universal
-        mainHeader.style.display = 'none';
-        pwaBanner.style.display = 'none';
-        bottomNav.style.display = 'none';
-        document.getElementById('tab-assistant').classList.add('active');
-        document.getElementById('nav-assistant').classList.add('active');
+        if (mainHeader) mainHeader.style.display = 'none';
+        if (pwaBanner) pwaBanner.style.display = 'none';
+        const tabAst = document.getElementById('tab-assistant');
+        if (tabAst) { tabAst.classList.add('active'); tabAst.style.display = 'flex'; }
+        const btnAst = document.getElementById('nav-assistant');
+        if (btnAst) btnAst.classList.add('active');
         syncUniversalViewport();
-        // Scroll al final del chat
         const chatBox = document.getElementById('chat-messages');
         setTimeout(() => {
           syncUniversalViewport();
@@ -1215,6 +1242,15 @@
     function detectBrowserMode() {
       const urlParams = new URLSearchParams(window.location.search);
       const forcedMode = urlParams.get('mode');
+
+      // Distinguir estrictamente entre un celular real y el iframe embebido en simulador.html
+      const isInsideSimulator = (window.self !== window.top) || urlParams.has('mode');
+      if (isInsideSimulator) {
+        document.documentElement.classList.add('in-simulator-frame');
+      } else {
+        document.documentElement.classList.remove('in-simulator-frame');
+      }
+
       if (forcedMode) {
         setBrowserEnvironment(forcedMode);
         return;
@@ -1238,11 +1274,36 @@
       } else if (/CriOS|Chrome/i.test(ua) && !/Edg/i.test(ua) && !/iPhone|iPad/i.test(ua)) {
         setBrowserEnvironment('chrome');
       } else {
-        // Por defecto en iPhone/iOS y móviles usa el resguardo máximo de Safari iOS (94px)
+        // Por defecto en iPhone/iOS y móviles Safari
         setBrowserEnvironment('safari');
       }
     }
     detectBrowserMode();
+
+    // 2.3 Inicializador de Eventos Táctiles y Clic para Navegación Móvil (Anti-Deadlock)
+    function initNavigationListeners() {
+      let lastTabSwitch = 0;
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        const handler = (e) => {
+          const now = Date.now();
+          if (now - lastTabSwitch < 180) {
+            return;
+          }
+          lastTabSwitch = now;
+          const targetTab = btn.getAttribute('data-tab');
+          if (targetTab) {
+            goToTab(targetTab);
+          }
+        };
+        btn.addEventListener('touchend', handler, { passive: true });
+        btn.addEventListener('click', handler);
+      });
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initNavigationListeners);
+    } else {
+      initNavigationListeners();
+    }
 
     // Inicializar iluminación guardada o por defecto light
     const savedTheme = localStorage.getItem('movilnet_illumination') || 'light';

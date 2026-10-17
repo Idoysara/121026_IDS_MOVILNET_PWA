@@ -1,5 +1,5 @@
 // Service Worker - Movilnet Core PWA (Network-First Zero-Stale-Cache Architecture)
-const CACHE_NAME = 'movilnet-pwa-v168-network-first';
+const CACHE_NAME = 'movilnet-pwa-v170-network-first';
 const OFFLINE_ASSETS = [
   '/ui/assets/logos/logo_oficial.png',
   '/ui/assets/logos/boton_4gmax.png',
