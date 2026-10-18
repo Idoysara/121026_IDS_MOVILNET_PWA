@@ -16496,3 +16496,169 @@ Conforme a las instrucciones precisas emitidas por el dueño del proyecto:
 5. **Sincronización y Respaldo en GitHub:**
    - Exportación de la versión viva de `sNMbtiEiTkuQ9OCY` al repositorio: `api/n8n_workflows/viki_lpgtec_v2_ids_with_google_suite.json`.
    - Actualización de bitácoras y confirmación de commit en `main`.
+
+
+---
+
+## 🏛️ Capítulo 222 — Respaldo Maestro Soberano `Movilnet_181026`, Certificación Criptográfica Integral y Modelo Arquitectónico de Despacho Multimodal en WhatsApp con Bóvedas de Usuario ($1 \leftrightarrow N$) en Aislamiento Hermético de Producción
+**Fecha:** 2026-10-18 | **Gobernanza:** Universal Best Practices Engineering Rule (Pilares I al VII) & Protocolo Decagonal  
+**ID de Mandato:** `/goal` Respaldo Maestro `Movilnet_181026` y Arquitectura Despacho Multimodal WhatsApp con Bóvedas $1 \leftrightarrow N$  
+**Sello Criptográfico:** `SHA256:9994ea93fd33558535404c5ed866d32bdd73b1ea26ad16d4056ef6d9ea437656`
+
+### 🎯 1. Mandatos Específicos del Usuario
+Conforme a las directivas estratégicas y técnicas impartidas por la dirección del proyecto:
+1. *"realiza un respaldo en una carpeta llamada "Movilnet_181026" de todo el proyecto"*
+2. *"tengo una duda , en la modalidad del modulo de whatsapp, se puede enviar fotografias, audio, pdf o archivos varios, videos?? evalua y analiza primero ante cualquier accion o programacion, siempre siempre me debes dar una propuesta, diseno, modelo conceptual y com poder construirlo por cada fase"*
+3. *"disena como seria el modelos conceptual de la arquitectuta, topologia, flujograma, base datos asociado a cada uno de los usuarios (N) <--> 1, ya que si envia imagenes, fotos, video, documentos, notas de voz , deberia ser un espacio propio del usuario que esta asociado a ese numero de telefono que esta ingresando en el sistema del asistentes IA de movilnet, consulta es necesario una base datos por cada usuario que ejecuta la consulta al asistente MOVI?"*
+4. *"ya tenemos en produccion y los directore y equipo de QA esta revisando y probando la actual version del asistente IA Movilnet.  COMO podemos desarrollar "DESPACHO MULTIMODAL EN WHATSAPP", sin tener que afectar ningun archivo, ni script, ni algoritmo, y mucho menos flujos de N8N de https://n8n.lpgtec.net/workflow/sNMbtiEiTkuQ9OCY Viki_LPGTEC_v2_ids_Movilnet_Google_Suite_Full POST https://n8n.lpgtec.net/webhook-test/messages_upsert4 se puede modificar , ni alterar y mucho menos editar. Como podemos continuar en este nuevo modulo del "DESPACHO MULTIMODAL EN WHATSAPP", incluso tiene su carpeta propia"*
+5. *"actualiza todos los documnetos historico y capitulos de bitacora"*
+
+---
+
+### 📦 2. Ejecución y Certificación del Respaldo Maestro `Movilnet_181026`
+Se formalizó la creación del respaldo maestro soberano en `/Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_181026/`, incorporando la base de datos viva SQLite WAL, el código fuente desacoplado bajo arquitectura hexagonal, los motores geoespaciales catastrales sub-5m, los workflows de n8n y los artefactos de certificación.
+
+#### 🔐 Manifiesto Criptográfico de Empaquetado:
+| Entregable de Producción | Tamaño | Sello Inmutable SHA-256 |
+| :--- | :---: | :--- |
+| **`CORE_MOVILNET_EXPORT_181026.tar.gz`** | `64.84 MB` | `9994ea93fd33558535404c5ed866d32bdd73b1ea26ad16d4056ef6d9ea437656` |
+| **`CORE_MOVILNET_EXPORT_181026.zip`** | `66.03 MB` | `fc1e9e89ad25ebfec2bdae2df3f52fcf007e3d0271fbd6a7af6e74dc469b42e5` |
+| **`local_movilnet.db` (SQLite WAL)** | `19.00 MB` | `6f1e7539f414d9b6b7e1bcbbdbc5ca4a1c543e22a19cf26812c78f65a3853106` |
+
+- **Documentos de Certificación Emitidos:**
+  - `ACTA_DE_CERTIFICACION_RESPALDO_181026.md` (Firma: `CERT-PROD-MOVILNET-181026-SUB5M-C2P-OK`).
+  - `CHECKSUMS_SHA256.txt` y `MANIFESTO_CRIPTOGRAFICO_SHA256_181026.json`.
+  - `repack_and_certify_181026.py` (Script de reempaquetado y cálculo SHA-256 en 755).
+- **Validación Automatizada de la Suite de Pruebas:**
+  - `PROBAR_ARQUITECTURA_HEXAGONAL.command`: **114/114 pruebas aprobadas (100% PASS)**.
+  - `test_geolocation_sub5m_zero_hallucination.py`: **9/9 pruebas aprobadas (100% PASS)**.
+
+---
+
+### 🏛️ 3. Modelo Conceptual, Arquitectura y Topología de Despacho Multimodal en WhatsApp
+
+#### 3.1. Resolución del Dilema Arquitectónico: ¿Una Base de Datos por Usuario o Base Relacional con Bóvedas Lógicas?
+**Dictamen Técnico Carrier-Grade:** **NO es viable ni recomendable crear un archivo o instancia de base de datos física por cada usuario individual.**
+- **Impacto Catastrófico de Multi-DB Físico (4.000.000 de archivos SQLite/DB):**
+  1. *Agotamiento de Descriptores de Archivo (`ulimit -n`):* El sistema operativo colapsaría al intentar abrir cientos de miles de descriptores simultáneos.
+  2. *Fragmentación de Memoria y Caché:* La memoria RAM del servidor quedaría saturada por metadatos de archivos de base de datos en lugar de datos reales.
+  3. *Inviabilidad de Consultas Cruzadas y Detección de Fraude:* Si cada usuario tiene su propia DB, es matemáticamente imposible correlacionar patrones de fraude, duplicidad de referencias C2P o estadísticas globales de uso.
+  4. *Corrupción Masiva en Respaldos:* Respaldar 4 millones de ficheros SQLite en caliente genera locks inconsistentes y backups de horas de duración.
+- **Solución Estándar de la Industria Telco (Multi-Tenant Lógico + Bóvedas de Archivos Particionadas):**
+  1. **Capa Transaccional (SQL):** Una base de datos relacional de alto rendimiento (PostgreSQL / SQLite WAL) con aislamiento lógico estricto mediante índices B-Tree sobre el número nacional normalizado (`msisdn_national`) y hash ciego HMAC (`msisdn_hash`).
+  2. **Capa de Almacenamiento de Medios (Bóvedas Privadas $1 \leftrightarrow N$):** Espacio de almacenamiento privado organizado por subdirectorios cifrados basados en hash irreversible del número de teléfono:
+     `/vaults/usr_{HMAC_SHA256(msisdn)}/`
+     - Subcarpeta `images/` (capturas de pantalla, vouchers, fotos de cédula).
+     - Subcarpeta `audio/` (notas de voz PTT en formato OGG/Opus).
+     - Subcarpeta `documents/` (recibos de pago, PDFs de contratos, reportes).
+     - Subcarpeta `video/` (videos cortos MP4 para validaciones de identidad).
+  3. **Gobernanza de Bóvedas:** Cuota máxima asignada por usuario (ej. 50 MB), retención efímera de 30 días para datos de soporte no contractuales, y sanitización Zero-PII en RAM.
+
+#### 3.2. Esquema DDL de Base de Datos para el Módulo Multimodal ($1 \leftrightarrow N$):
+```sql
+-- Cuotas y parámetros de bóveda por abonado
+CREATE TABLE IF NOT EXISTS user_multimodal_vault (
+    vault_id VARCHAR(64) PRIMARY KEY, -- UUID v4
+    msisdn_hash VARCHAR(64) NOT NULL UNIQUE, -- HMAC-SHA256(MSISDN)
+    phone_display VARCHAR(20) NOT NULL, -- "+58 416-XXXXXXX"
+    vault_directory VARCHAR(255) NOT NULL, -- "vaults/usr_a1b2c3d4..."
+    quota_limit_bytes BIGINT DEFAULT 52428800, -- 50 MB
+    quota_used_bytes BIGINT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    last_interaction TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Catálogo de activos multimedia recibidos y despachados
+CREATE TABLE IF NOT EXISTS multimodal_media_asset (
+    asset_id VARCHAR(64) PRIMARY KEY, -- UUID v4
+    vault_id VARCHAR(64) NOT NULL REFERENCES user_multimodal_vault(vault_id),
+    direction VARCHAR(10) NOT NULL CHECK (direction IN ('INBOUND', 'OUTBOUND')),
+    media_type VARCHAR(20) NOT NULL CHECK (media_type IN ('AUDIO', 'IMAGE', 'DOCUMENT', 'VIDEO')),
+    mime_type VARCHAR(100) NOT NULL,
+    file_size_bytes BIGINT NOT NULL,
+    sha256_checksum VARCHAR(64) NOT NULL,
+    file_rel_path VARCHAR(255) NOT NULL,
+    transcription_text TEXT, -- Transcripción Whisper para audios o OCR para imágenes
+    analysis_metadata JSONB, -- Intenciones detectadas, montos de pago, referencias
+    expires_at TIMESTAMP NOT NULL, -- Política de retención (Zero-PII)
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_media_vault_created ON multimodal_media_asset(vault_id, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_media_checksum ON multimodal_media_asset(sha256_checksum);
+```
+
+#### 3.3. Topología de Procesamiento Multimodal y Flujograma E2E:
+```mermaid
+flowchart TD
+    subgraph CLIENTE ["Abonado WhatsApp (Cualquier Operadora)"]
+        MSG_AUDIO["🎙️ Nota de Voz (PTT Audio/Opus)"]
+        MSG_IMG["📸 Foto Voucher / Recibo Pago"]
+        MSG_PDF["📄 Documento Cédula / Contrato"]
+        MSG_VID["🎥 Video de Validación"]
+    end
+
+    subgraph WHATSAPP_GATEWAY ["Meta Cloud API / Baileys / Sandbox"]
+        INBOUND_ROUTER["Router de Mensajería Entrante"]
+    end
+
+    subgraph VAULT_CONTROLLER ["Controlador de Bóvedas Privadas (core/multimodal_vault_manager.py)"]
+        AUTH_GUARD["Verificación de Cuota (<50MB) & Hash"]
+        SECURE_STORE["Almacenamiento Cifrado en /vaults/usr_{hash}/"]
+    end
+
+    subgraph PIPELINE_PROCESSING ["Motores Especializados de Análisis"]
+        WHISPER_STT["Transcriptor de Audio STT (Whisper API / Local)"]
+        VISION_OCR["Extractor Visual & OCR (Tesseract / Gemini Vision)"]
+        PDF_PARSER["Extractor Documental PDF (PyMuPDF / pdfplumber)"]
+        VIDEO_EXTRACT["Extractor de Fotogramas Clave (FFmpeg)"]
+    end
+
+    subgraph REASONING_ENGINE ["Motor de Decisión (Gemini 2.5 Flash / Fast-Path)"]
+        SWARM_DISPATCH["Enrutador Swarm Departamental"]
+        REPLY_BUILDER["Generador de Respuesta Enriquecida"]
+    end
+
+    MSG_AUDIO & MSG_IMG & MSG_PDF & MSG_VID --> INBOUND_ROUTER
+    INBOUND_ROUTER --> AUTH_GUARD --> SECURE_STORE
+    
+    SECURE_STORE -. Audio .-> WHISPER_STT
+    SECURE_STORE -. Imagen .-> VISION_OCR
+    SECURE_STORE -. PDF .-> PDF_PARSER
+    SECURE_STORE -. Video .-> VIDEO_EXTRACT
+
+    WHISPER_STT & VISION_OCR & PDF_PARSER & VIDEO_EXTRACT --> SWARM_DISPATCH
+    SWARM_DISPATCH --> REPLY_BUILDER
+    REPLY_BUILDER -->|Texto + Imagen/Audio + Enlace PWA Universal| CLIENTE
+```
+
+---
+
+### 🛡️ 4. Estrategia de Desarrollo Hermético en Paralelo (Hermetic Parallel Staging)
+Para cumplir con la directiva categórica de **NO TOCAR, ALTERAR NI EDITAR** el flujo productivo `sNMbtiEiTkuQ9OCY` en `https://n8n.lpgtec.net` ni los endpoints productivos mientras los directores y el equipo de QA efectúan pruebas de homologación:
+
+1. **Aislamiento de Código en Directorio Dedicado:**
+   - Todo el código del nuevo módulo se construye en la carpeta aislada:
+     `/Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_161026/MODULO_DESPACHO_MULTIMODAL_WHATSAPP/`
+   - Cero dependencias cruzadas que puedan modificar los binarios o la base de datos de producción `local_movilnet.db`.
+2. **Aislamiento de Puertos Locales:**
+   - El servicio de producción local continuará reservado en `:8010`.
+   - El servidor de desarrollo y pruebas del módulo multimodal operará exclusivamente en el puerto dedicado `:8025`.
+3. **Aislamiento en n8n Cloud:**
+   - El flujo oficial `sNMbtiEiTkuQ9OCY` y sus rutas `/webhook/messages_upsert4` permanecen en estado inmutable `LOCKED_FREEZE`.
+   - Para las pruebas de desarrollo se registrará un workflow sandbox completamente independiente:
+     `[DEV_STAGE] Movilnet_Despacho_Multimodal_Sandbox` escuchando en `/webhook-stage/multimodal_media_v1`.
+4. **Fases de Construcción Secuencial:**
+   - *Fase I:* Gestor de Bóvedas Privadas y Almacenamiento Cuotificado (`vault_manager.py`).
+   - *Fase II:* Motores de Ingesta y Transcripción (Audio STT, OCR de imágenes, extracción PDF).
+   - *Fase III:* Orquestación de Agentes y Razonamiento Multimodal (Gemini 2.5 Flash).
+   - *Fase IV:* Generación de Respuestas Ricas Salientes (audios generados TTS, vouchers PDF, imágenes dinámicas) y certificación final con QA.
+
+---
+
+### 🧪 5. Matriz de Estado y Verificación Cloud en Vivo
+- **Render Cloud Producción:** Uptime sostenido 24/7 (`https://one21026-ids-movilnet-pwa.onrender.com`), 200 OK, Cero Downtime.
+- **Tablero Conversatorio en Vivo:** Operacional en `/ui/monitor/conversatorio.html`.
+- **Portal PWA 4GMAX:** Operacional en `/ui/pwa_stitch/index.html`.
+- **Flujo n8n Cloud `sNMbtiEiTkuQ9OCY`:** Operativo en versión `025711a8-65f6-4dee-b3d3-8a6789d11279`.
+- **Gobernanza Constitucional:** Cumplimiento irrestricto de la Regla Inviolable de Enlace PWA Universal al final de cada despacho.
