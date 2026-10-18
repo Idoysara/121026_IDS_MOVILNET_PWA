@@ -189,3 +189,7 @@ Artefactos Productivos:
 ---
 *Actualizado automáticamente — Swarm Orchestrator Autónomo L5*  
 *`./venv/bin/pytest tests/` → `302 passed in 4.56s — 100% PASS`*
+
+### 35. Purga Quirúrgica de MSISDN en Workflow n8n Movilnet sNMbtiEiTkuQ9OCY y Respaldo GitHub
+- **Estado:** [COMPLETADO]
+- **Detalle:** Eliminado `0416-6251587` de `PagoC2P` en `sNMbtiEiTkuQ9OCY`, reemplazado por línea oficial `0424-1533712` / `MOVILNET_C2P_PHONE`. Fortificado `Edge Carrier Firewall` para descarte perimetral inmediato en `/webhook-test/messages_upsert4` y `/webhook/messages_upsert4`. Respetados los 51 flujos adicionales de n8n. Respaldado en GitHub `main`.
