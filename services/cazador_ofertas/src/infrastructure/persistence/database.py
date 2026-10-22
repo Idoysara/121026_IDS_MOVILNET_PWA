@@ -50,6 +50,7 @@ def get_db_session() -> Generator[Session, None, None]:
 def init_db(target_engine=None) -> None:
     """Crea todas las tablas declaradas en el target_engine y asegura columnas espaciales."""
     from sqlalchemy import text
+    from . import models  # noqa: F401 - Asegura registro de modelos en Base.metadata
     eng = target_engine or engine
     Base.metadata.create_all(bind=eng)
     try:

@@ -88,6 +88,12 @@ class CazadorApplicationService:
             self.ocs_adapter = None
 
         # 2. Sesión y Repositorios Hexagonales de Persistencia
+        try:
+            from ..infrastructure.persistence.database import init_db
+            init_db()
+        except Exception:
+            pass
+
         self.session = db_session or SessionFactory()
         self.comercio_repo = ComercioRepository(self.session)
         self.oferta_repo = OfertaRepository(self.session)
@@ -106,7 +112,15 @@ class CazadorApplicationService:
     def _inicializar_repositorios_y_dominio(self, seed_path: Optional[str]) -> None:
         """Sincroniza la capa de dominio con la base de datos relacional y carga semilla si está vacía."""
         # Comprobar si hay comercios en base de datos
-        comercios_db = self.comercio_repo.get_active()
+        try:
+            comercios_db = self.comercio_repo.get_active()
+        except Exception:
+            try:
+                from ..infrastructure.persistence.database import init_db
+                init_db()
+                comercios_db = self.comercio_repo.get_active()
+            except Exception:
+                comercios_db = []
         
         if not comercios_db and seed_path and os.path.exists(seed_path):
             self.cargar_semilla(seed_path)
