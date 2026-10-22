@@ -107,6 +107,186 @@ CANONICAL_ZONES: Dict[str, Dict[str, Any]] = {
         "descripcion": "Eje comercial y residencial Bello Monte",
         "tags": ["bello monte", "ciudad banesco", "avenida principal bello monte"]
     },
+    "la trinidad": {
+        "slug": "la-trinidad",
+        "nombre": "La Trinidad",
+        "municipio": "Baruta",
+        "ciudad": "Caracas",
+        "centroide": {"lat": 10.4350, "lon": -66.8520},
+        "radio_zona_m": 1500.0,
+        "descripcion": "Eje comercial, industrial y médico de La Trinidad",
+        "tags": ["la trinidad", "trinidad", "centro medico docente", "zona industrial la trinidad"]
+    },
+    "el cafetal": {
+        "slug": "el-cafetal",
+        "nombre": "El Cafetal / Santa Sofía",
+        "municipio": "Baruta",
+        "ciudad": "Caracas",
+        "centroide": {"lat": 10.4710, "lon": -66.8390},
+        "radio_zona_m": 1400.0,
+        "descripcion": "Zona residencial y centros comerciales El Cafetal, Santa Sofía y San Luis",
+        "tags": ["el cafetal", "cafetal", "santa sofia", "san luis", "plaza las americas"]
+    },
+    "prados del este": {
+        "slug": "prados-del-este",
+        "nombre": "Prados del Este / Santa Fe",
+        "municipio": "Baruta",
+        "ciudad": "Caracas",
+        "centroide": {"lat": 10.4480, "lon": -66.8680},
+        "radio_zona_m": 1500.0,
+        "descripcion": "Centros comerciales de Prados del Este, Santa Fe y Alto Prado",
+        "tags": ["prados del este", "santa fe", "alto prado", "galerias prados del este"]
+    },
+    "bello campo": {
+        "slug": "bello-campo-ccct",
+        "nombre": "Bello Campo / CCCT / Chuao",
+        "municipio": "Chacao",
+        "ciudad": "Caracas",
+        "centroide": {"lat": 10.4850, "lon": -66.8520},
+        "radio_zona_m": 1200.0,
+        "descripcion": "CCCT, Centro Banaven (Cubo Negro), Bello Campo y Chuao",
+        "tags": ["bello campo", "ccct", "chuao", "cubo negro", "tamanaco"]
+    },
+    "los dos caminos": {
+        "slug": "los-dos-caminos",
+        "nombre": "Los Dos Caminos / Millenium",
+        "municipio": "Sucre",
+        "ciudad": "Caracas",
+        "centroide": {"lat": 10.4940, "lon": -66.8320},
+        "radio_zona_m": 1300.0,
+        "descripcion": "Corredor comercial Los Dos Caminos, CC Millenium Mall y Parque del Este",
+        "tags": ["los dos caminos", "millenium", "parque del este", "avenida romulo gallegos"]
+    },
+    "boleita": {
+        "slug": "boleita-los-ruices",
+        "nombre": "Boleíta / Los Ruices",
+        "municipio": "Sucre",
+        "ciudad": "Caracas",
+        "centroide": {"lat": 10.4960, "lon": -66.8220},
+        "radio_zona_m": 1400.0,
+        "descripcion": "Distrito comercial e industrial Boleíta Norte/Sur y Los Ruices",
+        "tags": ["boleita", "los ruices", "boleita center", "los cortijos"]
+    },
+    "la california": {
+        "slug": "la-california-lider",
+        "nombre": "La California / CC Líder",
+        "municipio": "Sucre",
+        "ciudad": "Caracas",
+        "centroide": {"lat": 10.4850, "lon": -66.8160},
+        "radio_zona_m": 1300.0,
+        "descripcion": "Eje comercial La California Norte, Sur, Macaracuay y CC Líder",
+        "tags": ["la california", "california", "lider", "cc lider", "macaracuay"]
+    },
+    "sebucan": {
+        "slug": "sebucan-los-chorros",
+        "nombre": "Sebucán / Los Chorros",
+        "municipio": "Sucre",
+        "ciudad": "Caracas",
+        "centroide": {"lat": 10.5010, "lon": -66.8280},
+        "radio_zona_m": 1200.0,
+        "descripcion": "Centros comerciales y gastronómicos Sebucán, Santa Eduvigis y Los Chorros",
+        "tags": ["sebucan", "los chorros", "santa eduvigis", "montecristo"]
+    },
+    "terrazas del avila": {
+        "slug": "terrazas-del-avila",
+        "nombre": "Terrazas del Ávila / El Marqués",
+        "municipio": "Sucre",
+        "ciudad": "Caracas",
+        "centroide": {"lat": 10.4890, "lon": -66.8050},
+        "radio_zona_m": 1500.0,
+        "descripcion": "Zona comercial Terrazas del Ávila, Universidad Metropolitana y El Marqués",
+        "tags": ["terrazas del avila", "el marques", "unimet", "la urbina"]
+    },
+    "el hatillo": {
+        "slug": "el-hatillo-pueblo",
+        "nombre": "El Hatillo (Pueblo)",
+        "municipio": "El Hatillo",
+        "ciudad": "Caracas",
+        "centroide": {"lat": 10.4240, "lon": -66.8250},
+        "radio_zona_m": 1300.0,
+        "descripcion": "Casco histórico, restaurantes tradicionales y artesanías El Hatillo",
+        "tags": ["el hatillo", "hatillo", "pueblo el hatillo", "plaza bolivar hatillo"]
+    },
+    "los naranjos": {
+        "slug": "los-naranjos",
+        "nombre": "Los Naranjos",
+        "municipio": "El Hatillo",
+        "ciudad": "Caracas",
+        "centroide": {"lat": 10.4380, "lon": -66.8180},
+        "radio_zona_m": 1400.0,
+        "descripcion": "Centro comercial Galerías Los Naranjos y zona comercial Los Naranjos",
+        "tags": ["los naranjos", "galerias los naranjos", "subida los naranjos"]
+    },
+    "la lagunita": {
+        "slug": "la-lagunita",
+        "nombre": "La Lagunita / Paseo El Hatillo",
+        "municipio": "El Hatillo",
+        "ciudad": "Caracas",
+        "centroide": {"lat": 10.4190, "lon": -66.8120},
+        "radio_zona_m": 1500.0,
+        "descripcion": "Mall Paseo El Hatillo La Lagunita y Av. Principal de La Lagunita",
+        "tags": ["la lagunita", "lagunita", "paseo el hatillo", "la union"]
+    },
+    "la boyera": {
+        "slug": "la-boyera-el-cigarral",
+        "nombre": "La Boyera / El Cigarral",
+        "municipio": "El Hatillo",
+        "ciudad": "Caracas",
+        "centroide": {"lat": 10.4320, "lon": -66.8320},
+        "radio_zona_m": 1400.0,
+        "descripcion": "Eje comercial Av. Intercomunal La Boyera, CC Los Geranios y El Cigarral",
+        "tags": ["la boyera", "boyera", "el cigarral", "los geranios"]
+    },
+    "centro historico": {
+        "slug": "centro-caracas-silencio",
+        "nombre": "Centro Histórico / El Silencio",
+        "municipio": "Libertador",
+        "ciudad": "Caracas",
+        "centroide": {"lat": 10.5060, "lon": -66.9180},
+        "radio_zona_m": 1400.0,
+        "descripcion": "Eje comercial El Silencio, Capitolio, Av. Baralt y Casco Central",
+        "tags": ["centro", "el silencio", "capitolio", "baralt", "plaza bolivar caracas"]
+    },
+    "san bernardino": {
+        "slug": "san-bernardino",
+        "nombre": "San Bernardino",
+        "municipio": "Libertador",
+        "ciudad": "Caracas",
+        "centroide": {"lat": 10.5130, "lon": -66.8990},
+        "radio_zona_m": 1300.0,
+        "descripcion": "Sector médico, clínico y comercial Av. Vollmer y San Bernardino",
+        "tags": ["san bernardino", "vollmer", "clinicas san bernardino"]
+    },
+    "el paraiso": {
+        "slug": "el-paraiso",
+        "nombre": "El Paraíso",
+        "municipio": "Libertador",
+        "ciudad": "Caracas",
+        "centroide": {"lat": 10.4850, "lon": -66.9320},
+        "radio_zona_m": 1500.0,
+        "descripcion": "Zona comercial Plaza Madariaga, Av. Páez y Multiplaza El Paraíso",
+        "tags": ["el paraiso", "paraiso", "multiplaza el paraiso", "madariaga"]
+    },
+    "montalban": {
+        "slug": "montalban-la-villa",
+        "nombre": "Montalbán / La Vega",
+        "municipio": "Libertador",
+        "ciudad": "Caracas",
+        "centroide": {"lat": 10.4720, "lon": -66.9620},
+        "radio_zona_m": 1500.0,
+        "descripcion": "Eje comercial Montalbán I, II, III, CC La Villa y UCAB",
+        "tags": ["montalban", "la villa", "ucab", "montalban 1", "montalban 2"]
+    },
+    "catia": {
+        "slug": "catia-perez-bonalde",
+        "nombre": "Catia (Pérez Bonalde)",
+        "municipio": "Libertador",
+        "ciudad": "Caracas",
+        "centroide": {"lat": 10.5210, "lon": -66.9380},
+        "radio_zona_m": 1500.0,
+        "descripcion": "Bulevar Pérez Bonalde, Plaza Sucre y eje comercial de Catia",
+        "tags": ["catia", "perez bonalde", "plaza sucre", "avenida sucre"]
+    },
     "caracas": {
         "slug": "caracas-metropolitana",
         "nombre": "Caracas (Área Metropolitana)",
