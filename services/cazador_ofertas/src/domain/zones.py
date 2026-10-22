@@ -107,6 +107,77 @@ CANONICAL_ZONES: Dict[str, Dict[str, Any]] = {
         "descripcion": "Eje comercial y residencial Bello Monte",
         "tags": ["bello monte", "ciudad banesco", "avenida principal bello monte"]
     },
+    "caracas": {
+        "slug": "caracas-metropolitana",
+        "nombre": "Caracas (Área Metropolitana)",
+        "municipio": "Metropolitano",
+        "ciudad": "Caracas",
+        "centroide": {"lat": 10.4910, "lon": -66.8650},
+        "radio_zona_m": 4500.0,
+        "descripcion": "Valle de Caracas y ejes comerciales de la Gran Caracas",
+        "tags": ["caracas", "ccs", "distrito capital", "gran caracas"]
+    },
+    # CIUDADES PILOTO NACIONALES
+    "maracay": {
+        "slug": "maracay-centro-delicias",
+        "nombre": "Maracay (Las Delicias / Centro)",
+        "municipio": "Girardot",
+        "ciudad": "Maracay",
+        "centroide": {"lat": 10.2550, "lon": -67.5920},
+        "radio_zona_m": 3500.0,
+        "descripcion": "Eje comercial Las Delicias, Centro y Parque Los Aviadores",
+        "tags": ["maracay", "aragua", "las delicias", "los aviadores", "san jacinto", "el limon"]
+    },
+    "valencia": {
+        "slug": "valencia-vinedo-naguanagua",
+        "nombre": "Valencia (El Viñedo / Sambil)",
+        "municipio": "Valencia",
+        "ciudad": "Valencia",
+        "centroide": {"lat": 10.2300, "lon": -68.0080},
+        "radio_zona_m": 4000.0,
+        "descripcion": "Eje gastronómico El Viñedo, Naguanagua, Sambil y Metrópolis",
+        "tags": ["valencia", "carabobo", "el vinedo", "naguanagua", "sambil valencia", "san diego", "metropolis valencia"]
+    },
+    "la guaira": {
+        "slug": "la-guaira-caribe-catia",
+        "nombre": "La Guaira (Caribe / Catia La Mar)",
+        "municipio": "Vargas",
+        "ciudad": "La Guaira",
+        "centroide": {"lat": 10.6050, "lon": -66.9500},
+        "radio_zona_m": 5000.0,
+        "descripcion": "Litoral central, Catia La Mar, Maiquetía, Macuto y Caribe",
+        "tags": ["la guaira", "vargas", "litoral", "caribe", "catia la mar", "maiquetia", "macuto", "playa grande"]
+    },
+    "barquisimeto": {
+        "slug": "barquisimeto-este-sambil",
+        "nombre": "Barquisimeto (Zona Este / Sambil)",
+        "municipio": "Iribarren",
+        "ciudad": "Barquisimeto",
+        "centroide": {"lat": 10.0710, "lon": -69.3050},
+        "radio_zona_m": 4000.0,
+        "descripcion": "Epicentro comercial Este, Sambil Barquisimeto, Av. Lara y Cabudare",
+        "tags": ["barquisimeto", "lara", "sambil barquisimeto", "cabudare", "nueva segovia", "zona este"]
+    },
+    "maracaibo": {
+        "slug": "maracaibo-5dejulio-lago",
+        "nombre": "Maracaibo (5 de Julio / Lago Mall)",
+        "municipio": "Maracaibo",
+        "ciudad": "Maracaibo",
+        "centroide": {"lat": 10.6650, "lon": -71.6100},
+        "radio_zona_m": 4500.0,
+        "descripcion": "Corredor 5 de Julio, Bella Vista, El Milagro, Lago Mall y Sambil Maracaibo",
+        "tags": ["maracaibo", "zulia", "5 de julio", "bella vista", "lago mall", "sambil maracaibo", "el milagro"]
+    },
+    "lecheria": {
+        "slug": "lecheria-plaza-mayor",
+        "nombre": "Lechería (Plaza Mayor / Playa Mansa)",
+        "municipio": "Diego Bautista Urbaneja",
+        "ciudad": "Lechería",
+        "centroide": {"lat": 10.1940, "lon": -64.6950},
+        "radio_zona_m": 3000.0,
+        "descripcion": "Bulevar costero, Plaza Mayor, Playa Mansa y Av. Principal de Lechería",
+        "tags": ["lecheria", "anzoategui", "plaza mayor", "playa mansa", "puerto la cruz", "morro", "barcelona anzoategui"]
+    },
     "brickell": {
         "slug": "brickell",
         "nombre": "Brickell (Miami)",

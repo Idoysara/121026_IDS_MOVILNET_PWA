@@ -44,8 +44,9 @@ from services.cazador_ofertas.src.domain.invariants import (
 )
 from core.carrier_funnel_classifier import CarrierFunnelClassifier, Carrier
 
-# Coordenadas de referencia para zonas comerciales frecuentes de Caracas
-ZONAS_REFERENCIA_CARACAS: Dict[str, Tuple[float, float]] = {
+# Coordenadas de referencia para las 7 Ciudades Piloto Comerciales de Venezuela
+ZONAS_REFERENCIA_VENEZUELA: Dict[str, Tuple[float, float]] = {
+    # 1. Gran Caracas
     "chacao": (10.4925, -66.8550),
     "plaza el indio": (10.4925, -66.8550),
     "las mercedes": (10.4810, -66.8610),
@@ -67,7 +68,65 @@ ZONAS_REFERENCIA_CARACAS: Dict[str, Tuple[float, float]] = {
     "bellas artes": (10.5010, -66.8990),
     "la candelaria": (10.5050, -66.9030),
     "catia": (10.5210, -66.9380),
+    "caracas": (10.4910, -66.8650),
+    "ccs": (10.4910, -66.8650),
+
+    # 2. Maracay (Aragua)
+    "maracay": (10.2550, -67.5920),
+    "las delicias": (10.2650, -67.5900),
+    "los aviadores": (10.1980, -67.5750),
+    "parque los aviadores": (10.1980, -67.5750),
+    "san jacinto": (10.2450, -67.5750),
+    "el limon": (10.3050, -67.6320),
+    "el limón": (10.3050, -67.6320),
+
+    # 3. Valencia (Carabobo)
+    "valencia": (10.2300, -68.0080),
+    "el vinedo": (10.2180, -68.0060),
+    "el viñedo": (10.2180, -68.0060),
+    "sambil valencia": (10.2520, -68.0130),
+    "naguanagua": (10.2520, -68.0130),
+    "san diego": (10.2550, -67.9550),
+    "metropolis valencia": (10.2010, -67.9620),
+
+    # 4. La Guaira (Vargas)
+    "la guaira": (10.6050, -66.9500),
+    "catia la mar": (10.6030, -67.0320),
+    "playa grande": (10.6080, -67.0250),
+    "maiquetia": (10.5980, -66.9550),
+    "maiquetía": (10.5980, -66.9550),
+    "macuto": (10.6120, -66.9050),
+    "caribe": (10.6120, -66.8650),
+    "caraballeda": (10.6120, -66.8650),
+
+    # 5. Barquisimeto (Lara)
+    "barquisimeto": (10.0710, -69.3050),
+    "sambil barquisimeto": (10.0730, -69.2940),
+    "cabudare": (10.0330, -69.2660),
+    "nueva segovia": (10.0650, -69.2980),
+    "av lara": (10.0680, -69.2950),
+    "catedral barquisimeto": (10.0650, -69.3250),
+
+    # 6. Maracaibo (Zulia)
+    "maracaibo": (10.6650, -71.6100),
+    "5 de julio": (10.6690, -71.6150),
+    "calle 77": (10.6690, -71.6150),
+    "bella vista": (10.6650, -71.6100),
+    "lago mall": (10.6620, -71.6020),
+    "el milagro": (10.6620, -71.6020),
+    "sambil maracaibo": (10.7020, -71.6420),
+    "delicias norte": (10.6850, -71.6350),
+
+    # 7. Lechería (Anzoátegui)
+    "lecheria": (10.1940, -64.6950),
+    "lechería": (10.1940, -64.6950),
+    "plaza mayor": (10.1920, -64.6930),
+    "playa mansa": (10.1990, -64.6980),
+    "puerto la cruz": (10.2150, -64.6350),
+    "morro": (10.2010, -64.6920),
 }
+ZONAS_REFERENCIA_CARACAS = ZONAS_REFERENCIA_VENEZUELA
+
 
 
 @dataclass

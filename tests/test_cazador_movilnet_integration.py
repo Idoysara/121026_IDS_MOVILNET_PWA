@@ -123,6 +123,29 @@ def test_fastpath_deals_secuencia_whatsapp_pin_gps(interceptor):
     assert "Farmatodo" in t2.response_text or "KPMG" in t2.response_text or "San Ignacio" in t2.response_text
 
 
+def test_fastpath_deals_7_ciudades_piloto(interceptor):
+    """
+    Certifica la detección de ofertas y geocodificación en las 7 ciudades piloto:
+    Caracas, Maracay, Valencia, La Guaira, Barquisimeto, Maracaibo, Lechería.
+    """
+    ciudades = [
+        ("Caracas", "Quiero ofertas en Caracas"),
+        ("Maracay", "superofertas en Maracay"),
+        ("Valencia", "promociones en Valencia"),
+        ("La Guaira", "ofertas en La Guaira"),
+        ("Barquisimeto", "descuentos en Barquisimeto"),
+        ("Maracaibo", "ofertas en Maracaibo"),
+        ("Lechería", "superofertas en Lechería"),
+    ]
+    for ciudad, query in ciudades:
+        res = interceptor.intercept(query, "04168887766")
+        assert res.can_intercept is True, f"Fallo can_intercept en {ciudad}"
+        assert res.intent_detected == "CAZADOR_OFERTAS_CLUB", f"Fallo intent en {ciudad}"
+        assert "¡Club 4GMAX Activado!" in res.response_text, f"Fallo ofertas activadas en {ciudad}"
+        assert "Bs" in res.response_text, f"Fallo precios en {ciudad}"
+        assert res.tokens_consumed == 0
+
+
 # ============================================================================
 # 2. SUBAGENTE SCOUT DE OFERTAS (SWARM L5)
 # ============================================================================
