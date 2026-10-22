@@ -16,6 +16,20 @@ echo "   que entrar a la web ni buscar el botón 'Manual Deploy'."
 echo "========================================================================"
 echo ""
 
+# 0. Verificación estricta de Aislamiento de Entorno
+if [ -f ".env" ]; then
+    AIRGAP_CHECK=$(grep -E "^AIRGAP_DEV_MODE=true|^ENVIRONMENT=development" .env 2>/dev/null)
+    if [ -n "$AIRGAP_CHECK" ]; then
+        echo "🛑 BLOQUEO DE SEGURIDAD (AIR-GAP DE DESARROLLO ACTIVO):"
+        echo "   Este equipo MBP está configurado estrictamente como AMBIENTE DE DESARROLLO."
+        echo "   El despliegue a Render Cloud de producción está bloqueado para proteger la nube."
+        echo "   La producción opera de forma aislada en otro equipo MBP."
+        echo ""
+        read -p "Presiona ENTER para salir..."
+        exit 1
+    fi
+fi
+
 # 1. Verificar si hay cambios locales para subir a GitHub
 if [ -n "$(git status --porcelain 2>/dev/null)" ]; then
     echo "📦 1. Sincronizando cambios locales con GitHub..."

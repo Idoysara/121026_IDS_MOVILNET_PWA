@@ -22,6 +22,20 @@ echo "   a cualquier hora, sin que tu laptop tenga que estar encendida."
 echo "========================================================================"
 echo ""
 
+# 0. Verificación estricta de Aislamiento de Entorno
+if [ -f ".env" ]; then
+    AIRGAP_CHECK=$(grep -E "^AIRGAP_DEV_MODE=true|^ENVIRONMENT=development" .env 2>/dev/null)
+    if [ -n "$AIRGAP_CHECK" ]; then
+        echo "🛑 BLOQUEO DE SEGURIDAD (AIR-GAP DE DESARROLLO ACTIVO):"
+        echo "   Este equipo MBP es exclusivamente AMBIENTE DE DESARROLLO."
+        echo "   El despliegue a la nube de producción está bloqueado para proteger la infraestructura."
+        echo "   La producción opera de forma aislada en otro equipo MBP."
+        echo ""
+        read -p "Presiona ENTER para salir..."
+        exit 1
+    fi
+fi
+
 # 1. Ejecutar auditoría previa de preparación
 echo "🔍 1. Ejecutando auditoría de preparación técnica para la nube..."
 if [ -f "venv/bin/python3" ]; then

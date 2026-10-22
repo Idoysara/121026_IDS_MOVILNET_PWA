@@ -11,8 +11,19 @@ clear
 echo "========================================================================"
 echo "🚀 RESPALDO EN GITHUB — MOVILNET PWA (121026_IDS_MOVILNET_PWA)"
 echo "========================================================================"
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "develop")
+
+if [ "$CURRENT_BRANCH" = "main" ]; then
+    echo "🛑 BLOQUEO DE SEGURIDAD (AIR-GAP DE DESARROLLO ACTIVO):"
+    echo "   Este equipo es AMBIENTE DE DESARROLLO. Está estrictamente prohibido hacer push a 'main'."
+    echo "   Para respaldar tus cambios locales, opera en la rama 'develop'."
+    echo ""
+    read -p "Presiona ENTER para salir..."
+    exit 1
+fi
+
 echo "📡 Destino: https://github.com/Idoysara/121026_IDS_MOVILNET_PWA"
-echo "🌿 Rama:    main"
+echo "🌿 Rama:    $CURRENT_BRANCH (Desarrollo)"
 echo "========================================================================"
 echo ""
 
@@ -20,12 +31,12 @@ echo ""
 if [ -n "$(git status --porcelain)" ]; then
     echo "📦 Preparando archivos locales pendientes..."
     git add .
-    git commit -m "feat(pwa): actualizacion automatica de respaldo Movilnet PWA"
+    git commit -m "feat(dev): actualizacion de desarrollo local Movilnet"
 fi
 
 # 2. Intentar push con credenciales almacenadas
-echo "🔄 Intentando subir a GitHub con credenciales del sistema..."
-git push -u origin main 2>/dev/null
+echo "🔄 Intentando subir a GitHub con credenciales del sistema a rama $CURRENT_BRANCH..."
+git push -u origin "$CURRENT_BRANCH" 2>/dev/null
 
 if [ $? -eq 0 ]; then
     echo ""
