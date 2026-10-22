@@ -20,6 +20,7 @@ from api.routers.fintech_router import FintechRouter
 from api.routers.agents_router import AgentsRouter
 from api.routers.webhooks_router import WebhooksRouter
 from api.routers.noc_router import NocRouter
+from api.routers.cazador_router import CazadorRouter
 
 __all__ = [
     "BaseDomainRouter",
@@ -34,4 +35,5 @@ __all__ = [
     "AgentsRouter",
     "WebhooksRouter",
     "NocRouter",
+    "CazadorRouter",
 ]

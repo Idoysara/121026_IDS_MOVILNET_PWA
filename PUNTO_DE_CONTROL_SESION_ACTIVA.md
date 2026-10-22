@@ -14,7 +14,10 @@
 * **Hito 35 Completado (100% PASS):** Purga Quirúrgica del Identificador Legacy en el Flujo Movilnet n8n (`sNMbtiEiTkuQ9OCY`), Fortificación de Firewall Perimetral (`Edge Carrier Firewall`), Respeto Absoluto de los 51 Workflows Restantes en n8n Cloud y Respaldo en GitHub (Commit `d0e77b0`).
 * **Hito 36 Completado (100% PASS):** Respaldo Maestro Integral `Movilnet_181026` con paquetes `CORE_MOVILNET_EXPORT_181026.tar.gz` (64.84 MB) y `CORE_MOVILNET_EXPORT_181026.zip` (66.03 MB), manifiesto criptográfico SHA-256 y Acta Oficial de Certificación.
 * **Hito 37 Completado (100% PASS):** Modelo Conceptual y Especificación Arquitectónica de Despacho Multimodal en WhatsApp con Bóvedas de Usuario ($1 \leftrightarrow N$), Resolución Multi-Tenant Lógico vs Multi-DB y Metodología Hermetic Parallel Staging (Puerto `:8025`).
-* **Capítulos de Bitácora Vigentes:** **1 al 222** (Sincronizados en `BITACORA_MOVILNET.md` y `LIBRO_MAESTRO_BITACORA_Y_DOCUMENTOS.md`).
+* **Hito 38 Completado (100% PASS):** Auditoría Forense y Blindaje de Aislamiento de Entorno DEV (MBP local) vs Producción Cloud 24/7 (`AIRGAP_DEV_MODE=true`, rama `develop`, Render inmutable).
+* **Hito 39 Completado (100% PASS):** Integración Desacoplada de Cazador de Ofertas en Movilnet Core (Opción A, `services/cazador_ofertas/`, cuponería TOTP 60s, Carrier Billing split 20/80, margen bruto $\ge 35\%$, 78 tests 100% PASS).
+* **Hito 40 Completado (100% PASS):** Implementación del Modelo Espacial de Cero Fricción para Anunciantes (0 metros de entrada obligatoria, Escenario 1 Zonas canónicas, Escenario 2 Run of Network 50km metropolitano, Escenario 3 Smart Default 500m cinemático y guarda anti-spots inaudibles $<50\text{m}$, PWA Stitch `#modal-merchant-onboarding`).
+* **Capítulos de Bitácora Vigentes:** **1 al 225** (Sincronizados en `BITACORA_MOVILNET.md` y `LIBRO_MAESTRO_BITACORA_Y_DOCUMENTOS.md`).
 
 ---
 

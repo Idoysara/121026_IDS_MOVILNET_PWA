@@ -157,6 +157,7 @@ class MovilnetAPIService:
             AgentsRouter,
             WebhooksRouter,
             NocRouter,
+            CazadorRouter,
         )
         self.core_router = CoreRouter()
         self.telco_router = TelcoRouter()
@@ -164,6 +165,7 @@ class MovilnetAPIService:
         self.agents_router = AgentsRouter()
         self.webhooks_router = WebhooksRouter()
         self.noc_router = NocRouter()
+        self.cazador_router = CazadorRouter()
         self.routers = [
             self.core_router,
             self.telco_router,
@@ -171,6 +173,7 @@ class MovilnetAPIService:
             self.agents_router,
             self.webhooks_router,
             self.noc_router,
+            self.cazador_router,
         ]
 
 
@@ -893,7 +896,12 @@ class MovilnetAPIService:
             response.response_text = fp_guard.response_text
             response.tokens_consumed = 0
             response.cost_usd = 0.0
-        elif fp_res.can_intercept and fp_res.intent_detected in ("EMERGENCY_DISPATCH_911", "CONSULTA_GEOESPACIAL_UBICACION", "LOCALIZADOR_OFICINAS_TELCO"):
+        elif fp_res.can_intercept and fp_res.intent_detected in (
+            "EMERGENCY_DISPATCH_911",
+            "CONSULTA_GEOESPACIAL_UBICACION",
+            "LOCALIZADOR_OFICINAS_TELCO",
+            "CAZADOR_OFERTAS_CLUB"
+        ):
             from api.agents.agent_customer_care import AgentResponse, AgentExecutionMode, IntentType
             eff_session = session_id_val or f"sess-{phone_for_guard}"
             response = AgentResponse(

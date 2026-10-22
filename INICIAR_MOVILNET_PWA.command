@@ -56,7 +56,11 @@ echo "🛡️  Verificando Motores Hexagonales y Sincronizando WhatsApp (0058424
 ${PYTHON_BIN} api/agents/agent_customer_care.py --test >/dev/null 2>&1 && echo "  ✅ Agente MOVI (CustomerCareAgent - 6 módulos): ACTIVO"
 ${PYTHON_BIN} core/conversation_trace_engine.py --test >/dev/null 2>&1 && echo "  ✅ Motor de Trazas E2E (ConversationTraceEngine - 5 módulos): ACTIVO"
 ${PYTHON_BIN} core/webhook_noise_filter.py --test >/dev/null 2>&1 && echo "  ✅ Guardarraíles Zero-Token y SQLite WAL: ACTIVOS"
-${PYTHON_BIN} -c "from core.conversation_trace_engine import conversation_trace_engine; from core.trace_cloud_sync_adapter import TraceCloudSyncAdapter; conversation_trace_engine.sync_with_n8n(limit=25); TraceCloudSyncAdapter.push_traces_to_cloud_render(conversation_trace_engine.traces_cache, max_items=20)" >/dev/null 2>&1 && echo "  ✅ Sincronización n8n Cloud ↔ Conversatorio Render (00584241533712): SINCRONIZADO"
+if [ "$AIRGAP_DEV_MODE" = "true" ] || grep -q "AIRGAP_DEV_MODE=true" .env 2>/dev/null; then
+    echo "  🛡️  [AIR-GAP DEV]: Sincronización n8n/Render Cloud desactivada (Aislamiento total de Producción)."
+else
+    ${PYTHON_BIN} -c "from core.conversation_trace_engine import conversation_trace_engine; from core.trace_cloud_sync_adapter import TraceCloudSyncAdapter; conversation_trace_engine.sync_with_n8n(limit=25); TraceCloudSyncAdapter.push_traces_to_cloud_render(conversation_trace_engine.traces_cache, max_items=20)" >/dev/null 2>&1 && echo "  ✅ Sincronización n8n Cloud ↔ Conversatorio Render (00584241533712): SINCRONIZADO"
+fi
 
 if lsof -i :${PORT} >/dev/null 2>&1; then
     STATUS_LOCAL="🟢 ACTIVO Y OPERATIVO (Puerto :${PORT})"

@@ -1,9 +1,9 @@
 {
-  "deployment_id": "DEPLOY-PROD-1792262514-1A4A41",
+  "deployment_id": "DEPLOY-PROD-1792669629-259139",
   "project": "AI_Movilnet_300926",
   "organization": "Telecomunicaciones Movilnet C.A.",
   "target_scale": "4.000.000 de Abonados (0416 / 0426)",
-  "timestamp": "2026-10-17T18:41:54.209738+00:00",
+  "timestamp": "2026-10-22T11:47:09.977260+00:00",
   "stages": {
     "stage_1_certificates": {
       "passed": true,
@@ -20,12 +20,12 @@
         },
         "CERTIFICATION_FASE2_GATEKEEPER.json": {
           "exists": true,
-          "seal": "896a8ccc3a3099d73dac6633e7322f0cc0987960c46fa04bd87e9d39def9fb91",
+          "seal": "fb585f516b6b3cc2e793548ca3e069a498cac78a115c3b57ef608387dc5cebb2",
           "valid": true
         },
         "CERTIFICATION_FASE3_GATEKEEPER.json": {
           "exists": true,
-          "seal": "ad2065d8ffaf92a8d419faa222d3adbfc77a291b22dc733d4fa890f143be8a1e",
+          "seal": "61752d2c0c36ed4c7b52140da01329e35a26fcdc7d3828204892443d41303115",
           "valid": true
         },
         "CERTIFICATION_FASE4_GATEKEEPER.json": {
@@ -45,7 +45,7 @@
       "passed": true,
       "paths_count": 25,
       "schemas_count": 31,
-      "file_path": "/Users/ismael/Desktop/121026_CORE_MOVILNET/Movilnet_161026/backup_staging/01_SOURCE_CODE/api/openapi.json"
+      "file_path": "/Users/personal/Desktop/IDS_MOVILNET/api/openapi.json"
     },
     "stage_4_n8n": {
       "passed": true,
@@ -62,11 +62,11 @@
       "passed": true,
       "total_requests": 50,
       "success_rate_pct": 100.0,
-      "throughput_tps": 239.42,
-      "p95_latency_ms": 49.446
+      "throughput_tps": 410.14,
+      "p95_latency_ms": 31.86
     }
   },
   "status": "SUCCESS",
   "verdict": "Despliegue a Producci\u00f3n Carrier-Grade completado con \u00e9xito total en sus 6 etapas. El sistema AI_Movilnet_300926 se encuentra operativo al 100% y en servicio para los 4.000.000 de abonados de Telecomunicaciones Movilnet C.A.",
-  "sha256_cryptographic_seal": "7149aea0d87fa8e9c31142f4a6f89e33cb20166fd01f2bf85ecc37d469f2c4de"
+  "sha256_cryptographic_seal": "13b58953c7b0be0fb12e9c971462949ebf88ca5d5e4ef44e37400a211019dc81"
 }

@@ -480,8 +480,10 @@
           Prueba cómo el abonado pasa de su chat de WhatsApp a la PWA con su línea ya autenticada en 1 clic:
         </p>
         <div class="flex flex-wrap gap-1">
+          <button type="button" onclick="document.getElementById('whatsapp-phone-input').value='04160000001'; simulateWhatsAppActivation();" class="px-2 py-1 rounded bg-orange-950/80 hover:bg-orange-900 border border-orange-700/50 text-[10px] font-mono text-orange-300">📱 04160000001 (Movilnet 4GMAX)</button>
           <button type="button" onclick="document.getElementById('whatsapp-phone-input').value='00584241533712'; simulateWhatsAppActivation();" class="px-2 py-1 rounded bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-700/50 text-[10px] font-mono text-emerald-300">📱 00584241533712 (WA Asignado)</button>
           <button type="button" onclick="document.getElementById('whatsapp-phone-input').value='04142554590'; simulateWhatsAppActivation();" class="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 border border-slate-700 text-[10px] font-mono text-slate-300">📱 04142554590 (Ids)</button>
+          <button type="button" onclick="simulateDealActivation('OFE-003', '04160000001');" class="px-2 py-1 rounded bg-amber-950/80 hover:bg-amber-900 border border-amber-700/50 text-[10px] font-mono text-amber-300">🏷️ Club 4GMAX (OFE-003)</button>
         </div>
         <div class="flex items-center gap-1.5">
           <input id="whatsapp-phone-input" type="text" value="00584241533712" placeholder="00584241533712 o celular externo..." class="flex-1 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs font-mono text-slate-200 focus:outline-none focus:border-emerald-500" />
@@ -689,6 +691,17 @@
           status: 'SUCCESS'
         })
       }).catch(() => {});
+    }
+
+    function simulateDealActivation(ofertaId, phone) {
+      const ph = phone || '04160000001';
+      const iframe = document.getElementById('pwa-iframe');
+      const targetUrl = `/ui/pwa_stitch/index.html?phone=${encodeURIComponent(ph)}&oferta=${encodeURIComponent(ofertaId)}&tab=deals&mode=${currentBrowserMode}&v=${Date.now()}`;
+      iframe.src = targetUrl;
+      const preview = document.getElementById('whatsapp-link-preview');
+      if (preview) {
+        preview.textContent = `Enlace Magic Link 1-Tap: ${targetUrl}`;
+      }
     }
 
     function copyUrl() {
@@ -923,7 +936,20 @@
       checkRenderDeployStatus();
       updateSimulatorThemeUI(currentTheme);
 
+      // Reenviar parámetros de búsqueda del navegador (phone, oferta, tab, etc.) al iframe embebido
+      const parentParams = new URLSearchParams(window.location.search);
       const iframe = document.getElementById('pwa-iframe');
+      if (iframe && parentParams.toString()) {
+        const iframeUrl = new URL(iframe.src, window.location.origin);
+        for (const [key, val] of parentParams.entries()) {
+          iframeUrl.searchParams.set(key, val);
+        }
+        if (!iframeUrl.searchParams.has('mode')) {
+          iframeUrl.searchParams.set('mode', currentBrowserMode);
+        }
+        iframe.src = iframeUrl.pathname + iframeUrl.search;
+      }
+
       if (iframe) {
         iframe.addEventListener('load', () => {
           setTimeout(() => {

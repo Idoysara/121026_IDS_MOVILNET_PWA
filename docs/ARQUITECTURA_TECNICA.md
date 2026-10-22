@@ -196,3 +196,52 @@ flowchart LR
 | SchemaCrawler | [schemacrawler/SchemaCrawler](https://github.com/schemacrawler/SchemaCrawler) | Ingeniería inversa de BD |
 | Prism Mock Server | [stoplightio/prism](https://github.com/stoplightio/prism) | Simulación de APIs |
 | Playwright | [playwright.dev](https://playwright.dev/) | Web discovery JS rendering |
+
+---
+
+## 7. Módulo VAS de Alta Densidad: Club 4GMAX / Cazador de Ofertas (`services/cazador_ofertas/`)
+
+Para extender la monetización Telco sin comprometer el núcleo transaccional, Movilnet Core integra el microservicio desacoplado **Cazador de Ofertas (Club 4GMAX)** bajo Arquitectura Hexagonal:
+
+```mermaid
+flowchart TD
+    subgraph PWA ["PWA 4GMAX Stitch (:8010)"]
+        UI_TAB["Pestaña #tab-deals<br/>Filtro Zonas & Cerca de Mí"]
+        UI_MODAL["Modal #modal-merchant-onboarding<br/>Alta Comercial en 30s"]
+    end
+
+    subgraph FASTAPI_CORE ["Movilnet Core REST Gateway (:8010)"]
+        ROUTER["api/routers/cazador_router.py<br/>(/api/v1/cazador/*)"]
+        OCS_ADAPTER["MovilnetOCSAdapter<br/>local_movilnet.db (Balances & Quotas)"]
+    end
+
+    subgraph CAZADOR_MS ["Microservicio Cazador de Ofertas (:8030)"]
+        RADAR["SpatialRadarEngine<br/>Haversine sub-ms & Run of Network"]
+        VAULT["CryptoTokenVaultEngine<br/>TOTP 60s & HMAC-SHA256"]
+        GATEWAY["IdempotentGatewayEngine<br/>Split Financiero 20% / 80%"]
+        MEMORY["UniversalMemoryEngine<br/>SQLite FTS5 cazador_local.db"]
+    end
+
+    UI_TAB & UI_MODAL --> ROUTER
+    ROUTER --> RADAR & VAULT & GATEWAY & MEMORY
+    GATEWAY --> OCS_ADAPTER
+```
+
+### 7.1. Especificación de Componentes
+1. **Aislamiento Físico y de Puertos:**
+   - Movilnet Core API: `localhost:8010`.
+   - Microservicio Cazador de Ofertas: `localhost:8030` (orquestado vía `cazador_service.py` y `cazador_router.py`).
+2. **Modelo Espacial de Cero Fricción para Anunciantes:**
+   - **Escenario 1 (Zona canónica):** Centroide geodésico automático sin ingreso de metros (`zones.py`).
+   - **Escenario 2 (Run of Network):** Cobertura metropolitana de $50.000\text{ m}$ sin restricciones de geocerca.
+   - **Escenario 3 (Punto de Interés):** Smart Default de $500\text{ m}$ cinemático para comercio a pie/vehículo.
+   - **Guarda Anti-Spots Inaudibles:** Bloqueo de radios $< 50\text{ m}$ con HTTP 422.
+3. **Carrier Billing & Invariantes:**
+   - Margen Bruto Mínimo $\ge 35\%$.
+   - Split Financiero: $20\%$ Movilnet / $80\%$ Comercio aliado.
+   - Límite de 3 cupones activos por abonado.
+4. **Batería de Pruebas Automatizadas:**
+   - 65 pruebas unitarias en `services/cazador_ofertas/tests/` (100% PASS).
+   - 13 pruebas de integración E2E en `tests/test_cazador_movilnet_integration.py` (100% PASS).
+   - Total acumulado: **78 pruebas aprobadas al 100% sin regresiones**.
+

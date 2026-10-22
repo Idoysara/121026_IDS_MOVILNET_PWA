@@ -110,3 +110,65 @@ Usuario: "Excelente, y por cierto, ¿hay alguna promoción con aliados Movilnet 
 🤖 Asistente: (El Router activa el dominio VAS/Comercios)
 "¡Sí! Como abonado 4GMAX Movilnet, tiene 2x1 en entradas los días jueves en Cines Unidos presentando el código #MOV-CINE..."
 ```
+
+---
+
+## 6. Integración Soberana de Club 4GMAX (Cazador de Ofertas, Cuponería TOTP y Carrier Billing)
+
+Como parte de la evolución Super-App Telco, Movilnet integra de manera desacoplada (**Opción A: Microservicio Hexagonal**) el ecosistema **Club 4GMAX / Cazador de Ofertas**, conectando los saldos de los 4 millones de abonados con una red de comercios y anunciantes geolocalizados.
+
+```mermaid
+flowchart LR
+    subgraph ABONADO ["Abonado 4GMAX (WhatsApp / PWA)"]
+        CLI["Cliente Telco"]
+    end
+
+    subgraph CORE_MOVILNET ["Movilnet Core (:8010)"]
+        FP["FastPath (<15ms, 0 tokens)"]
+        ROUTER["CazadorRouter (/api/v1/cazador/*)"]
+        OCS["MovilnetOCSAdapter (local_movilnet.db)"]
+    end
+
+    subgraph CAZADOR_SERVICE ["Cazador de Ofertas (:8030)"]
+        RADAR["SpatialRadarEngine (Haversine 3 Anillos)"]
+        VAULT["CryptoTokenVaultEngine (TOTP 60s + QR)"]
+        GW["IdempotentGatewayEngine (Carrier Billing Split 20/80)"]
+        FTS["UniversalMemoryEngine (SQLite FTS5)"]
+    end
+
+    subgraph COMERCIO ["Punto de Venta Aliado (POS / DOOH)"]
+        POS["Caja Comercial / Validación TOTP"]
+    end
+
+    CLI -->|Consulta Promos| FP
+    FP --> ROUTER --> RADAR
+    CLI -->|Reclamar Cupón| ROUTER --> VAULT
+    VAULT -->|Genera Token 6 Dígitos| CLI
+    CLI -->|Presenta Cupón en Local| POS
+    POS -->|Canje y Cobro| ROUTER --> GW
+    GW -->|Débito OCS| OCS
+    GW -->|Liquidación 80%| POS
+```
+
+### 6.1. Invariantes Financieras de Carrier Billing (Split 20/80)
+1. **Invariante II (Margen Bruto Mínimo):** Ninguna oferta aliada puede publicarse con un margen bruto menor al **$35\%$** sobre el precio regular del servicio o producto.
+2. **Invariante VI (Split de Liquidación):** Del valor final del cupón canjeado:
+   - **$20\%$:** Comisión retenida automáticamente por Telecomunicaciones Movilnet C.A. por concepto de Carrier Billing e intermediación digital.
+   - **$80\%$:** Liquidación directa a la cuenta comercial del negocio aliado mediante Pago Móvil C2P / transferencia bancaria.
+3. **Idempotencia Transaccional:** Cada canje se rige por UUID de transacción y `Idempotency-Key` para impedir cobros dobles o débitos duplicados en el saldo OCS.
+
+### 6.2. Modelo Espacial de Cero Fricción para Comercios y Anunciantes
+El sistema erradica cualquier cálculo manual geodésico para el comerciante mediante 3 escenarios automáticos:
+- **Escenario 1 (Zona / Sector):** El comercio selecciona su sector (ej. *Las Mercedes*, *Chacao*, *Altamira*). El límite lo fija el polígono canónico sectorial ($1.200\text{ m} - 1.500\text{ m}$) sin ingresar metros.
+- **Escenario 2 (Run of Network):** Cobertura metropolitana libre de $50.000\text{ m}$ para rotación en todas las pantallas y tablets de la ciudad.
+- **Escenario 3 (Punto de Interés):** El anunciante solo indica la dirección de su local y el algoritmo inyecta un **Smart Default cinemático de $500\text{ metros}$**.
+- **Guarda Anti-Spots Inaudibles:** Radios manuales $< 50\text{ m}$ (que durarían $<1.8\text{ s}$ en auto a 40 km/h) son rechazados automáticamente con error `422`.
+
+### 6.3. Especificación Técnica de Endpoints (CazadorRouter)
+- `GET /api/v1/cazador/radar`: Búsqueda de ofertas por cercanía GPS (`lat`, `lon`, `radio_m`).
+- `GET /api/v1/cazador/zonas`: Catálogo canónico de sectores normalizados (NFKD).
+- `POST /api/v1/cazador/comercio/registro-rapido`: Alta de comercio en $<30\text{ segundos}$ bajo los 3 escenarios espaciales.
+- `POST /api/v1/cazador/cupon/reclamar`: Reserva de cupón con límite de 3 cupones activos por abonado.
+- `POST /api/v1/cazador/cupon/canjear`: Canje en caja con código TOTP dinámico de 6 dígitos (válido por 60s).
+- `POST /api/v1/cazador/conciliacion/carrier-billing`: Liquidación y split financiero 20/80 contra saldo OCS.
+
