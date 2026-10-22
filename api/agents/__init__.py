@@ -42,6 +42,11 @@ from api.agents.agent_retention_churn import (
     RetentionOfferResponse,
     get_retention_churn_agent
 )
+from api.agents.agent_deals_scout import (
+    AgentDealsScout,
+    ScoutDealsResult,
+    ScoutDealItem
+)
 
 __all__ = [
     "CustomerCareAgent",
@@ -71,6 +76,9 @@ __all__ = [
     "ChurnPredictionResult",
     "RetentionOffer",
     "RetentionOfferResponse",
-    "get_retention_churn_agent"
+    "get_retention_churn_agent",
+    "AgentDealsScout",
+    "ScoutDealsResult",
+    "ScoutDealItem"
 ]
 

@@ -157,6 +157,7 @@ class MovilnetAPIService:
             AgentsRouter,
             WebhooksRouter,
             NocRouter,
+            CazadorRouter,
         )
         self.core_router = CoreRouter()
         self.telco_router = TelcoRouter()
@@ -164,6 +165,7 @@ class MovilnetAPIService:
         self.agents_router = AgentsRouter()
         self.webhooks_router = WebhooksRouter()
         self.noc_router = NocRouter()
+        self.cazador_router = CazadorRouter()
         self.routers = [
             self.core_router,
             self.telco_router,
@@ -171,6 +173,7 @@ class MovilnetAPIService:
             self.agents_router,
             self.webhooks_router,
             self.noc_router,
+            self.cazador_router,
         ]
 
 

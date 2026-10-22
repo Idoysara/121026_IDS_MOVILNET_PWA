@@ -169,7 +169,8 @@ class FastPathIntentInterceptor:
             )
         carrier_slug = carrier_enum.value.upper()
         return (
-            f"\n\n🌐 *Portal PWA 4GMAX (Acceso libre por Wi-Fi o Plan de Datos desde cualquier operadora):*\n"
+            f"\n\n📲 *Portabilidad Express en este Chat:* Responde *Portabilidad* por aquí para tramitar tu eSIM Digital gratis con 10GB de bienvenida sin salir de WhatsApp.\n"
+            f"🌐 *Portal PWA 4GMAX (Acceso libre por Wi-Fi o Plan de Datos desde cualquier operadora):*\n"
             f"{base_url}/ui/pwa_stitch/index.html?carrier={carrier_slug}&phone={clean_phone}&token={token}\n"
             f"🎁 Incluye 1.000 tokens de bienvenida y solicitud de eSIM digital inmediata."
         )
@@ -252,6 +253,14 @@ class FastPathIntentInterceptor:
         # 6. Catálogo de planes
         if any(w in text or w in normalized_text for w in ["plan", "planes", "plan activo", "inteliplan", "catalogo de planes", "que planes tienen", "tarifas de planes"]):
             return "CATALOGO_PLANES"
+
+        # 6.2. Club 4GMAX - Cazador de Ofertas y Cupones Soberanos (Fast-Path Proximidad)
+        if any(w in text or w in normalized_text for w in [
+            "oferta", "ofertas", "descuento", "descuentos", "promocion", "promociones",
+            "promoción", "cupon", "cupones", "cupón", "cazador de ofertas", "cazador",
+            "club 4gmax", "club movilnet", "ahorrar con movilnet"
+        ]):
+            return "CAZADOR_OFERTAS_CLUB"
 
         # 6.5. Guardarraíl de Dominio Telco (Off-Topic: Gastronomía, Tintas, Periféricos, Recetas, Ocio)
         if any(w in text or w in normalized_text for w in [
@@ -876,6 +885,37 @@ class FastPathIntentInterceptor:
         body += pwa_suffix
         return body
 
+    def _resolve_cazador_deals(
+        self,
+        phone: str,
+        message_text: str,
+        latitude: Optional[float] = None,
+        longitude: Optional[float] = None
+    ) -> str:
+        """
+        Resuelve consultas de ofertas y cupones del Club 4GMAX mediante AgentDealsScout.
+        Aplica Regla Cero Adivinación: si no se conoce la ubicación ni se infiere de la zona,
+        solicita educadamente la ubicación.
+        Adjunta sufijo PWA universal contextual.
+        """
+        clean_phone = CarrierFunnelClassifier.clean_msisdn(phone) or phone
+        if latitude is None or longitude is None:
+            cached = self._gps_session_cache.get(clean_phone)
+            if cached and (time.time() - cached[2]) <= 1800.0:
+                latitude, longitude = cached[0], cached[1]
+
+        if not hasattr(self, "_deals_scout") or self._deals_scout is None:
+            from api.agents.agent_deals_scout import AgentDealsScout
+            self._deals_scout = AgentDealsScout()
+        res = self._deals_scout.scout_deals(
+            phone=clean_phone,
+            message=message_text,
+            lat=latitude,
+            lon=longitude
+        )
+        pwa_suffix = self.build_pwa_link_suffix(clean_phone)
+        return f"{res.mensaje_formateado}{pwa_suffix}"
+
     def intercept(
         self,
         message_text: str,
@@ -952,6 +992,11 @@ class FastPathIntentInterceptor:
 
             if is_explicit_location_inquiry:
                 intent = "CONSULTA_GEOESPACIAL_UBICACION"
+            elif any(w in msg_lower for w in [
+                "oferta", "ofertas", "descuento", "descuentos", "promocion", "promociones",
+                "promoción", "cupon", "cupones", "cupón", "cazador de ofertas", "cazador", "club 4gmax"
+            ]):
+                intent = "CAZADOR_OFERTAS_CLUB"
             else:
                 intent = "LOCALIZADOR_OFICINAS_TELCO"
         else:
@@ -964,6 +1009,8 @@ class FastPathIntentInterceptor:
                     "distancia", "distancias", "aqui", "aquí", "desde", "ruta", "llegar", "mas cerca", "más cerca"
                 ])
                 if is_proximity_query and intent == "LOCALIZADOR_OFICINAS_TELCO":
+                    latitude, longitude = cached_gps[0], cached_gps[1]
+                elif is_proximity_query and intent == "CAZADOR_OFERTAS_CLUB":
                     latitude, longitude = cached_gps[0], cached_gps[1]
                 elif is_proximity_query and any(w in msg_low for w in ["distancia", "distancias", "aqui", "aquí", "desde", "cerca de mi", "tienda cerca"]):
                     latitude, longitude = cached_gps[0], cached_gps[1]
@@ -1012,6 +1059,9 @@ class FastPathIntentInterceptor:
         elif intent == "LOCALIZADOR_OFICINAS_TELCO":
             resp = self._resolve_offices(phone_number, message_text, latitude, longitude)
             source = "GEO_SPATIAL_MOVILNET_OFFICES"
+        elif intent == "CAZADOR_OFERTAS_CLUB":
+            resp = self._resolve_cazador_deals(phone_number, message_text, latitude, longitude)
+            source = "CAZADOR_OFERTAS_RADAR"
         elif intent == "PARAMETROS_APN":
             resp = self._resolve_apn()
             source = "STATIC_APN_REGISTRY"

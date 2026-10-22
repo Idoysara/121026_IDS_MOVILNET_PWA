@@ -197,7 +197,8 @@
         padding-bottom: calc(max(env(safe-area-inset-bottom, 0px), 10px) + var(--browser-bottom-offset, 0px)) !important;
       }
       #tab-dashboard,
-      #tab-c2p {
+      #tab-c2p,
+      #tab-deals {
         padding-bottom: calc(88px + max(env(safe-area-inset-bottom, 0px), 10px) + var(--browser-bottom-offset, 0px)) !important;
       }
 
@@ -671,6 +672,87 @@
     </section>
 
     <!-- ======================================================================
+         PESTAÑA 4: CLUB 4GMAX — CAZADOR DE OFERTAS & CUPONERÍA SOBERANA
+         ====================================================================== -->
+    <section id="tab-deals" class="tab-content flex-col gap-3 w-full px-3.5 pt-28 pb-24">
+      <!-- Tarjeta Cabecera Radar -->
+      <div class="rounded-2xl p-4 bg-gradient-to-br from-primary/10 via-surface-container to-surface-container-low border border-primary/20 shadow-lg flex flex-col gap-2">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-[26px]">local_offer</span>
+            <div>
+              <h2 class="text-base font-extrabold text-on-surface">Club 4GMAX • Cazador de Ofertas</h2>
+              <p class="text-[11px] text-secondary">Descuentos verificados y cupones dinámicos TOTP sin gastar megas (Zero-Rating).</p>
+            </div>
+          </div>
+          <span class="text-[9px] font-mono bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full font-bold border border-emerald-500/30">
+            SPLIT 20/80
+          </span>
+        </div>
+
+        <!-- Selector de Zona Rápida & GPS -->
+        <div class="mt-2 flex flex-col gap-2">
+          <div class="flex items-center gap-1.5 overflow-x-auto pb-1 text-[11px] no-scrollbar">
+            <button type="button" onclick="loadDealsByZone('chacao')" class="zone-pill active whitespace-nowrap px-3 py-1 rounded-full bg-primary text-white font-semibold transition-all">
+              📍 Chacao
+            </button>
+            <button type="button" onclick="loadDealsByZone('sabana grande')" class="zone-pill whitespace-nowrap px-3 py-1 rounded-full bg-surface-container-high text-on-surface hover:bg-surface-container font-semibold transition-all">
+              📍 Sabana Grande
+            </button>
+            <button type="button" onclick="loadDealsByZone('las mercedes')" class="zone-pill whitespace-nowrap px-3 py-1 rounded-full bg-surface-container-high text-on-surface hover:bg-surface-container font-semibold transition-all">
+              📍 Las Mercedes
+            </button>
+            <button type="button" onclick="loadDealsByZone('altamira')" class="zone-pill whitespace-nowrap px-3 py-1 rounded-full bg-surface-container-high text-on-surface hover:bg-surface-container font-semibold transition-all">
+              📍 Altamira
+            </button>
+            <button type="button" onclick="useDeviceGpsForDeals()" class="whitespace-nowrap px-3 py-1 rounded-full bg-secondary/15 text-primary hover:bg-secondary/25 font-semibold flex items-center gap-1 transition-all">
+              <span class="material-symbols-outlined text-[14px]">my_location</span> Mi GPS
+            </button>
+          </div>
+
+          <!-- Filtro por categoría -->
+          <div class="flex items-center gap-1 overflow-x-auto pb-1 text-[10px] no-scrollbar text-secondary font-medium">
+            <button type="button" onclick="filterDealsCategory('')" class="cat-pill active px-2.5 py-0.5 rounded-md bg-primary/20 text-primary font-bold">Todos</button>
+            <button type="button" onclick="filterDealsCategory('Gastronomía')" class="cat-pill px-2.5 py-0.5 rounded-md bg-surface-container hover:text-on-surface">Gastronomía</button>
+            <button type="button" onclick="filterDealsCategory('Salud y Farmacia')" class="cat-pill px-2.5 py-0.5 rounded-md bg-surface-container hover:text-on-surface">Farmacia</button>
+            <button type="button" onclick="filterDealsCategory('Tecnología')" class="cat-pill px-2.5 py-0.5 rounded-md bg-surface-container hover:text-on-surface">Tecnología</button>
+            <button type="button" onclick="filterDealsCategory('Servicios')" class="cat-pill px-2.5 py-0.5 rounded-md bg-surface-container hover:text-on-surface">Servicios</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sección Mis Cupones Activos -->
+      <div id="user-coupons-section" class="hidden rounded-2xl p-3 bg-surface-container-low border border-surface-container shadow-sm flex flex-col gap-2">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-on-surface flex items-center gap-1">
+            <span class="material-symbols-outlined text-[16px] text-amber-500">confirmation_number</span> Mis Cupones Activos (TOTP)
+          </span>
+          <span id="active-coupons-badge" class="text-[10px] font-mono px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-400 font-bold">0/3</span>
+        </div>
+        <div id="user-coupons-list" class="flex flex-col gap-2">
+          <!-- Se puebla dinámicamente -->
+        </div>
+      </div>
+
+      <!-- Feed de Ofertas del Radar -->
+      <div class="flex items-center justify-between px-1">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-secondary flex items-center gap-1">
+          <span class="material-symbols-outlined text-[16px] text-primary">radar</span> Ofertas Verificadas en tu Radar
+        </h3>
+        <span id="deals-count-badge" class="text-[10px] font-mono bg-surface-container-high px-2 py-0.5 rounded-full text-secondary">
+          Buscando...
+        </span>
+      </div>
+
+      <!-- Contenedor dinámico de ofertas -->
+      <div id="deals-cards-container" class="flex flex-col gap-2.5">
+        <div class="p-6 rounded-2xl bg-surface-container-low border border-surface-container text-center text-xs text-secondary animate-pulse">
+          Sintonizando radar geoespacial de comercios aliados...
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
          PESTAÑA 3: ASISTENTE COGNITIVO IA VÍA B (CHAT FULL-SCREEN TELEGRAM/WHATSAPP)
          ====================================================================== -->
     <section id="tab-assistant" class="tab-content flex-col w-full max-w-[480px] mx-auto z-40 bg-surface shadow-2xl overflow-hidden">
@@ -846,6 +928,11 @@
         <span class="text-[10px] mt-0.5 font-semibold pointer-events-none">Servicios & C2P</span>
       </button>
 
+      <button type="button" data-tab="deals" onclick="goToTab('deals')" id="nav-deals" class="nav-btn flex-1 h-full flex flex-col items-center justify-center py-1 text-secondary transition-colors cursor-pointer select-none">
+        <span class="material-symbols-outlined text-[22px] pointer-events-none">local_offer</span>
+        <span class="text-[10px] mt-0.5 font-semibold pointer-events-none">Club 4GMAX</span>
+      </button>
+
       <button type="button" data-tab="assistant" onclick="goToTab('assistant')" id="nav-assistant" class="nav-btn flex-1 h-full flex flex-col items-center justify-center py-1 text-secondary transition-colors cursor-pointer select-none">
         <span class="material-symbols-outlined text-[22px] pointer-events-none">smart_toy</span>
         <span class="text-[10px] mt-0.5 font-semibold pointer-events-none">Asistente IA</span>
@@ -983,6 +1070,59 @@
   </div>
 
   <!-- ========================================================================
+       VENTANA MODAL 4: CUPÓN DINÁMICO TOTP QR (CANJE SEGURO EN CAJA POS)
+       ======================================================================== -->
+  <div id="modal-totp-qr" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="w-full sm:max-w-md bg-surface-container-lowest border border-surface-container rounded-t-2xl sm:rounded-2xl p-5 pb-safe flex flex-col gap-3.5 shadow-2xl animate-in slide-in-from-bottom duration-200">
+      <div class="flex items-center justify-between border-b border-surface-container pb-2 shrink-0">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-primary text-[24px]">qr_code_2</span>
+          <div>
+            <h3 class="font-bold text-sm text-on-surface">Cupón Dinámico Seguro TOTP</h3>
+            <p class="text-[10px] text-secondary">Presenta este código al cajero en el POS</p>
+          </div>
+        </div>
+        <button onclick="closeTotpModal()" class="text-secondary hover:text-on-surface p-1 rounded-lg">
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+      </div>
+
+      <div class="flex flex-col items-center justify-center py-3 bg-surface-container rounded-xl gap-2 border border-surface-container-high">
+        <span class="text-[10px] font-semibold text-secondary uppercase tracking-widest">Código de Verificación</span>
+        <div id="totp-code-display" class="font-mono text-3xl font-extrabold tracking-widest text-primary">
+          ------
+        </div>
+        <div class="flex items-center gap-1.5 text-[11px] text-secondary">
+          <span class="material-symbols-outlined text-[16px] text-amber-500 animate-spin">timer</span>
+          <span>Expira en: <strong id="totp-countdown-sec" class="text-amber-400 font-mono">60s</strong></span>
+        </div>
+        <div id="totp-qr-box" class="p-3 bg-white rounded-xl shadow-md mt-1">
+          <!-- Render dinámico del QR -->
+        </div>
+      </div>
+
+      <div class="p-3 rounded-xl bg-surface-container-high/40 text-[11px] text-secondary flex flex-col gap-1 border border-surface-container">
+        <div class="flex justify-between font-mono">
+          <span>Cupón ID:</span>
+          <strong id="totp-coupon-id" class="text-on-surface">CUP-XXXX</strong>
+        </div>
+        <div class="flex justify-between font-mono">
+          <span>Comercio:</span>
+          <strong id="totp-merchant-name" class="text-on-surface">Comercio</strong>
+        </div>
+        <div class="flex justify-between font-mono">
+          <span>Firma Anti-Replay:</span>
+          <span id="totp-signature-short" class="text-[9px] text-primary truncate max-w-[200px]">HMAC-SHA256</span>
+        </div>
+      </div>
+
+      <button onclick="closeTotpModal()" class="w-full py-2.5 rounded-xl bg-primary text-white font-bold text-xs shadow-md active:scale-98 transition-transform">
+        Entendido • Volver al Radar
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================================================================
        LÓGICA JAVASCRIPT: CONEXIÓN 100% VIVA CON TODOS LOS MÓDULOS DE MOVILNET CORE
        ======================================================================== -->
   <script>
@@ -1115,6 +1255,15 @@
         const btnC2p = document.getElementById('nav-c2p');
         if (btnC2p) btnC2p.classList.add('active');
         window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (tabName === 'deals') {
+        if (mainHeader) mainHeader.style.display = 'block';
+        if (pwaBanner) pwaBanner.style.display = 'none';
+        const tabDeals = document.getElementById('tab-deals');
+        if (tabDeals) { tabDeals.classList.add('active'); tabDeals.style.display = 'flex'; }
+        const btnDeals = document.getElementById('nav-deals');
+        if (btnDeals) btnDeals.classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        if (typeof loadDealsRadar === 'function') loadDealsRadar();
       } else if (tabName === 'assistant') {
         if (mainHeader) mainHeader.style.display = 'none';
         if (pwaBanner) pwaBanner.style.display = 'none';
@@ -1136,7 +1285,7 @@
       const activeTabEl = document.querySelector('.tab-content.active');
       const activeTabId = activeTabEl ? activeTabEl.id : '';
 
-      if (activeTabId === 'tab-c2p' || activeTabId === 'tab-assistant') {
+      if (activeTabId === 'tab-c2p' || activeTabId === 'tab-assistant' || activeTabId === 'tab-deals') {
         goToTab('dashboard');
         return;
       }
@@ -2263,6 +2412,249 @@
     });
 
     // =========================================================================
+    // MÓDULO CLUB 4GMAX — CAZADOR DE OFERTAS & CUPONERÍA SOBERANA
+    // =========================================================================
+    let currentDealsLat = 10.4925; // Chacao por defecto
+    let currentDealsLon = -66.8550;
+    let currentDealsCategory = '';
+    let totpIntervalId = null;
+
+    const ZONAS_MAP = {
+      'chacao': { lat: 10.4925, lon: -66.8550 },
+      'sabana grande': { lat: 10.4935, lon: -66.8810 },
+      'las mercedes': { lat: 10.4810, lon: -66.8610 },
+      'altamira': { lat: 10.4965, lon: -66.8490 },
+      'ccct': { lat: 10.4850, lon: -66.8520 },
+      'la trinidad': { lat: 10.4350, lon: -66.8520 }
+    };
+
+    function loadDealsByZone(zoneKey) {
+      document.querySelectorAll('.zone-pill').forEach(btn => {
+        btn.classList.remove('active', 'bg-primary', 'text-white');
+        btn.classList.add('bg-surface-container-high', 'text-on-surface');
+      });
+      if (window.event && window.event.target) {
+        window.event.target.classList.add('active', 'bg-primary', 'text-white');
+        window.event.target.classList.remove('bg-surface-container-high', 'text-on-surface');
+      }
+      const z = ZONAS_MAP[zoneKey] || ZONAS_MAP['chacao'];
+      currentDealsLat = z.lat;
+      currentDealsLon = z.lon;
+      loadDealsRadar();
+    }
+
+    function filterDealsCategory(cat) {
+      document.querySelectorAll('.cat-pill').forEach(b => {
+        b.classList.remove('active', 'bg-primary/20', 'text-primary', 'font-bold');
+        b.classList.add('bg-surface-container', 'text-secondary');
+      });
+      if (window.event && window.event.target) {
+        window.event.target.classList.add('active', 'bg-primary/20', 'text-primary', 'font-bold');
+        window.event.target.classList.remove('bg-surface-container', 'text-secondary');
+      }
+      currentDealsCategory = cat;
+      loadDealsRadar();
+    }
+
+    function useDeviceGpsForDeals() {
+      if (!navigator.geolocation) {
+        showActionModal('GPS No Soportado', 'Tu navegador o dispositivo no soporta geolocalización directa.', 'location_off');
+        return;
+      }
+      navigator.geolocation.getCurrentPosition(
+        pos => {
+          currentDealsLat = pos.coords.latitude;
+          currentDealsLon = pos.coords.longitude;
+          loadDealsRadar();
+        },
+        err => {
+          showActionModal('Permiso de GPS', 'No se pudo obtener la ubicación: ' + err.message + '. Usando coordenadas de Chacao.', 'near_me_disabled');
+          loadDealsByZone('chacao');
+        },
+        { enableHighAccuracy: true, timeout: 5000 }
+      );
+    }
+
+    async function loadDealsRadar() {
+      const container = document.getElementById('deals-cards-container');
+      const badge = document.getElementById('deals-count-badge');
+      if (!container) return;
+      container.innerHTML = `<div class="p-6 rounded-2xl bg-surface-container-low border border-surface-container text-center text-xs text-secondary animate-pulse">Sintonizando radar geoespacial de ofertas en vivo...</div>`;
+
+      try {
+        let url = `/api/v1/cazador/ofertas?lat=${currentDealsLat}&lon=${currentDealsLon}&max_m=3000`;
+        if (currentDealsCategory) {
+          url += `&categoria=${encodeURIComponent(currentDealsCategory)}`;
+        }
+        const resp = await fetch(url);
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+        const data = await resp.json();
+
+        const anillos = data.anillos || {};
+        const allOffers = [];
+        for (const [rKey, rLabel] of [
+          ['zona_1_inmediata', 'Zona Inmediata (0-500m)'],
+          ['zona_2_vecindario', 'Zona Vecindario (500-1000m)'],
+          ['zona_3_urbana', 'Zona Urbana (1000-3000m)']
+        ]) {
+          const list = anillos[rKey] || [];
+          for (const item of list) {
+            const com = item.comercio || {};
+            for (const ofe of (item.ofertas || [])) {
+              allOffers.push({ ...ofe, comercio: com, anillo: rLabel, dist: com.distance_meters || com.distance_m || 0 });
+            }
+          }
+        }
+
+        if (badge) badge.textContent = `${allOffers.length} Ofertas`;
+
+        if (allOffers.length === 0) {
+          container.innerHTML = `
+            <div class="p-6 rounded-2xl bg-surface-container-low border border-surface-container text-center flex flex-col items-center gap-2">
+              <span class="material-symbols-outlined text-secondary text-3xl">sentiment_dissatisfied</span>
+              <p class="text-xs text-secondary font-medium">No hay promociones activas en este radio.</p>
+              <button onclick="loadDealsByZone('chacao')" class="px-3 py-1 rounded-xl bg-primary text-white text-xs font-bold">Ver ofertas en Chacao</button>
+            </div>
+          `;
+          return;
+        }
+
+        let html = '';
+        allOffers.forEach(o => {
+          const comNom = o.comercio.nombre || 'Comercio Aliado';
+          const distTxt = o.dist < 1000 ? `${Math.round(o.dist)}m` : `${(o.dist/1000).toFixed(1)}km`;
+          html += `
+            <div class="p-3.5 rounded-2xl bg-surface-container-lowest border border-surface-container hover:border-primary/40 transition-all shadow-sm flex flex-col gap-2">
+              <div class="flex items-start justify-between gap-2">
+                <div class="flex flex-col">
+                  <span class="text-[10px] font-bold text-primary uppercase tracking-wider">${o.comercio.categoria || 'Comercio'}</span>
+                  <h4 class="font-extrabold text-sm text-on-surface leading-snug">${o.titulo}</h4>
+                  <span class="text-[11px] text-secondary font-medium">${comNom}</span>
+                </div>
+                <span class="px-2 py-0.5 rounded-lg bg-orange-500/15 text-orange-500 font-extrabold text-xs font-mono shrink-0">
+                  -${Math.round(o.descuento_pct || 0)}%
+                </span>
+              </div>
+              <div class="flex items-center justify-between border-t border-surface-container pt-2 mt-1">
+                <div class="flex items-baseline gap-2">
+                  <span class="text-base font-extrabold text-on-surface font-mono">Bs. ${Number(o.precio_oferta_ves).toFixed(2)}</span>
+                  <span class="text-[11px] text-secondary line-through font-mono">Bs. ${Number(o.precio_regular_ves).toFixed(2)}</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <span class="text-[10px] text-secondary font-mono flex items-center gap-0.5">
+                    <span class="material-symbols-outlined text-[13px] text-primary">near_me</span>${distTxt}
+                  </span>
+                  <button type="button" onclick="claimDealCoupon('${o.id}')" class="px-3 py-1 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold text-[11px] active:scale-95 shadow-sm transition-transform">
+                    Reclamar Cupón
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+        container.innerHTML = html;
+        loadUserCoupons();
+      } catch (err) {
+        container.innerHTML = `<div class="p-4 rounded-xl bg-red-500/10 text-red-400 text-xs text-center">Error al conectar con el Radar: ${err.message}</div>`;
+      }
+    }
+
+    async function claimDealCoupon(ofertaId) {
+      const phone = currentMsisdn || '04169991122';
+      try {
+        const resp = await fetch('/api/v1/cazador/cupon/reclamar', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ oferta_id: ofertaId, msisdn: phone })
+        });
+        const res = await resp.json();
+        if (resp.status === 201 && res.success) {
+          openTotpModal(res);
+          loadUserCoupons();
+        } else {
+          showActionModal('Límite de Cupones', res.message || 'No se pudo reclamar el cupón.', 'warning');
+        }
+      } catch (e) {
+        showActionModal('Error', 'Error reclamando cupón: ' + e.message, 'error');
+      }
+    }
+
+    async function loadUserCoupons() {
+      const phone = currentMsisdn || '04169991122';
+      const sec = document.getElementById('user-coupons-section');
+      const list = document.getElementById('user-coupons-list');
+      const badge = document.getElementById('active-coupons-badge');
+      if (!sec || !list) return;
+
+      try {
+        const resp = await fetch(`/api/v1/cazador/cupones/${phone}`);
+        if (!resp.ok) return;
+        const data = await resp.json();
+        const activos = (data.cupones || []).filter(c => c.estado === 'EMITIDO' || c.estado === 'RESERVADO');
+
+        if (badge) badge.textContent = `${activos.length}/3`;
+
+        if (activos.length === 0) {
+          sec.classList.add('hidden');
+          return;
+        }
+
+        sec.classList.remove('hidden');
+        list.innerHTML = activos.map(c => `
+          <div class="p-2.5 rounded-xl bg-surface-container flex items-center justify-between text-xs border border-surface-container-high">
+            <div class="flex flex-col">
+              <span class="font-bold text-on-surface">${c.uuid}</span>
+              <span class="text-[10px] text-secondary">Código TOTP: <strong class="font-mono text-primary">${c.codigo_dinamico}</strong></span>
+            </div>
+            <button onclick='openSavedTotpModal(${JSON.stringify(c)})' class="px-2.5 py-1 rounded-lg bg-surface-container-highest hover:bg-primary hover:text-white text-on-surface font-semibold text-[10px] transition-colors">
+              Ver QR
+            </button>
+          </div>
+        `).join('');
+      } catch (_) {}
+    }
+
+    function openTotpModal(claimRes) {
+      const modal = document.getElementById('modal-totp-qr');
+      if (!modal) return;
+      const cup = claimRes.cupon || claimRes;
+      const com = claimRes.comercio || {};
+
+      document.getElementById('totp-code-display').textContent = cup.codigo_dinamico || '------';
+      document.getElementById('totp-coupon-id').textContent = cup.uuid || '';
+      document.getElementById('totp-merchant-name').textContent = com.nombre || cup.comercio_id || 'Comercio Aliado';
+      document.getElementById('totp-signature-short').textContent = (cup.firma_hmac || '').substring(0, 24) + '...';
+
+      const qrBox = document.getElementById('totp-qr-box');
+      const qrData = encodeURIComponent(`MOVILNET:${cup.uuid}:${cup.codigo_dinamico}:${cup.usuario_msisdn}`);
+      qrBox.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${qrData}" alt="QR POS" class="w-36 h-36 mx-auto rounded" onerror="this.src='/ui/pwa_stitch/icon-192.svg'"/>`;
+
+      modal.classList.remove('hidden');
+
+      let secLeft = 60;
+      const cntEl = document.getElementById('totp-countdown-sec');
+      if (totpIntervalId) clearInterval(totpIntervalId);
+      totpIntervalId = setInterval(() => {
+        secLeft -= 1;
+        if (cntEl) cntEl.textContent = `${secLeft}s`;
+        if (secLeft <= 0) {
+          clearInterval(totpIntervalId);
+          if (cntEl) cntEl.textContent = 'Renovando...';
+        }
+      }, 1000);
+    }
+
+    function openSavedTotpModal(cup) {
+      openTotpModal({ cupon: cup, comercio: { nombre: cup.comercio_id } });
+    }
+
+    function closeTotpModal() {
+      const modal = document.getElementById('modal-totp-qr');
+      if (modal) modal.classList.add('hidden');
+      if (totpIntervalId) clearInterval(totpIntervalId);
+    }
+
+    // =========================================================================
     // ENLACE GLOBAL DE FUNCIONES A WINDOW (PREVENCIÓN TOTAL DE SCOPE ERRORS)
     // =========================================================================
     window.goToTab = goToTab;
@@ -2291,6 +2683,15 @@
     window.showActionModal = showActionModal;
     window.closeActionModal = closeActionModal;
     window.toggleVoiceRecording = toggleVoiceRecording;
+    window.loadDealsByZone = loadDealsByZone;
+    window.filterDealsCategory = filterDealsCategory;
+    window.useDeviceGpsForDeals = useDeviceGpsForDeals;
+    window.loadDealsRadar = loadDealsRadar;
+    window.claimDealCoupon = claimDealCoupon;
+    window.loadUserCoupons = loadUserCoupons;
+    window.openTotpModal = openTotpModal;
+    window.openSavedTotpModal = openSavedTotpModal;
+    window.closeTotpModal = closeTotpModal;
   </script>
 </body>
 </html>

@@ -1,0 +1,150 @@
+{
+  "metadata_simulacion": {
+    "fecha_ejecucion": "2026-10-22 04:48:59",
+    "duracion_segundos": 0.33,
+    "territorio": "Gran Caracas, Venezuela",
+    "total_abonados_simulados": 50
+  },
+  "metricas_adquisicion_radar": {
+    "total_busquedas_radar": 25,
+    "busquedas_exitosas": 25,
+    "total_impactos_ofertas": 537,
+    "promedio_ofertas_por_busqueda": 21.48,
+    "distribucion_anillos": {
+      "zona_1_inmediata": 68,
+      "zona_2_vecindario": 93,
+      "zona_3_urbana": 376
+    }
+  },
+  "metricas_conversion_cupones": {
+    "intentos_reclamo": 15,
+    "cupones_emitidos_exitosos": 15,
+    "reclamos_bloqueados_por_cuota_max_3": 0,
+    "tasa_conversion_reclamo_pct": 100.0,
+    "total_cupones_canjeados_en_pos": 12,
+    "tasa_redencion_pos_pct": 80.0
+  },
+  "seguridad_y_blindaje_anti_fraude": {
+    "intentos_ataque_replay_simulados": 5,
+    "ataques_bloqueados_por_boveda_y_fsm": 5,
+    "ataques_exitosos_fuga": 0,
+    "efectividad_cortafuegos_pct": 100.0
+  },
+  "balance_economico_y_split_transaccional": {
+    "volumen_bruto_facturado_ves": 2120.0,
+    "ingreso_comision_movilnet_ves_20pct": 424.0,
+    "ingreso_neto_comercios_ves_80pct": 1696.0,
+    "total_transacciones_asentadas": 9,
+    "ticket_promedio_cupon_ves": 176.67
+  },
+  "transacciones_recientes": [
+    {
+      "transaccion_id": "TX-D4654E4B",
+      "cupon_id": "CUP-5A063F08",
+      "msisdn": "04261273607",
+      "comercio_id": "COM-016",
+      "oferta_titulo": "Menú Ejecutivo Degustación 3 Tiempos (Ávila Burger Tolón)",
+      "monto_total_ves": 270.0,
+      "comision_movilnet_ves": 54.0,
+      "neto_comercio_ves": 216.0,
+      "split_ratio": "20% / 80%",
+      "timestamp": "2026-10-22 04:48:59"
+    },
+    {
+      "transaccion_id": "TX-3521A18C",
+      "cupon_id": "CUP-982EBA7A",
+      "msisdn": "04264844159",
+      "comercio_id": "COM-003",
+      "oferta_titulo": "Combo Despensa Familiar (Arroz, Pasta, Harina, Aceite) (Automercados Plaza's Las Mercedes)",
+      "monto_total_ves": 245.0,
+      "comision_movilnet_ves": 49.0,
+      "neto_comercio_ves": 196.0,
+      "split_ratio": "20% / 80%",
+      "timestamp": "2026-10-22 04:48:59"
+    },
+    {
+      "transaccion_id": "TX-930BEEDA",
+      "cupon_id": "CUP-83758319",
+      "msisdn": "04267503782",
+      "comercio_id": "COM-026",
+      "oferta_titulo": "Exoneración de Comisión Cuenta Jurídica / POS Pyme (Ciudad Banesco (Sede Principal))",
+      "monto_total_ves": 390.0,
+      "comision_movilnet_ves": 78.0,
+      "neto_comercio_ves": 312.0,
+      "split_ratio": "20% / 80%",
+      "timestamp": "2026-10-22 04:48:59"
+    },
+    {
+      "transaccion_id": "TX-FDBA8F62",
+      "cupon_id": "CUP-0AD5CA0F",
+      "msisdn": "04262711892",
+      "comercio_id": "COM-027",
+      "oferta_titulo": "Exoneración de Comisión Cuenta Jurídica / POS Pyme (Banco Mercantil Torre Principal)",
+      "monto_total_ves": 390.0,
+      "comision_movilnet_ves": 78.0,
+      "neto_comercio_ves": 312.0,
+      "split_ratio": "20% / 80%",
+      "timestamp": "2026-10-22 04:48:59"
+    },
+    {
+      "transaccion_id": "TX-19A7EC48",
+      "cupon_id": "CUP-B803D8F8",
+      "msisdn": "04264844159",
+      "comercio_id": "COM-003",
+      "oferta_titulo": "Combo Despensa Familiar (Arroz, Pasta, Harina, Aceite) (Automercados Plaza's Las Mercedes)",
+      "monto_total_ves": 245.0,
+      "comision_movilnet_ves": 49.0,
+      "neto_comercio_ves": 196.0,
+      "split_ratio": "20% / 80%",
+      "timestamp": "2026-10-22 04:48:59"
+    },
+    {
+      "transaccion_id": "TX-DA6EEE4E",
+      "cupon_id": "CUP-579F32E1",
+      "msisdn": "04164044476",
+      "comercio_id": "COM-009",
+      "oferta_titulo": "Kit Botiquín Primeros Auxilios y Vitaminas (Farmatodo Chacao Plaza)",
+      "monto_total_ves": 140.0,
+      "comision_movilnet_ves": 28.0,
+      "neto_comercio_ves": 112.0,
+      "split_ratio": "20% / 80%",
+      "timestamp": "2026-10-22 04:48:59"
+    },
+    {
+      "transaccion_id": "TX-EB2D8EDB",
+      "cupon_id": "CUP-63FD51E0",
+      "msisdn": "04163678690",
+      "comercio_id": "COM-033",
+      "oferta_titulo": "Pase Estacionamiento Gratuito + Cupón Tiendas (Centro Comercial Líder)",
+      "monto_total_ves": 65.0,
+      "comision_movilnet_ves": 13.0,
+      "neto_comercio_ves": 52.0,
+      "split_ratio": "20% / 80%",
+      "timestamp": "2026-10-22 04:48:59"
+    },
+    {
+      "transaccion_id": "TX-712FB1A4",
+      "cupon_id": "CUP-9DDEA202",
+      "msisdn": "04262489630",
+      "comercio_id": "COM-002",
+      "oferta_titulo": "Pack Multivitamínico C + Zinc Forte 60 Tabletas",
+      "monto_total_ves": 280.0,
+      "comision_movilnet_ves": 56.0,
+      "neto_comercio_ves": 224.0,
+      "split_ratio": "20% / 80%",
+      "timestamp": "2026-10-22 04:48:59"
+    },
+    {
+      "transaccion_id": "TX-2F6F78BA",
+      "cupon_id": "CUP-AD96E6D5",
+      "msisdn": "04261210522",
+      "comercio_id": "COM-030",
+      "oferta_titulo": "Recarga Promocional Prepago Plan Movilnet (Movilnet Sede Principal El Recreo)",
+      "monto_total_ves": 95.0,
+      "comision_movilnet_ves": 19.0,
+      "neto_comercio_ves": 76.0,
+      "split_ratio": "20% / 80%",
+      "timestamp": "2026-10-22 04:48:59"
+    }
+  ]
+}
