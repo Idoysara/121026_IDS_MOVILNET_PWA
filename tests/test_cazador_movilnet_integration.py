@@ -147,7 +147,9 @@ def test_api_rest_ciclo_completo_cupon_y_billing(api_service):
     5. Bloqueo anti-replay: el segundo intento de canje DEBE fallar.
     """
     msisdn = f"0416{int(time.time() * 100) % 9000000 + 1000000}"
-    oferta_id = "OFE-002"
+    ofertas_activas = [o for o in api_service.cazador_router.cazador_service.ofertas.values() if o.activa and o.stock_disponible > 0]
+    assert len(ofertas_activas) > 0
+    oferta_id = ofertas_activas[0].id
 
     # 1. Reclamo
     req_body = json.dumps({"oferta_id": oferta_id, "msisdn": msisdn}).encode("utf-8")
@@ -235,3 +237,174 @@ def test_api_rest_magic_link_endpoint(api_service):
     assert data["success"] is True
     assert "sig=" in data["magic_link"]
     assert data["zero_rating"] is True
+
+
+# ============================================================================
+# 4. MODELO ESPACIAL DE CERO FRICCIÓN (3 ESCENARIOS AUTOMÁTICOS)
+# ============================================================================
+
+def test_zero_friccion_escenario_1_zona_canonica(api_service):
+    """
+    Escenario 1 (El 90% de los casos): El anunciante solo selecciona una Zona en la lista.
+    El límite lo fija el polígono de calles (0 radios a ingresar por el usuario).
+    """
+    req_body = json.dumps({
+        "nombre": "Café Bistro Las Mercedes",
+        "rif": "J-88112233-1",
+        "categoria": "Gastronomía",
+        "tipo_cobertura": "ZONA",
+        "zona_sector": "Las Mercedes"
+    }).encode("utf-8")
+
+    status, _, resp_body = api_service.dispatch(
+        method="POST",
+        path="/api/v1/cazador/comercio/registro-rapido",
+        headers={"Content-Type": "application/json"},
+        body_bytes=req_body
+    )
+    assert status == 201
+    data = json.loads(resp_body.decode("utf-8"))
+    assert data["success"] is True
+    comercio = data["comercio"]
+    assert comercio["tipo_cobertura"] == "ZONA"
+    assert comercio["zona_sector"] == "Las Mercedes"
+    assert comercio["radio_cobertura_m"] == 1500.0  # Asignado automáticamente por la zona
+    assert abs(comercio["lat"] - 10.4794) < 0.01  # Centroide de Las Mercedes
+    assert "0 metros ingresados" in data["escenario"]["friccion_usuario"]
+
+
+def test_zero_friccion_escenario_2_run_of_network(api_service):
+    """
+    Escenario 2: Toda la Ciudad (Run of Network).
+    El usuario deja el campo en blanco o selecciona Run of Network.
+    El sistema asigna cobertura metropolitana (50,000m) y rota libremente en toda la red.
+    """
+    req_body = json.dumps({
+        "nombre": "Campaña Nacional Móvil 4GMAX",
+        "rif": "J-88112233-2",
+        "categoria": "Tecnología",
+        "tipo_cobertura": "RUN_OF_NETWORK"
+    }).encode("utf-8")
+
+    status, _, resp_body = api_service.dispatch(
+        method="POST",
+        path="/api/v1/cazador/comercio/registro-rapido",
+        headers={"Content-Type": "application/json"},
+        body_bytes=req_body
+    )
+    assert status == 201
+    data = json.loads(resp_body.decode("utf-8"))
+    assert data["success"] is True
+    comercio = data["comercio"]
+    assert comercio["tipo_cobertura"] == "RUN_OF_NETWORK"
+    assert comercio["radio_cobertura_m"] == 50000.0
+
+    # Comprobar que el radar incluye esta campaña sin importar las coordenadas consultadas
+    status_radar, _, radar_resp = api_service.dispatch(
+        method="GET",
+        path="/api/v1/cazador/ofertas?lat=10.4350&lon=-66.8520&max_m=3000",
+        headers={},
+        body_bytes=b""
+    )
+    assert status_radar == 200
+    radar_data = json.loads(radar_resp.decode("utf-8"))
+    assert "campanas_metropolitanas" in radar_data
+
+
+def test_zero_friccion_escenario_3_smart_default_500m(api_service):
+    """
+    Escenario 3: Punto de Interés / Local Comercial.
+    Solo indica dirección o coordenadas. El algoritmo auto-asigna 500m estándar (cinemático).
+    El comerciante no hace cálculos matemáticos.
+    """
+    req_body = json.dumps({
+        "nombre": "Panadería Dulce Rincón",
+        "rif": "J-88112233-3",
+        "categoria": "Gastronomía",
+        "tipo_cobertura": "PUNTO_INTERES",
+        "direccion": "Calle Jalisco, Torre Jalisco"
+    }).encode("utf-8")
+
+    status, _, resp_body = api_service.dispatch(
+        method="POST",
+        path="/api/v1/cazador/comercio/registro-rapido",
+        headers={"Content-Type": "application/json"},
+        body_bytes=req_body
+    )
+    assert status == 201
+    data = json.loads(resp_body.decode("utf-8"))
+    assert data["success"] is True
+    comercio = data["comercio"]
+    assert comercio["tipo_cobertura"] == "PUNTO_INTERES"
+    assert comercio["radio_cobertura_m"] == 500.0  # Smart Default 500m
+    assert "500m cinemático" in data["escenario"]["descripcion"]
+
+
+def test_zero_friccion_opcion_avanzada_radio_manual(api_service):
+    """
+    Opción avanzada: Un anunciante corporativo pide expresamente un radio manual (ej: 1,200m).
+    """
+    req_body = json.dumps({
+        "nombre": "Banco Corporativo Metropolitano",
+        "rif": "J-88112233-4",
+        "categoria": "Banca",
+        "tipo_cobertura": "PUNTO_INTERES",
+        "direccion": "Av. Francisco de Miranda",
+        "radio_manual_m": 1200.0
+    }).encode("utf-8")
+
+    status, _, resp_body = api_service.dispatch(
+        method="POST",
+        path="/api/v1/cazador/comercio/registro-rapido",
+        headers={"Content-Type": "application/json"},
+        body_bytes=req_body
+    )
+    assert status == 201
+    data = json.loads(resp_body.decode("utf-8"))
+    assert data["comercio"]["radio_cobertura_m"] == 1200.0
+    assert "Radio manual opcional aplicado" in data["escenario"]["friccion_usuario"]
+
+
+def test_zero_friccion_guarda_anti_spots_inaudibles(api_service):
+    """
+    Guarda Matemática: Radios menores a 50m (ej. 20m) deben ser rechazados con 422.
+    Un vehículo a 40 km/h recorre 20 metros en 1.8 segundos, haciendo imposible la reproducción.
+    """
+    req_body = json.dumps({
+        "nombre": "Kiosco Error Radio Diminuto",
+        "rif": "J-88112233-5",
+        "categoria": "Retail",
+        "tipo_cobertura": "PUNTO_INTERES",
+        "radio_manual_m": 20.0
+    }).encode("utf-8")
+
+    status, _, resp_body = api_service.dispatch(
+        method="POST",
+        path="/api/v1/cazador/comercio/registro-rapido",
+        headers={"Content-Type": "application/json"},
+        body_bytes=req_body
+    )
+    assert status == 422
+    data = json.loads(resp_body.decode("utf-8"))
+    assert "Radio espacial inválido" in data["message"]
+    assert "spots inaudibles" in data["message"]
+
+
+def test_catalogo_zonas_canonicas(api_service):
+    """Endpoint GET /api/v1/cazador/zonas retorna el catálogo de sectores canónicos."""
+    status, _, body = api_service.dispatch(
+        method="GET",
+        path="/api/v1/cazador/zonas",
+        headers={},
+        body_bytes=b""
+    )
+    assert status == 200
+    data = json.loads(body.decode("utf-8"))
+    assert data["success"] is True
+    assert data["total"] >= 10
+    nombres = [z["nombre"] for z in data["zonas"]]
+    assert "Las Mercedes" in nombres
+    assert "Chacao" in nombres
+    assert "Altamira" in nombres
+    assert "Brickell (Miami)" in nombres
+

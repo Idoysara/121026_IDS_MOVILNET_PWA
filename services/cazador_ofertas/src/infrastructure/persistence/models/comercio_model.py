@@ -2,7 +2,7 @@
 Modelo ORM para Comercios Aliados en Cazador de Ofertas Movilnet.
 Tabla: 'comercios'
 """
-from typing import List, TYPE_CHECKING
+from typing import List, Optional, TYPE_CHECKING
 from sqlalchemy import String, Float, Boolean, Index
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -23,6 +23,10 @@ class ComercioModel(Base, TimestampMixin):
     lon: Mapped[float] = mapped_column(Float, nullable=False)
     tier: Mapped[str] = mapped_column(String(20), default="BASICO", nullable=False)
     activo: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
+    tipo_cobertura: Mapped[str] = mapped_column(String(30), default="PUNTO_INTERES", nullable=False)
+    zona_sector: Mapped[Optional[str]] = mapped_column(String(80), nullable=True)
+    radio_cobertura_m: Mapped[float] = mapped_column(Float, default=500.0, nullable=False)
+    direccion: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
 
     # Relación uno a muchos con ofertas
     ofertas: Mapped[List["OfertaModel"]] = relationship(
@@ -46,6 +50,11 @@ class ComercioModel(Base, TimestampMixin):
             "lon": self.lon,
             "tier": self.tier,
             "activo": self.activo,
+            "tipo_cobertura": self.tipo_cobertura,
+            "zona_sector": self.zona_sector,
+            "radio_cobertura_m": self.radio_cobertura_m,
+            "direccion": self.direccion,
             "created_at": self.created_at,
             "updated_at": self.updated_at
         }
+

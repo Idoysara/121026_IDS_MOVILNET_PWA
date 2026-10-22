@@ -1,10 +1,10 @@
 transaccion_id,cupon_id,msisdn,comercio_id,oferta_titulo,monto_total_ves,comision_movilnet_ves,neto_comercio_ves,split_ratio,timestamp
-TX-D4654E4B,CUP-5A063F08,04261273607,COM-016,Menú Ejecutivo Degustación 3 Tiempos (Ávila Burger Tolón),270.0,54.0,216.0,20% / 80%,2026-10-22 04:48:59
-TX-3521A18C,CUP-982EBA7A,04264844159,COM-003,"Combo Despensa Familiar (Arroz, Pasta, Harina, Aceite) (Automercados Plaza's Las Mercedes)",245.0,49.0,196.0,20% / 80%,2026-10-22 04:48:59
-TX-930BEEDA,CUP-83758319,04267503782,COM-026,Exoneración de Comisión Cuenta Jurídica / POS Pyme (Ciudad Banesco (Sede Principal)),390.0,78.0,312.0,20% / 80%,2026-10-22 04:48:59
-TX-FDBA8F62,CUP-0AD5CA0F,04262711892,COM-027,Exoneración de Comisión Cuenta Jurídica / POS Pyme (Banco Mercantil Torre Principal),390.0,78.0,312.0,20% / 80%,2026-10-22 04:48:59
-TX-19A7EC48,CUP-B803D8F8,04264844159,COM-003,"Combo Despensa Familiar (Arroz, Pasta, Harina, Aceite) (Automercados Plaza's Las Mercedes)",245.0,49.0,196.0,20% / 80%,2026-10-22 04:48:59
-TX-DA6EEE4E,CUP-579F32E1,04164044476,COM-009,Kit Botiquín Primeros Auxilios y Vitaminas (Farmatodo Chacao Plaza),140.0,28.0,112.0,20% / 80%,2026-10-22 04:48:59
-TX-EB2D8EDB,CUP-63FD51E0,04163678690,COM-033,Pase Estacionamiento Gratuito + Cupón Tiendas (Centro Comercial Líder),65.0,13.0,52.0,20% / 80%,2026-10-22 04:48:59
-TX-712FB1A4,CUP-9DDEA202,04262489630,COM-002,Pack Multivitamínico C + Zinc Forte 60 Tabletas,280.0,56.0,224.0,20% / 80%,2026-10-22 04:48:59
-TX-2F6F78BA,CUP-AD96E6D5,04261210522,COM-030,Recarga Promocional Prepago Plan Movilnet (Movilnet Sede Principal El Recreo),95.0,19.0,76.0,20% / 80%,2026-10-22 04:48:59
+TX-37E58B2E,CUP-C4805F52,04261273607,COM-016,Menú Ejecutivo Degustación 3 Tiempos (Ávila Burger Tolón),270.0,54.0,216.0,20% / 80%,2026-10-22 05:23:52
+TX-F54F39D4,CUP-9AE4FD61,04264844159,COM-003,"Combo Despensa Familiar (Arroz, Pasta, Harina, Aceite) (Automercados Plaza's Las Mercedes)",245.0,49.0,196.0,20% / 80%,2026-10-22 05:23:52
+TX-A0BE2A9E,CUP-96C4D877,04267503782,COM-026,Exoneración de Comisión Cuenta Jurídica / POS Pyme (Ciudad Banesco (Sede Principal)),390.0,78.0,312.0,20% / 80%,2026-10-22 05:23:52
+TX-8F8F4740,CUP-DC41A7FF,04262711892,COM-027,Exoneración de Comisión Cuenta Jurídica / POS Pyme (Banco Mercantil Torre Principal),390.0,78.0,312.0,20% / 80%,2026-10-22 05:23:52
+TX-A46C61D6,CUP-8501DC6F,04264844159,COM-003,"Combo Despensa Familiar (Arroz, Pasta, Harina, Aceite) (Automercados Plaza's Las Mercedes)",245.0,49.0,196.0,20% / 80%,2026-10-22 05:23:52
+TX-BEF1EA36,CUP-A681FEE5,04164044476,COM-009,Kit Botiquín Primeros Auxilios y Vitaminas (Farmatodo Chacao Plaza),140.0,28.0,112.0,20% / 80%,2026-10-22 05:23:52
+TX-DD82CBBF,CUP-BFBEEB8F,04163678690,COM-033,Pase Estacionamiento Gratuito + Cupón Tiendas (Centro Comercial Líder),65.0,13.0,52.0,20% / 80%,2026-10-22 05:23:52
+TX-A2ABE907,CUP-FFD1AF6C,04262489630,COM-002,Pack Multivitamínico C + Zinc Forte 60 Tabletas,280.0,56.0,224.0,20% / 80%,2026-10-22 05:23:52
+TX-3DA44B94,CUP-8A7FDC5B,04261210522,COM-030,Recarga Promocional Prepago Plan Movilnet (Movilnet Sede Principal El Recreo),95.0,19.0,76.0,20% / 80%,2026-10-22 05:23:52

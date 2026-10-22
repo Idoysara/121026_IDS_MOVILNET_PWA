@@ -9,6 +9,11 @@ import time
 
 from .fsm import EstadoCupon
 
+class TipoCobertura(str, Enum):
+    ZONA = "ZONA"
+    RUN_OF_NETWORK = "RUN_OF_NETWORK"
+    PUNTO_INTERES = "PUNTO_INTERES"
+
 class TierComercio(str, Enum):
     BASICO = "BASICO"
     DESTACADO = "DESTACADO"
@@ -27,6 +32,11 @@ class Comercio(BaseModel):
     categoria: str = Field(...)
     tier: TierComercio = Field(default=TierComercio.BASICO)
     activo: bool = True
+    tipo_cobertura: TipoCobertura = Field(default=TipoCobertura.PUNTO_INTERES)
+    zona_sector: Optional[str] = Field(default=None, description="Sector canónico o polígono asignado")
+    radio_cobertura_m: float = Field(default=500.0, ge=50.0, description="Radio de cobertura en metros (Smart Default 500m)")
+    direccion: Optional[str] = Field(default=None, description="Dirección física o punto de referencia")
+
 
 class Oferta(BaseModel):
     id: str

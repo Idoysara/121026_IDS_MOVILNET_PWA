@@ -44,6 +44,23 @@ def get_db_session() -> Generator[Session, None, None]:
         session.close()
 
 def init_db(target_engine=None) -> None:
-    """Crea todas las tablas declaradas en el target_engine."""
+    """Crea todas las tablas declaradas en el target_engine y asegura columnas espaciales."""
+    from sqlalchemy import text
     eng = target_engine or engine
     Base.metadata.create_all(bind=eng)
+    try:
+        with eng.connect() as conn:
+            res = conn.execute(text("PRAGMA table_info(comercios);")).fetchall()
+            cols = {row[1] for row in res}
+            if cols and "tipo_cobertura" not in cols:
+                conn.execute(text("ALTER TABLE comercios ADD COLUMN tipo_cobertura VARCHAR(30) DEFAULT 'PUNTO_INTERES';"))
+            if cols and "zona_sector" not in cols:
+                conn.execute(text("ALTER TABLE comercios ADD COLUMN zona_sector VARCHAR(80);"))
+            if cols and "radio_cobertura_m" not in cols:
+                conn.execute(text("ALTER TABLE comercios ADD COLUMN radio_cobertura_m FLOAT DEFAULT 500.0;"))
+            if cols and "direccion" not in cols:
+                conn.execute(text("ALTER TABLE comercios ADD COLUMN direccion VARCHAR(255);"))
+            conn.commit()
+    except Exception:
+        pass
+

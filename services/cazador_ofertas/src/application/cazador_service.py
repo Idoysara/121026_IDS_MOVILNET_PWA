@@ -34,8 +34,10 @@ from ..domain.entities import (
     TransaccionBilling,
     EstadoCupon,
     TierComercio,
-    NivelUsuario
+    NivelUsuario,
+    TipoCobertura
 )
+from ..domain.zones import resolver_zona, listar_zonas_disponibles
 from ..domain.fsm import CouponFSM, IllegalCouponStateTransitionError
 from ..domain.invariants import CazadorInvariants, DomainInvariantViolationError
 from ..domain.rea_clean_room_deals_engine import (
@@ -111,6 +113,7 @@ class CazadorApplicationService:
         else:
             # Hidratar comercios
             for c_orm in comercios_db:
+                tipo_cob = TipoCobertura(c_orm.tipo_cobertura) if hasattr(c_orm, "tipo_cobertura") and c_orm.tipo_cobertura in TipoCobertura._value2member_map_ else TipoCobertura.PUNTO_INTERES
                 comercio = Comercio(
                     id=c_orm.id,
                     rif=c_orm.rif,
@@ -119,7 +122,11 @@ class CazadorApplicationService:
                     lat=c_orm.lat,
                     lon=c_orm.lon,
                     tier=TierComercio(c_orm.tier) if c_orm.tier in TierComercio._value2member_map_ else TierComercio.BASICO,
-                    activo=c_orm.activo
+                    activo=c_orm.activo,
+                    tipo_cobertura=tipo_cob,
+                    zona_sector=getattr(c_orm, "zona_sector", None),
+                    radio_cobertura_m=getattr(c_orm, "radio_cobertura_m", 500.0) or 500.0,
+                    direccion=getattr(c_orm, "direccion", None)
                 )
                 self.comercios[comercio.id] = comercio
 
@@ -174,7 +181,11 @@ class CazadorApplicationService:
                     lat=comercio.lat,
                     lon=comercio.lon,
                     tier=comercio.tier.value,
-                    activo=comercio.activo
+                    activo=comercio.activo,
+                    tipo_cobertura=comercio.tipo_cobertura.value,
+                    zona_sector=comercio.zona_sector,
+                    radio_cobertura_m=comercio.radio_cobertura_m,
+                    direccion=comercio.direccion
                 )
                 self.comercio_repo.save(c_orm)
 
@@ -221,11 +232,33 @@ class CazadorApplicationService:
         """
         # Preparar candidatos desde memoria de dominio o repositorio
         candidatos = []
+        candidatos_ron = []
         for c in self.comercios.values():
             if not c.activo:
                 continue
             if categoria and c.categoria.lower() != categoria.lower():
                 continue
+
+            # Escenario 2: Run of Network cubre toda la ciudad metropolitana
+            if c.tipo_cobertura == TipoCobertura.RUN_OF_NETWORK:
+                candidatos_ron.append({
+                    "id": c.id,
+                    "nombre": c.nombre,
+                    "rif": c.rif,
+                    "lat": user_lat,
+                    "lon": user_lon,
+                    "categoria": c.categoria,
+                    "tier": c.tier.value,
+                    "tipo_cobertura": c.tipo_cobertura.value,
+                    "zona_sector": c.zona_sector or "Toda la Ciudad (Run of Network)",
+                    "radio_cobertura_m": c.radio_cobertura_m,
+                    "distance_meters": 0.0,
+                    "distance_km": 0.0,
+                    "ring": "zona_1_inmediata",
+                    "run_of_network": True
+                })
+                continue
+
             candidatos.append({
                 "id": c.id,
                 "nombre": c.nombre,
@@ -233,7 +266,10 @@ class CazadorApplicationService:
                 "lat": c.lat,
                 "lon": c.lon,
                 "categoria": c.categoria,
-                "tier": c.tier.value
+                "tier": c.tier.value,
+                "tipo_cobertura": c.tipo_cobertura.value,
+                "zona_sector": c.zona_sector,
+                "radio_cobertura_m": c.radio_cobertura_m
             })
 
         radar_res = self.radar_engine.filter_proximity(
@@ -270,12 +306,31 @@ class CazadorApplicationService:
                 anillos[ring_name].append(entry)
                 total_ofertas_encontradas += len(c_ofertas)
 
+        # Inyectar campañas Run of Network metropolitanas (Escenario 2)
+        campanas_metropolitanas = []
+        for ron_item in candidatos_ron:
+            c_id = ron_item["id"]
+            c_ofertas = [
+                o.model_dump() for o in self.ofertas.values()
+                if o.comercio_id == c_id and o.activa and o.stock_disponible > 0
+            ]
+            if not c_ofertas:
+                continue
+            entry = {
+                "comercio": ron_item,
+                "ofertas": c_ofertas
+            }
+            campanas_metropolitanas.append(entry)
+            anillos["zona_1_inmediata"].insert(0, entry)
+            total_ofertas_encontradas += len(c_ofertas)
+
         return {
             "success": True,
             "user_coords": {"lat": user_lat, "lon": user_lon},
             "max_distance_meters": max_distancia_m,
-            "total_comercios_en_rango": radar_res.get("total_matches", 0),
+            "total_comercios_en_rango": radar_res.get("total_matches", 0) + len(candidatos_ron),
             "total_ofertas_disponibles": total_ofertas_encontradas,
+            "campanas_metropolitanas": campanas_metropolitanas,
             "anillos": anillos
         }
 
@@ -582,12 +637,168 @@ class CazadorApplicationService:
                 lat=comercio.lat,
                 lon=comercio.lon,
                 tier=comercio.tier.value,
-                activo=comercio.activo
+                activo=comercio.activo,
+                tipo_cobertura=comercio.tipo_cobertura.value,
+                zona_sector=comercio.zona_sector,
+                radio_cobertura_m=comercio.radio_cobertura_m,
+                direccion=comercio.direccion
             )
             self.comercio_repo.save(c_orm)
         except Exception:
             pass
         return comercio
+
+    def registrar_comercio_zero_friccion(
+        self,
+        nombre: str,
+        rif: str,
+        categoria: str,
+        tipo_cobertura: str = "PUNTO_INTERES",
+        zona_sector: Optional[str] = None,
+        direccion: Optional[str] = None,
+        lat: Optional[float] = None,
+        lon: Optional[float] = None,
+        radio_manual_m: Optional[float] = None,
+        tier: str = "BASICO"
+    ) -> Dict[str, Any]:
+        """
+        Registra un comercio aliado bajo el Modelo Espacial de Cero Fricción (3 Escenarios Automáticos).
+        El anunciante o dueño de negocio NO tiene que ingresar ningún radio en metros ni calcular geometría.
+        """
+        if not nombre or len(nombre.strip()) < 2:
+            raise DomainInvariantViolationError("El nombre comercial es obligatorio (mínimo 2 caracteres).")
+        if not rif or len(rif.strip()) < 5:
+            raise DomainInvariantViolationError("El RIF fiscal es obligatorio y debe tener formato válido.")
+
+        clean_rif = rif.strip().upper()
+        clean_nombre = nombre.strip()
+        clean_categoria = categoria.strip() if categoria else "Comercio General"
+
+        # Resolver Tipo de Cobertura
+        tipo_str = (tipo_cobertura or "PUNTO_INTERES").strip().upper()
+        if tipo_str not in TipoCobertura._value2member_map_:
+            tipo_str = "PUNTO_INTERES"
+        tipo_enum = TipoCobertura(tipo_str)
+
+        escenario_num = 3
+        escenario_desc = ""
+        radio_final_m = 500.0
+        zona_asignada = None
+
+        if tipo_enum == TipoCobertura.ZONA:
+            escenario_num = 1
+            zona_meta = resolver_zona(zona_sector or direccion or "")
+            if zona_meta:
+                zona_asignada = zona_meta["nombre"]
+                lat = float(lat if lat is not None else zona_meta["centroide"]["lat"])
+                lon = float(lon if lon is not None else zona_meta["centroide"]["lon"])
+                radio_final_m = float(zona_meta["radio_zona_m"])
+                escenario_desc = f"Escenario 1: Polígono automático de Zona '{zona_asignada}' ({radio_final_m:.0f}m)"
+            else:
+                zona_asignada = zona_sector or "Zona Comercial Urbana"
+                lat = float(lat if lat is not None else 10.4925)
+                lon = float(lon if lon is not None else -66.8550)
+                radio_final_m = 1200.0
+                escenario_desc = f"Escenario 1: Sector '{zona_asignada}' con radio sectorial automático (1200m)"
+
+        elif tipo_enum == TipoCobertura.RUN_OF_NETWORK:
+            escenario_num = 2
+            lat = float(lat if lat is not None else 10.4900)
+            lon = float(lon if lon is not None else -66.8800)
+            radio_final_m = CazadorInvariants.MAX_METROPOLITAN_RADIUS_METERS
+            zona_asignada = "Toda la Ciudad (Run of Network)"
+            escenario_desc = "Escenario 2: Toda la Ciudad (Run of Network) — Rotación metropolitana sin geocercas restrictivas"
+
+        else:
+            escenario_num = 3
+            tipo_enum = TipoCobertura.PUNTO_INTERES
+            if radio_manual_m is not None and float(radio_manual_m) > 0:
+                radio_final_m = CazadorInvariants.validar_radio_comercio(float(radio_manual_m))
+                escenario_desc = f"Escenario 3 (Avanzado): Radio manual explícito ({radio_final_m:.0f}m)"
+            else:
+                radio_final_m = CazadorInvariants.DEFAULT_SMART_RADIUS_METERS
+                escenario_desc = "Escenario 3: Smart Default de 500m cinemático/peatonal automático (0 cálculos requeridos)"
+
+            if lat is None or lon is None:
+                if direccion:
+                    zona_ref = resolver_zona(direccion)
+                    if zona_ref:
+                        lat = float(zona_ref["centroide"]["lat"])
+                        lon = float(zona_ref["centroide"]["lon"])
+                        zona_asignada = zona_ref["nombre"]
+                if lat is None or lon is None:
+                    lat = 10.4925
+                    lon = -66.8550
+
+        # Validar si ya existe por RIF
+        existente = self.comercio_repo.get_by_rif(clean_rif)
+        if existente:
+            comercio_id = existente.id
+        else:
+            comercio_id = f"COM-{uuid.uuid4().hex[:6].upper()}"
+
+        tier_enum = TierComercio(tier) if tier in TierComercio._value2member_map_ else TierComercio.BASICO
+
+        comercio = Comercio(
+            id=comercio_id,
+            nombre=clean_nombre,
+            rif=clean_rif,
+            lat=float(lat),
+            lon=float(lon),
+            categoria=clean_categoria,
+            tier=tier_enum,
+            activo=True,
+            tipo_cobertura=tipo_enum,
+            zona_sector=zona_asignada,
+            radio_cobertura_m=radio_final_m,
+            direccion=direccion
+        )
+        self.comercios[comercio.id] = comercio
+
+        try:
+            c_orm = self.comercio_repo.get_by_id(comercio_id)
+            if not c_orm:
+                c_orm = ComercioModel(
+                    id=comercio.id,
+                    rif=comercio.rif,
+                    nombre=comercio.nombre,
+                    categoria=comercio.categoria,
+                    lat=comercio.lat,
+                    lon=comercio.lon,
+                    tier=comercio.tier.value,
+                    activo=comercio.activo,
+                    tipo_cobertura=comercio.tipo_cobertura.value,
+                    zona_sector=comercio.zona_sector,
+                    radio_cobertura_m=comercio.radio_cobertura_m,
+                    direccion=comercio.direccion
+                )
+                self.comercio_repo.save(c_orm)
+            else:
+                c_orm.nombre = comercio.nombre
+                c_orm.categoria = comercio.categoria
+                c_orm.lat = comercio.lat
+                c_orm.lon = comercio.lon
+                c_orm.tier = comercio.tier.value
+                c_orm.activo = comercio.activo
+                c_orm.tipo_cobertura = comercio.tipo_cobertura.value
+                c_orm.zona_sector = comercio.zona_sector
+                c_orm.radio_cobertura_m = comercio.radio_cobertura_m
+                c_orm.direccion = comercio.direccion
+                self.session.commit()
+        except Exception:
+            pass
+
+        return {
+            "success": True,
+            "comercio": comercio.model_dump(),
+            "escenario": {
+                "numero": escenario_num,
+                "nombre": tipo_enum.value,
+                "descripcion": escenario_desc,
+                "radio_aplicado_m": radio_final_m,
+                "friccion_usuario": "0 metros ingresados (100% automatizado)" if not radio_manual_m else "Radio manual opcional aplicado"
+            }
+        }
 
     def publicar_oferta(self, datos_oferta: Dict[str, Any]) -> Oferta:
         # Validar Invariante II (Margen >= 35%)

@@ -17,6 +17,12 @@ class CazadorInvariants:
     TELCO_SPLIT_PCT = 20.0  # 20% Movilnet
     MERCHANT_SPLIT_PCT = 80.0  # 80% Comercio / Plataforma
 
+    # Invariante VII: Cero Fricción Espacial para Anunciantes / Comercios
+    DEFAULT_SMART_RADIUS_METERS = 500.0  # 500m estándar cinemático / peatonal
+    MIN_MANUAL_RADIUS_METERS = 50.0  # Previene radios <50m que a 40km/h duran <1.8s
+    MAX_METROPOLITAN_RADIUS_METERS = 50000.0  # Cobertura metropolitana Run-of-Network
+
+
     @classmethod
     def validar_margen_bruto(cls, precio_oferta: float, costo_directo: float) -> Tuple[bool, float]:
         """
@@ -105,3 +111,16 @@ class CazadorInvariants:
                 f"Prohibida la alucinación o invención de ofertas sin respaldo físico en base de datos."
             )
         return True
+
+    @classmethod
+    def validar_radio_comercio(cls, radio_m: float) -> float:
+        """
+        Valida que un radio manual no sea peligrosamente pequeño (< 50m).
+        Un vehículo a 40 km/h recorre 20 metros en 1.8 segundos, haciendo inútil el anuncio.
+        """
+        if radio_m < cls.MIN_MANUAL_RADIUS_METERS:
+            raise DomainInvariantViolationError(
+                f"Radio espacial inválido ({radio_m:.1f}m). Para evitar spots inaudibles (<1.8s a 40km/h), el radio mínimo debe ser >= {cls.MIN_MANUAL_RADIUS_METERS}m."
+            )
+        return float(radio_m)
+

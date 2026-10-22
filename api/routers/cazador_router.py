@@ -33,6 +33,7 @@ from api.routers.base_router import (
 )
 from services.cazador_ofertas.src.application.cazador_service import CazadorApplicationService
 from services.cazador_ofertas.src.infrastructure.deflector.magic_link_service import MagicLinkService
+from services.cazador_ofertas.src.domain.zones import listar_zonas_disponibles
 from services.cazador_ofertas.src.domain.invariants import (
     CazadorInvariants,
     DomainInvariantViolationError
@@ -49,6 +50,8 @@ class CazadorRouter(BaseDomainRouter):
         "/api/v1/cazador/cupon/canjear",
         "/api/v1/cazador/magic-link",
         "/api/v1/cazador/billing",
+        "/api/v1/cazador/comercio/registro-rapido",
+        "/api/v1/cazador/zonas",
     }
 
     def __init__(self, service: Optional[CazadorApplicationService] = None):
@@ -189,6 +192,45 @@ class CazadorRouter(BaseDomainRouter):
                     idempotency_key=idempotency_key
                 )
                 return json_response(200, res_bill)
+
+            # 7. GET /api/v1/cazador/zonas (Catálogo Canónico de Zonas para Cero Fricción)
+            elif method == "GET" and clean_path == "/api/v1/cazador/zonas":
+                zonas = listar_zonas_disponibles()
+                return json_response(200, {
+                    "success": True,
+                    "total": len(zonas),
+                    "zonas": zonas
+                })
+
+            # 8. POST /api/v1/cazador/comercio/registro-rapido (Modelo 3 Escenarios Cero Fricción)
+            elif method == "POST" and clean_path == "/api/v1/cazador/comercio/registro-rapido":
+                ok, body, err_msg = parse_json_body(body_bytes)
+                if not ok:
+                    return error_response(400, "ERR_INVALID_JSON", err_msg or "JSON inválido")
+
+                nombre = body.get("nombre")
+                rif = body.get("rif")
+                categoria = body.get("categoria", "Comercio General")
+                if not nombre or not rif:
+                    return error_response(
+                        400,
+                        "ERR_MISSING_FIELDS",
+                        "Campos obligatorios: nombre y rif."
+                    )
+
+                res_reg = self.cazador_service.registrar_comercio_zero_friccion(
+                    nombre=nombre,
+                    rif=rif,
+                    categoria=categoria,
+                    tipo_cobertura=body.get("tipo_cobertura", "PUNTO_INTERES"),
+                    zona_sector=body.get("zona_sector"),
+                    direccion=body.get("direccion"),
+                    lat=body.get("lat"),
+                    lon=body.get("lon"),
+                    radio_manual_m=body.get("radio_manual_m"),
+                    tier=body.get("tier", "BASICO")
+                )
+                return json_response(201, res_reg)
 
             return error_response(404, "ERR_NOT_FOUND", f"Ruta no encontrada: {method} {clean_path}")
 
