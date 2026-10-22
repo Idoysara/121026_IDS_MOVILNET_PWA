@@ -21,15 +21,19 @@ class Base(DeclarativeBase):
 def obtener_engine(db_url: str = DATABASE_URL):
     """Crea y retorna un engine configurado con soporte para SQLite o PostgreSQL."""
     connect_args = {}
+    extra_kwargs = {}
     if db_url.startswith("sqlite"):
         os.makedirs(DEFAULT_DB_DIR, exist_ok=True)
         connect_args = {"check_same_thread": False}
+        from sqlalchemy.pool import NullPool
+        extra_kwargs["poolclass"] = NullPool
     
     return create_engine(
         db_url,
         connect_args=connect_args,
         echo=False,
-        future=True
+        future=True,
+        **extra_kwargs
     )
 
 engine = obtener_engine()

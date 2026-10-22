@@ -253,9 +253,27 @@ class AgentDealsScout:
     def inferir_coordenadas_de_texto(cls, texto: str) -> Optional[Tuple[float, float]]:
         """Busca menciones explícitas de zonas comerciales en el texto para resolver coordenadas WGS84."""
         t_low = texto.lower()
-        for zona_key, coords in ZONAS_REFERENCIA_CARACAS.items():
+        for zona_key in sorted(ZONAS_REFERENCIA_CARACAS.keys(), key=len, reverse=True):
             if zona_key in t_low:
-                return coords
+                return ZONAS_REFERENCIA_CARACAS[zona_key]
+        return None
+
+    @classmethod
+    def inferir_categoria_de_texto(cls, texto: str) -> Optional[str]:
+        """Infiere la categoría comercial del catálogo a partir de términos en lenguaje natural."""
+        t_low = texto.lower()
+        mapa = [
+            (["desayuno", "desayunos", "cafe", "café", "panaderia", "panadería", "croissant", "cachito", "merienda", "torta", "reina pepiada"], "Café y Panadería"),
+            (["almuerzo", "almuerzos", "cena", "cenas", "restaurante", "restaurantes", "parrilla", "pasta", "criollo", "pabellon", "pabellón", "carne"], "Restaurantes"),
+            (["hamburguesa", "hamburguesas", "pizza", "pizzas", "pollo", "broaster", "sushi", "perro caliente", "perros calientes", "churros", "comida rapida", "comida rápida", "franquicia"], "Comida Rápida y Franquicias"),
+            (["farmacia", "farmacias", "salud", "medicina", "medicinas", "vitamina", "vitaminas", "primeros auxilios", "pediatrico", "pediátrico"], "Farmacias y Salud"),
+            (["supermercado", "supermercados", "mercado", "viveres", "víveres", "despensa", "charcuteria", "charcutería", "lacteos", "lácteos"], "Supermercados"),
+            (["peluqueria", "peluquería", "corte", "manicura", "spa", "facial", "optica", "óptica", "belleza"], "Belleza y Cuidado Personal"),
+            (["autolavado", "lavado", "aceite", "alineacion", "alineación", "taller", "ferreteria", "ferretería", "celular", "repuesto"], "Servicios y Hogar")
+        ]
+        for keywords, cat in mapa:
+            if any(k in t_low for k in keywords):
+                return cat
         return None
 
     def scout_deals(
@@ -275,24 +293,27 @@ class AgentDealsScout:
         carrier_enum, _, is_comp = CarrierFunnelClassifier.identify_carrier(clean_phone)
         is_movilnet = (not is_comp) and (carrier_enum == Carrier.MOVILNET)
 
-        # 1. Resolver coordenadas si no vienen dadas
+        # 1. Inferir categoría si no viene explícita
+        if not categoria:
+            categoria = self.inferir_categoria_de_texto(message)
+
+        # 2. Resolver coordenadas si no vienen dadas
         if lat is None or lon is None:
             inferred = self.inferir_coordenadas_de_texto(message)
             if inferred:
                 lat, lon = inferred
 
-        # 2. Si todavía no hay coordenadas, aplicar Regla Cero Adivinación
+        # 3. Si todavía no hay coordenadas, aplicar Regla Cero Adivinación
         if lat is None or lon is None:
             magic_link = self.magic_service.generar_magic_link(
                 msisdn=clean_phone if is_movilnet else "04160000001"
             )
+            cat_aviso = f" de *{categoria}*" if categoria else ""
             msg_solicitud = (
-                "¡Con gusto te ayudo a cazar las mejores ofertas del Club 4GMAX! 🏷️🍔\n\n"
+                f"¡Con gusto te ayudo a cazar las mejores ofertas{cat_aviso} del Club 4GMAX! 🏷️🍔\n\n"
                 "Para recomendarte los descuentos más cercanos y exactos a tu alrededor, "
-                "¿me indicas en qué ciudad o zona te encuentras (ej. Chacao, Sabana Grande, Las Mercedes), "
-                "o compártenos tu ubicación GPS?\n\n"
-                "🌐 También puedes activar el radar en vivo desde nuestra PWA:\n"
-                f"{magic_link}"
+                "¿me indicas en qué ciudad o zona te encuentras (ej. Chacao, Los Palos Grandes, El Cafetal), "
+                "o compártenos tu ubicación GPS?"
             )
             return ScoutDealsResult(
                 success=True,
@@ -306,7 +327,7 @@ class AgentDealsScout:
                 requiere_ubicacion=True
             )
 
-        # 3. Búsqueda radar geoespacial
+        # 4. Búsqueda radar geoespacial
         radar_res = self.cazador_service.buscar_ofertas_radar(
             user_lat=lat,
             user_lon=lon,
@@ -342,19 +363,52 @@ class AgentDealsScout:
                         anillo=label_anillo
                     ))
 
-        # Generar Magic Link con 1-Tap Zero-Rating
+        # Si se filtró por categoría y no hubo resultados, intentar fallback sin filtro de categoría
+        if not scout_items and categoria:
+            radar_res_fallback = self.cazador_service.buscar_ofertas_radar(
+                user_lat=lat,
+                user_lon=lon,
+                max_distancia_m=max_distancia_m,
+                categoria=None
+            )
+            anillos_fb = radar_res_fallback.get("anillos", {})
+            for ring_name, label_anillo in [
+                ("zona_1_inmediata", "Inmediata (0-500m)"),
+                ("zona_2_vecindario", "Vecindario (500-1000m)"),
+                ("zona_3_urbana", "Urbana (1000-3000m)")
+            ]:
+                for entry in anillos_fb.get(ring_name, []):
+                    comercio_info = entry.get("comercio", {})
+                    dist_m = float(comercio_info.get("distance_meters", comercio_info.get("distance_m", 0.0)))
+                    comercio_obj = self.cazador_service.comercios.get(comercio_info.get("id"))
+                    nombre_c = comercio_obj.nombre if comercio_obj else comercio_info.get("nombre", "Comercio Aliado")
+                    for ofe in entry.get("ofertas", []):
+                        scout_items.append(ScoutDealItem(
+                            oferta_id=ofe.get("id"),
+                            titulo=ofe.get("titulo"),
+                            precio_oferta_ves=float(ofe.get("precio_oferta_ves", 0.0)),
+                            precio_regular_ves=float(ofe.get("precio_regular_ves", 0.0)),
+                            descuento_pct=float(ofe.get("descuento_pct", 0.0)),
+                            comercio_id=comercio_info.get("id"),
+                            comercio_nombre=nombre_c,
+                            categoria=comercio_obj.categoria if comercio_obj else "General",
+                            distancia_m=round(dist_m, 1),
+                            anillo=label_anillo
+                        ))
+
+        # Generar Magic Link con 1-Tap Zero-Rating en puerto 8010
         first_offer_id = scout_items[0].oferta_id if scout_items else None
         magic_link = self.magic_service.generar_magic_link(
             msisdn=clean_phone if is_movilnet else "04160000001",
             oferta_id=first_offer_id
         )
 
-        # 4. Formatear respuesta conversacional
+        # 5. Formatear respuesta conversacional
         if not scout_items:
             mensaje = (
                 f"👋 ¡Hola! En el Club 4GMAX no encontramos promociones activas en un radio de {int(max_distancia_m)}m "
                 f"de tu ubicación actual.\n\n"
-                f"📱 Abre nuestro Radar Soberano en vivo (sin consumir tus megas de saldo):\n"
+                f"📱 Abre nuestro Radar Soberano en vivo en la PWA:\n"
                 f"{magic_link}\n\n"
                 f"✨ Navegación 100% patrocinada con Zero-Rating para líneas Movilnet."
             )
@@ -366,8 +420,9 @@ class AgentDealsScout:
                     f"   💰 *Bs {item.precio_oferta_ves:,.2f}* (-{item.descuento_pct:.0f}%) en *{item.comercio_nombre}*"
                 )
             cuerpo = "\n\n".join(items_txt)
+            titulo_cat = f" de *{categoria}*" if categoria else ""
             mensaje = (
-                f"🎯 **¡Club 4GMAX Activado!** Encontramos {len(scout_items)} ofertas exclusivas cerca de ti:\n\n"
+                f"🎯 **¡Club 4GMAX Activado!** Encontramos {len(scout_items)} ofertas exclusivas{titulo_cat} cerca de ti:\n\n"
                 f"{cuerpo}\n\n"
                 f"⚡ **Reclama tu cupón sin gastar megas (1-Tap Zero-Rating):**\n"
                 f"{magic_link}\n\n"

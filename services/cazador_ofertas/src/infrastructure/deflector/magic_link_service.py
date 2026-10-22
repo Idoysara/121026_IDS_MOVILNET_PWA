@@ -14,7 +14,7 @@ from ...domain.invariants import CazadorInvariants, DomainInvariantViolationErro
 from ...application.cazador_service import CazadorApplicationService
 
 SECRET_KEY = os.getenv("CAZADOR_DEFLECTOR_SECRET", "MOVILNET_CAZADOR_ZERO_RATING_SECRET_2026").encode("utf-8")
-BASE_PWA_URL = os.getenv("CAZADOR_PWA_URL", "http://localhost:8030")
+BASE_PWA_URL = os.getenv("CAZADOR_PWA_URL", "http://localhost:8010")
 
 # Stopwords en español para evitar falsos positivos con preposiciones o adverbios
 STOPWORDS = {
@@ -67,7 +67,10 @@ class MagicLinkService:
             params["oferta"] = oferta_id
 
         query_string = urllib.parse.urlencode(params)
-        return f"{BASE_PWA_URL}/?{query_string}"
+        base = BASE_PWA_URL.rstrip("/")
+        if not base.endswith("/ui/pwa_stitch/index.html") and "/ui/pwa" not in base:
+            return f"{base}/ui/pwa_stitch/index.html?{query_string}"
+        return f"{base}?{query_string}"
 
     def verificar_magic_link(
         self,

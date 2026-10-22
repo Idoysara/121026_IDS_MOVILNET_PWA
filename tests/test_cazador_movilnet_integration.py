@@ -457,3 +457,56 @@ def test_catalogo_zonas_canonicas(api_service):
     assert "Altamira" in nombres
     assert "Brickell (Miami)" in nombres
 
+
+def test_multiturn_conversational_memory_deals_24h():
+    """
+    Verifica la memoria conversacional de 24 horas y encadenamiento contextual:
+    1. Turno 1: Consulta de ofertas por categoría sin ubicación ('desayunos') solicita zona y persiste contexto.
+    2. Turno 2: Respuesta con ubicación textual ('estoy en los palos grandes chacao caracas') encadena automáticamente
+       la categoría 'Café y Panadería', resuelve ofertas en Los Palos Grandes y emite Magic Link unificado a :8010.
+    3. Turno 3: Cambio de categoría ('farmacias') actualiza la categoría y preserva las coordenadas geodésicas (24h).
+    4. Cero duplicación de sufijo PWA y 0 tokens consumidos en todos los turnos.
+    """
+    from core.fastpath_intent_interceptor import FastPathIntentInterceptor
+    interceptor = FastPathIntentInterceptor()
+    phone = "04169998877"
+
+    # Turno 1: Desayunos sin ubicación
+    r1 = interceptor.intercept("si necesito saber si hay ofertas para desayunos", phone)
+    assert r1.can_intercept is True
+    assert r1.intent_detected == "CAZADOR_OFERTAS_CLUB"
+    assert r1.tokens_consumed == 0
+    assert "Café y Panadería" in r1.response_text
+    assert "¿me indicas en qué ciudad o zona te encuentras" in r1.response_text
+    assert ":8030" not in r1.response_text
+
+    # Turno 2: Envío de ubicación textual en Los Palos Grandes
+    r2 = interceptor.intercept("estoy en los palos grandes chacao caracas", phone)
+    assert r2.can_intercept is True
+    assert r2.intent_detected == "CAZADOR_OFERTAS_CLUB"
+    assert r2.tokens_consumed == 0
+    assert "Club 4GMAX Activado" in r2.response_text
+    assert "Café y Panadería" in r2.response_text
+    assert "Artesano" in r2.response_text or "LPG" in r2.response_text or "Bs" in r2.response_text
+    assert "http://localhost:8010/ui/pwa_stitch/index.html" in r2.response_text
+    assert ":8030" not in r2.response_text
+
+    # Turno 3: Cambio a Farmacias manteniendo coordenadas en memoria 24h
+    r3 = interceptor.intercept("ahora que ofertas de farmacias hay", phone)
+    assert r3.can_intercept is True
+    assert r3.intent_detected == "CAZADOR_OFERTAS_CLUB"
+    assert r3.tokens_consumed == 0
+    assert "Farmacias y Salud" in r3.response_text
+    assert "http://localhost:8010/ui/pwa_stitch/index.html" in r3.response_text
+    assert ":8030" not in r3.response_text
+
+    # Consulta directa de una sola interacción (zona + oferta en un mensaje)
+    phone_direct = "04169998878"
+    r_direct = interceptor.intercept("que ofertas tienes en los palos grandes chacao", phone_direct)
+    assert r_direct.can_intercept is True
+    assert r_direct.intent_detected == "CAZADOR_OFERTAS_CLUB"
+    assert r_direct.tokens_consumed == 0
+    assert "Club 4GMAX Activado" in r_direct.response_text
+    assert "http://localhost:8010/ui/pwa_stitch/index.html" in r_direct.response_text
+
+
