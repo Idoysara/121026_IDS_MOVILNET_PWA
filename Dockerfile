@@ -46,8 +46,9 @@ COPY --chown=movilnet:movilnet mcp/ /app/mcp/
 COPY --chown=movilnet:movilnet ui/ /app/ui/
 COPY --chown=movilnet:movilnet reports/ /app/reports/
 COPY --chown=movilnet:movilnet scripts/ /app/scripts/
+COPY --chown=movilnet:movilnet services/ /app/services/
 
-RUN chmod -R 775 /app/db /app/reports && \
+RUN chmod -R 775 /app/db /app/reports /app/services && \
     chown -R movilnet:movilnet /app /home/movilnet
 
 USER movilnet

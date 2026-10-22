@@ -1,6 +1,6 @@
 {
-  "report_id": "CLOUD-AUDIT-9B101492",
-  "timestamp_utc": "2026-10-22T13:50:10Z",
+  "report_id": "CLOUD-AUDIT-C01732F6",
+  "timestamp_utc": "2026-10-22T18:26:18Z",
   "checks": [
     {
       "check_name": "Dockerfile_Hardening_MultiStage",
@@ -48,5 +48,5 @@
     "sample_magic_link_render": "https://movilnet-core.onrender.com/ui/pwa_stitch/index.html?phone=04160000001",
     "sample_magic_link_custom_domain": "https://autogestion.movilnet.com.ve/ui/pwa_stitch/index.html?phone=04160000001"
   },
-  "sha256_seal": "SHA256:5378d8c07bb962044aeb0850fac882ea08774c2d0cac7ef828951ec44f629745"
+  "sha256_seal": "SHA256:2b70c0179f84975976af27572e94dc56199fcb60df3544555f3f0c74021f0678"
 }
