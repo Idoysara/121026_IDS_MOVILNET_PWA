@@ -97,6 +97,32 @@ def test_fastpath_deals_con_gps_directo(interceptor):
     assert "¡Club 4GMAX Activado!" in res.response_text
 
 
+def test_fastpath_deals_secuencia_whatsapp_pin_gps(interceptor):
+    """
+    Verifica el flujo en 2 turnos por WhatsApp:
+    Turno 1: Usuario pregunta por superofertas -> el asistente solicita ubicación amablemente.
+    Turno 2: Usuario envía SOLAMENTE el pin de ubicación de WhatsApp (sin texto) ->
+             el interceptor reconoce la intención previa y retorna las ofertas geolocalizadas.
+    """
+    phone_test = "04165554433"
+    # Turno 1
+    t1 = interceptor.intercept("¿Qué superofertas tienen disponibles?", phone_test)
+    assert t1.can_intercept is True
+    assert t1.intent_detected == "CAZADOR_OFERTAS_CLUB"
+    assert "indicas en qué ciudad o zona te encuentras" in t1.response_text
+
+    # Turno 2: Envío exclusivo de pin GPS WhatsApp (Chacao)
+    t2 = interceptor.intercept(
+        message_text="[UBICACION_GPS: lat=10.4925, lon=-66.8550]",
+        phone_number=phone_test
+    )
+    assert t2.can_intercept is True
+    assert t2.intent_detected == "CAZADOR_OFERTAS_CLUB"
+    assert "¡Club 4GMAX Activado!" in t2.response_text
+    assert "Bs" in t2.response_text
+    assert "Farmatodo" in t2.response_text or "KPMG" in t2.response_text or "San Ignacio" in t2.response_text
+
+
 # ============================================================================
 # 2. SUBAGENTE SCOUT DE OFERTAS (SWARM L5)
 # ============================================================================

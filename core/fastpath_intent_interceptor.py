@@ -28,6 +28,7 @@ from __future__ import annotations
 import os
 import re
 import sys
+import time
 import hmac
 import hashlib
 import sqlite3
@@ -121,6 +122,7 @@ class FastPathIntentInterceptor:
     def __init__(self, db_path: Optional[Path] = None):
         self.db_path = db_path or DEFAULT_DB_PATH
         self._gps_session_cache: Dict[str, Tuple[float, float, float]] = {}
+        self._last_intent_cache: Dict[str, Tuple[str, float]] = {}
         self._ensure_prospect_table()
         if os.environ.get("PYTEST_CURRENT_TEST") or "pytest" in sys.modules or "unittest" in sys.modules:
             self.reset_prospect_trial("04140000001")
@@ -913,6 +915,7 @@ class FastPathIntentInterceptor:
             lat=latitude,
             lon=longitude
         )
+        self._last_intent_cache[clean_phone] = ("CAZADOR_OFERTAS_CLUB", time.time())
         pwa_suffix = self.build_pwa_link_suffix(clean_phone)
         return f"{res.mensaje_formateado}{pwa_suffix}"
 
@@ -990,12 +993,25 @@ class FastPathIntentInterceptor:
                 "estoy perdido", "en que zona estoy", "en qué zona estoy"
             ])
 
+            has_deal_terms = any(w in msg_lower for w in [
+                "oferta", "ofertas", "descuento", "descuentos", "promocion", "promociones",
+                "promoción", "cupon", "cupones", "cupón", "cazador de ofertas", "cazador", "club 4gmax",
+                "superoferta", "superofertas", "super oferta", "super ofertas"
+            ])
+            has_office_terms = any(w in msg_lower for w in [
+                "oficina", "oficinas", "agencia", "agencias", "sucursal", "sucursales", "atencion", "atención"
+            ])
+
+            # Memoria contextual: ¿El usuario solicitó ofertas en los últimos 15 minutos?
+            cached_intent_info = self._last_intent_cache.get(clean_phone)
+            was_waiting_for_deals = False
+            if cached_intent_info and (time.time() - cached_intent_info[1]) <= 900.0:
+                if cached_intent_info[0] == "CAZADOR_OFERTAS_CLUB":
+                    was_waiting_for_deals = True
+
             if is_explicit_location_inquiry:
                 intent = "CONSULTA_GEOESPACIAL_UBICACION"
-            elif any(w in msg_lower for w in [
-                "oferta", "ofertas", "descuento", "descuentos", "promocion", "promociones",
-                "promoción", "cupon", "cupones", "cupón", "cazador de ofertas", "cazador", "club 4gmax"
-            ]):
+            elif has_deal_terms or (was_waiting_for_deals and not has_office_terms):
                 intent = "CAZADOR_OFERTAS_CLUB"
             else:
                 intent = "LOCALIZADOR_OFICINAS_TELCO"
