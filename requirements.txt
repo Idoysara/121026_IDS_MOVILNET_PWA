@@ -13,6 +13,7 @@ litellm>=1.20.0
 # 3. Base de Datos & Caché
 redis>=5.0.0
 psycopg2-binary>=2.9.9
+sqlalchemy>=2.0.0
 
 # 4. Pruebas & Calidad (QA & SAST)
 pytest>=7.4.0
