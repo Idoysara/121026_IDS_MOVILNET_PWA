@@ -23,3 +23,7 @@ services:
         value: sNMbtiEiTkuQ9OCY
       - key: MOVILNET_PUBLIC_URL
         value: https://one21026-ids-movilnet-pwa.onrender.com
+      - key: MOVILNET_PUBLIC_PWA_URL
+        value: https://one21026-ids-movilnet-pwa.onrender.com
+      - key: CAZADOR_PWA_URL
+        value: https://one21026-ids-movilnet-pwa.onrender.com

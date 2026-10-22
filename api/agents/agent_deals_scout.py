@@ -263,11 +263,11 @@ class AgentDealsScout:
         """Infiere la categoría comercial del catálogo a partir de términos en lenguaje natural."""
         t_low = texto.lower()
         mapa = [
-            (["desayuno", "desayunos", "cafe", "café", "panaderia", "panadería", "croissant", "cachito", "merienda", "torta", "reina pepiada"], "Café y Panadería"),
-            (["almuerzo", "almuerzos", "cena", "cenas", "restaurante", "restaurantes", "parrilla", "pasta", "criollo", "pabellon", "pabellón", "carne"], "Restaurantes"),
-            (["hamburguesa", "hamburguesas", "pizza", "pizzas", "pollo", "broaster", "sushi", "perro caliente", "perros calientes", "churros", "comida rapida", "comida rápida", "franquicia"], "Comida Rápida y Franquicias"),
+            (["desayuno", "desayunos", "desayunar", "cafe", "café", "panaderia", "panadería", "croissant", "cachito", "merienda", "torta", "dulce", "dulces", "reina pepiada"], "Café y Panadería"),
+            (["almuerzo", "almuerzos", "almorzar", "cena", "cenas", "cenar", "restaurante", "restaurantes", "parrilla", "pasta", "criollo", "pabellon", "pabellón", "carne", "hambre", "comer", "comida", "antojo", "plato", "menú", "menu", "gastronomia", "gastronomía"], "Restaurantes"),
+            (["hamburguesa", "hamburguesas", "pizza", "pizzas", "pollo", "broaster", "sushi", "perro caliente", "perros calientes", "churros", "comida rapida", "comida rápida", "franquicia", "pepito", "pepitos", "shawarma"], "Comida Rápida y Franquicias"),
             (["farmacia", "farmacias", "salud", "medicina", "medicinas", "vitamina", "vitaminas", "primeros auxilios", "pediatrico", "pediátrico"], "Farmacias y Salud"),
-            (["supermercado", "supermercados", "mercado", "viveres", "víveres", "despensa", "charcuteria", "charcutería", "lacteos", "lácteos"], "Supermercados"),
+            (["supermercado", "supermercados", "mercado", "viveres", "víveres", "despensa", "charcuteria", "charcutería", "lacteos", "lácteos", "proteina", "proteínas", "proteinas", "carniceria", "carnicería"], "Supermercados"),
             (["peluqueria", "peluquería", "corte", "manicura", "spa", "facial", "optica", "óptica", "belleza"], "Belleza y Cuidado Personal"),
             (["autolavado", "lavado", "aceite", "alineacion", "alineación", "taller", "ferreteria", "ferretería", "celular", "repuesto"], "Servicios y Hogar")
         ]

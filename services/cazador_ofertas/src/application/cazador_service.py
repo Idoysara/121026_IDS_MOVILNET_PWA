@@ -292,7 +292,7 @@ class CazadorApplicationService:
             c_id = m_item["id"]
             c_ofertas = [
                 o.model_dump() for o in self.ofertas.values()
-                if o.comercio_id == c_id and o.activa and o.stock_disponible > 0
+                if o.comercio_id == c_id and o.activa and o.stock_disponible > 0 and o.descuento_pct > 0
             ]
             if not c_ofertas:
                 continue
@@ -312,7 +312,7 @@ class CazadorApplicationService:
             c_id = ron_item["id"]
             c_ofertas = [
                 o.model_dump() for o in self.ofertas.values()
-                if o.comercio_id == c_id and o.activa and o.stock_disponible > 0
+                if o.comercio_id == c_id and o.activa and o.stock_disponible > 0 and o.descuento_pct > 0
             ]
             if not c_ofertas:
                 continue

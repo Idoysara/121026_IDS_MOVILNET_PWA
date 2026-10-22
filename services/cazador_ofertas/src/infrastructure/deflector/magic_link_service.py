@@ -14,7 +14,18 @@ from ...domain.invariants import CazadorInvariants, DomainInvariantViolationErro
 from ...application.cazador_service import CazadorApplicationService
 
 SECRET_KEY = os.getenv("CAZADOR_DEFLECTOR_SECRET", "MOVILNET_CAZADOR_ZERO_RATING_SECRET_2026").encode("utf-8")
-BASE_PWA_URL = os.getenv("CAZADOR_PWA_URL", "http://localhost:8010")
+
+def get_base_pwa_url() -> str:
+    """Resuelve dinámicamente la URL base de la PWA según el entorno (Local MBP vs Producción Cloud)."""
+    url = os.getenv("CAZADOR_PWA_URL")
+    if url:
+        return url.strip()
+    if os.getenv("APP_ENV") == "production" or os.getenv("RENDER"):
+        return os.getenv("MOVILNET_PUBLIC_URL", "https://one21026-ids-movilnet-pwa.onrender.com").strip()
+    url = os.getenv("MOVILNET_PUBLIC_PWA_URL") or os.getenv("MOVILNET_PUBLIC_URL")
+    if url:
+        return url.strip()
+    return "http://localhost:8010"
 
 # Stopwords en español para evitar falsos positivos con preposiciones o adverbios
 STOPWORDS = {
@@ -67,7 +78,7 @@ class MagicLinkService:
             params["oferta"] = oferta_id
 
         query_string = urllib.parse.urlencode(params)
-        base = BASE_PWA_URL.rstrip("/")
+        base = get_base_pwa_url().rstrip("/")
         if not base.endswith("/ui/pwa_stitch/index.html") and "/ui/pwa" not in base:
             return f"{base}/ui/pwa_stitch/index.html?{query_string}"
         return f"{base}?{query_string}"

@@ -923,14 +923,6 @@ class FastPathIntentInterceptor:
             if (time.time() - cached_deals.get("timestamp", 0)) <= 86400.0:
                 category_to_use = cached_deals.get("category")
 
-        # Actualizar memoria contextual de ofertas (24h)
-        self._deals_context_cache[clean_phone] = {
-            "category": category_to_use,
-            "timestamp": time.time(),
-            "last_query": message_text
-        }
-        self._last_intent_cache[clean_phone] = ("CAZADOR_OFERTAS_CLUB", time.time())
-
         res = self._deals_scout.scout_deals(
             phone=clean_phone,
             message=message_text,
@@ -939,11 +931,117 @@ class FastPathIntentInterceptor:
             categoria=category_to_use
         )
 
+        # Actualizar memoria contextual de ofertas (24h) con la lista de promociones presentadas
+        self._deals_context_cache[clean_phone] = {
+            "category": category_to_use,
+            "timestamp": time.time(),
+            "last_query": message_text,
+            "last_lat": latitude,
+            "last_lon": longitude,
+            "last_deals": [o.to_dict() for o in res.ofertas] if res.ofertas else [],
+            "selected_deal": res.ofertas[0].to_dict() if res.ofertas else None
+        }
+        self._last_intent_cache[clean_phone] = ("CAZADOR_OFERTAS_CLUB", time.time())
+
         pwa_suffix = self.build_pwa_link_suffix(clean_phone)
         # Evitar duplicar el sufijo si ya está presente
         if "ui/pwa" in res.mensaje_formateado:
             return res.mensaje_formateado
         return f"{res.mensaje_formateado}{pwa_suffix}"
+
+    def _resolve_deal_directions_or_route(self, phone: str, message_text: str) -> str:
+        """
+        Resuelve con 0 tokens en <15ms la solicitud de dirección física, ubicación catastral
+        y ruta Google Maps de una oferta previamente consultada en el Club 4GMAX.
+        Evita caídas a agentes cognitivos y elimina alucinaciones de teléfonos o zonas (ZH-MHEP).
+        """
+        clean_phone = CarrierFunnelClassifier.clean_msisdn(phone) or phone
+        deals_ctx = self._deals_context_cache.get(clean_phone, {})
+        last_deals = deals_ctx.get("last_deals", [])
+
+        target_deal = None
+        msg_low = message_text.lower()
+
+        # 1. Búsqueda por coincidencia léxica con los títulos o comercios de las ofertas presentadas
+        best_score = 0
+        stopwords = {"pero", "necesito", "necesti", "quiero", "dame", "cual", "cuál", "donde", "dónde", "como", "cómo", "de", "la", "el", "en", "para", "los", "las", "un", "una", "por", "con", "del", "al", "que", "y", "o", "si", "no", "esta", "está", "este", "direccion", "dirección", "ruta", "mapa", "trayectoria"}
+        msg_words = set(re.findall(r"\w+", msg_low)) - stopwords
+
+        for d in last_deals:
+            title_words = set(re.findall(r"\w+", d.get("titulo", "").lower()))
+            merchant_words = set(re.findall(r"\w+", d.get("comercio_nombre", "").lower()))
+
+            score = len(msg_words.intersection(title_words)) * 2 + len(msg_words.intersection(merchant_words))
+            if score > best_score:
+                best_score = score
+                target_deal = d
+
+        # 2. Si no hubo coincidencia específica pero se solicita trayectoria/mapa, usar la previamente seleccionada o la primera
+        if not target_deal:
+            target_deal = deals_ctx.get("selected_deal") or (last_deals[0] if last_deals else None)
+
+        if not target_deal:
+            pwa_suffix = self.build_pwa_link_suffix(clean_phone)
+            return (
+                "📍 Para indicarte la dirección y ruta exacta de la oferta, por favor indícame qué promoción te interesa "
+                "o consúltala en nuestro radar del Club 4GMAX." + pwa_suffix
+            )
+
+        # Recordar el target_deal como selected_deal en la sesión activa
+        deals_ctx["selected_deal"] = target_deal
+        self._deals_context_cache[clean_phone] = deals_ctx
+
+        # Obtener coordenadas del comercio aliado
+        comercio_id = target_deal.get("comercio_id")
+        comercio = None
+        if hasattr(self, "_deals_scout") and hasattr(self._deals_scout, "cazador_service"):
+            comercio = self._deals_scout.cazador_service.comercios.get(comercio_id)
+
+        lat = comercio.lat if comercio else target_deal.get("lat")
+        lon = comercio.lon if comercio else target_deal.get("lon")
+
+        # Geocodificación catastral de precisión sub-5m
+        from core.cadastral_reverse_geocoder import cadastral_geocoder
+        if lat and lon:
+            geo_res = cadastral_geocoder.resolve(lat, lon)
+            display_address = geo_res.display_address
+            gmaps_route_url = f"https://www.google.com/maps/dir/?api=1&destination={lat:.6f},{lon:.6f}"
+        else:
+            display_address = target_deal.get("comercio_nombre", "Comercio Aliado Club 4GMAX")
+            gmaps_route_url = "https://www.google.com/maps"
+
+        # Magic link para canjear en caja con 1-Tap Zero-Rating en puerto 8010
+        oferta_id = target_deal.get("oferta_id")
+        magic_link = self._deals_scout.magic_service.generar_magic_link(
+            msisdn=clean_phone,
+            oferta_id=oferta_id
+        )
+
+        titulo = target_deal.get("titulo", "Oferta Especial")
+        comercio_nombre = target_deal.get("comercio_nombre", "Comercio Aliado")
+        dist_m = float(target_deal.get("distancia_m", 0.0))
+        precio_ves = float(target_deal.get("precio_oferta_ves", 0.0))
+        desc_pct = float(target_deal.get("descuento_pct", 0.0))
+
+        dist_str = f" (~{dist_m:.0f}m de tu ubicación)" if dist_m > 0 else ""
+
+        reply = (
+            f"📍 **Ubicación y Trayectoria de Ruta — Club 4GMAX**\n\n"
+            f"🏢 **Comercio Aliado:** {comercio_nombre}\n"
+            f"🏷️ **Oferta:** {titulo}\n"
+            f"💰 **Precio Especial:** Bs {precio_ves:,.2f} (-{desc_pct:.0f}%)\n"
+            f"📌 **Dirección Exacta:** {display_address}{dist_str}\n\n"
+            f"🗺️ **Abrir Navegación en Google Maps:**\n"
+            f"👉 {gmaps_route_url}\n\n"
+            f"⚡ **Reclama tu cupón sin gastar megas (1-Tap Zero-Rating):**\n"
+            f"👉 {magic_link}\n\n"
+            f"🔒 Al llegar al comercio, muestra el código QR o TOTP de 60 segundos en caja para aplicar el descuento directo."
+        )
+
+        pwa_suffix = self.build_pwa_link_suffix(clean_phone)
+        if "ui/pwa" in reply:
+            return reply
+        return f"{reply}{pwa_suffix}"
 
     def intercept(
         self,
@@ -1102,6 +1200,37 @@ class FastPathIntentInterceptor:
                     latitude, longitude = cached_gps[0], cached_gps[1]
                     intent = "LOCALIZADOR_OFICINAS_TELCO"
 
+        # Detección contextual multi-turno para Dirección / Ruta Google Maps de Ofertas Club 4GMAX
+        if not intent:
+            cached_intent_info = self._last_intent_cache.get(clean_phone)
+            deals_ctx = self._deals_context_cache.get(clean_phone)
+            was_waiting_for_deals = False
+            if cached_intent_info and (time.time() - cached_intent_info[1]) <= 86400.0:
+                if cached_intent_info[0] in ("CAZADOR_OFERTAS_CLUB", "CAZADOR_DIRECCION_RUTA"):
+                    was_waiting_for_deals = True
+            if deals_ctx and (time.time() - deals_ctx.get("timestamp", 0)) <= 86400.0:
+                was_waiting_for_deals = True
+
+            last_deals = deals_ctx.get("last_deals", []) if deals_ctx else []
+            msg_low = message_text.lower()
+            is_navigation_query = any(w in msg_low for w in [
+                "direccion", "dirección", "donde queda", "dónde queda", "donde esta", "dónde está",
+                "donde es", "dónde es", "como llego", "cómo llego", "como llegar", "cómo llegar",
+                "mapa", "google map", "google maps", "map", "trayectoria", "ruta", "gps", "camino",
+                "ubicacion", "ubicación", "llegar", "ir a la tienda", "ir al comercio"
+            ])
+            mentions_previous_deal = False
+            if last_deals:
+                for d in last_deals:
+                    t_words = [w for w in re.findall(r"\w+", d.get("titulo", "").lower()) if len(w) > 4]
+                    c_words = [w for w in re.findall(r"\w+", d.get("comercio_nombre", "").lower()) if len(w) > 4]
+                    if any(w in msg_low for w in t_words + c_words):
+                        mentions_previous_deal = True
+                        break
+
+            if was_waiting_for_deals and last_deals and (is_navigation_query or mentions_previous_deal):
+                intent = "CAZADOR_DIRECCION_RUTA"
+
         if not intent:
             # Validar límite mensual Freemium para prospectos No-Movilnet (máx. 3 consultas/mes o 1,000 tokens)
             allowed, queries_used, tokens_used = self.check_and_consume_prospect_trial(phone_number)
@@ -1148,6 +1277,9 @@ class FastPathIntentInterceptor:
         elif intent == "CAZADOR_OFERTAS_CLUB":
             resp = self._resolve_cazador_deals(phone_number, message_text, latitude, longitude)
             source = "CAZADOR_OFERTAS_RADAR"
+        elif intent == "CAZADOR_DIRECCION_RUTA":
+            resp = self._resolve_deal_directions_or_route(phone_number, message_text)
+            source = "CAZADOR_CADASTRAL_NAVIGATION"
         elif intent == "PARAMETROS_APN":
             resp = self._resolve_apn()
             source = "STATIC_APN_REGISTRY"

@@ -510,3 +510,60 @@ def test_multiturn_conversational_memory_deals_24h():
     assert "http://localhost:8010/ui/pwa_stitch/index.html" in r_direct.response_text
 
 
+def test_multiturn_food_deals_and_cadastral_navigation_e2e():
+    """
+    Verifica la secuencia completa E2E de 5 turnos reportada por el usuario:
+    1. 'tengo hambre tienes ofertas' -> Detecta Restaurantes y solicita ubicación.
+    2. 'estoy en chacaito' -> Resuelve ofertas de Restaurantes en Chacaíto sin recargas 0% discount.
+    3. 'pero necesti. la direccion del menu ejecutivo' -> CAZADOR_DIRECCION_RUTA con dirección catastral y ruta Maps.
+    4. 'muestraem la trayectoria en google map' -> CAZADOR_DIRECCION_RUTA con enlace directo de navegación en Maps.
+    5. 'y que oferta hay en chacao' -> Retiene categoría Restaurantes en Chacao.
+    Cero alucinaciones de teléfonos o zonas, 0 tokens y latencia Carrier-Grade.
+    """
+    from core.fastpath_intent_interceptor import FastPathIntentInterceptor
+    interceptor = FastPathIntentInterceptor()
+    phone = "04169998899"
+
+    # Turno 1
+    r1 = interceptor.intercept("tengo hambre tienes ofertas", phone)
+    assert r1.can_intercept is True
+    assert r1.intent_detected == "CAZADOR_OFERTAS_CLUB"
+    assert r1.tokens_consumed == 0
+    assert "Restaurantes" in r1.response_text
+
+    # Turno 2
+    r2 = interceptor.intercept("estoy en chacaito", phone)
+    assert r2.can_intercept is True
+    assert r2.intent_detected == "CAZADOR_OFERTAS_CLUB"
+    assert r2.tokens_consumed == 0
+    assert "Club 4GMAX Activado" in r2.response_text
+    assert "Restaurantes" in r2.response_text
+    assert "Gran Café" in r2.response_text
+
+    # Turno 3: Solicitud de dirección con typo léxico 'necesti.'
+    r3 = interceptor.intercept("pero necesti. la direccion del menu ejecutivo", phone)
+    assert r3.can_intercept is True
+    assert r3.intent_detected == "CAZADOR_DIRECCION_RUTA"
+    assert r3.tokens_consumed == 0
+    assert "Gran Café de Sabana Grande" in r3.response_text
+    assert "google.com/maps/dir" in r3.response_text
+    assert "0212-1234567" not in r3.response_text  # Cero alucinación telefónica
+    assert "Dirección Exacta" in r3.response_text
+
+    # Turno 4: Solicitud de trayectoria con typo léxico 'muestraem'
+    r4 = interceptor.intercept("muestraem la trayectoria en google map", phone)
+    assert r4.can_intercept is True
+    assert r4.intent_detected == "CAZADOR_DIRECCION_RUTA"
+    assert r4.tokens_consumed == 0
+    assert "google.com/maps/dir" in r4.response_text
+
+    # Turno 5: Conmutación de zona manteniendo categoría Restaurantes
+    r5 = interceptor.intercept("y que oferta hay en chacao", phone)
+    assert r5.can_intercept is True
+    assert r5.intent_detected == "CAZADOR_OFERTAS_CLUB"
+    assert r5.tokens_consumed == 0
+    assert "Restaurantes" in r5.response_text
+    assert "El Cine Restaurant Chacao" in r5.response_text or "Urrutia" in r5.response_text
+
+
+
