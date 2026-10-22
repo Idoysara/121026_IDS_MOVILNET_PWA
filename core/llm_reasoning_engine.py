@@ -795,7 +795,7 @@ REGLA SOBERANA DE SEGMENTACIÓN POR NÚMERO (0416/0426 vs NO-MOVILNET):
             )
 
         # 17. Ubicación, Zonas Urbanas, Transporte y Puntos en Chacao
-        elif any(k in msg_clean for k in ["chacao", "altamira", "palos grandes", "el rosal", "sambil", "metro", "como llegar", "donde queda", "donde esta", "ubicacion", "direccion"]):
+        elif any(k in msg_clean for k in ["chacao", "altamira", "palos grandes", "el rosal", "sambil", "metro", "como llegar", "donde queda", "donde esta", "ubicacion", "direccion"]) and not any(d in msg_clean for d in ["oferta", "ofertas", "descuento", "descuentos", "promocion", "promociones", "cupon", "cupones"]):
             reply = (
                 "📍 *Puntos de Referencia y Cobertura en Chacao / Caracas:*\n\n"
                 "En el Municipio Chacao cuentas con cobertura total *Movilnet 4GMAX* y acceso rápido a:\n\n"

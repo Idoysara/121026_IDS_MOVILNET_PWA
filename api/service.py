@@ -896,7 +896,12 @@ class MovilnetAPIService:
             response.response_text = fp_guard.response_text
             response.tokens_consumed = 0
             response.cost_usd = 0.0
-        elif fp_res.can_intercept and fp_res.intent_detected in ("EMERGENCY_DISPATCH_911", "CONSULTA_GEOESPACIAL_UBICACION", "LOCALIZADOR_OFICINAS_TELCO"):
+        elif fp_res.can_intercept and fp_res.intent_detected in (
+            "EMERGENCY_DISPATCH_911",
+            "CONSULTA_GEOESPACIAL_UBICACION",
+            "LOCALIZADOR_OFICINAS_TELCO",
+            "CAZADOR_OFERTAS_CLUB"
+        ):
             from api.agents.agent_customer_care import AgentResponse, AgentExecutionMode, IntentType
             eff_session = session_id_val or f"sess-{phone_for_guard}"
             response = AgentResponse(

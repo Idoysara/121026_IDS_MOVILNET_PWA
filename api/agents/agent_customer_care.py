@@ -157,10 +157,18 @@ class CustomerCareAgent:
             "donde estoy", "dónde estoy", "donde me encuentro", "dónde me encuentro",
             "mi ubicacion", "mi ubicación", "mis coordenadas"
         ])
-        if has_coords or is_explicit_location_inquiry:
+        is_deals_inquiry = any(w in raw_text.lower() for w in [
+            "oferta", "ofertas", "descuento", "descuentos", "promocion", "promociones",
+            "promoción", "cupon", "cupones", "cupón", "cazador"
+        ])
+        if has_coords or is_explicit_location_inquiry or is_deals_inquiry:
             from core.fastpath_intent_interceptor import fastpath_interceptor
             fp_eval = fastpath_interceptor.intercept(raw_text, clean_user_msisdn, latitude=lat, longitude=lon)
-            if fp_eval.can_intercept and fp_eval.intent_detected in ("CONSULTA_GEOESPACIAL_UBICACION", "LOCALIZADOR_OFICINAS_TELCO"):
+            if fp_eval.can_intercept and fp_eval.intent_detected in (
+                "CONSULTA_GEOESPACIAL_UBICACION",
+                "LOCALIZADOR_OFICINAS_TELCO",
+                "CAZADOR_OFERTAS_CLUB"
+            ):
                 resp_text = self._ensure_pwa_link_suffix(fp_eval.response_text, message.channel or "")
                 latency_ms = round((time.perf_counter() - start_time) * 1000, 3)
                 mapped_intent = IntentType.OFFICE_LOCATION_QUERY if fp_eval.intent_detected == "LOCALIZADOR_OFICINAS_TELCO" else IntentType.UNKNOWN
