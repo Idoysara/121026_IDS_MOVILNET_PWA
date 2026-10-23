@@ -28,6 +28,6 @@
 ---
 
 ## 3. Entregables Criptográficos de Respaldo (`Movilnet_161026`)
-* **TAR.GZ:** `CORE_MOVILNET_EXPORT_161026.tar.gz` (Certificado con SHA-256)
-* **ZIP:** `CORE_MOVILNET_EXPORT_161026.zip` (Certificado con SHA-256)
-* **DB:** `local_movilnet.db` (20.25 MB)
+* **TAR.GZ:** `41134603ec119af0e4bf7a0fac6a60c655398037eb7ceec2308d67c9de4207aa` (`CORE_MOVILNET_EXPORT_161026.tar.gz`, 68.63 MB)
+* **ZIP:** `6e0214b70876a08fb00e405062c780121a0c873166168db4fbad759f5d84caf6` (`CORE_MOVILNET_EXPORT_161026.zip`, 69.92 MB)
+* **DB:** `53996e6a83adb251f3df367cf0d459e12751ea98875a66d498a18b644b6cc868` (`local_movilnet.db`, 20.25 MB)
