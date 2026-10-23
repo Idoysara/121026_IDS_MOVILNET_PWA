@@ -12,8 +12,9 @@
 * **Hito 39 Completado (100% PASS):** Integración Desacoplada de Cazador de Ofertas en Movilnet Core (Opción A, `services/cazador_ofertas/`, cuponería TOTP 60s, Carrier Billing split 20/80, 78 tests 100% PASS).
 * **Hito 40 Completado (100% PASS):** Modelo Espacial de Cero Fricción para Anunciantes (0 metros de entrada obligatoria, Escenario 1 Zonas canónicas, Escenario 2 Run of Network 50km, Escenario 3 Smart Default 500m, PWA `#modal-merchant-onboarding`).
 * **Hito 41 Completado (100% PASS):** Despliegue en Render Cloud 24/7 (`srv-db8hhlvf3r2c73fd1qd0`), resolución cuenta administradora (`doycoyote02@gmail.com`), corrección DDL/Pydantic (`abb2a56`), y certificación en vivo 100% Pass de Cazador de Ofertas (56 comercios, 204 ofertas).
-* **Hito 42 Completado (100% PASS):** Integración de Herramienta `CazadorSuperofertas` en n8n Cloud (`sNMbtiEiTkuQ9OCY`), blindaje de directiva anti-secuestro en `AI Agent`, corrección del slug carrier (`0414` $\to$ `movistar`), coordenadas por defecto en `cazador_router.py` y validación en vivo en WhatsApp (Ejecución 14481 con ofertas reales de Arturo's y El Cine).
-* **Capítulos de Bitácora Vigentes:** **1 al 227** (Sincronizados en `docs/BITACORA_MOVILNET.md` y `docs/LIBRO_MAESTRO_BITACORA_Y_DOCUMENTOS.md`).
+* **Hito 42 Completado (100% PASS):** Integración de Herramienta `CazadorSuperofertas` en n8n Cloud (`sNMbtiEiTkuQ9OCY`), blindaje de directiva anti-secuestro en `AI Agent`, corrección del slug carrier (`0414` $\to` `movistar`), coordenadas por defecto en `cazador_router.py` y validación en vivo en WhatsApp (Ejecución 14481 con ofertas reales de Arturo's y El Cine).
+* **Hito 43 Completado (100% PASS):** Auditoría Forense Militar y Certificación de Lista Negra Permanente de `00584166251587` (Triple cerrojo en n8n Cloud `sNMbtiEiTkuQ9OCY`, purga de senders en `system_config.py`, 0 registros en 10 bases de datos SQLite, tests en caliente 14483 y 14484 100% bloqueados sin ejecución downstream).
+* **Capítulos de Bitácora Vigentes:** **1 al 228** (Sincronizados en `docs/BITACORA_MOVILNET.md` y `docs/LIBRO_MAESTRO_BITACORA_Y_DOCUMENTOS.md`).
 
 ---
 

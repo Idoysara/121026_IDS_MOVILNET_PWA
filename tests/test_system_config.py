@@ -54,10 +54,13 @@ class TestSystemConfig(unittest.TestCase):
             SystemConfigManager._cached_config = None
 
     def test_03_allowed_senders_set(self):
-        """Verifica que el set de senders contenga el activo y el histórico."""
+        """Verifica que el set de senders contenga el activo y excluya la lista negra."""
         senders = SystemConfigManager.get_allowed_bot_senders()
         self.assertIn("584241533712@s.whatsapp.net", senders)
-        self.assertIn("584166251587@s.whatsapp.net", senders)
+        self.assertNotIn("584166251587@s.whatsapp.net", senders)
+        self.assertTrue(SystemConfigManager.is_blacklisted("00584166251587"))
+        self.assertTrue(SystemConfigManager.is_blacklisted("584166251587"))
+        self.assertTrue(SystemConfigManager.is_blacklisted("04166251587"))
 
     def test_04_self_verification(self):
         """Ejecuta la auto-verificación formal del módulo."""

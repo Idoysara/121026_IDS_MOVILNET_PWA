@@ -66,11 +66,29 @@ class SystemConfigManager:
     ENV_FILE = PROJECT_ROOT / ".env"
     ENV_EXAMPLE_FILE = PROJECT_ROOT / ".env.example"
 
-    # Línea oficial certificada y remitente histórico auditado
-    LEGACY_AUTHORIZED_SENDERS = {
+    # Línea oficial certificada y remitente activo único (+58 424 153 3712)
+    AUTHORIZED_BOT_SENDERS = {
         "584241533712@s.whatsapp.net",
+    }
+    LEGACY_AUTHORIZED_SENDERS = AUTHORIZED_BOT_SENDERS
+
+    # LISTA NEGRA PERMANENTE INVIOLABLE (Capítulo 228)
+    # Prohibición absoluta de recepción, despacho, procesamiento o vinculación
+    BLACKLISTED_NUMBERS = {
+        "4166251587",
+        "584166251587",
+        "04166251587",
+        "00584166251587",
         "584166251587@s.whatsapp.net",
     }
+
+    @classmethod
+    def is_blacklisted(cls, phone_or_jid: Optional[str]) -> bool:
+        """Determina si un número, JID o texto contiene el número en lista negra 00584166251587."""
+        if not phone_or_jid:
+            return False
+        clean = re.sub(r"\D", "", str(phone_or_jid))
+        return any(clean.endswith(b) or clean == b for b in ["4166251587", "584166251587", "04166251587", "00584166251587"]) or "4166251587" in str(phone_or_jid)
 
     _cached_config: Optional[MovilnetCoreConfig] = None
 
@@ -233,10 +251,14 @@ def run_self_verification() -> bool:
     assert cfg.port == 8010
     assert cfg.bot_name == "MOVI"
 
-    print("🧪 [TEST 2/4] Senders autorizados dinámicos...")
+    print("🧪 [TEST 2/4] Senders autorizados dinámicos y guarda de lista negra...")
     senders = SystemConfigManager.get_allowed_bot_senders()
     assert cfg.active_bot_phone.whatsapp_jid in senders
-    assert len(senders) >= 2
+    assert len(senders) >= 1
+    assert "584166251587@s.whatsapp.net" not in senders
+    assert SystemConfigManager.is_blacklisted("00584166251587") is True
+    assert SystemConfigManager.is_blacklisted("584166251587") is True
+    assert SystemConfigManager.is_blacklisted("0416-625-1587") is True
 
     print("🧪 [TEST 3/4] Sobrescritura temporal por os.environ...")
     orig = os.environ.get("MOVILNET_ACTIVE_BOT_PHONE")

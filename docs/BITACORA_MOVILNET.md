@@ -8082,3 +8082,84 @@ Se disparó una prueba sintética en tiempo real contra el webhook de producció
 * **Inviolabilidad de Workflows Ajenos:** Estrictamente se preservó la regla de no modificar ningún flujo distinto a `sNMbtiEiTkuQ9OCY`.
 * **Inviolabilidad PWA:** Conexión garantizada para todos los abonados y usuarios en Wi-Fi o datos móviles con enlace oficial en cada respuesta.
 
+
+---
+
+## 🔒 Capítulo 228 — Auditoría Forense Militar y Certificación de Lista Negra Permanente del Número 00584166251587 (Triple Cerrojo en n8n Cloud sNMbtiEiTkuQ9OCY, Descarte Perimetral en Frontera y Desvinculación Total)
+
+### 📅 Fecha: 2026-10-22 | 🎯 Estado: CERTIFICACIÓN MILITAR APROBADA (100% PASS)
+### 🏛️ Ámbito: Blindaje de Seguridad, Lista Negra Permanente, Triple Cerrojo en n8n Cloud, Purga de Senders Autorizados y Verificación Criptográfica
+
+---
+
+### 📋 1. Mandato y Alcance de la Auditoría Militar
+Siguiendo la instrucción `/goal` de máxima prioridad, se ejecutó una inspección forense exhaustiva de grado militar sobre el número `00584166251587` (`+58 416 625 1587` / `0416-6251587` / `584166251587@s.whatsapp.net`).
+El mandato impuso cuatro invariantes no negociables:
+1. **Desvinculación Total:** El número no debe estar vinculado bajo ningún concepto al proyecto Movilnet Core ni al Asistente Virtual MOVI.
+2. **Inclusión en Lista Negra Permanente:** Ningún algoritmo, pasarela, nodo o conector puede despachar mensajes, tráfico o llamadas hacia o a través de este número.
+3. **Cero Recepción / Cero Procesamiento:** Todo webhook, mensaje, audio, imagen o evento entrante originado por este número debe ser destruido/descartado inmediatamente en la frontera sin consumir tokens LLM ni alcanzar el flujo conversacional.
+4. **Gobernanza Estricta de n8n:** Toda actualización, modificación o eliminación se circunscribió estrictamente al flujo oficial en producción:
+   `https://n8n.lpgtec.net/workflow/sNMbtiEiTkuQ9OCY/executions/14480`
+   `Viki_LPGTEC_v2_ids_Movilnet_Google_Suite_Full`, webhook `messages_upsert4`.
+
+---
+
+### 🔍 2. Hallazgos Forenses y Erradicación en el Código
+
+1. **Purga en `core/system_config.py`:**
+   * *Hallazgo:* El conjunto `LEGACY_AUTHORIZED_SENDERS` conservaba históricamente el JID `584166251587@s.whatsapp.net`.
+   * *Acción:* Se eliminó de raíz dicho JID de los senders autorizados. Se codificó la constante inmutable `BLACKLISTED_NUMBERS` y el método de validación `SystemConfigManager.is_blacklisted()`, garantizando que únicamente la línea oficial `+58 424 153 3712` (E.164: `584241533712`) sea reconocida como bot activo.
+2. **Auditoría de Bases de Datos SQLite:**
+   * Se escanearon las 10 bases de datos SQLite del proyecto (`local_movilnet.db`, `movilnet_production.db`, `emergency_logs.db`, `cazador_local.db`, etc.) ejecutando consultas relacionales profundas `LIKE '%6251587%'`.
+   * *Resultado:* **Cero (0) registros encontrados**. Ningún suscriptor, saldo, transacción o CDR está vinculado a este número.
+3. **Blindaje en `core/webhook_noise_filter.py` y `api/service.py`:**
+   * Se incorporó `00584166251587` en `PROHIBITED_NUMBERS` para descarte perimetral ultra-rápido (<1ms) con veredicto `DROP_PROHIBITED_SENDER`.
+   * Se verificaron las compuertas de rechazo HTTP 200 `{ "status": "dropped", "reason": "PROHIBITED_SENDER_04166251587" }` en `/handle_interaction` y en el webhook receptor.
+
+---
+
+### 🛡️ 3. Implementación del Triple Cerrojo en n8n Cloud (`sNMbtiEiTkuQ9OCY`)
+
+Se actualizó atómicamente el workflow en vivo en `https://n8n.lpgtec.net/api/v1/workflows/sNMbtiEiTkuQ9OCY` (versión `6fef46e9-df99-4f4a-9d03-64adcecb7fd5`, 83 nodos activos):
+
+1. **Cerrojo Perimetral 1 (Entrada - `Edge Carrier Firewall (0416/0426)`):**
+   Cualquier mensaje entrante cuyo payload crudo contenga `00584166251587`, `584166251587`, `04166251587` o `4166251587` en `wh`, `ef`, `remoteJid`, `altJid` o `participant` es descartado inmediatamente con `continue;`, retornando `[[]]`. Al retornar una lista vacía, n8n detiene la ejecución en seco y ningún nodo downstream (`Switch`, `AI Agent`, `HTTP Request`) es ejecutado.
+2. **Cerrojo Perimetral 2 (Salida - `HTTP Request` Outbound Guard):**
+   En la construcción del payload hacia Evolution API / Baileys, se implementó una guarda defensiva incondicional:
+   ```javascript
+   const BLACKLISTED_RECIPIENTS = ['4166251587', '584166251587', '04166251587', '00584166251587'];
+   if (BLACKLISTED_RECIPIENTS.some(b => cleanNum.endsWith(b) || cleanNum === b)) {
+     throw new Error("ACCESO DENEGADO [LISTA NEGRA]: El número " + cleanNum + " está bloqueado permanentemente...");
+   }
+   ```
+   Haciendo físicamente imposible emitir un mensaje hacia este número.
+3. **Cerrojo Cognitivo 3 (`AI Agent` System Message - Regla 9):**
+   Se inyectó en el System Prompt la prohibición explícita de comunicarse con, referenciar o procesar el número en lista negra bajo ninguna circunstancia.
+
+---
+
+### 🧪 4. Pruebas Reales en Caliente en n8n Cloud (100% Pass)
+Se dispararon dos pruebas sintéticas reales contra el webhook en vivo `https://n8n.lpgtec.net/webhook/messages_upsert4`:
+* **Ejecución n8n 14483 (JID `584166251587@s.whatsapp.net`):**
+  * Nodos ejecutados: `['Webhook', 'If', 'Edit Fields', 'Edge Carrier Firewall (0416/0426)']`.
+  * Salida del Firewall: `[[]]`.
+  * Resultado: **Descarte 100% exitoso. Cero llamadas a IA, cero mensajes enviados**.
+* **Ejecución n8n 14484 (JID `00584166251587@s.whatsapp.net`):**
+  * Nodos ejecutados: `['Webhook', 'If', 'Edit Fields', 'Edge Carrier Firewall (0416/0426)']`.
+  * Salida del Firewall: `[[]]`.
+  * Resultado: **Descarte 100% exitoso. Cero llamadas a IA, cero mensajes enviados**.
+
+---
+
+### 📊 5. Matriz de Certificación y Estado por Capa
+
+| Capa del Sistema | Mecanismo de Seguridad | Estado Certificado | Evidencia Dura |
+| :--- | :--- | :---: | :--- |
+| **n8n Inbound Firewall** | Descarte perimetral inmediato `[[]]` | **BLOQUEADO** | Ejecuciones n8n 14483 y 14484 |
+| **n8n Outbound HTTP** | Excepción forzada anti-despacho | **BLOQUEADO** | Guardarraíl en `HTTP Request` |
+| **n8n AI Agent** | Regla 9 Anti-Lista Negra | **BLOQUEADO** | Prompt Gemini Flash actualizado |
+| **Backend Core** | `DROP_PROHIBITED_SENDER` | **BLOQUEADO** | `WebhookNoiseFilter` (4 tests pass) |
+| **System Config** | `BLACKLISTED_NUMBERS` | **BLOQUEADO** | `test_system_config.py` (4 tests pass) |
+| **Bases de Datos** | Cero registros en tablas relacionales | **0 MATCHES** | 10 bases de datos escaneadas |
+| **Línea Oficial Única** | `+58 424 153 3712` (MOVI) | **ACTIVA 24/7** | Validada en todas las interfaces |
+
