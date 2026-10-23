@@ -85,13 +85,14 @@ class CazadorRouter(BaseDomainRouter):
                 lat_str = query_params.get("lat", [None])[0]
                 lon_str = query_params.get("lon", [None])[0]
                 if not lat_str or not lon_str:
-                    return error_response(400, "ERR_MISSING_COORDINATES", "Se requieren parámetros lat y lon.")
-                
-                try:
-                    lat = float(lat_str)
-                    lon = float(lon_str)
-                except ValueError:
-                    return error_response(400, "ERR_INVALID_COORDINATES", "Las coordenadas lat y lon deben ser números válidos.")
+                    lat = 10.4925
+                    lon = -66.8550
+                else:
+                    try:
+                        lat = float(lat_str)
+                        lon = float(lon_str)
+                    except ValueError:
+                        return error_response(400, "ERR_INVALID_COORDINATES", "Las coordenadas lat y lon deben ser números válidos.")
 
                 max_m = float(query_params.get("max_m", [3000.0])[0])
                 categoria = query_params.get("categoria", [None])[0]
