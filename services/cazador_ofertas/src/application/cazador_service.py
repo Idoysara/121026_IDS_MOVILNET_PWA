@@ -182,11 +182,20 @@ class CazadorApplicationService:
             data = json.load(f)
 
         for c_data in data.get("comercios", []):
+            if not c_data.get("tipo_cobertura"):
+                c_data["tipo_cobertura"] = TipoCobertura.PUNTO_INTERES.value
+            tier_val = c_data.get("tier", "BASICO")
+            if tier_val == "PREMIUM":
+                c_data["tier"] = TierComercio.VIP_RADAR.value
+            elif tier_val not in [t.value for t in TierComercio]:
+                c_data["tier"] = TierComercio.BASICO.value
+
             comercio = Comercio(**c_data)
             self.comercios[comercio.id] = comercio
 
             # Guardar en repositorio si no existe
             if not self.comercio_repo.get_by_id(comercio.id):
+                tipo_cob_val = comercio.tipo_cobertura.value if comercio.tipo_cobertura else TipoCobertura.PUNTO_INTERES.value
                 c_orm = ComercioModel(
                     id=comercio.id,
                     rif=comercio.rif,
@@ -196,7 +205,7 @@ class CazadorApplicationService:
                     lon=comercio.lon,
                     tier=comercio.tier.value,
                     activo=comercio.activo,
-                    tipo_cobertura=comercio.tipo_cobertura.value,
+                    tipo_cobertura=tipo_cob_val,
                     zona_sector=comercio.zona_sector,
                     radio_cobertura_m=comercio.radio_cobertura_m,
                     direccion=comercio.direccion
