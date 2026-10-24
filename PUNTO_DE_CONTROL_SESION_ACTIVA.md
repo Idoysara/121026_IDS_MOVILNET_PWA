@@ -16,15 +16,16 @@
 * **Hito 43 Completado (100% PASS):** Auditoría Forense Militar y Certificación de Lista Negra Permanente de `00584166251587` (Triple cerrojo en n8n Cloud `sNMbtiEiTkuQ9OCY`, purga de senders en `system_config.py`, 0 registros en 10 bases de datos SQLite, tests en caliente 14483 y 14484 100% bloqueados sin ejecución downstream).
 * **Hito 44 Completado (100% PASS):** Diagnóstico Forense y Mitigación de Errores en n8n Cloud (`sNMbtiEiTkuQ9OCY`): Filtro perimetral anti-ruido Baileys en `Edge Carrier Firewall (0416/0426)`, tolerancia a fallos `continueOnFail` en `HTTP Request`, validación en caliente (Exec 14593 drop limpio y 14594 respuesta exitosa).
 * **Hito 45 Completado (100% PASS):** Optimización Preventiva de Ancho de Banda (>95% ahorro egress en Render Cloud): Polling adaptativo a 15s con Page Visibility API en `conversatorio.html` e interfaces de monitoreo, botón manual de refresco y compresión HTTP GZip en `threaded_server.py`.
-* **Capítulos de Bitácora Vigentes:** **1 al 230** (Sincronizados en `docs/BITACORA_MOVILNET.md`).
+* **Hito 46 Completado (100% PASS):** Migración Exitosa a Nueva Cuenta Render Cloud 24/7 (`https://one21026-ids-movilnet-pwa-bxmz.onrender.com`), verificación HTTP 200 de todos los endpoints, actualización atómica en n8n Cloud (`sNMbtiEiTkuQ9OCY`), regla de enlace PWA y sincronización GitHub.
+* **Capítulos de Bitácora Vigentes:** **1 al 231** (Sincronizados en `docs/BITACORA_MOVILNET.md`).
 
 ---
 
 ## 2. Servicios e Infraestructura Activa
-* **Render Web Service 24/7 (PRODUCCIÓN LIVE):** `https://one21026-ids-movilnet-pwa.onrender.com` (HTTP 200)
-* **Radar Cazador de Ofertas Cloud:** `https://one21026-ids-movilnet-pwa.onrender.com/api/v1/cazador/ofertas` (HTTP 200 — 56 comercios, 204 ofertas)
-* **Tablero Conversatorio en Vivo:** `https://one21026-ids-movilnet-pwa.onrender.com/ui/monitor/conversatorio.html` (HTTP 200)
-* **Portal PWA 4GMAX:** `https://one21026-ids-movilnet-pwa.onrender.com/ui/pwa_stitch/index.html` (HTTP 200)
+* **Render Web Service 24/7 (PRODUCCIÓN LIVE):** `https://one21026-ids-movilnet-pwa-bxmz.onrender.com` (HTTP 200)
+* **Radar Cazador de Ofertas Cloud:** `https://one21026-ids-movilnet-pwa-bxmz.onrender.com/api/v1/cazador/ofertas` (HTTP 200 — 56 comercios, 204 ofertas)
+* **Tablero Conversatorio en Vivo:** `https://one21026-ids-movilnet-pwa-bxmz.onrender.com/ui/monitor/conversatorio.html` (HTTP 200)
+* **Portal PWA 4GMAX:** `https://one21026-ids-movilnet-pwa-bxmz.onrender.com/ui/pwa_stitch/index.html` (HTTP 200)
 * **n8n Cloud Enterprise:** `https://n8n.lpgtec.net` (`sNMbtiEiTkuQ9OCY` activo con 83 nodos, ejecuciones 14593 y 14594 verificadas)
 * **GitHub Repository:** `https://github.com/Idoysara/121026_IDS_MOVILNET_PWA.git` (Ramas `main` y `develop`)
 

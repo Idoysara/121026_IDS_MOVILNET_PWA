@@ -36,7 +36,7 @@ if [ $STATUS -eq 0 ]; then
     echo "✅ ¡PASE A PRODUCCIÓN DISPARADO EXITOSAMENTE EN GITHUB Y RENDER!"
     echo "========================================================================"
     echo "Render Cloud compilará el código y lo pondrá en vivo en ~60 segundos."
-    echo "🌐 Portal PWA Oficial: https://one21026-ids-movilnet-pwa.onrender.com"
+    echo "🌐 Portal PWA Oficial: https://one21026-ids-movilnet-pwa-bxmz.onrender.com"
     echo "🤖 WhatsApp Oficial: +58 424 153 3712 (n8n Cloud)"
     echo "========================================================================"
 else

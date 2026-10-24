@@ -20,8 +20,8 @@ PWA_URL="http://localhost:${PORT}/ui/pwa_stitch/index.html"
 SIM_URL="http://localhost:${PORT}/ui/pwa_stitch/simulador.html?v=214"
 CONVERSATORIO_URL="http://localhost:${PORT}/ui/monitor/conversatorio.html"
 TRACE_MONITOR_URL="http://localhost:${PORT}/ui/conversation_trace_monitor.html"
-PROD_URL="https://one21026-ids-movilnet-pwa.onrender.com/ui/pwa_stitch/index.html"
-PROD_CONVERSATORIO_URL="https://one21026-ids-movilnet-pwa.onrender.com/ui/monitor/conversatorio.html"
+PROD_URL="https://one21026-ids-movilnet-pwa-bxmz.onrender.com/ui/pwa_stitch/index.html"
+PROD_CONVERSATORIO_URL="https://one21026-ids-movilnet-pwa-bxmz.onrender.com/ui/monitor/conversatorio.html"
 
 clear
 echo "================================================================================"

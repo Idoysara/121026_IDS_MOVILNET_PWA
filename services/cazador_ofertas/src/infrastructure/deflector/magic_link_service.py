@@ -21,7 +21,7 @@ def get_base_pwa_url() -> str:
     if url:
         return url.strip()
     if os.getenv("APP_ENV") == "production" or os.getenv("RENDER"):
-        return os.getenv("MOVILNET_PUBLIC_URL", "https://one21026-ids-movilnet-pwa.onrender.com").strip()
+        return os.getenv("MOVILNET_PUBLIC_URL", "https://one21026-ids-movilnet-pwa-bxmz.onrender.com").strip()
     url = os.getenv("MOVILNET_PUBLIC_PWA_URL") or os.getenv("MOVILNET_PUBLIC_URL")
     if url:
         return url.strip()

@@ -8268,3 +8268,52 @@ A partir del análisis de las capturas de [dashboard.render.com](https://dashboa
 | **Pestaña en Fondo** | Consulta 24/7 continua | **PAUSADA (0 bytes)** | **-100% en fondo** |
 | **Tamaño de Payload** | JSON/HTML sin comprimir | **GZip comprimido** | **-75% a -90%** |
 | **Consumo Total Mensual**| > 5.0 GB | **< 0.4 GB** | **> 95% de ahorro neto** |
+
+
+---
+
+## 🚀 Capítulo 231 — Migración Exitosa a Nueva Cuenta Render Cloud 24/7 (one21026-ids-movilnet-pwa-bxmz.onrender.com), Sincronización n8n Cloud y Restablecimiento Total del Servicio
+
+### 📅 Fecha: 2026-10-24 | 🎯 Estado: COMPLETADO Y CERTIFICADO EN PRODUCCIÓN (100% PASS)
+### 🏛️ Ámbito: Despliegue de Nuevo Servicio Web en Render, Dominio Primario Cloud, Conexión n8n Cloud y Sincronización Integral
+
+---
+
+### 📋 1. Mandato y Ejecución de la Opción B
+Siguiendo la decisión del usuario de ejecutar la **Opción B** para restablecer el servicio en la nube sin costo y con 5 GB nuevos de cuota mensual:
+* Se desplegó el repositorio público `https://github.com/Idoysara/121026_IDS_MOVILNET_PWA.git` en una nueva cuenta de Render bajo el plan Free ($0/mes, Docker Runtime, región Oregon).
+* Render compiló el contenedor Docker multi-stage exitosamente y asignó el nuevo subdominio primario:
+  👉 **`https://one21026-ids-movilnet-pwa-bxmz.onrender.com`**
+
+---
+
+### 🔍 2. Verificación de Endpoints en Caliente (100% PASS)
+
+Se probaron todos los endpoints de producción obteniendo respuesta inmediata HTTP 200 OK:
+* `GET /health` ➔ **HTTP 200 OK** (Estado del microservicio y métricas operacionales).
+* `GET /api/v1/cazador/ofertas` ➔ **HTTP 200 OK** (56 comercios y 204 ofertas activas con cálculo de distancias).
+* `GET /ui/pwa_stitch/index.html` ➔ **HTTP 200 OK** (Portal Oficial PWA 4GMAX para autogestión y cupones).
+* `GET /ui/monitor/conversatorio.html` ➔ **HTTP 200 OK** (Tablero de monitoreo con polling adaptativo de 15s y compresión GZip activa).
+
+---
+
+### 🛡️ 3. Sincronización Inmediata en n8n Cloud (`sNMbtiEiTkuQ9OCY`)
+
+Se actualizó en caliente el flujo oficial de producción en `https://n8n.lpgtec.net` (Versión `1e241751-12a7-40ba-ab55-9a60d10f0a65`, 83 nodos):
+1. **Herramienta `CazadorSuperofertas`:** Enlazada a la nueva URL de la API de ofertas:
+   `https://one21026-ids-movilnet-pwa-bxmz.onrender.com/api/v1/cazador/ofertas`.
+2. **Generación de Enlace PWA Universal:** El sufijo determinista de cierre genera ahora enlaces hacia el nuevo portal activo:
+   `https://one21026-ids-movilnet-pwa-bxmz.onrender.com/ui/pwa_stitch/index.html`.
+3. **Nodo `Sync Monitor Render Cloud`:** Sincroniza las trazas de conversación hacia el nuevo endpoint en Render.
+
+---
+
+### 📊 4. Matriz de Estado del Ecosistema en la Nube
+
+| Servicio | Plataforma | URL / Identificador | Estado |
+| :--- | :---: | :--- | :---: |
+| **PWA 4GMAX & API Core** | Render Cloud | `https://one21026-ids-movilnet-pwa-bxmz.onrender.com` | **LIVE 24/7 (HTTP 200)** |
+| **Radar Cazador de Ofertas**| Render Cloud | `/api/v1/cazador/ofertas` (56 comercios / 204 ofertas)| **LIVE 24/7 (HTTP 200)** |
+| **Tablero Conversatorio** | Render Cloud | `/ui/monitor/conversatorio.html` (Polling 15s) | **LIVE 24/7 (HTTP 200)** |
+| **Orquestador n8n Cloud** | LPGTEC Cloud | `sNMbtiEiTkuQ9OCY` (Versión `1e241751-12a7-40ba-ab55-9a60d10f0a65`) | **LIVE 24/7 (ACTIVO)** |
+| **Control de Versiones** | GitHub | `Idoysara/121026_IDS_MOVILNET_PWA` (Rama `main`) | **SINCRONIZADO** |

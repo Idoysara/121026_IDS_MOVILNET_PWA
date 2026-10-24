@@ -87,7 +87,7 @@ class CustomerCareAgent:
         """Garantiza la Regla Constitucional de Enlace PWA Universal al final de todo mensaje."""
         if str(channel).strip().lower() in ("pwa", "pwa_stitch", "simulador"):
             return text
-        pwa_url = "https://one21026-ids-movilnet-pwa.onrender.com/ui/pwa_stitch/index.html"
+        pwa_url = "https://one21026-ids-movilnet-pwa-bxmz.onrender.com/ui/pwa_stitch/index.html"
         if pwa_url in text:
             return text
         suffix = (
