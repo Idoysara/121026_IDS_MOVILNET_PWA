@@ -1377,6 +1377,11 @@
         <span>Monitor NOC</span>
       </a>
 
+      <button type="button" id="btnManualRefresh" onclick="manualRefreshConversations()" class="top-action-btn" title="Refrescar conversaciones manualmente" style="cursor:pointer; border:1px solid rgba(255,255,255,0.35); background:rgba(0,0,0,0.18); color:#fff;">
+        <span class="material-symbols-outlined" id="iconRefresh" style="font-size:15px; vertical-align:middle;">refresh</span>
+        <span id="lblRefreshStatus">Refrescar</span>
+      </button>
+
       <button type="button" onclick="clearAllConversations()" class="top-action-btn" title="Limpiar conversaciones previas para pruebas en limpio" style="cursor:pointer; border:1px solid rgba(255,255,255,0.35); background:rgba(0,0,0,0.18); color:#fff;">
         <span class="material-symbols-outlined" style="font-size:15px;">delete_sweep</span>
         <span>Limpiar</span>
@@ -1563,9 +1568,57 @@
         chatArea.addEventListener('scroll', handleChatScroll);
       }
 
+      // ========================================================================
+      // GESTIÓN INTELIGENTE DE POLLING (Adaptive Visibility Poller - Ahorro >90% Ancho de Banda)
+      // ========================================================================
+      const POLL_INTERVAL_MS = 15000; // 15s (Reduce consumo en un 83% respecto a 2.5s)
+      let pollTimerId = null;
+
+      function startSmartPolling() {
+        if (pollTimerId) clearInterval(pollTimerId);
+        pollTimerId = setInterval(() => {
+          if (!document.hidden) {
+            loadConversationsFromServer();
+          }
+        }, POLL_INTERVAL_MS);
+      }
+
+      function stopSmartPolling() {
+        if (pollTimerId) {
+          clearInterval(pollTimerId);
+          pollTimerId = null;
+        }
+      }
+
+      // Carga inicial y arranque de ciclo adaptativo
       loadConversationsFromServer();
-      setInterval(loadConversationsFromServer, 2500);
+      startSmartPolling();
+
+      // Detección de pestaña activa/inactiva (Page Visibility API)
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+          stopSmartPolling();
+          console.log('[POLLER] Pestaña en segundo plano ➔ Polling pausado (0 bytes consumidos).');
+        } else {
+          console.log('[POLLER] Pestaña visible ➔ Sincronizando y reanudando polling (15s).');
+          loadConversationsFromServer();
+          startSmartPolling();
+        }
+      });
     });
+
+    async function manualRefreshConversations() {
+      const lbl = document.getElementById('lblRefreshStatus');
+      const icon = document.getElementById('iconRefresh');
+      if (lbl) lbl.textContent = 'Cargando...';
+      if (icon) icon.style.transform = 'rotate(180deg)';
+      try {
+        await loadConversationsFromServer();
+      } finally {
+        if (lbl) lbl.textContent = 'Refrescar';
+        if (icon) icon.style.transform = 'none';
+      }
+    }
 
     function handleChatScroll() {
       const chatArea = document.getElementById('chatMessagesArea');

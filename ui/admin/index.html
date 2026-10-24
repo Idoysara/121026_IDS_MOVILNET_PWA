@@ -852,9 +852,37 @@
       }
     }
 
-    // Carga inicial y auto-refresco cada 4 segundos
+    // Carga inicial y auto-refresco inteligente (15s adaptativo con Page Visibility API)
+    const POLL_INTERVAL_MS = 15000;
+    let pollTimerId = null;
+
+    function startSmartPolling() {
+      if (pollTimerId) clearInterval(pollTimerId);
+      pollTimerId = setInterval(() => {
+        if (!document.hidden) {
+          fetchFeed();
+        }
+      }, POLL_INTERVAL_MS);
+    }
+
+    function stopSmartPolling() {
+      if (pollTimerId) {
+        clearInterval(pollTimerId);
+        pollTimerId = null;
+      }
+    }
+
     fetchFeed();
-    setInterval(fetchFeed, 4000);
+    startSmartPolling();
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        stopSmartPolling();
+      } else {
+        fetchFeed();
+        startSmartPolling();
+      }
+    });
   </script>
 </body>
 </html>

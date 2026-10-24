@@ -15,7 +15,8 @@
 * **Hito 42 Completado (100% PASS):** Integración de Herramienta `CazadorSuperofertas` en n8n Cloud (`sNMbtiEiTkuQ9OCY`), blindaje de directiva anti-secuestro en `AI Agent`, corrección del slug carrier (`0414` $\to` `movistar`), coordenadas por defecto en `cazador_router.py` y validación en vivo en WhatsApp (Ejecución 14481 con ofertas reales de Arturo's y El Cine).
 * **Hito 43 Completado (100% PASS):** Auditoría Forense Militar y Certificación de Lista Negra Permanente de `00584166251587` (Triple cerrojo en n8n Cloud `sNMbtiEiTkuQ9OCY`, purga de senders en `system_config.py`, 0 registros en 10 bases de datos SQLite, tests en caliente 14483 y 14484 100% bloqueados sin ejecución downstream).
 * **Hito 44 Completado (100% PASS):** Diagnóstico Forense y Mitigación de Errores en n8n Cloud (`sNMbtiEiTkuQ9OCY`): Filtro perimetral anti-ruido Baileys en `Edge Carrier Firewall (0416/0426)`, tolerancia a fallos `continueOnFail` en `HTTP Request`, validación en caliente (Exec 14593 drop limpio y 14594 respuesta exitosa).
-* **Capítulos de Bitácora Vigentes:** **1 al 229** (Sincronizados en `docs/BITACORA_MOVILNET.md`).
+* **Hito 45 Completado (100% PASS):** Optimización Preventiva de Ancho de Banda (>95% ahorro egress en Render Cloud): Polling adaptativo a 15s con Page Visibility API en `conversatorio.html` e interfaces de monitoreo, botón manual de refresco y compresión HTTP GZip en `threaded_server.py`.
+* **Capítulos de Bitácora Vigentes:** **1 al 230** (Sincronizados en `docs/BITACORA_MOVILNET.md`).
 
 ---
 

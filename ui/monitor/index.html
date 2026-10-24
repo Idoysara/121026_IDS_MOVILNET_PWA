@@ -866,8 +866,37 @@ Ten en cuenta que estas son algunas de las noticias recientes y que el panorama 
     window.addEventListener('DOMContentLoaded', () => {
       renderPhoneList();
       selectConversation('TRACE-EXEC-9647');
+      // GESTIÓN INTELIGENTE DE POLLING (Adaptive Visibility Poller - 15s)
+      const POLL_INTERVAL_MS = 15000;
+      let pollTimerId = null;
+
+      function startSmartPolling() {
+        if (pollTimerId) clearInterval(pollTimerId);
+        pollTimerId = setInterval(() => {
+          if (!document.hidden) {
+            loadConversationsFromServer();
+          }
+        }, POLL_INTERVAL_MS);
+      }
+
+      function stopSmartPolling() {
+        if (pollTimerId) {
+          clearInterval(pollTimerId);
+          pollTimerId = null;
+        }
+      }
+
       loadConversationsFromServer();
-      setInterval(loadConversationsFromServer, 2500);
+      startSmartPolling();
+
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+          stopSmartPolling();
+        } else {
+          loadConversationsFromServer();
+          startSmartPolling();
+        }
+      });
     });
 
     async function loadConversationsFromServer() {

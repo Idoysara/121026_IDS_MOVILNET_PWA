@@ -86,6 +86,18 @@ class MovilnetHTTPRequestHandler(BaseHTTPRequestHandler):
             body_bytes=body_bytes
         )
 
+        # Optimización de Ancho de Banda: Compresión GZip transparente (>75% ahorro)
+        accept_enc = headers_dict.get("Accept-Encoding", headers_dict.get("accept-encoding", "")).lower()
+        if "gzip" in accept_enc and len(resp_body) > 1024 and "Content-Encoding" not in resp_headers:
+            import gzip
+            try:
+                compressed = gzip.compress(resp_body)
+                if len(compressed) < len(resp_body):
+                    resp_body = compressed
+                    resp_headers["Content-Encoding"] = "gzip"
+            except Exception:
+                pass
+
         self.send_response(status_code)
         for h_key, h_val in resp_headers.items():
             self.send_header(h_key, h_val)

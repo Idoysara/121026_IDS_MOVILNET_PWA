@@ -11,7 +11,7 @@
   const CONFIG = {
     metricsEndpoint: '/api/v1/metrics/live',
     statusEndpoint: '/api/v1/noc/status',
-    pollIntervalMs: 5000,
+    pollIntervalMs: 15000,
     requestTimeoutMs: 4000
   };
 
@@ -219,8 +219,26 @@
     // Fetch inicial de métricas
     fetchLiveMetrics();
 
-    // Polling recurrente
-    setInterval(fetchLiveMetrics, CONFIG.pollIntervalMs);
+    // Polling adaptativo con Page Visibility API
+    let nocPollTimer = null;
+    function startNocPolling() {
+      if (nocPollTimer) clearInterval(nocPollTimer);
+      nocPollTimer = setInterval(() => {
+        if (!document.hidden) {
+          fetchLiveMetrics();
+        }
+      }, CONFIG.pollIntervalMs);
+    }
+    startNocPolling();
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        if (nocPollTimer) clearInterval(nocPollTimer);
+      } else {
+        fetchLiveMetrics();
+        startNocPolling();
+      }
+    });
 
     // Botón de refresco manual accesible
     if (DOM.refreshBtn) {
