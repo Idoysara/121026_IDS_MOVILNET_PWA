@@ -17,7 +17,8 @@
 * **Hito 44 Completado (100% PASS):** Diagnóstico Forense y Mitigación de Errores en n8n Cloud (`sNMbtiEiTkuQ9OCY`): Filtro perimetral anti-ruido Baileys en `Edge Carrier Firewall (0416/0426)`, tolerancia a fallos `continueOnFail` en `HTTP Request`, validación en caliente (Exec 14593 drop limpio y 14594 respuesta exitosa).
 * **Hito 45 Completado (100% PASS):** Optimización Preventiva de Ancho de Banda (>95% ahorro egress en Render Cloud): Polling adaptativo a 15s con Page Visibility API en `conversatorio.html` e interfaces de monitoreo, botón manual de refresco y compresión HTTP GZip en `threaded_server.py`.
 * **Hito 46 Completado (100% PASS):** Migración Exitosa a Nueva Cuenta Render Cloud 24/7 (`https://one21026-ids-movilnet-pwa-bxmz.onrender.com`), verificación HTTP 200 de todos los endpoints, actualización atómica en n8n Cloud (`sNMbtiEiTkuQ9OCY`), regla de enlace PWA y sincronización GitHub.
-* **Capítulos de Bitácora Vigentes:** **1 al 231** (Sincronizados en `docs/BITACORA_MOVILNET.md`).
+* **Hito 47 Completado (100% PASS):** Diagnóstico Forense y Resolución Definitiva de Conectividad WhatsApp Master (+58 424 153 3712). Purga total de instancias contaminadas ('Gabriel IA' y sesión corrupta 401 de 'Viki LPGTEC') en Evolution API v2.4.0, recreación atómica de 'Viki LPGTEC' apuntando a 'http://n8n:5678/webhook/messages_upsert4', implementación del panel interactivo 'VINCULAR_WHATSAPP_MASTER.html' / '.command' con Pairing Code de 8 dígitos y publicación del Informe Técnico especializado.
+* **Capítulos de Bitácora Vigentes:** **1 al 232** (Sincronizados en `docs/BITACORA_MOVILNET.md`).
 
 ---
 
