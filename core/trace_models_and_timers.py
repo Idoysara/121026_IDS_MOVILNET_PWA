@@ -42,13 +42,22 @@ def compute_process_timers(
     message_timestamp: Optional[Any] = None,
     is_delivered: Optional[bool] = None,
     t7_delivered_ts: Optional[str] = None,
-    t8_read_ts: Optional[str] = None
+    t8_read_ts: Optional[str] = None,
+    **kwargs: Any
 ) -> Dict[str, Any]:
     """
     Calcula los 8 hitos temporales E2E (T1..T8) y sus 5 deltas de ciclo conversacional.
     Detecta de forma forense la retención en cola externa de WhatsApp para erradicar
     la falsa certificación de entrega prematura (Protocolo ZH-MHEP).
     """
+    # Compatibilidad hacia atrás de kwargs
+    if "started_at_iso" in kwargs and not started_at:
+        started_at = kwargs["started_at_iso"]
+    if "stopped_at_iso" in kwargs and not stopped_at:
+        stopped_at = kwargs["stopped_at_iso"]
+    if "is_error" in kwargs and kwargs["is_error"] and status == "SUCCESS":
+        status = "ERROR"
+
     # T2: Webhook n8n Inbound
     if started_at:
         try:

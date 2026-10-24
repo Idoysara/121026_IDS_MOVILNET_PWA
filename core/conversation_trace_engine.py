@@ -813,12 +813,12 @@ class ConversationTraceEngine:
         ]
 
         timers = compute_process_timers(
-            started_at_iso=start_iso,
-            stopped_at_iso=stop_iso,
+            started_at=start_iso,
+            stopped_at=stop_iso,
             total_duration_sec=float(duration_sec or 1.0),
+            status=status,
             steps=steps,
             is_delivered=is_delivered,
-            is_error=(status == "ERROR"),
         )
 
         trace = ConversationTrace(
