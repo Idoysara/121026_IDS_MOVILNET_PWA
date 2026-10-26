@@ -75,8 +75,11 @@
 * **Hito 64 Completado (100% PASS):** Reformulación Estratégica de la Alianza Comercial y Modelo de Negocio:
   - Establecimiento explícito del aporte de Movilnet: Cero fondos económicos líquidos, aporte de base de 4.2M de usuarios (CAC = $0), despliegue de material POP oficial (banderines, pendones, habladores con QR), presencia física y logística cubierta en charlas, seminarios, conferencias y Tours Movilnet nacionales, redes sociales y web oficial, consagrando a MOVI como protagonista principal de la empresa.
   - Reestructuración de la inversión privada a $450.000 USD (100% infraestructura técnica e IA) con esquema Waterfall Revenue Share 75/25, Payback acelerado a 6.2 meses y ROI a 36 meses de 9.4x ($4.25M USD).
-  - Recompilación integral del mazo PowerPoint (`docs/PRESENTACION_EJECUTIVA_MOVILNET_IA.pptx`, 10 láminas 16:9), PDF de alta resolución (`docs/PRESENTACION_EJECUTIVA_MOVILNET_IA.pdf`, 540 KB, 10 páginas 16:9), diapositivas web interactivas (`ui/presentacion_*.html`) y dossiers ejecutivos.
-* **Capítulos de Bitácora Vigentes:** **1 al 248** (Sincronizados en `docs/BITACORA_MOVILNET.md`).
+* **Hito 65 Completado (100% PASS):** Conversión y Compilación Multiformato de Todos los Documentos Estratégicos:
+  - Generación de presentaciones en formato nativo Microsoft PowerPoint (.pptx) para cada documento: `docs/PRESENTACION_EJECUTIVA_INVERSIONISTA_ECONOMISTA.pptx` (47 KB) y `docs/PRESENTACION_EJECUTIVA_DEPARTAMENTO_MERCADEO.pptx` (47 KB), sumados al mazo consolidado `docs/PRESENTACION_EJECUTIVA_MOVILNET_IA.pptx` (48 KB).
+  - Generación de presentaciones oficiales en formato PDF vectorial (16:9 widescreen, 960x540 pt, 10 páginas exactas cada uno): `docs/PRESENTACION_EJECUTIVA_INVERSIONISTA_ECONOMISTA.pdf` (456 KB) y `docs/PRESENTACION_EJECUTIVA_DEPARTAMENTO_MERCADEO.pdf` (432 KB).
+  - Despliegue de ejecutables soberanos de 1-clic dedicados: `ABRIR_PRESENTACION_INVERSIONISTA_PDF.command`, `ABRIR_PRESENTACION_INVERSIONISTA_PPTX.command`, `ABRIR_PRESENTACION_MERCADEO_PDF.command` y `ABRIR_PRESENTACION_MERCADEO_PPTX.command` con auto-fallback inteligente.
+* **Capítulos de Bitácora Vigentes:** **1 al 249** (Sincronizados en `docs/BITACORA_MOVILNET.md`).
 
 ---
 
