@@ -1,32 +1,86 @@
 # 🎯 GUÍA Y PRESENTACIÓN ESTRATÉGICA PARA EL DEPARTAMENTO DE MERCADEO
 ## Proyecto: Ecosistema Omnicanal MOVI 4GMAX — Telecomunicaciones Movilnet C.A.
-**Dirigido a:** Vicepresidencia de Mercadeo, Gerencia de Marca, Producto y Growth  
-**Enfoque:** Generación de Nuevos Ingresos, Conversión Conversacional, LTV, Reducción de Churn y Cronograma Time-to-Money  
-**Fecha:** Octubre 2026 | **Versión:** 1.0 — Dossier Estratégico de Marketing  
+**Dirigido a:** Vicepresidencia de Mercadeo, Gerencia de Marca, Producto, Eventos y Medios Digitales  
+**Enfoque:** MOVI como Protagonista Principal, Activación Masiva POP, Tours Movilnet, Ecosistema Digital y Generación de Nuevos Ingresos  
+**Fecha:** Octubre 2026 | **Versión:** 2.0 — Estrategia de Marca, Canales Nacionales & Monetización  
 
 ---
 
-## 💡 Mensaje Central para el Equipo de Mercadeo
+## 💡 El Rol Soberano del Departamento de Mercadeo en la Alianza
 
-> **"El SMS masivo y la publicidad tradicional están muertos en efectividad. MOVI transforma el canal de mensajería más usado del país (WhatsApp) y un portal PWA sin consumo de datos en la máquina de ventas y fidelización más potente de Venezuela: con 98% de tasa de apertura, ofertas personalizadas en tiempo real (Next-Best-Action) y pago en 1 clic."**
-
----
-
-## 📊 1. El Salto Cuántico: Marketing Tradicional vs. Marketing Conversacional MOVI
-
-| Métrica de Campaña | Campañas Tradicionales (SMS / Banners) | Plataforma Conversacional MOVI (WhatsApp / PWA) | Impacto para Mercadeo |
-| :--- | :---: | :---: | :--- |
-| **Tasa de Apertura (Open Rate)** | 12.4% | **98.2%** | **7.9x más visualizaciones reales**. |
-| **Tasa de Clics / Interacción (CTR)** | 0.8% - 1.5% | **34.6%** | El usuario responde y conversa de inmediato. |
-| **Tasa de Conversión a Venta (BOFU)** | 1.1% | **8.7%** | **7.9x más recargas y compras de planes**. |
-| **Costo de Adquisición (CAC)** | $4.50 - $8.00 USD | **$0.35 USD** | **-92% de costo por cliente captado**. |
-| **Tiempo de Compra (Checkout Time)** | 15 - 45 minutos (en cola o banco) | **12 segundos** (con Pago Móvil C2P integrado) | Cero carritos abandonados. |
+> **"Movilnet NO requiere aportar fondos económicos en efectivo para este proyecto. El capital tecnológico y la IA están 100% financiados por el inversionista.  
+> El aporte estratégico y soberano de Movilnet es su mayor poder: su base de ~4.2 Millones de usuarios, la fuerza de su marca nacional, su despliegue de material POP, los Tours Movilnet en cada región, sus redes sociales y su página web oficial, posicionando al Asistente MOVI como el PROTAGONISTA PRINCIPAL de la empresa."**
 
 ---
 
-## 💰 2. ¿Cómo y por Dónde Entran los Ingresos Económicos?
+## 🌟 1. MOVI: El Protagonista Principal de la Marca Movilnet
 
-Para el Departamento de Mercadeo, los ingresos no son abstracciones técnicas: se traducen en **5 fuentes directas de dinero en caja**:
+MOVI no es un "chatbot escondido" en un menú secundario; es la **cara visible del renacimiento tecnológico de Movilnet**:
+
+```mermaid
+flowchart TD
+    MOVI["⭐ MOVI: PROTAGONISTA PRINCIPAL DE MOVILNET"]
+    
+    subgraph PresenciaFisica ["🎪 PRESENCIA FÍSICA NACIONAL (CUBIERTA POR MOVILNET)"]
+        F1["🏷️ Material POP: Banderines, Pendones, Habladores en Oficinas y Agentes"]
+        F2["🚌 Tours Movilnet: Caravanas y eventos en regiones, municipios y plazas"]
+        F3["🎤 Congresos, Charlas, Seminarios y Ferias Tecnológicas (FITVEN, etc.)"]
+        F4["📱 Stands con QR Dinámico: 'Escanea y chatea gratis con MOVI'"]
+    end
+
+    subgraph PresenciaDigital ["🌐 ECOSISTEMA DIGITAL MASIVO (CUBIERTO POR MOVILNET)"]
+        D1["💻 Web Oficial (movilnet.com.ve): Banner de cabecera y floating button"]
+        D2["📲 Redes Sociales Oficiales: Reels, TikTok, Instagram, X, Facebook"]
+        D3["💬 Difusión SMS Push Institucional hacia los 4.2M de abonados"]
+        D4["🎁 Bono Freemium de Bienvenida para usuarios de la competencia"]
+    end
+
+    MOVI --> PresenciaFisica
+    MOVI --> PresenciaDigital
+```
+
+---
+
+## 🎪 2. El Plan de Activación Física en Calle: Tours Movilnet & Material POP
+
+El Departamento de Mercadeo lidera la presencia en el terreno a través de los canales institucionales existentes:
+
+### 2.1. Material POP Oficial en Puntos de Venta y Agentes Autorizados
+* **Banderines y Pendones de Alto Impacto:** Identificando cada tienda física de Movilnet y agente comercial con la imagen oficial de MOVI: *"Recarga en 12 segundos por WhatsApp con MOVI — Sin colas ni esperas"*.
+* **Habladores en Taquilla:** Guían al cliente en cola a escanear el código QR para autogestionar su saldo o reclamo en su celular de inmediato.
+* **Tótems y Material Expositivo:** Desplegados en centros comerciales y oficinas de atención con tabletas de demostración de la PWA 4GMAX.
+
+### 2.2. Tours Movilnet a Nivel Nacional, Regional y Municipal
+* **Caravanas y Jornadas de Conectividad:** En cada parada de los **Tours Movilnet**, MOVI es el centro de atención interactiva.
+* **Demostraciones en Vivo:**
+  - Los promotores retan al público a consultar su saldo en vivo o recargar por Pago Móvil C2P en menos de 15 segundos.
+  - Sorteos y trivias gamificadas conducidas por la IA en WhatsApp.
+* **Cobertura de Gastos:** Toda la logística, montaje de tarimas, sonido, stands y personal de campo forman parte del despliegue natural y presupuesto ordinario de Mercadeo de Movilnet (cero costo para el inversor tecnológico).
+
+### 2.3. Charlas, Seminarios, Conferencias y Exposiciones
+* Participación de Movilnet en ferias de telecomunicaciones, turismo, comercio y universidades con stands dedicados a la **"Inteligencia Artificial al Servicio del Pueblo"**.
+* Charlas de vocería corporativa mostrando a MOVI como caso de éxito de soberanía tecnológica nacional.
+
+---
+
+## 🌐 3. Despliegue en Medios Digitales y Redes Sociales
+
+### 3.1. Página Web Oficial (`movilnet.com.ve`)
+* **Hero Banner Principal:** Todo visitante a la web encuentra de entrada a MOVI con llamada a la acción: *"¿Necesitas ayuda o saldo? Escribe ya a nuestro WhatsApp oficial `+58 424 153 3712` o entra a la PWA sin gastar tus datos"*.
+* **Floating Widget:** Acceso directo en 1 clic al portal PWA desde cualquier subpágina.
+
+### 3.2. Estrategia de Contenidos en Redes Sociales (Social Media Viral)
+* **Instagram & TikTok:** Videos cortos y reels mostrando casos cotidianos:
+  - *"Me quedé sin megas a medianoche: mira cómo MOVI me recargó en 12 segundos sin entrar al banco"*.
+  - *"Escaneé el recibo arrugado del Pago Móvil y MOVI me acreditó el saldo al instante con su visión artificial"*.
+* **Campaña de Conquista de Líneas Rivales (0414/0424 y 0412):**
+  - Campaña masiva: *"¿Tienes otra operadora? Chatea con MOVI y recibe 1.000 tokens de IA gratis. Si te portas a Movilnet con eSIM, te regalamos 10 GB de navegación"*.
+
+---
+
+## 💰 4. ¿Cómo y por Dónde Entran los Ingresos Económicos Atribuibles a Mercadeo?
+
+Para el equipo de Mercadeo, los ingresos son medibles con atribución directa mediante 5 canales:
 
 ```mermaid
 flowchart TD
@@ -45,119 +99,38 @@ flowchart TD
     M --> F5
 ```
 
-### Detalle de las 5 Fuentes de Ingresos:
-
-### 1. Venta Cruzada Proactiva de Extra Datos (Upselling Contextual)
-* **El Problema Actual:** El usuario agota sus megas navegando en Instagram o YouTube. Movilnet le corta el servicio y el usuario queda desconectado hasta que decida entrar a la banca.
-* **La Solución MOVI:** El algoritmo detecta cuando al usuario le restan menos de 200 MB y le envía un mensaje contextual interactivo:
-  > *"Hola María, estás por agotar tus megas de navegación. ¿Deseas activar una bolsa Extra Datos 4GMAX de 2GB por solo Bs. 45 con cargo directo a tu saldo o Pago Móvil?"*
-* **Resultado Económico:** 8.7% de los usuarios aceptan de inmediato con 1 clic. Genera **USD $720.000 en el Año 1** y más de **$2.88 Millones en el Año 3**.
-
-### 2. Aceleración de la Frecuencia de Recargas vía C2P
-* **El Problema Actual:** Recargar saldo exige abrir la app del banco, registrar la empresa, esperar el SMS de confirmación y cruzar los dedos para que caiga. La fricción hace que el usuario solo recargue cuando ya no tiene línea (2.1 veces al mes).
-* **La Solución MOVI:** Recarga en 12 segundos desde WhatsApp mediante Pago Móvil C2P.
-* **Resultado Económico:** La frecuencia de recarga sube a **3.8 veces al mes**. El ARPU mensual por abonado se incrementa de **$3.10 a $4.45 USD (+43.5%)**.
-
-### 3. Red Publicitaria Retail Media (Cazador de Ofertas)
-* **El Modelo de Negocio:** 56 grandes marcas comerciales (Arturo's, Farmahorro, Cines Unidos, Traki, Automercados Plaza's) pagan por atraer tráfico peatonal a sus sucursales.
-* **La Mecánica:** El usuario consulta su saldo cerca del mediodía y MOVI le obsequia un cupón exclusivo del 20% en un restaurante a 200 metros.
-* **Mecanismo de Ingresos:** Split comercial 20/80. De cada cupón canjeado en caja, el comercio paga una comisión publicitaria de $2.00 USD, de los cuales **Movilnet retiene $0.40 USD netos**.
-* **Resultado Económico:** Genera **USD $360.000 en el Año 1** escalando a **$2.30 Millones en el Año 3**.
-
-### 4. Captura Agresiva de Abonados de la Competencia (Portabilidad Express)
-* **La Estrategia:** Los usuarios con números `0414/0424` (Movistar) o `0412` (Digitel) que escriban a MOVI o entren a la PWA reciben un bono de bienvenida Freemium (1.000 tokens) para probar el asistente.
-* **El Cierre Comercial:** Tras interactuar, se les ofrece pasarse a Movilnet manteniendo su número mediante eSIM digital instantánea sin ir a una tienda física.
-* **Resultado Económico:** Captación de **120.000 líneas nuevas en el Año 1** con un Lifetime Value (LTV) de **$42 USD anuales por usuario** a costo de adquisición (CAC) casi nulo.
-
-### 5. Monetización de Eventos y Patrocinios (LVBP y Temporadas)
-* Paquetes de datos temáticos: "Bolsa Beisbolera LVBP", "Paquete Vacaciones 4GMAX", "Pase Escolar Conectados".
-* Venta de suscripciones con Carrier Billing (Spotify, streaming de béisbol, juegos móviles) reteniendo un 15% de comisión.
+| Fuente de Ingresos | Mecanismo Comercial | Impacto Año 1 | Impacto Año 3 |
+| :--- | :--- | :---: | :---: |
+| **1. Extra Datos Contextual** | Oferta personalizada cuando restan <200 MB. Tasa de aceptación del 8.7%. | **$840.000 USD** | **$3.360.000 USD** |
+| **2. Recargas Aceleradas C2P** | Aumento de frecuencia de recargas de 2.1 a 3.8 veces/mes por facilidad de 12s. | **$252.000 USD** | **$1.344.000 USD** |
+| **3. Red Cazador de Ofertas** | Cupones retail (Arturo's, Farmahorro, Cines) con comisión split 20/80. | **$420.000 USD** | **$2.688.000 USD** |
+| **4. Portabilidad Express eSIM** | Captura de 120k abonados de la competencia con LTV de $42/año a CAC = $0. | **$5.040.000 USD** | **$12.600.000 USD** |
+| **5. Patrocinios & Eventos (LVBP)** | Bolsas temáticas deportivas y eventos culturales durante los Tours Movilnet. | **$320.000 USD** | **$1.200.000 USD** |
 
 ---
 
-## ⏳ 3. ¿En Qué Tiempo se Visualizan los Ingresos? (Cronograma Time-to-Money)
-
-El plan de despliegue se divide en 3 horizontes temporales con metas de facturación auditables:
+## ⏳ 5. Cronograma de Ingresos (Time-to-Money para Mercadeo)
 
 ```mermaid
 gantt
-    title CRONOGRAMA DE GENERACIÓN DE INGRESOS (ROADMAP COMERCIAL)
+    title CRONOGRAMA DE ACTIVACIÓN Y MONETIZACIÓN COMERCIAL
     dateFormat  YYYY-MM
-    section Fase 1: Quick Wins
-    Activación WhatsApp Master y C2P          :done, 2026-11, 2027-01
-    Upselling Extra Datos en Clientes Actuales :active, 2026-11, 2027-01
-    Meta: $60k - $120k / mes                   :crit, 2027-01, 2027-01
-    section Fase 2: Escalamiento Retail
-    Onboarding 150 Comercios Cazador           :2027-02, 2027-04
-    Campañas Hiper-Geolocalizadas              :2027-02, 2027-04
-    Meta: $250k - $380k / mes                  :crit, 2027-04, 2027-04
+    section Fase 1: Despegue Inmediato
+    Lanzamiento Web Oficial y Redes Sociales   :done, 2026-11, 2026-12
+    Campaña SMS Masiva a los 4.2M Abonados    :active, 2026-11, 2026-12
+    Upselling Extra Datos y Recarga C2P       :active, 2026-11, 2027-01
+    section Fase 2: Campaña Nacional en Calle
+    Despliegue Material POP en Agentes        :2027-01, 2027-03
+    Arranque Tours Movilnet Regionales        :2027-01, 2027-04
+    Red Cazador de Ofertas en Vivo (56 marcas):2027-02, 2027-04
     section Fase 3: Conquista de Mercado
-    Lanzamiento Portabilidad Express eSIM      :2027-05, 2027-10
-    Carrier Billing Streaming y LVBP           :2027-06, 2027-10
-    Meta: $500k - $800k / mes                  :crit, 2027-10, 2027-10
+    Lanzamiento Portabilidad Express eSIM     :2027-04, 2027-08
+    Alianzas LVBP y Carrier Billing Streaming :2027-05, 2027-10
 ```
 
-### 🗓️ Meses 1 a 3 — Fase de Arranque & Quick Wins Comerciales (Inmediato)
-* **Acciones:**
-  - Difusión del canal oficial de WhatsApp (`+58 424 153 3712`) en redes sociales y vallas publicitarias.
-  - Activación del motor Next-Best-Action (NBA) para ofrecer Extra Datos al consultar saldo.
-  - Habilitación de recargas Pago Móvil C2P en 1 clic.
-* **Ingresos Estimados al Mes 3:** **USD $80.000 a $120.000 mensuales** (ingresos netos incrementales).
-
-### 🗓️ Meses 4 a 6 — Fase de Escalamiento & Alianzas Retail (Mediano Plazo)
-* **Acciones:**
-  - Integración masiva de marcas aliadas en el Radar Cazador de Ofertas (centros comerciales de Caracas, Valencia, Maracaibo, Barquisimeto).
-  - Activación de cupones geolocalizados por radiobases telefónicas.
-  - Integración de comprobantes de pago visuales mediante OCR inteligente.
-* **Ingresos Estimados al Mes 6:** **USD $250.000 a $380.000 mensuales**.
-
-### 🗓️ Meses 7 a 12 — Fase de Madurez & Captura de Mercado (Largo Plazo)
-* **Acciones:**
-  - Campaña nacional de Portabilidad Express eSIM para usuarios de Movistar y Digitel.
-  - Alianzas con la Liga Venezolana de Béisbol Profesional (LVBP) y plataformas de música/streaming para cobro directo a saldo (Carrier Billing).
-* **Ingresos en Régimen Permanente (Mes 12+):** **USD $500.000 a $800.000 mensuales**.
-
----
-
-## 🔄 4. El Funnel de Conversión Inteligente: De Consulta a Venta en 12 Segundos
-
-El agente de marketing conversacional clasifica al usuario en cada etapa del embudo y ejecuta el gancho de compra adecuado:
-
-```
-[ TOFU: Consulta de Saldo / Duda ]
-        │  Usuario: "¿Cuántos megas me quedan?"
-        ▼
-[ MOFU: Diagnóstico y Propuesta ]
-        │  MOVI: "Te quedan 150 MB válidos hasta el viernes. Estás por agotarlos."
-        ▼
-[ BOFU: Llamado a la Acción Irresistible (CTA) ]
-        │  MOVI: "¿Deseas recargar 2 GB Extra Datos por Bs. 45 o prefieres ver las ofertas cerca de ti?"
-        ▼
-[ CIERRE: Pago en 1 Clic con C2P ]
-        │  Usuario envía código C2P de su banco ➔ Acreditación en 12 segundos.
-```
-
----
-
-## 🎯 5. Estrategia de Crecimiento para Mercadeo (Las Armas de Campaña)
-
-1. **La PWA como Landing Page de Cero Fricción:**  
-   El enlace universal `https://one21026-ids-movilnet-pwa-bxmz.onrender.com/ui/pwa_stitch/index.html` puede incluirse en cualquier historia de Instagram, tweet, valla con código QR o sticker publicitario. Abre instantáneamente en cualquier celular sin instalar nada.
-2. **Campañas Estacionales Pre-Configuradas:**  
-   El sistema ya dispone de módulos para el béisbol nacional (LVBP), Black Friday, Navidad, Vacaciones y Regreso a Clases, adaptando los banners y ofertas de forma autónoma.
-3. **Dashboard de Métricas en Tiempo Real para el Director de Mercadeo:**  
-   El monitor de conversatorio permite ver qué ofertas se están convirtiendo en vivo, qué zonas del país están recargando más y qué comercios aliados están canjeando más cupones.
-
----
-
-## 📈 6. Resumen de Impacto en los KPIs de Mercadeo
-
-| Indicador Estratégico (KPI) | Situación Actual sin MOVI | Con Plataforma MOVI Activa | Meta de Mercadeo |
-| :--- | :---: | :---: | :---: |
-| **ARPU Promedio Mensual** | $3.10 USD | **$4.45 USD** | **+43.5% incremento** |
-| **Tasa de Churn (Deserción)** | 4.8% mensual | **2.1% mensual** | **-56% retención neta** |
-| **NPS (Satisfacción de Marca)** | +12 puntos | **+68 puntos** | Percepción moderna y ágil |
-| **Ingreso No-Tarifario (Retail/Ads)**| $0 USD | **$2.30 M USD / año** | Nueva línea de negocio |
+* **Día 1 a 30 (Quick Wins):** Ingresos inmediatos por aceleración de recargas C2P y venta de Extra Datos impulsados por la campaña en redes y web oficial.
+* **Mes 2 a 4:** Escalamiento masivo con los **Tours Movilnet** en plazas y regiones, capturando ingresos por cuponería comercial y captación de clientes de la competencia.
+* **Mes 5 en adelante:** Portabilidad masiva eSIM, consolidando a Movilnet como la operadora líder en crecimiento neto de clientes.
 
 ---
 

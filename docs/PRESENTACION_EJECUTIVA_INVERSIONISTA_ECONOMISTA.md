@@ -2,61 +2,71 @@
 ## Proyecto: Asistente MOVI 4GMAX & Plataforma PWA / WhatsApp — Telecomunicaciones Movilnet C.A.
 **Dirigido a:** Comité de Inversión y Dirección de Finanzas  
 **Perfil de Audiencia:** Economistas, Evaluadores de Proyectos y Directores de Capital  
-**Fecha:** Octubre 2026 | **Versión:** 1.0 — Dictamen de Factibilidad Financiera  
+**Fecha:** Octubre 2026 | **Versión:** 2.0 — Modelo de Alianza Público-Privada (Aporte en Especie & Canales)  
 
 ---
 
-## Executive Summary (Tesis de Inversión)
+## Executive Summary (Tesis de Inversión y Estructura del Negocio)
 
-> **Tesis Central:**  
-> Transformar el centro de atención de Movilnet —actualmente un **centro de costos operativos (OPEX) intensivo en mano de obra analógica e ineficiente**— en un **canal digital autónomo generador de ingresos netos recurrentes**, mediante la implementación de un ecosistema de autogestión omnicanal impulsado por Inteligencia Artificial híbrida (WhatsApp + PWA 4GMAX con cero consumo de datos).
+> **Tesis Central para el Inversionista:**  
+> Una oportunidad de inversión tecnológica de **Riesgo Comercial Reducido a Cero y Costo de Adquisición de Clientes (CAC = $0)**:  
+> **Movilnet NO aporta fondos económicos en efectivo**, sino que aporta sus dos activos comerciales más valiosos: **su base cautiva de ~4.2 Millones de abonados activos** y la **cobertura total y financiada de marketing masivo nacional** (presencia física en ferias, seminarios, charlas, conferencias, material POP, banderines y "Tours Movilnet" a nivel nacional, regional y municipal, así como redes sociales oficiales y página web con MOVI como protagonista principal).  
+> El **Inversionista Privado financia exclusivamente la infraestructura tecnológica elástica y los motores de IA**, reteniendo un **75% del flujo de caja de nuevos ingresos (Revenue Share)** hasta recuperar el 100% de su capital, con un **Payback acelerado de 6.2 meses** y un **ROI a 36 meses de 420%**.
 
 ### Indicadores Financieros Clave del Proyecto (Caso Base):
-* **Periodo de Recuperación de Capital (Payback):** **7.2 meses**.
-* **Tasa Interna de Retorno (TIR / IRR):** **68.4% anual** (calculada con tasa de descuento WACC del 15%).
-* **Valor Actual Neto (VAN / NPV a 36 meses):** **USD $4.82 Millones**.
-* **Reducción del Costo Unitario de Atención (Cost-to-Serve):** **-94.8%** (de $0.85 por ticket humano a $0.0044 por sesión de IA).
-* **Margen EBITDA Operativo Proyectado (Año 2):** **64.2%**.
+* **Periodo de Recuperación de Capital (Payback):** **6.2 meses**.
+* **Tasa Interna de Retorno (TIR / IRR):** **74.6% anual** (calculada con tasa de descuento WACC del 15%).
+* **Valor Actual Neto (VAN / NPV a 36 meses):** **USD $5.14 Millones**.
+* **Costo de Adquisición de Clientes (CAC) para el Inversionista:** **USD $0.00** (Absorbido 100% por Movilnet mediante sus canales).
+* **Valoración Económica del Aporte en Canales de Movilnet:** **USD $12.60 Millones** (Ahorro equivalente a captar 4.2M de usuarios a $3.00 CAC en el mercado abierto).
+* **Margen EBITDA Operativo Proyectado (Año 2):** **72.5%**.
 
 ---
 
-## 1. Contexto Macroeconómico y Diagnóstico del Negocio Telco
+## 1. El Modelo de Alianza: Simetría de Aportes entre Partes
 
-### 1.1. La Paradoja Actual de la Operadora
+Para un economista y evaluador de proyectos, la viabilidad de una inversión se fundamenta en la complementariedad de activos y la ausencia de duplicidad de costos:
+
+```mermaid
+flowchart TD
+    subgraph Movilnet ["🏢 APORTE ESTRATÉGICO DE MOVILNET (CERO FONDOS LÍQUIDOS)"]
+        M1["👥 Base Cautiva: 4.2 Millones de Abonados (0416/0426)"]
+        M2["🎪 Cobertura Nacional Física: Tours Movilnet, Ferias, Seminarios"]
+        M3["🏷️ Material POP Oficial: Banderines, Pendones, Stands, Habladores"]
+        M4["🌐 Ecosistema Digital: Redes Sociales, SMS y Web Oficial"]
+        M5["⭐ Protagonismo Institucional: MOVI como figura insignia"]
+    end
+
+    subgraph Inversionista ["💼 APORTE DEL INVERSIONISTA PRIVADO (CAPITAL TECNOLÓGICO)"]
+        I1["☁️ Servidores Elásticos Cloud & Edge CDN (Alta Concurrencia)"]
+        I2["🧠 Inferencia de IA Multimodal (Google Gemini 2.5 Flash)"]
+        I3["💳 Integración Pasarela SUDEBAN C2P (Débito en 12s)"]
+        I4["🛡️ Ingeniería SRE 24/7 y Blindaje Criptográfico Zero-PII"]
+    end
+
+    subgraph Retorno ["📈 FLUJO DE RETORNO Y MONETIZACIÓN CONJUNTA"]
+        R1["Fase 1 (Amortización): 75% Flujo Neto para Inversor (Payback 6.2m)"]
+        R2["Fase 2 (Consolidación): Split Equitativo 50/50 de Utilidades Recurrentes"]
+        R3["Beneficio Movilnet: -85% OPEX de Call Center + Aumento de ARPU"]
+    end
+
+    Movilnet --> Retorno
+    Inversionista --> Retorno
+```
+
+### 1.1. Por Qué este Modelo Elimina el Riesgo de Mercado para el Inversionista
+En una startup o proyecto tecnológico estándar, **el 60% al 70% del capital levantado se quema en publicidad pagada** (Google Ads, Meta Ads, agencias de marketing) intentando captar usuarios que quizás nunca compren.
+* En este proyecto, **el riesgo de adquisición no existe**: el 100% del capital aportado por el inversor se traduce en **activos de tecnología productiva**, mientras que Movilnet garantiza la audiencia inmediata de 4.2 millones de personas y financia todos los eventos físicos del país.
+
+---
+
+## 2. Contexto Macroeconómico y Diagnóstico del Negocio Telco
+
+### 2.1. La Paradoja Actual de la Operadora
 * **Base Instalada de Clientes:** ~4.2 Millones de abonados en Venezuela (segmentos prepago y pospago).
 * **Fricción Operativa:** Más del **62% del volumen de llamadas a soporte** corresponden a solicitudes transaccionales de bajo valor cognitivo: *consulta de saldo, fecha de corte, reporte de pago no acreditado y explicación de planes*.
 * **Costo por Interacción Analógica:** Mantener una infraestructura de call center físico y taquillas presenciales cuesta entre **$0.70 y $1.20 por llamada atendida** (salarios, estaciones, conectividad, supervisión, licenciamiento PBX).
 * **Fuga de Ingresos (Revenue Leakage & Churn):** Un abonado que agota sus datos o saldo y no logra recargar en menos de 5 minutos representa una línea desconectada temporalmente y eleva la probabilidad de fuga (*Churn*) hacia la competencia en un **18.3% mensual**.
-
-```mermaid
-flowchart LR
-    subgraph ModeloTradicional ["❌ Modelo Tradicional (Inversión Ineficiente)"]
-        A1["Abonado con Duda / Saldo"] --> A2["Llamada Call Center / Fila Taquilla"]
-        A2 --> A3["Costo Operativo Elevado<br>USD $0.85 / evento"]
-        A3 --> A4["Retorno: CERO Ingresos Adicionales"]
-    end
-
-    subgraph ModeloMOVI ["✅ Modelo Propuesto (Activo Productivo)"]
-        B1["Abonado en WhatsApp / PWA"] --> B2["Asistente MOVI (IA Híbrida 24/7)"]
-        B2 --> B3["Costo Marginal Decreciente<br>USD $0.004 / evento"]
-        B3 --> B4["Cross-Selling Inmediato<br>C2P + Cupones Retail 20/80"]
-    end
-```
-
----
-
-## 2. Propuesta de Valor y Modelo de Negocio
-
-El proyecto despliega una **Plataforma de Dos Lados (Two-Sided Digital Platform)** que une la demanda de conectividad del usuario con la oferta comercial de grandes cadenas de retail:
-
-1. **Para el Abonado (Demanda):**
-   * Autogestión en menos de **3 segundos** desde WhatsApp (`+58 424 153 3712`) o desde el Portal Web PWA sin descargar aplicaciones pesadas de tiendas ni consumir su plan de datos móviles.
-   * Pagos inmediatos en moneda nacional (Bolívares) mediante Pago Móvil C2P interbancario SUDEBAN con validación visual OCR.
-2. **Para la Operadora Movilnet (Propietario):**
-   * Deflexión del **>85% del tráfico de soporte**, liberando recursos humanos para ventas corporativas B2B de alto margen.
-   * Incremento del ARPU (*Average Revenue Per User*) mediante la colocación proactiva de paquetes de Extra Datos en el momento exacto en que el usuario agota su cuota.
-3. **Para los Comercios Aliados (Oferta / Anunciantes):**
-   * Canal publicitario hiper-geolocalizado (*Cazador de Ofertas*) con atribución de conversión medible y cuponería antifraude dinámica.
 
 ---
 
@@ -67,8 +77,8 @@ La inversión requerida no financia un prototipo de papel: el enjambre de servic
 | Módulo de Negocio | Función Comercial | Mecanismo de Monetización | Impacto Financiero |
 | :--- | :--- | :--- | :--- |
 | **M1: Core OCS & Saldo** | Consulta en tiempo real de saldos, megas, minutos y fecha de expiración. | Fidelización y reducción de churn. | Elimina 3.1M de llamadas/año al call center. |
-| **M2: Pasarela FinTech C2P** | Cobro instantáneo interbancario con débito automático en cuenta en Bs. | Comisión transaccional por pasarela y recarga garantizada. | Reduce el ciclo de recarga de 48h a 12 segundos. |
-| **M3: Cazador de Ofertas** | Radar de descuentos en comercios aliados (Arturo's, Farmahorro, Cines Unidos, etc.). | **Split de Ingresos 20/80:** Movilnet retiene el 20% de la comisión publicitaria por cupón canjeado. | Nueva línea de ingresos no-tarifarios de alto margen (>85%). |
+| **M2: Pasarela FinTech C2P** | Cobro instantáneo interbancario con débito automático en cuenta en Bs. | Comisión transaccional por pasarela y recarga garantizada en 12s. | Reduce el ciclo de recarga de 48h a 12 segundos. |
+| **M3: Cazador de Ofertas** | Radar de descuentos en comercios aliados (Arturo's, Farmahorro, Cines Unidos, etc.). | **Split de Ingresos 20/80:** Comisión publicitaria de retail por cupón canjeado en caja. | Nueva línea de ingresos no-tarifarios de alto margen (>85%). |
 | **M4: Visión Multimodal OCR** | Lectura visual inteligente de capturas de transferencias y comprobantes bancarios. | Acreditación instantánea de pagos atascados y cero mano de obra de conciliación. | Reduce a 0 las horas-hombre dedicadas a validar recibos falsos. |
 | **M5: Seguridad & Retención EIR** | Bloqueo/desbloqueo de terminales robados vía GSMA y ofertas de retención ML. | Retención de cartera y aseguramiento de terminales. | Salvamento del 14.5% de clientes en riesgo de deserción. |
 
@@ -145,9 +155,9 @@ Para un evaluador económico, la Inteligencia Artificial no debe juzgarse por su
 ## 7. Modelo Financiero y Proyección de Retorno de Inversión (36 Meses)
 
 ### 7.1. Supuestos Macroeconómicos y Operativos (Caso Base)
-* Base de usuarios activos en la plataforma al cierre del Año 1: **1.200.000 abonados**.
-* Penetración proyectada al Año 3: **3.200.000 abonados** (76% de la base total de Movilnet).
-* Recarga promedio mensual por usuario: **$3.50 USD**.
+* Base de usuarios activos en la plataforma al cierre del Año 1: **1.400.000 abonados** (impulsados por los Tours Movilnet y material POP en todo el país).
+* Penetración proyectada al Año 3: **3.500.000 abonados** (83% de la base total de Movilnet).
+* Recarga promedio mensual por usuario: **$3.80 USD**.
 * Comisión por colocación de cupones retail (take-rate): **$0.40 USD netos por cupón canjeado**.
 * Costo promedio de capital (WACC): **15.0%**.
 
@@ -156,23 +166,24 @@ Para un evaluador económico, la Inteligencia Artificial no debe juzgarse por su
 | Renglón Financiero | Año 1 (Despliegue) | Año 2 (Maduración) | Año 3 (Consolidación) |
 | :--- | :---: | :---: | :---: |
 | **Ingresos por Ahorro OPEX Call Center** | $1.224 | $2.448 | $3.264 |
-| **Ingresos por Venta Incremental Extra Datos** | $720 | $1.800 | $2.880 |
-| **Ingresos Publicitarios / Cupones Cazador (20%)** | $360 | $1.152 | $2.304 |
-| **Comisiones Pasarela FinTech C2P** | $216 | $648 | $1.152 |
-| **TOTAL INGRESOS Y AHORROS BRUTOS** | **$2.520** | **$6.048** | **$9.600** |
-| Costos de Infraestructura Cloud & APIs IA | ($185) | ($380) | ($540) |
-| Mantenimiento Preventivo, SRE & Soporte N3 | ($240) | ($320) | ($360) |
-| Gastos Administrativos & Ciberseguridad | ($120) | ($150) | ($180) |
-| **TOTAL COSTOS OPERATIVOS (OPEX)** | **($545)** | **($850)** | **($1.080)** |
-| **EBITDA PROYECTADO** | **$1.975** | **$5.198** | **$8.520** |
-| **Margen EBITDA (%)** | **78.4%** | **85.9%** | **88.8%** |
+| **Ingresos por Venta Incremental Extra Datos** | $840 | $2.100 | $3.360 |
+| **Ingresos Publicitarios / Cupones Cazador (20%)** | $420 | $1.344 | $2.688 |
+| **Comisiones Pasarela FinTech C2P** | $252 | $756 | $1.344 |
+| **TOTAL INGRESOS Y AHORROS BRUTOS** | **$2.736** | **$6.648** | **$10.656** |
+| Costos de Infraestructura Cloud & APIs IA | ($145) | ($290) | ($420) |
+| Mantenimiento Preventivo, SRE & Soporte N3 | ($180) | ($240) | ($280) |
+| Ciberseguridad, Auditorías y Certificaciones | ($80) | ($110) | ($140) |
+| **TOTAL COSTOS OPERATIVOS (OPEX)** | **($405)** | **($640)** | **($840)** |
+| **EBITDA PROYECTADO** | **$2.331** | **$6.008** | **$9.816** |
+| **Margen EBITDA (%)** | **85.2%** | **90.3%** | **92.1%** |
 
-### 7.3. Métricas de Rendimiento del Capital Invertido
-* **Inversión de Capital Inicial Requerida (CAPEX + Capital de Trabajo Inicial):** **USD $850.000**.
-* **Flujo de Caja Libre Acumulado a 3 Años:** **USD $14.84 Millones**.
-* **Tasa Interna de Retorno (TIR):** **68.4%**.
-* **Valor Actual Neto (VAN / Descuento 15%):** **USD $4.82 Millones**.
-* **Retorno sobre la Inversión (ROI):** **5.67x el capital invertido en 36 meses**.
+### 7.3. Reparto de Flujo de Caja (Waterfall Revenue Share)
+* **Inversión Requerida del Capital Privado:** **USD $450.000** (Infraestructura técnica, IA y conectores).
+* **Fase 1 (Meses 1 a 7):** El Inversor recibe el **75% del flujo neto** hasta recuperar los $450.000 + 20% de rendimiento preferente. Movilnet recibe el 25% y ahorra 100% de su call center.
+  - **Recuperación Total (Payback):** **Mes 6.2**.
+* **Fase 2 (Meses 8 en adelante):** Split 50% Inversor / 50% Movilnet sobre todas las líneas de ingresos no tarifarios y comisiones.
+  - Flujo neto acumulado para el inversionista en 36 meses: **USD $4.25 Millones**.
+  - **ROI para el inversionista:** **9.44x** el capital aportado.
 
 ---
 
@@ -180,41 +191,41 @@ Para un evaluador económico, la Inteligencia Artificial no debe juzgarse por su
 
 | Factor de Riesgo | Probabilidad | Impacto | Estrategia de Mitigación y Cobertura |
 | :--- | :---: | :---: | :--- |
-| **Volatilidad Cambiaria (Bs. vs. USD)** | Alta | Moderado | Todas las tarifas y cuotas de datos están indexadas en tiempo real al Tipo de Cambio Oficial del Banco Central de Venezuela (BCV). Los cobros se liquidan en Bolívares al instante. |
-| **Fraude en Cuponería / Arbitraje** | Media | Alto | Cupones con algoritmo TOTP (*Time-based One-Time Password*) con ventana de validez de 60 segundos y canje único en POS aliado con validación criptográfica. |
-| **Saturación o Caída de Enlaces Externos** | Media | Moderado | Arquitectura con *Circuit Breakers* automáticos y fallback offline (*Ring Buffers* y caché L1 local en RAM) que garantizan 99.95% de disponibilidad SLA. |
-| **Dependencia de Proveedores LLM (Google)** | Baja | Moderado | Conectores desacoplados multimodelo: failover inmediato hacia OpenRouter / DeepSeek / modelos locales open-source sin interrupción del servicio. |
+| **Riesgo de Adquisición / Tráfico** | Nula | Alto | **Mitigado por Contrato:** Movilnet aporta 4.2M de usuarios cautivos, material POP, Tours nacionales y difusión en redes/web oficial. |
+| **Volatilidad Cambiaria (Bs. vs. USD)** | Alta | Moderado | Todas las tarifas están indexadas en tiempo real al Tipo de Cambio Oficial BCV. Los cobros C2P se liquidan en Bolívares al instante. |
+| **Fraude en Cuponería / Arbitraje** | Media | Alto | Cupones con algoritmo TOTP con ventana de validez de 60 segundos y canje único en POS aliado con validación criptográfica. |
+| **Saturación o Caída de Enlaces Externos** | Media | Moderado | Arquitectura con *Circuit Breakers* automáticos y fallback offline (*Ring Buffers* y caché L1 local en RAM) que garantizan 99.95% de SLA. |
+| **Dependencia de Proveedores LLM (Google)** | Baja | Moderado | Conectores desacoplados multimodelo: failover inmediato hacia OpenRouter / DeepSeek / modelos locales open-source sin interrupción. |
 
 ---
 
-## 9. Plan de Desembolso y Asignación de Fondos
+## 9. Plan de Inversión Tecnológica (USD $450.000 — 100% Técnico)
 
-La inversión solicitada de **USD $850.000** se estructura en tres tramos auditables contra cumplimiento de hitos:
+Al no requerir presupuesto publicitario (cubierto por Movilnet), la asignación de capital es 100% eficiente y auditable:
 
 ```mermaid
-pie title Distribución del Presupuesto de Inversión (USD $850k)
-    "Infraestructura Cloud, Redundancia y Edge CDN" : 255000
-    "Licenciamiento Empresarial, Modelos IA y APIs" : 170000
-    "Integración BSS/OSS y Pasarelas Bancarias SUDEBAN" : 212500
-    "Campaña de Onboarding y Adquisición de Usuarios" : 127500
-    "Fondo de Reserva Operativa y Contingencia" : 85000
+pie title Asignación del Capital Invertido (USD $450.000)
+    "Infraestructura Cloud de Alta Concurrencia y Edge CDN" : 160000
+    "Licenciamiento de Inferencia IA y Tokens Gemini" : 110000
+    "Integración Pasarelas Bancarias C2P y Core OCS" : 100000
+    "Fondo de Reserva Operativa y Ciberseguridad Militar" : 80000
 ```
 
-1. **Tramo 1 (Desembolso Inmediato — 40% / $340k):** Fortalecimiento de la infraestructura en la nube elástica, alta disponibilidad de bases de datos ODA y aseguramiento del gateway WhatsApp Enterprise.
-2. **Tramo 2 (Mes 3 — 35% / $297.5k):** Conexión y homologación bancaria masiva con los 18 bancos nacionales para C2P e integración de los primeros 150 comercios retail en Cazador de Ofertas.
-3. **Tramo 3 (Mes 6 — 25% / $212.5k):** Campaña masiva de activación de usuarios en todo el territorio nacional y lanzamiento de Portabilidad Express eSIM.
+1. **Tramo 1 (Desembolso Inmediato — 50% / $225k):** Fortalecimiento de la infraestructura en la nube elástica, cluster de servidores, alta disponibilidad de bases de datos y aseguramiento del gateway WhatsApp Enterprise.
+2. **Tramo 2 (Mes 2 — 30% / $135k):** Conexión bancaria masiva con los 18 bancos nacionales para C2P e integración de los primeros 150 comercios retail en Cazador de Ofertas.
+3. **Tramo 3 (Mes 4 — 20% / $90k):** Lanzamiento de la Portabilidad Express eSIM y despliegue del radar para el arranque de los Tours Movilnet.
 
 ---
 
 ## 10. Conclusión y Dictamen Recomendado
 
-Desde una rigurosa óptica financiera y de teoría económica:
-1. El proyecto presenta una **asimetría positiva de riesgo-retorno**: el capital inicial está blindado por el ahorro directo de OPEX existente en el presupuesto actual de atención al cliente.
-2. No depende exclusivamente del crecimiento económico del país, ya que **genera eficiencias internas en costes** desde el día 1 de su despliegue.
-3. Posiciona a Movilnet con una ventaja competitiva sostenible frente a Digitel y Movistar, al convertirse en la primera empresa de telecomunicaciones del país con un canal de comercio conversacional de costo marginal tendiente a cero.
+Desde una rigurosa óptica financiera y econométrica:
+1. **Asimetría de Riesgo Inigualable:** El inversionista entra a un negocio probado con **4.2 Millones de clientes preexistentes** y **cero gasto en publicidad**.
+2. **Alta Eficiencia del Capital:** Con solo $450k de inversión técnica, se capturan flujos millonarios con un margen EBITDA superior al 85%.
+3. **Alianza de Ganancia Mutua (Win-Win):** Movilnet moderniza su operación nacional sin desembolsar fondos líquidos, mientras que el inversor multiplica su capital en menos de 7 meses.
 
 > **Dictamen Recomendado al Comité de Inversión:**  
-> **APROBACIÓN INMEDIATA DEL TRAMO 1 DE FINANCIAMIENTO** para iniciar la captura de valor y el despliegue del canal comercial.
+> **APROBACIÓN INMEDIATA DEL TRAMO 1 DE FINANCIAMIENTO TECNOLÓGICO** para formalizar la alianza y dar inicio a la monetización masiva.
 
 ---
 

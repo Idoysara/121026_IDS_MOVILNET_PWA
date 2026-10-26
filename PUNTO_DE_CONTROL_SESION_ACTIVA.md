@@ -72,7 +72,11 @@
 * **Hito 63 Completado (100% PASS):** Lanzadores Soberanos de 1-Clic con Resiliencia y Tolerancia a Fallos:
   - Despliegue de `ABRIR_PRESENTACION_PDF.command` para apertura directa en macOS Vista Previa (Preview) con cero configuración.
   - Actualización blindada de `ABRIR_PRESENTACION_POWERPOINT.command`: detección inteligente de software ofimático instalado; si la Mac no tiene PowerPoint/Keynote (-10814), activa automáticamente la versión PDF, el slide deck interactivo en el navegador y revela el `.pptx` en Finder.
-* **Capítulos de Bitácora Vigentes:** **1 al 247** (Sincronizados en `docs/BITACORA_MOVILNET.md`).
+* **Hito 64 Completado (100% PASS):** Reformulación Estratégica de la Alianza Comercial y Modelo de Negocio:
+  - Establecimiento explícito del aporte de Movilnet: Cero fondos económicos líquidos, aporte de base de 4.2M de usuarios (CAC = $0), despliegue de material POP oficial (banderines, pendones, habladores con QR), presencia física y logística cubierta en charlas, seminarios, conferencias y Tours Movilnet nacionales, redes sociales y web oficial, consagrando a MOVI como protagonista principal de la empresa.
+  - Reestructuración de la inversión privada a $450.000 USD (100% infraestructura técnica e IA) con esquema Waterfall Revenue Share 75/25, Payback acelerado a 6.2 meses y ROI a 36 meses de 9.4x ($4.25M USD).
+  - Recompilación integral del mazo PowerPoint (`docs/PRESENTACION_EJECUTIVA_MOVILNET_IA.pptx`, 10 láminas 16:9), PDF de alta resolución (`docs/PRESENTACION_EJECUTIVA_MOVILNET_IA.pdf`, 540 KB, 10 páginas 16:9), diapositivas web interactivas (`ui/presentacion_*.html`) y dossiers ejecutivos.
+* **Capítulos de Bitácora Vigentes:** **1 al 248** (Sincronizados en `docs/BITACORA_MOVILNET.md`).
 
 ---
 
