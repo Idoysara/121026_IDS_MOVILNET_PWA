@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movilnet 4GMAX — Vinculador WhatsApp Master 0424-1533712</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📱</text></svg>">
+  <style>
+    :root {
+      --primary: #ff6600;
+      --primary-hover: #e05500;
+      --bg: #0b132b;
+      --card-bg: #1c2541;
+      --card-border: #3a506b;
+      --text: #ffffff;
+      --text-muted: #a0aec0;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    body { background-color: var(--bg); color: var(--text); min-height: 100vh; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+    .container { max-width: 650px; width: 100%; margin: 0 auto; }
+    .header { text-align: center; margin-bottom: 24px; padding: 20px; background: linear-gradient(135deg, #1c2541 0%, #0b132b 100%); border-radius: 16px; border: 1px solid var(--card-border); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+    .logo-badge { display: inline-block; background: var(--primary); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-size: 13px; margin-bottom: 8px; letter-spacing: 1px; }
+    h1 { font-size: 24px; margin-bottom: 6px; }
+    .subtitle { color: var(--text-muted); font-size: 14px; }
+    .card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 24px; margin-bottom: 20px; box-shadow: 0 4px 16px rgba(0,0,0,0.2); }
+    .alert-box { background: rgba(245, 158, 11, 0.1); border-left: 4px solid var(--warning); padding: 14px 16px; border-radius: 8px; margin-bottom: 20px; font-size: 13.5px; line-height: 1.5; }
+    .alert-box strong { color: var(--warning); }
+    .btn { display: inline-flex; align-items: center; justify-content: center; width: 100%; padding: 16px 24px; background: var(--primary); color: white; font-size: 16px; font-weight: bold; border: none; border-radius: 12px; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 12px rgba(255, 102, 0, 0.3); }
+    .btn:hover { background: var(--primary-hover); transform: translateY(-1px); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .code-display-wrap { margin-top: 24px; text-align: center; display: none; }
+    .code-box { display: inline-block; background: #0b132b; border: 2px dashed var(--primary); border-radius: 14px; padding: 18px 28px; font-size: 38px; font-weight: 800; letter-spacing: 6px; color: #ff9e40; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; text-shadow: 0 0 12px rgba(255,102,0,0.4); margin: 12px 0; }
+    .timer-bar-wrap { width: 100%; background: #0b132b; height: 8px; border-radius: 4px; overflow: hidden; margin-top: 14px; }
+    .timer-bar { height: 100%; width: 100%; background: var(--primary); transition: width 1s linear; }
+    .timer-text { font-size: 12px; color: var(--text-muted); margin-top: 6px; font-weight: 600; }
+    .steps-list { list-style: none; margin-top: 16px; font-size: 14px; line-height: 1.6; }
+    .steps-list li { margin-bottom: 12px; display: flex; align-items: flex-start; }
+    .step-num { background: var(--primary); color: white; border-radius: 50%; min-width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; margin-right: 12px; margin-top: 2px; }
+    .status-badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; margin-top: 12px; }
+    .status-badge.connecting { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
+    .status-badge.open { background: rgba(16, 185, 129, 0.2); color: var(--success); }
+    .status-badge.closed { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
+    .pulse-dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(1.3); } }
+    .qr-toggle-link { color: var(--primary); font-size: 13px; text-decoration: none; cursor: pointer; display: inline-block; margin-top: 16px; font-weight: 600; }
+    .qr-toggle-link:hover { text-decoration: underline; }
+    #qrContainer { display: none; text-align: center; margin-top: 16px; padding: 16px; background: white; border-radius: 12px; width: fit-content; margin-left: auto; margin-right: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+    #qrImage { width: 240px; height: 240px; display: block; margin: 0 auto; }
+    .footer-pwa { text-align: center; margin-top: 20px; font-size: 12.5px; color: var(--text-muted); line-height: 1.5; }
+    .footer-pwa a { color: var(--primary); text-decoration: none; font-weight: bold; }
+    .footer-pwa a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo-badge">MOVILNET 4GMAX</div>
+      <h1>Vinculación WhatsApp Master</h1>
+      <div class="subtitle">Línea Oficial de Soporte IA: <strong>0424-1533712</strong></div>
+      <div id="statusBadge" class="status-badge connecting">
+        <span class="pulse-dot"></span>
+        <span id="statusText">Verificando estado de WhatsApp...</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-bottom: 12px; font-size: 16px;">⚠️ Causa del error en el iPhone y Solución Rápida</h3>
+      <div class="alert-box">
+        <strong>¿Por qué el iPhone dice "No se pueden vincular nuevos dispositivos en este momento"?</strong><br>
+        1. <strong>Límite de 4 dispositivos alcanzado:</strong> WhatsApp solo admite 4 dispositivos vinculados a la vez. En tu iPhone ve a <em>Configuración ➔ Dispositivos vinculados</em>. Si tienes sesiones viejas (Mac, Windows, Chrome), tócalas y presiona <strong>"Cerrar sesión"</strong> para dejar al menos 1 cupo libre.<br>
+        2. <strong>Red Wi-Fi o Retransmisión de iCloud:</strong> Desactiva temporalmente el Wi-Fi en el iPhone y usa <strong>Datos Móviles</strong>.<br>
+        3. <strong>Reinicio:</strong> Cierra la app de WhatsApp (deslízala hacia arriba) y ábrela de nuevo.
+      </div>
+
+      <h3 style="margin-bottom: 12px; font-size: 16px;">🔑 Conexión por Código de 8 Dígitos (Sin Cámara)</h3>
+      <p style="font-size: 13.5px; color: var(--text-muted); margin-bottom: 16px;">
+        En la pantalla de WhatsApp de tu iPhone, en lugar de escanear el QR, toca abajo en verde: 
+        <strong style="color: #10b981;">"Vincular con el número de teléfono"</strong>. Luego presiona el botón naranja abajo para generar tu código único:
+      </p>
+
+      <button id="btnGenerate" class="btn" onclick="generatePairingCode()">
+        ⚡ GENERAR CÓDIGO DE 8 DÍGITOS AHORA
+      </button>
+
+      <div id="codeDisplayWrap" class="code-display-wrap">
+        <div style="font-size: 13px; color: var(--text-muted);">Ingresa este código en tu iPhone ahora (tienes 45s):</div>
+        <div id="codeBox" class="code-box">---- ----</div>
+        <div class="timer-bar-wrap">
+          <div id="timerBar" class="timer-bar"></div>
+        </div>
+        <div id="timerText" class="timer-text">Válido durante 45 segundos</div>
+      </div>
+
+      <div style="text-align: center;">
+        <a class="qr-toggle-link" onclick="toggleQR()">Ver Código QR como alternativa ▾</a>
+      </div>
+
+      <div id="qrContainer">
+        <div id="qrLoading" style="color: #333; font-size: 13px; padding: 20px;">Cargando código QR...</div>
+        <img id="qrImage" src="" alt="Código QR WhatsApp" style="display: none;">
+        <div style="font-size: 11px; color: #555; margin-top: 6px;">Escanea con WhatsApp si prefieres cámara</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-bottom: 12px; font-size: 15px;">📋 Pasos en tu iPhone (Toma 15 segundos):</h3>
+      <ul class="steps-list">
+        <li>
+          <span class="step-num">1</span>
+          <div>Abre <strong>WhatsApp</strong> en tu iPhone con la línea <strong>0424-1533712</strong>.</div>
+        </li>
+        <li>
+          <span class="step-num">2</span>
+          <div>Toca <strong>Configuración</strong> (abajo a la derecha) ➔ <strong>Dispositivos vinculados</strong>.</div>
+        </li>
+        <li>
+          <span class="step-num">3</span>
+          <div>Toca <strong>"Vincular un dispositivo"</strong>.</div>
+        </li>
+        <li>
+          <span class="step-num">4</span>
+          <div>En la parte inferior de la pantalla, toca el enlace verde: <strong>"Vincular con el número de teléfono"</strong>.</div>
+        </li>
+        <li>
+          <span class="step-num">5</span>
+          <div>Escribe el código de 8 dígitos que aparece arriba inmediatamente. ¡Listo! Se conectará al instante.</div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="footer-pwa">
+      🌐 Portal PWA 4GMAX (Acceso libre por Wi-Fi o Datos Móviles — Cualquier Operadora):<br>
+      <a href="https://one21026-ids-movilnet-pwa-bxmz.onrender.com/ui/pwa_stitch/index.html" target="_blank">
+        👉 https://one21026-ids-movilnet-pwa-bxmz.onrender.com/ui/pwa_stitch/index.html
+      </a>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = "https://n8n.lpgtec.net/webhook/diag_evolution_qr";
+    let timerInterval = null;
+    let pollInterval = null;
+
+    async function checkStatus() {
+      try {
+        const resp = await fetch(`${API_BASE}?action=status`);
+        const data = await resp.json();
+        const state = data?.instance?.state || data?.state || "unknown";
+        const badge = document.getElementById("statusBadge");
+        const txt = document.getElementById("statusText");
+
+        if (state === "open") {
+          badge.className = "status-badge open";
+          txt.innerHTML = "✅ WHATSAPP VINCULADO Y EN LÍNEA";
+          document.getElementById("btnGenerate").style.display = "none";
+          document.getElementById("codeDisplayWrap").innerHTML = "<div style='color:#10b981; font-size:22px; font-weight:bold; padding:20px;'>🎉 ¡CONECTADO CON ÉXITO!<br><span style='font-size:14px; color:#a0aec0; font-weight:normal;'>La línea Master 0424-1533712 está activa y MOVI responderá automáticamente.</span></div>";
+        } else if (state === "connecting") {
+          badge.className = "status-badge connecting";
+          txt.innerHTML = "⏳ Esperando vinculación desde tu iPhone...";
+        } else {
+          badge.className = "status-badge closed";
+          txt.innerHTML = `⚠️ Estado: ${state}`;
+        }
+      } catch (err) {
+        console.warn("Status check error:", err);
+      }
+    }
+
+    async function generatePairingCode() {
+      const btn = document.getElementById("btnGenerate");
+      const codeWrap = document.getElementById("codeDisplayWrap");
+      const codeBox = document.getElementById("codeBox");
+      const timerBar = document.getElementById("timerBar");
+      const timerText = document.getElementById("timerText");
+
+      btn.disabled = true;
+      btn.innerText = "⏳ Conectando con servidor...";
+
+      try {
+        const resp = await fetch(`${API_BASE}?action=pair`);
+        const data = await resp.json();
+        const code = data.pairingCode;
+
+        if (code) {
+          const formatted = code.length === 8 ? `${code.slice(0,4)} - ${code.slice(4)}` : code;
+          codeBox.innerText = formatted;
+          codeWrap.style.display = "block";
+
+          let secondsLeft = 45;
+          timerBar.style.width = "100%";
+          timerText.innerText = `Válido durante ${secondsLeft} segundos (ingrésalo rápido)`;
+
+          if (timerInterval) clearInterval(timerInterval);
+          timerInterval = setInterval(() => {
+            secondsLeft--;
+            const pct = (secondsLeft / 45) * 100;
+            timerBar.style.width = `${pct}%`;
+            if (secondsLeft > 0) {
+              timerText.innerText = `Válido durante ${secondsLeft} segundos`;
+            } else {
+              clearInterval(timerInterval);
+              timerInterval = null;
+              timerText.innerText = "⚠️ Código expirado. Presiona abajo para generar uno nuevo.";
+              btn.disabled = false;
+              btn.innerText = "🔄 GENERAR NUEVO CÓDIGO";
+            }
+          }, 1000);
+
+          btn.disabled = false;
+          btn.innerText = "🔄 REGENERAR CÓDIGO";
+        } else {
+          alert("El servidor no devolvió código. Intenta de nuevo en 3 segundos.");
+          btn.disabled = false;
+          btn.innerText = "⚡ GENERAR CÓDIGO DE 8 DÍGITOS AHORA";
+        }
+      } catch (err) {
+        alert("Error de conexión: " + err.message);
+        btn.disabled = false;
+        btn.innerText = "⚡ GENERAR CÓDIGO DE 8 DÍGITOS AHORA";
+      }
+    }
+
+    async function toggleQR() {
+      const qrContainer = document.getElementById("qrContainer");
+      const qrLoading = document.getElementById("qrLoading");
+      const qrImage = document.getElementById("qrImage");
+
+      if (qrContainer.style.display === "block") {
+        qrContainer.style.display = "none";
+        return;
+      }
+
+      qrContainer.style.display = "block";
+      qrLoading.style.display = "block";
+      qrImage.style.display = "none";
+
+      try {
+        const resp = await fetch(`${API_BASE}?action=qr`);
+        const data = await resp.json();
+        const b64 = data.base64;
+        if (b64) {
+          const cleanB64 = b64.startsWith("data:") ? b64 : `data:image/png;base64,${b64}`;
+          qrImage.src = cleanB64;
+          qrImage.style.display = "block";
+          qrLoading.style.display = "none";
+        } else {
+          qrLoading.innerText = "No se pudo cargar el QR. Usa el código de 8 dígitos.";
+        }
+      } catch (e) {
+        qrLoading.innerText = "Error cargando QR: " + e.message;
+      }
+    }
+
+    // Inicializar
+    checkStatus();
+    pollInterval = setInterval(checkStatus, 3000);
+  </script>
+</body>
+</html>
