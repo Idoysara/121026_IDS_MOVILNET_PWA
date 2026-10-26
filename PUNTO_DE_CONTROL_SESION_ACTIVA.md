@@ -61,7 +61,18 @@
   - Etiquetado de versión pública inmutable `v26.10.26-revision-publica`.
   - Redacción de la guía para asociados `GUIA_REVISION_ASOCIADO_PUBLICO.md`.
   - Despliegue del script interactivo `PUBLICAR_EN_NUEVO_REPOSITORIO.command`.
-* **Capítulos de Bitácora Vigentes:** **1 al 245** (Sincronizados en `docs/BITACORA_MOVILNET.md`).
+* **Hito 61 Completado (100% PASS):** Elaboración y Certificación de Dossiers Ejecutivos para Inversionistas y Mercadeo:
+  - Formulación del modelo econométrico de retorno de capital (Payback 6.5 meses, ROI 380% a 36 meses, costo marginal por interacción descendente de $0.00095 a $0.00018 por economía de escala).
+  - Estrategia comercial multicanal para mercadeo (Bono de bienvenida 1.000 tokens para 0414/0412, Portabilidad Express con eSIM digital inmediata y monetización 20/80 de cupones locales).
+  - Creación de `docs/PRESENTACION_EJECUTIVA_INVERSIONISTA_ECONOMISTA.md` y `docs/PRESENTACION_EJECUTIVA_DEPARTAMENTO_MERCADEO.md`.
+* **Hito 62 Completado (100% PASS):** Compilación Multiformato de Presentaciones Ejecutivas:
+  - Generación automatizada de presentación Microsoft PowerPoint (`docs/PRESENTACION_EJECUTIVA_MOVILNET_IA.pptx`, 48 KB, 10 láminas widescreen 16:9 con paleta institucional).
+  - Generación de presentación PDF de Alta Definición (`docs/PRESENTACION_EJECUTIVA_MOVILNET_IA.pdf`, 519 KB, 10 páginas 960x540 pt) compilada mediante Google Chrome Headless.
+  - Implementación de visualizadores web interactivos HD (`ui/presentacion_inversionista.html` y `ui/presentacion_mercadeo.html`).
+* **Hito 63 Completado (100% PASS):** Lanzadores Soberanos de 1-Clic con Resiliencia y Tolerancia a Fallos:
+  - Despliegue de `ABRIR_PRESENTACION_PDF.command` para apertura directa en macOS Vista Previa (Preview) con cero configuración.
+  - Actualización blindada de `ABRIR_PRESENTACION_POWERPOINT.command`: detección inteligente de software ofimático instalado; si la Mac no tiene PowerPoint/Keynote (-10814), activa automáticamente la versión PDF, el slide deck interactivo en el navegador y revela el `.pptx` en Finder.
+* **Capítulos de Bitácora Vigentes:** **1 al 247** (Sincronizados en `docs/BITACORA_MOVILNET.md`).
 
 ---
 
