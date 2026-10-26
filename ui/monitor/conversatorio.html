@@ -1571,7 +1571,7 @@
       // ========================================================================
       // GESTIÓN INTELIGENTE DE POLLING (Adaptive Visibility Poller - Ahorro >90% Ancho de Banda)
       // ========================================================================
-      const POLL_INTERVAL_MS = 15000; // 15s (Reduce consumo en un 83% respecto a 2.5s)
+      const POLL_INTERVAL_MS = 4000; // 4s en pestaña activa para visualización reactiva inmediata
       let pollTimerId = null;
 
       function startSmartPolling() {
@@ -1614,6 +1614,7 @@
       if (icon) icon.style.transform = 'rotate(180deg)';
       try {
         await loadConversationsFromServer();
+        renderActiveChat(true);
       } finally {
         if (lbl) lbl.textContent = 'Refrescar';
         if (icon) icon.style.transform = 'none';
@@ -1641,6 +1642,22 @@
             badge.innerText = '0';
           }
         }
+      }
+    }
+
+    function scrollToLatestTurn(chatArea, forceInstant = false) {
+      if (!chatArea) return;
+      const turns = chatArea.querySelectorAll('.turn-wrapper');
+      if (turns.length === 0) return;
+      const lastTurn = turns[turns.length - 1];
+      
+      // Si el turno más reciente es muy alto (ej. texto largo del usuario o descripción de imagen),
+      // enfocar la burbuja del usuario para que quede claramente visible en pantalla y no se corte arriba.
+      if (lastTurn.offsetHeight > chatArea.clientHeight) {
+        const userBubble = lastTurn.querySelector('.bubble-user-card') || lastTurn;
+        userBubble.scrollIntoView({ behavior: forceInstant ? 'instant' : 'smooth', block: 'start' });
+      } else {
+        chatArea.scrollTo({ top: chatArea.scrollHeight, behavior: forceInstant ? 'instant' : 'smooth' });
       }
     }
 
@@ -1679,18 +1696,20 @@
           console.warn('[Conversatorio] Error consultando /api/v1/monitor/conversations local:', localErr);
         }
 
-        // 2. Consultar Render Cloud para sincronización bidireccional y tolerancia a fallos
+        // 2. Si estamos en entorno local, consultar Render Cloud para sincronización dual
         let renderData = null;
-        try {
-          const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 6000);
-          const renderRes = await fetch('https://one21026-ids-movilnet-pwa.onrender.com/api/v1/monitor/conversations?t=' + ts, { signal: controller.signal });
-          clearTimeout(timeoutId);
-          if (renderRes.ok) {
-            renderData = await renderRes.json();
+        if (isLocal) {
+          try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 3500);
+            const renderRes = await fetch('https://one21026-ids-movilnet-pwa-bxmz.onrender.com/api/v1/monitor/conversations?t=' + ts, { signal: controller.signal });
+            clearTimeout(timeoutId);
+            if (renderRes.ok) {
+              renderData = await renderRes.json();
+            }
+          } catch (renderErr) {
+            console.warn('[Conversatorio] Render Cloud sync no disponible:', renderErr);
           }
-        } catch (renderErr) {
-          console.warn('[Conversatorio] Render Cloud sync no disponible:', renderErr);
         }
 
         // 3. Fusión inteligente de fuentes (Local :8010 + Render Cloud)
@@ -2377,10 +2396,10 @@
 
       if (forceScroll || !isUserScrolledUp) {
         setTimeout(() => {
-          chatArea.scrollTop = chatArea.scrollHeight;
+          scrollToLatestTurn(chatArea, true);
         }, 30);
         setTimeout(() => {
-          chatArea.scrollTop = chatArea.scrollHeight;
+          scrollToLatestTurn(chatArea, false);
         }, 120);
       } else {
         setTimeout(() => {
