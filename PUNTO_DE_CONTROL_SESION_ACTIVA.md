@@ -56,6 +56,11 @@
   - Removido stub de rechazo de imágenes para `04142554590`, preservación incondicional de respuestas multimodales reales generadas por Gemini Vision, incorporación de prueba unitaria 3 certificadora, tests al 100% PASS, commit `d0c8e81` y despliegue automático en Render Cloud.
 * **Hito 59 Completado (100% PASS):** Reconfiguración Integral en Caliente de 10 Nodos Multimedia en n8n Cloud (`sNMbtiEiTkuQ9OCY`, Versión `f701df47-f6f3-4325-9c65-e6c1e8be1275`):
   - Normalización perimetral de `message_id`, fallback de `server_url: http://evolution:8080` y `apikey: 957EEABBC570-4C60-8EDB-949655A34113`, corrección de tipos MIME en nodos de conversión binaria, prompt de grado bancario para comprobantes C2P en `Analyze image`, extracción resiliente en nodo `Chat` y verificación en caliente de Ejecución 21997 en 50ms con `status: "success"`.
+* **Hito 60 Completado (100% PASS):** Publicación y Despliegue de Ruta Pública en GitHub para Revisión de Asociados:
+  - Creación y push de rama pública `revision-asociado` en `https://github.com/Idoysara/121026_IDS_MOVILNET_PWA/tree/revision-asociado`.
+  - Etiquetado de versión pública inmutable `v26.10.26-revision-publica`.
+  - Redacción de la guía para asociados `GUIA_REVISION_ASOCIADO_PUBLICO.md`.
+  - Despliegue del script interactivo `PUBLICAR_EN_NUEVO_REPOSITORIO.command`.
 * **Capítulos de Bitácora Vigentes:** **1 al 245** (Sincronizados en `docs/BITACORA_MOVILNET.md`).
 
 ---
