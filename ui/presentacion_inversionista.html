@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dossier Financiero Ejecutivo | Asistente MOVI Movilnet 4GMAX</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+    .slide { display: none; }
+    .slide.active { display: block; animation: fadeIn 0.4s ease-out forwards; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .gradient-hero {
+      background: radial-gradient(circle at 10% 20%, rgba(26, 38, 57, 1) 0%, rgba(13, 20, 31, 1) 90%);
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-red-600 selection:text-white">
+
+  <!-- Cabecera Corporativa Ejecutiva -->
+  <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50 px-6 py-3.5 flex items-center justify-between">
+    <div class="flex items-center space-x-3">
+      <div class="w-8 h-8 rounded-lg bg-red-600 flex items-center justify-center font-black text-white text-lg tracking-wider shadow-lg shadow-red-600/30">M</div>
+      <div>
+        <h1 class="text-sm font-bold tracking-tight text-white flex items-center gap-2">
+          MOVILNET C.A. <span class="text-xs px-2 py-0.5 rounded bg-slate-800 text-slate-400 font-normal">Dossier de Inversión</span>
+        </h1>
+        <p class="text-[11px] text-slate-400">Comité de Finanzas &bull; Evaluación de Factibilidad Económica</p>
+      </div>
+    </div>
+    
+    <div class="flex items-center space-x-4">
+      <div class="text-xs text-slate-400 font-mono hidden sm:block">
+        Diapositiva <span id="currentSlideNum" class="text-white font-bold">1</span> de <span id="totalSlides">8</span>
+      </div>
+      <div class="flex space-x-1">
+        <button onclick="prevSlide()" class="p-2 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition">
+          <i class="fa-solid fa-chevron-left text-xs"></i>
+        </button>
+        <button onclick="nextSlide()" class="p-2 rounded bg-red-600 hover:bg-red-500 text-white transition shadow-md shadow-red-600/30">
+          <i class="fa-solid fa-chevron-right text-xs"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Barra de Progreso Superior -->
+  <div class="w-full bg-slate-800 h-1">
+    <div id="progressBar" class="bg-red-500 h-1 transition-all duration-300" style="width: 12.5%;"></div>
+  </div>
+
+  <!-- Contenedor Principal de Slides -->
+  <main class="flex-1 max-w-7xl mx-auto w-full p-4 sm:p-8 flex items-center justify-center">
+
+    <!-- SLIDE 1: Portada y Tesis de Inversión -->
+    <section class="slide active w-full" data-slide="1">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div class="lg:col-span-7 space-y-6">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-950/60 border border-red-800/50 text-red-400 text-xs font-semibold uppercase tracking-wider">
+            <i class="fa-solid fa-chart-line"></i> Tesis de Inversión Tecnológica
+          </div>
+          <h2 class="text-3xl sm:text-5xl font-extrabold text-white leading-tight">
+            De Centro de Costos a <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-rose-400 to-amber-400">Canal de Ingresos Recurrentes</span>
+          </h2>
+          <p class="text-slate-300 text-base sm:text-lg leading-relaxed">
+            Ecosistema de Autogestión Omnicanal impulsado por IA Híbrida para <strong class="text-white">4.2 Millones de Abonados</strong> en WhatsApp y PWA sin consumo de datos.
+          </p>
+
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-3.5">
+              <div class="text-xs text-slate-400 font-medium">Payback</div>
+              <div class="text-2xl font-black text-emerald-400">7.2 <span class="text-xs text-slate-400 font-normal">meses</span></div>
+            </div>
+            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-3.5">
+              <div class="text-xs text-slate-400 font-medium">TIR (IRR)</div>
+              <div class="text-2xl font-black text-emerald-400">68.4%</div>
+            </div>
+            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-3.5">
+              <div class="text-xs text-slate-400 font-medium">Ahorro OPEX</div>
+              <div class="text-2xl font-black text-sky-400">-94.8%</div>
+            </div>
+            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-3.5">
+              <div class="text-xs text-slate-400 font-medium">VAN (NPV 3A)</div>
+              <div class="text-2xl font-black text-amber-400">$4.82M</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 bg-gradient-to-br from-slate-900 to-slate-900/40 border border-slate-800 rounded-2xl p-6 shadow-2xl relative">
+          <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4 flex items-center justify-between">
+            <span>Diagnóstico Rápido</span>
+            <span class="text-emerald-400 flex items-center gap-1"><i class="fa-solid fa-circle text-[8px]"></i> Solución Lista</span>
+          </div>
+          <div class="space-y-4">
+            <div class="p-3.5 rounded-xl bg-slate-800/40 border border-slate-700/50">
+              <div class="text-xs text-red-400 font-semibold mb-1 flex items-center gap-1.5">
+                <i class="fa-solid fa-triangle-exclamation"></i> Problema Actual:
+              </div>
+              <p class="text-xs text-slate-300">
+                Atender 1 llamada en Call Center cuesta <strong>$0.85 USD</strong>. El 62% son consultas rutinarias que no generan ingresos.
+              </p>
+            </div>
+            <div class="p-3.5 rounded-xl bg-slate-800/40 border border-emerald-900/40">
+              <div class="text-xs text-emerald-400 font-semibold mb-1 flex items-center gap-1.5">
+                <i class="fa-solid fa-bolt"></i> Solución MOVI:
+              </div>
+              <p class="text-xs text-slate-300">
+                Sesión autónoma por WhatsApp/PWA a <strong>$0.0044 USD</strong>. Deflexión del 85% y colocación de recargas C2P y ofertas en segundos.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 2: La Falla Económica de la Atención Tradicional -->
+    <section class="slide w-full" data-slide="2">
+      <div class="space-y-6">
+        <div>
+          <span class="text-xs text-red-400 uppercase tracking-wider font-semibold">Análisis de Estructura de Costos</span>
+          <h2 class="text-3xl font-bold text-white mt-1">El Dilema del Costo Lineal en Atención Humana</h2>
+          <p class="text-sm text-slate-400">Por qué los call centers tradicionales ahogan el margen operativo al escalar usuarios.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+            <div class="w-10 h-10 rounded-lg bg-red-950/60 text-red-400 flex items-center justify-center text-lg">
+              <i class="fa-solid fa-user-clock"></i>
+            </div>
+            <h3 class="text-base font-bold text-white">Costo Variable Rígido</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              En el modelo convencional, duplicar la atención exige duplicar operadores físicos, estaciones y supervisores. El costo marginal es plano y elevado ($0.85/ticket).
+            </p>
+          </div>
+
+          <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-950/60 text-amber-400 flex items-center justify-center text-lg">
+              <i class="fa-solid fa-hourglass-half"></i>
+            </div>
+            <h3 class="text-base font-bold text-white">Fricción y Fuga de Saldo</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              Tiempos de espera de 7 a 15 minutos desincentivan la recarga inmediata. Una línea sin saldo por 48 horas eleva el riesgo de abandono (Churn) en un 18%.
+            </p>
+          </div>
+
+          <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+            <div class="w-10 h-10 rounded-lg bg-emerald-950/60 text-emerald-400 flex items-center justify-center text-lg">
+              <i class="fa-solid fa-robot"></i>
+            </div>
+            <h3 class="text-base font-bold text-white">El Paradigma MOVI (IA)</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              La infraestructura en la nube elástica resuelve 100.000 solicitudes simultáneas en 0.08 segundos con costo marginal decreciente tendiente a $0.00.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-5">
+          <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div>
+              <div class="text-xs text-slate-400 font-semibold uppercase">Comparación de Capacidad de Servicio</div>
+              <div class="text-lg font-bold text-white">1 Estación Humana vs. 1 Nodo MOVI</div>
+            </div>
+            <div class="flex gap-6 text-sm">
+              <div><span class="text-slate-400">Capacidad Humana:</span> <span class="font-bold text-red-400">60 llamadas/día</span></div>
+              <div><span class="text-slate-400">Capacidad MOVI:</span> <span class="font-bold text-emerald-400">1.200.000 sesiones/día</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 3: Ecosistema y Módulos de Servicios en Vivo -->
+    <section class="slide w-full" data-slide="3">
+      <div class="space-y-6">
+        <div>
+          <span class="text-xs text-emerald-400 uppercase tracking-wider font-semibold">Generadores de Valor</span>
+          <h2 class="text-3xl font-bold text-white mt-1">Módulos de Negocio Operativos y Certificados</h2>
+          <p class="text-sm text-slate-400">Cinco motores comerciales activos integrados con la red de Movilnet.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
+            <div class="text-emerald-400 text-xl font-bold"><i class="fa-solid fa-wallet"></i> M1: Core Saldo OCS</div>
+            <p class="text-xs text-slate-300">Consulta en sub-milisegundos de megas, minutos y fecha de expiración en redes 4GMAX. Retención pasiva.</p>
+            <div class="text-[11px] text-slate-400 pt-1 font-mono">Deflexión: 3.1M llamadas/año</div>
+          </div>
+
+          <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
+            <div class="text-sky-400 text-xl font-bold"><i class="fa-solid fa-credit-card"></i> M2: FinTech Pago C2P</div>
+            <p class="text-xs text-slate-300">Pasarela SUDEBAN con débito directo interbancario en Bolívares. Acreditación de saldo en 12 segundos.</p>
+            <div class="text-[11px] text-slate-400 pt-1 font-mono">Take Rate: 1.5% - 2.5%</div>
+          </div>
+
+          <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
+            <div class="text-amber-400 text-xl font-bold"><i class="fa-solid fa-tags"></i> M3: Cazador de Ofertas</div>
+            <p class="text-xs text-slate-300">56 comercios aliados (Arturo's, Farmahorro, Cines Unidos) con 204 ofertas activas. Cupones dinámicos TOTP 60s.</p>
+            <div class="text-[11px] text-slate-400 pt-1 font-mono">Split Comercial: 20% Movilnet / 80% Retail</div>
+          </div>
+
+          <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
+            <div class="text-purple-400 text-xl font-bold"><i class="fa-solid fa-eye"></i> M4: Visión OCR Bancaria</div>
+            <p class="text-xs text-slate-300">Lectura multimodal de comprobantes bancarios y recibos. Validación anti-fraude y conciliación instantánea.</p>
+            <div class="text-[11px] text-slate-400 pt-1 font-mono">Tiempo OCR: &lt;500ms por captura</div>
+          </div>
+
+          <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
+            <div class="text-rose-400 text-xl font-bold"><i class="fa-solid fa-shield-halved"></i> M5: Seguridad EIR & GSMA</div>
+            <p class="text-xs text-slate-300">Bloqueo de IMEI por robo o extravío y salvamento de clientes insatisfechos mediante ofertas dinámicas.</p>
+            <div class="text-[11px] text-slate-400 pt-1 font-mono">Retención: 14.5% de cartera en riesgo</div>
+          </div>
+
+          <div class="p-4 rounded-xl bg-gradient-to-br from-red-950/40 to-slate-900 border border-red-800/50 space-y-2 flex flex-col justify-center">
+            <div class="text-red-400 font-bold text-sm">Próximos Nuevos Servicios</div>
+            <p class="text-xs text-slate-300">Portabilidad Express eSIM, Micro-Seguros Telco y Carrier Billing para streaming y juegos.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 4: El Porqué Económico de la Inteligencia Artificial -->
+    <section class="slide w-full" data-slide="4">
+      <div class="space-y-6">
+        <div>
+          <span class="text-xs text-sky-400 uppercase tracking-wider font-semibold">Palanca de Rendimiento</span>
+          <h2 class="text-3xl font-bold text-white mt-1">Por Qué la IA es el Motor de Escalabilidad</h2>
+          <p class="text-sm text-slate-400">Cómo la combinación de Sistema 1 (FastPath) y Sistema 2 (LLM Multimodal) minimiza los costos operativos.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+          <div class="space-y-4">
+            <div class="p-4 rounded-xl bg-slate-900 border border-slate-800">
+              <h4 class="text-sm font-bold text-emerald-400 mb-1 flex items-center gap-2">
+                <i class="fa-solid fa-microchip"></i> Sistema 1: FastPath (85% del Volumen)
+              </h4>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                Ejecuta consultas de saldo, estados de cuenta y opciones fijas en memoria RAM local en <strong>&lt;1 milisegundo</strong> a <strong>CERO costo de tokens</strong> ($0.00). Evita facturas excesivas de API externa.
+              </p>
+            </div>
+
+            <div class="p-4 rounded-xl bg-slate-900 border border-slate-800">
+              <h4 class="text-sm font-bold text-purple-400 mb-1 flex items-center gap-2">
+                <i class="fa-solid fa-brain"></i> Sistema 2: Gemini Vision (15% del Volumen)
+              </h4>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                Se activa únicamente ante comprobantes de pago, imágenes complejas o lenguaje natural no estructurado. Reemplaza a 45 auditores humanos de conciliación.
+              </p>
+            </div>
+
+            <div class="p-4 rounded-xl bg-slate-900 border border-slate-800">
+              <h4 class="text-sm font-bold text-amber-400 mb-1 flex items-center gap-2">
+                <i class="fa-solid fa-bullseye"></i> Venta Cruzada Predictiva (+8.7% Conversión)
+              </h4>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                La IA contextual ofrece paquetes Extra Datos y cupones comerciales basados en ubicación y saldo en tiempo real, multiplicando por 7 el éxito de campañas masivas por SMS ciego.
+              </p>
+            </div>
+          </div>
+
+          <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col items-center justify-center">
+            <h4 class="text-xs text-slate-400 font-semibold uppercase mb-3">Distribución Óptima de Cargas Cognitivas</h4>
+            <div style="height: 240px; width: 100%;">
+              <canvas id="aiDistributionChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 5: Curva de Costo Marginal y Economías de Escala -->
+    <section class="slide w-full" data-slide="5">
+      <div class="space-y-6">
+        <div>
+          <span class="text-xs text-purple-400 uppercase tracking-wider font-semibold">Teoría Microeconómica Aplicada</span>
+          <h2 class="text-3xl font-bold text-white mt-1">Economías de Escala: Costo Marginal Tendiente a Cero</h2>
+          <p class="text-sm text-slate-400">A medida que aumenta el volumen de abonados, el costo medio por usuario colapsa favorablemente.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+          <div class="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-xl p-5">
+            <h4 class="text-xs text-slate-400 font-semibold uppercase mb-2">Curva de Costo por Interacción (USD) vs. Volumen</h4>
+            <div style="height: 260px;">
+              <canvas id="marginalCostChart"></canvas>
+            </div>
+          </div>
+
+          <div class="lg:col-span-5 space-y-4">
+            <div class="p-4 rounded-xl bg-slate-900 border border-slate-800">
+              <div class="text-xs text-slate-400 uppercase">Costo por Usuario / Mes (100k usuarios)</div>
+              <div class="text-2xl font-bold text-red-400">$0.048 USD</div>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-900 border border-slate-800">
+              <div class="text-xs text-slate-400 uppercase">Costo por Usuario / Mes (1.5M usuarios)</div>
+              <div class="text-2xl font-bold text-amber-400">$0.009 USD</div>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-900 border border-slate-800">
+              <div class="text-xs text-slate-400 uppercase">Costo por Usuario / Mes (4.2M usuarios)</div>
+              <div class="text-2xl font-bold text-emerald-400">$0.003 USD</div>
+            </div>
+            <p class="text-[11px] text-slate-400 italic">
+              * Demostración empírica de rendimientos crecientes a escala gracias a la infraestructura compartida en contenedores elásticos.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 6: Proyecciones Financieras a 3 Años -->
+    <section class="slide w-full" data-slide="6">
+      <div class="space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div>
+            <span class="text-xs text-emerald-400 uppercase tracking-wider font-semibold">Proyección de Flujo de Caja</span>
+            <h2 class="text-3xl font-bold text-white mt-1">Estado de Resultados Proyectado (36 Meses)</h2>
+          </div>
+          <span class="text-xs bg-slate-800 border border-slate-700 px-3 py-1 rounded text-slate-300">Cifras en Miles de USD ($)</span>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="border-b border-slate-800 bg-slate-900/60 text-slate-400 uppercase">
+                <th class="p-3">Renglón Financiero</th>
+                <th class="p-3 text-right">Año 1 (Adopción)</th>
+                <th class="p-3 text-right">Año 2 (Escalamiento)</th>
+                <th class="p-3 text-right">Año 3 (Madurez)</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800/60">
+              <tr>
+                <td class="p-3 text-slate-300 font-medium">Ahorro Neto OPEX Call Center</td>
+                <td class="p-3 text-right font-mono text-emerald-400">$1,224</td>
+                <td class="p-3 text-right font-mono text-emerald-400">$2,448</td>
+                <td class="p-3 text-right font-mono text-emerald-400">$3,264</td>
+              </tr>
+              <tr>
+                <td class="p-3 text-slate-300 font-medium">Ingresos Venta Extra Datos (Upselling)</td>
+                <td class="p-3 text-right font-mono text-slate-200">$720</td>
+                <td class="p-3 text-right font-mono text-slate-200">$1,800</td>
+                <td class="p-3 text-right font-mono text-slate-200">$2,880</td>
+              </tr>
+              <tr>
+                <td class="p-3 text-slate-300 font-medium">Comisiones Cupones Cazador de Ofertas (20%)</td>
+                <td class="p-3 text-right font-mono text-slate-200">$360</td>
+                <td class="p-3 text-right font-mono text-slate-200">$1,152</td>
+                <td class="p-3 text-right font-mono text-slate-200">$2,304</td>
+              </tr>
+              <tr>
+                <td class="p-3 text-slate-300 font-medium">Comisiones Pasarela FinTech C2P</td>
+                <td class="p-3 text-right font-mono text-slate-200">$216</td>
+                <td class="p-3 text-right font-mono text-slate-200">$648</td>
+                <td class="p-3 text-right font-mono text-slate-200">$1,152</td>
+              </tr>
+              <tr class="bg-slate-900 font-bold border-t border-slate-700">
+                <td class="p-3 text-white">TOTAL INGRESOS Y AHORROS BRUTOS</td>
+                <td class="p-3 text-right font-mono text-emerald-400">$2,520</td>
+                <td class="p-3 text-right font-mono text-emerald-400">$6,048</td>
+                <td class="p-3 text-right font-mono text-emerald-400">$9,600</td>
+              </tr>
+              <tr>
+                <td class="p-3 text-slate-400">OPEX Tecnológico (Cloud, APIs IA, SRE)</td>
+                <td class="p-3 text-right font-mono text-red-400">($545)</td>
+                <td class="p-3 text-right font-mono text-red-400">($850)</td>
+                <td class="p-3 text-right font-mono text-red-400">($1,080)</td>
+              </tr>
+              <tr class="bg-emerald-950/20 font-black border-t-2 border-emerald-500/50">
+                <td class="p-3 text-emerald-300">EBITDA OPERATIVO</td>
+                <td class="p-3 text-right font-mono text-emerald-400 text-sm">$1,975</td>
+                <td class="p-3 text-right font-mono text-emerald-400 text-sm">$5,198</td>
+                <td class="p-3 text-right font-mono text-emerald-400 text-sm">$8,520</td>
+              </tr>
+              <tr class="text-slate-400">
+                <td class="p-3 font-semibold">Margen EBITDA (%)</td>
+                <td class="p-3 text-right font-mono text-white">78.4%</td>
+                <td class="p-3 text-right font-mono text-white">85.9%</td>
+                <td class="p-3 text-right font-mono text-white">88.8%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 7: Simulador Financiero Interactivo para el Economista -->
+    <section class="slide w-full" data-slide="7">
+      <div class="space-y-6">
+        <div>
+          <span class="text-xs text-amber-400 uppercase tracking-wider font-semibold">Herramienta de Sensibilidad</span>
+          <h2 class="text-3xl font-bold text-white mt-1">Simulador de Retorno y Sensibilidad en Tiempo Real</h2>
+          <p class="text-sm text-slate-400">Mueve los deslizadores para estresar el modelo y evaluar el comportamiento financiero.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 bg-slate-900 border border-slate-800 rounded-2xl p-6">
+          <div class="lg:col-span-6 space-y-6">
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="text-slate-300">Abonados Activos en la Plataforma:</span>
+                <span id="sliderUsersVal" class="font-bold text-white font-mono">1.500.000</span>
+              </div>
+              <input type="range" id="sliderUsers" min="200000" max="4200000" step="100000" value="1500000" oninput="updateCalculator()" class="w-full accent-red-500">
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="text-slate-300">Tasa de Deflexión de Call Center (%):</span>
+                <span id="sliderDeflectionVal" class="font-bold text-white font-mono">80%</span>
+              </div>
+              <input type="range" id="sliderDeflection" min="50" max="95" step="5" value="80" oninput="updateCalculator()" class="w-full accent-red-500">
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="text-slate-300">Cupones Canjeados por Usuario / Mes:</span>
+                <span id="sliderCouponsVal" class="font-bold text-white font-mono">0.40</span>
+              </div>
+              <input type="range" id="sliderCoupons" min="0.1" max="1.5" step="0.05" value="0.40" oninput="updateCalculator()" class="w-full accent-red-500">
+            </div>
+          </div>
+
+          <div class="lg:col-span-6 bg-slate-950/80 rounded-xl p-5 border border-slate-800/80 flex flex-col justify-between space-y-4">
+            <h4 class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Resultados Proyectados (Anualizados)</h4>
+            
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <div class="text-[11px] text-slate-400">Ahorro OPEX Anual:</div>
+                <div id="resOpex" class="text-xl font-black text-emerald-400 font-mono">$2.04 M</div>
+              </div>
+              <div>
+                <div class="text-[11px] text-slate-400">Ingresos Cupones (20%):</div>
+                <div id="resCoupons" class="text-xl font-black text-sky-400 font-mono">$1.44 M</div>
+              </div>
+              <div>
+                <div class="text-[11px] text-slate-400">EBITDA Estimado:</div>
+                <div id="resEbitda" class="text-2xl font-black text-amber-400 font-mono">$3.12 M</div>
+              </div>
+              <div>
+                <div class="text-[11px] text-slate-400">Payback Estimado:</div>
+                <div id="resPayback" class="text-2xl font-black text-white font-mono">6.4 meses</div>
+              </div>
+            </div>
+
+            <div class="text-[10px] text-slate-500 border-t border-slate-800 pt-3">
+              Cálculo dinámico basado en inversión inicial de USD $850k y costo de llamada base de USD $0.85.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 8: Solicitud de Fondos y Próximos Pasos -->
+    <section class="slide w-full" data-slide="8">
+      <div class="space-y-6">
+        <div>
+          <span class="text-xs text-red-400 uppercase tracking-wider font-semibold">Decisión de Inversión</span>
+          <h2 class="text-3xl font-bold text-white mt-1">Estructura del Financiamiento Solicitado</h2>
+          <p class="text-sm text-slate-400">Presupuesto consolidado de USD $850.000 dividido en 3 tramos auditables contra entregables.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3 relative">
+            <div class="text-xs font-bold text-red-400 uppercase">Tramo 1 (Desembolso Inmediato)</div>
+            <div class="text-3xl font-black text-white">$340.000 <span class="text-xs text-slate-400 font-normal">(40%)</span></div>
+            <ul class="text-xs text-slate-300 space-y-1.5 pt-2">
+              <li>&bull; Infraestructura elástica en Render Cloud</li>
+              <li>&bull; Redundancia multinube y bases ODA</li>
+              <li>&bull; Blindaje de WhatsApp Master (+58 424 153 3712)</li>
+            </ul>
+          </div>
+
+          <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+            <div class="text-xs font-bold text-amber-400 uppercase">Tramo 2 (Mes 3 de Operación)</div>
+            <div class="text-3xl font-black text-white">$297.500 <span class="text-xs text-slate-400 font-normal">(35%)</span></div>
+            <ul class="text-xs text-slate-300 space-y-1.5 pt-2">
+              <li>&bull; Homologación bancaria masiva C2P (18 bancos)</li>
+              <li>&bull; Onboarding de 150 comercios en Cazador</li>
+              <li>&bull; OCR visual avanzado para cheques/recibos</li>
+            </ul>
+          </div>
+
+          <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+            <div class="text-xs font-bold text-emerald-400 uppercase">Tramo 3 (Mes 6 de Operación)</div>
+            <div class="text-3xl font-black text-white">$212.500 <span class="text-xs text-slate-400 font-normal">(25%)</span></div>
+            <ul class="text-xs text-slate-300 space-y-1.5 pt-2">
+              <li>&bull; Despliegue masivo territorial</li>
+              <li>&bull; Lanzamiento de Portabilidad Express eSIM</li>
+              <li>&bull; Reserva operativa de contingencia</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-gradient-to-r from-red-950/60 to-slate-900 border border-red-800/60 rounded-xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div>
+            <h4 class="text-base font-bold text-white">Dictamen Final para el Comité de Finanzas</h4>
+            <p class="text-xs text-slate-300">El proyecto reúne solidez de flujo de caja, asimetría positiva de riesgo y un periodo de repago menor a 8 meses.</p>
+          </div>
+          <a href="https://one21026-ids-movilnet-pwa-bxmz.onrender.com/ui/monitor/conversatorio.html" target="_blank" class="px-5 py-2.5 rounded-lg bg-red-600 hover:bg-red-500 font-bold text-white text-xs tracking-wider uppercase transition shadow-lg shadow-red-600/30 whitespace-nowrap">
+            Ver Monitor en Vivo <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Pie de Página Institucional con Enlace Inviolable -->
+  <footer class="border-t border-slate-800 bg-slate-900/60 px-6 py-4 text-xs text-slate-400 flex flex-col sm:flex-row items-center justify-between gap-2">
+    <div>
+      🌐 Portal PWA 4GMAX (Acceso libre por Wi-Fi o Datos Móviles — Cualquier Operadora):  
+      <a href="https://one21026-ids-movilnet-pwa-bxmz.onrender.com/ui/pwa_stitch/index.html" target="_blank" class="text-red-400 hover:underline font-mono">
+        https://one21026-ids-movilnet-pwa-bxmz.onrender.com/ui/pwa_stitch/index.html
+      </a>
+    </div>
+    <div class="text-[11px] text-slate-500">
+      Telecomunicaciones Movilnet C.A. &copy; 2026
+    </div>
+  </footer>
+
+  <!-- Scripts de Control de Presentación y Gráficos -->
+  <script>
+    let currentSlide = 1;
+    const totalSlides = 8;
+
+    function showSlide(n) {
+      document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+      const active = document.querySelector(`.slide[data-slide="${n}"]`);
+      if (active) active.classList.add('active');
+      document.getElementById('currentSlideNum').innerText = n;
+      document.getElementById('progressBar').style.width = `${(n / totalSlides) * 100}%`;
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides) {
+        currentSlide++;
+        showSlide(currentSlide);
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 1) {
+        currentSlide--;
+        showSlide(currentSlide);
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'Space') nextSlide();
+      if (e.key === 'ArrowLeft') prevSlide();
+    });
+
+    // Gráfica de Distribución de Carga Cognitiva
+    window.addEventListener('DOMContentLoaded', () => {
+      const ctxAi = document.getElementById('aiDistributionChart')?.getContext('2d');
+      if (ctxAi) {
+        new Chart(ctxAi, {
+          type: 'doughnut',
+          data: {
+            labels: ['FastPath Sistema 1 ($0 tokens)', 'Gemini Flash Sistema 2 (Vision/OCR)', 'Escalamiento Agente Humano'],
+            datasets: [{
+              data: [85, 14, 1],
+              backgroundColor: ['#10b981', '#a855f7', '#ef4444'],
+              borderWidth: 0
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: { color: '#94a3b8', font: { size: 10 } }
+              }
+            }
+          }
+        });
+      }
+
+      // Gráfica de Costo Marginal
+      const ctxMarginal = document.getElementById('marginalCostChart')?.getContext('2d');
+      if (ctxMarginal) {
+        new Chart(ctxMarginal, {
+          type: 'line',
+          data: {
+            labels: ['10k', '50k', '200k', '500k', '1M', '2M', '4.2M'],
+            datasets: [
+              {
+                label: 'Call Center Analógico Humano ($/ticket)',
+                data: [0.85, 0.85, 0.86, 0.88, 0.90, 0.92, 0.95],
+                borderColor: '#ef4444',
+                borderDash: [5, 5],
+                tension: 0.1
+              },
+              {
+                label: 'Plataforma MOVI IA Híbrida ($/ticket)',
+                data: [0.08, 0.03, 0.012, 0.007, 0.0044, 0.0028, 0.0018],
+                borderColor: '#10b981',
+                backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                fill: true,
+                tension: 0.3
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              x: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } },
+              y: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' }, title: { display: true, text: 'USD / Ticket', color: '#94a3b8' } }
+            },
+            plugins: {
+              legend: { labels: { color: '#e2e8f0' } }
+            }
+          }
+        });
+      }
+    });
+
+    // Función del Simulador Financiero Interactivo
+    function updateCalculator() {
+      const users = parseInt(document.getElementById('sliderUsers').value);
+      const deflection = parseInt(document.getElementById('sliderDeflection').value) / 100;
+      const coupons = parseFloat(document.getElementById('sliderCoupons').value);
+
+      document.getElementById('sliderUsersVal').innerText = users.toLocaleString('es-VE');
+      document.getElementById('sliderDeflectionVal').innerText = `${Math.round(deflection * 100)}%`;
+      document.getElementById('sliderCouponsVal').innerText = coupons.toFixed(2);
+
+      // Fórmulas financieras:
+      // Ahorro OPEX: Usuarios * 2 consultas/año * deflexión * $0.85 por llamada
+      const opexSavings = (users * 2.0 * deflection * 0.85);
+      // Ingresos cupones: Usuarios * cupones * 12 meses * $0.40 comisión (20% share de $2.00)
+      const couponRevenue = (users * coupons * 12 * 0.40);
+      // Total Bruto
+      const grossBenefit = opexSavings + couponRevenue;
+      // Costos tecnológicos estimados escalables: $180k fijos + $0.05 por usuario/año
+      const techOpex = 180000 + (users * 0.06);
+      const ebitda = grossBenefit - techOpex;
+
+      // Payback en meses sobre inversión inicial $850k
+      const payback = (850000 / (ebitda / 12)).toFixed(1);
+
+      document.getElementById('resOpex').innerText = `$${(opexSavings / 1000000).toFixed(2)} M`;
+      document.getElementById('resCoupons').innerText = `$${(couponRevenue / 1000000).toFixed(2)} M`;
+      document.getElementById('resEbitda').innerText = `$${(ebitda / 1000000).toFixed(2)} M`;
+      document.getElementById('resPayback').innerText = `${payback} meses`;
+    }
+  </script>
+</body>
+</html>
