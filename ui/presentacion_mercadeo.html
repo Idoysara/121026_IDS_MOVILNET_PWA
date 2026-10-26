@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dossier de Mercadeo y Crecimiento | Asistente MOVI Movilnet 4GMAX</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .slide { display: none; }
+    .slide.active { display: block; animation: slideIn 0.35s ease-out forwards; }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-rose-600 selection:text-white">
+
+  <!-- Header Comercial Ejecutivo -->
+  <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-50 px-6 py-3.5 flex items-center justify-between">
+    <div class="flex items-center space-x-3">
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-red-600 to-rose-500 flex items-center justify-center font-black text-white text-lg tracking-wider shadow-lg shadow-rose-600/30">
+        <i class="fa-solid fa-bullhorn text-sm"></i>
+      </div>
+      <div>
+        <h1 class="text-sm font-bold tracking-tight text-white flex items-center gap-2">
+          MOVILNET MARKETING <span class="text-xs px-2 py-0.5 rounded-full bg-rose-950 border border-rose-800/60 text-rose-300 font-semibold">Growth & Monetización</span>
+        </h1>
+        <p class="text-[11px] text-slate-400">Estrategia Comercial, Nuevos Ingresos y Tiempos de Retorno</p>
+      </div>
+    </div>
+    
+    <div class="flex items-center space-x-4">
+      <div class="text-xs text-slate-400 font-mono hidden sm:block">
+        Módulo <span id="currentSlideNum" class="text-white font-bold">1</span> de <span id="totalSlides">8</span>
+      </div>
+      <div class="flex space-x-1">
+        <button onclick="prevSlide()" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition">
+          <i class="fa-solid fa-chevron-left text-xs"></i>
+        </button>
+        <button onclick="nextSlide()" class="p-2 rounded-lg bg-rose-600 hover:bg-rose-500 text-white transition shadow-md shadow-rose-600/30">
+          <i class="fa-solid fa-chevron-right text-xs"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Barra de Progreso -->
+  <div class="w-full bg-slate-800 h-1">
+    <div id="progressBar" class="bg-gradient-to-r from-red-500 to-rose-500 h-1 transition-all duration-300" style="width: 12.5%;"></div>
+  </div>
+
+  <!-- Contenedor Principal de Diapositivas -->
+  <main class="flex-1 max-w-7xl mx-auto w-full p-4 sm:p-8 flex items-center justify-center">
+
+    <!-- SLIDE 1: Portada y Gran Visión Comercial -->
+    <section class="slide active w-full" data-slide="1">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div class="lg:col-span-7 space-y-6">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-950/60 border border-rose-800/50 text-rose-300 text-xs font-semibold uppercase tracking-wider">
+            <i class="fa-solid fa-bolt"></i> Nueva Era del Marketing Telco
+          </div>
+          <h2 class="text-3xl sm:text-5xl font-extrabold text-white leading-tight">
+            De Publicidad Masiva Ciega a <span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-500 via-red-400 to-amber-300">Ventas en Tiempo Real</span>
+          </h2>
+          <p class="text-slate-300 text-base sm:text-lg leading-relaxed">
+            MOVI convierte el canal de mayor uso cotidiano en Venezuela (<strong class="text-white">WhatsApp</strong> y <strong class="text-white">Portal PWA sin consumo de megas</strong>) en la máquina de conversión y fidelización más potente para el equipo de Mercadeo.
+          </p>
+
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-3.5">
+              <div class="text-[11px] text-slate-400 font-medium">Tasa de Apertura</div>
+              <div class="text-2xl font-black text-rose-400 font-mono">98.2%</div>
+              <div class="text-[10px] text-slate-500">vs 12.4% en SMS</div>
+            </div>
+            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-3.5">
+              <div class="text-[11px] text-slate-400 font-medium">Conversión a Venta</div>
+              <div class="text-2xl font-black text-emerald-400 font-mono">8.7%</div>
+              <div class="text-[10px] text-slate-500">vs 1.1% tradicional</div>
+            </div>
+            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-3.5">
+              <div class="text-[11px] text-slate-400 font-medium">Costo Adquisición</div>
+              <div class="text-2xl font-black text-sky-400 font-mono">$0.35</div>
+              <div class="text-[10px] text-slate-500">-92% ahorro CAC</div>
+            </div>
+            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-3.5">
+              <div class="text-[11px] text-slate-400 font-medium">Tiempo de Pago</div>
+              <div class="text-2xl font-black text-amber-400 font-mono">12 seg</div>
+              <div class="text-[10px] text-slate-500">con Pago Móvil C2P</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 bg-gradient-to-br from-slate-900 to-slate-900/50 border border-slate-800 rounded-2xl p-6 shadow-2xl space-y-4">
+          <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider flex items-center justify-between">
+            <span>El Desafío de Mercadeo</span>
+            <span class="text-rose-400 font-bold"><i class="fa-solid fa-check-circle"></i> Oportunidad Activa</span>
+          </div>
+
+          <div class="p-3.5 rounded-xl bg-slate-800/40 border border-red-900/30">
+            <div class="text-xs text-red-400 font-bold mb-1">❌ Campaña Tradicional (SMS Ciego):</div>
+            <p class="text-xs text-slate-300">
+              Se envían 500.000 SMS con una promoción genérica. El 88% es ignorado como spam. Solo 5.500 personas compran tras horas de fricción en la banca.
+            </p>
+          </div>
+
+          <div class="p-3.5 rounded-xl bg-slate-800/40 border border-emerald-900/30">
+            <div class="text-xs text-emerald-400 font-bold mb-1">✅ Campaña MOVI (IA Conversacional):</div>
+            <p class="text-xs text-slate-300">
+              MOVI le escribe al usuario en el momento exacto en que le quedan &lt;200 MB con una oferta personalizada de Extra Datos. 43.500 personas compran en 12 segundos con 1 clic.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 2: Las 5 Vías de Nuevos Ingresos -->
+    <section class="slide w-full" data-slide="2">
+      <div class="space-y-6">
+        <div>
+          <span class="text-xs text-rose-400 uppercase tracking-wider font-semibold">Estructura de Monetización</span>
+          <h2 class="text-3xl font-bold text-white mt-1">¿Por Dónde Entran los Ingresos de Mercadeo?</h2>
+          <p class="text-sm text-slate-400">Cinco líneas concretas de facturación atribuibles directamente a la gestión comercial.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div class="p-5 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
+            <div class="text-rose-400 text-lg font-bold flex items-center gap-2">
+              <i class="fa-solid fa-chart-line"></i> 1. Venta Extra Datos (Upselling)
+            </div>
+            <p class="text-xs text-slate-300">
+              Oferta inmediata de bolsas de datos (1GB, 2GB, 5GB) cuando el usuario consulta saldo y está por agotar su cuota mensual.
+            </p>
+            <div class="text-xs font-mono text-emerald-400 pt-2 font-bold">Proyección Año 1: $720.000 USD</div>
+          </div>
+
+          <div class="p-5 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
+            <div class="text-sky-400 text-lg font-bold flex items-center gap-2">
+              <i class="fa-solid fa-repeat"></i> 2. Recargas C2P Más Frecuentes
+            </div>
+            <p class="text-xs text-slate-300">
+              Al eliminar la fricción bancaria tradicional, el abonado pasa de recargar 2.1 veces a 3.8 veces por mes, elevando el ARPU en +43.5%.
+            </p>
+            <div class="text-xs font-mono text-emerald-400 pt-2 font-bold">ARPU Incremental: +$1.35 / abonado</div>
+          </div>
+
+          <div class="p-5 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
+            <div class="text-amber-400 text-lg font-bold flex items-center gap-2">
+              <i class="fa-solid fa-tags"></i> 3. Retail Media (Cazador de Ofertas)
+            </div>
+            <p class="text-xs text-slate-300">
+              56 grandes cadenas pagan por enviar clientes a sus tiendas físicas. Movilnet retiene el 20% del fee comercial por cupón canjeado.
+            </p>
+            <div class="text-xs font-mono text-emerald-400 pt-2 font-bold">Proyección Año 1: $360.000 USD</div>
+          </div>
+
+          <div class="p-5 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
+            <div class="text-emerald-400 text-lg font-bold flex items-center gap-2">
+              <i class="fa-solid fa-sim-card"></i> 4. Portabilidad Express de la Competencia
+            </div>
+            <p class="text-xs text-slate-300">
+              Atracción de usuarios de Movistar y Digitel con bono Freemium de bienvenida y activación de eSIM en 3 minutos sin ir a tienda.
+            </p>
+            <div class="text-xs font-mono text-emerald-400 pt-2 font-bold">Meta: 120.000 nuevas líneas/año</div>
+          </div>
+
+          <div class="p-5 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
+            <div class="text-purple-400 text-lg font-bold flex items-center gap-2">
+              <i class="fa-solid fa-baseball-bat-ball"></i> 5. Carrier Billing & Patrocinios
+            </div>
+            <p class="text-xs text-slate-300">
+              Paquetes especiales para la LVBP, conciertos y streaming con cobro directo al saldo telefónico con comisión del 15% al 25%.
+            </p>
+            <div class="text-xs font-mono text-emerald-400 pt-2 font-bold">Nueva línea de ingresos no-tarifarios</div>
+          </div>
+
+          <div class="p-5 rounded-xl bg-gradient-to-br from-rose-950/40 to-slate-900 border border-rose-800/50 flex flex-col justify-center space-y-2">
+            <div class="text-rose-400 font-bold text-sm">Total Ingresos de Mercadeo</div>
+            <p class="text-xs text-slate-300">
+              Más de <strong class="text-white">$1.29 Millones USD</strong> en nuevos ingresos directos durante el primer año de operaciones.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 3: Cronograma de Ingresos (Time-to-Money) -->
+    <section class="slide w-full" data-slide="3">
+      <div class="space-y-6">
+        <div>
+          <span class="text-xs text-amber-400 uppercase tracking-wider font-semibold">Cronograma de Retorno Comercial</span>
+          <h2 class="text-3xl font-bold text-white mt-1">¿En Qué Tiempo se Visualizan los Ingresos?</h2>
+          <p class="text-sm text-slate-400">Roadmap en 3 etapas con metas comerciales de facturación medibles.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="text-xs px-2.5 py-1 rounded bg-rose-950 text-rose-300 font-bold uppercase">Meses 1 a 3</span>
+              <span class="text-xs text-emerald-400 font-mono font-bold">$80k - $120k / mes</span>
+            </div>
+            <h3 class="text-base font-bold text-white">Fase 1: Quick Wins Comerciales</h3>
+            <ul class="text-xs text-slate-300 space-y-2">
+              <li>&bull; Difusión masiva del WhatsApp oficial <code>+58 424 153 3712</code>.</li>
+              <li>&bull; Activación de recargas Pago Móvil C2P en 12 segundos.</li>
+              <li>&bull; Upselling automático de Extra Datos en consultas de saldo.</li>
+            </ul>
+            <div class="p-2.5 rounded-lg bg-slate-800/60 text-[11px] text-slate-400">
+              <strong>Retorno Inmediato:</strong> Primer impacto visible en caja en los primeros 30 días.
+            </div>
+          </div>
+
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="text-xs px-2.5 py-1 rounded bg-amber-950 text-amber-300 font-bold uppercase">Meses 4 a 6</span>
+              <span class="text-xs text-emerald-400 font-mono font-bold">$250k - $380k / mes</span>
+            </div>
+            <h3 class="text-base font-bold text-white">Fase 2: Escalamiento Retail</h3>
+            <ul class="text-xs text-slate-300 space-y-2">
+              <li>&bull; Onboarding de 150 comercios aliados en Cazador de Ofertas.</li>
+              <li>&bull; Activación de cupones geolocalizados por radiobase.</li>
+              <li>&bull; Validación automática de comprobantes bancarios por OCR.</li>
+            </ul>
+            <div class="p-2.5 rounded-lg bg-slate-800/60 text-[11px] text-slate-400">
+              <strong>Monetización Retail:</strong> Cobro de comisiones 20/80 a grandes anunciantes.
+            </div>
+          </div>
+
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="text-xs px-2.5 py-1 rounded bg-emerald-950 text-emerald-300 font-bold uppercase">Meses 7 a 12</span>
+              <span class="text-xs text-emerald-400 font-mono font-bold">$500k - $800k / mes</span>
+            </div>
+            <h3 class="text-base font-bold text-white">Fase 3: Conquista de Mercado</h3>
+            <ul class="text-xs text-slate-300 space-y-2">
+              <li>&bull; Campaña nacional de Portabilidad Express eSIM.</li>
+              <li>&bull; Carrier Billing para streaming y deportes (LVBP).</li>
+              <li>&bull; Micro-seguros de pantalla y terminal deducibles de saldo.</li>
+            </ul>
+            <div class="p-2.5 rounded-lg bg-slate-800/60 text-[11px] text-slate-400">
+              <strong>Régimen Permanente:</strong> Consolidación como canal comercial dominante.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 4: El Funnel Conversacional (De Consulta a Venta) -->
+    <section class="slide w-full" data-slide="4">
+      <div class="space-y-6">
+        <div>
+          <span class="text-xs text-sky-400 uppercase tracking-wider font-semibold">Flujo de Conversión</span>
+          <h2 class="text-3xl font-bold text-white mt-1">Cómo el Asistente Convierte una Duda en una Compra</h2>
+          <p class="text-sm text-slate-400">El embudo de conversión que ocurre dentro de la misma conversación en menos de 15 segundos.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-3">
+            <div class="text-xs font-bold text-slate-400 uppercase flex items-center justify-between">
+              <span>Etapa 1: TOFU</span>
+              <span class="text-slate-500">Segundo 0</span>
+            </div>
+            <div class="text-sm font-bold text-white">Consulta Rutinaria</div>
+            <div class="p-3 rounded-lg bg-slate-800/60 text-xs text-slate-300 italic">
+              "Hola, ¿cuántos megas me quedan?"
+            </div>
+            <p class="text-[11px] text-slate-400">El usuario llega buscando información básica sin intención de compra activa.</p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-3">
+            <div class="text-xs font-bold text-sky-400 uppercase flex items-center justify-between">
+              <span>Etapa 2: MOFU</span>
+              <span class="text-sky-500">Segundo 3</span>
+            </div>
+            <div class="text-sm font-bold text-white">Diagnóstico Inteligente</div>
+            <div class="p-3 rounded-lg bg-slate-800/60 text-xs text-slate-300 italic">
+              "Te quedan 180 MB y tu plan vence en 14 días. Estás por agotarlos hoy."
+            </div>
+            <p class="text-[11px] text-slate-400">El sistema crea conciencia de la necesidad antes de que el usuario quede incomunicado.</p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-3">
+            <div class="text-xs font-bold text-amber-400 uppercase flex items-center justify-between">
+              <span>Etapa 3: BOFU</span>
+              <span class="text-amber-500">Segundo 6</span>
+            </div>
+            <div class="text-sm font-bold text-white">Oferta Irresistible (CTA)</div>
+            <div class="p-3 rounded-lg bg-slate-800/60 text-xs text-slate-300 italic">
+              "¿Deseas activar una bolsa Extra Datos 2GB por solo Bs. 45 con 1 clic?"
+            </div>
+            <p class="text-[11px] text-slate-400">Presentación de la solución empaquetada con precio exacto en moneda nacional.</p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-slate-900 border border-emerald-900/50 space-y-3 bg-emerald-950/10">
+            <div class="text-xs font-bold text-emerald-400 uppercase flex items-center justify-between">
+              <span>Etapa 4: CIERRE</span>
+              <span class="text-emerald-500">Segundo 12</span>
+            </div>
+            <div class="text-sm font-bold text-white">Pago Inmediato C2P</div>
+            <div class="p-3 rounded-lg bg-emerald-950/30 text-xs text-emerald-300 font-mono">
+              ¡Acreditación Exitosa! Ref: 894125 &bull; +2 GB disponibles.
+            </div>
+            <p class="text-[11px] text-slate-400">Dinero en cuenta bancaria y datos activos al instante. Cero carritos abandonados.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 5: Cazador de Ofertas & Retail Ads -->
+    <section class="slide w-full" data-slide="5">
+      <div class="space-y-6">
+        <div>
+          <span class="text-xs text-amber-400 uppercase tracking-wider font-semibold">Alianzas Comerciales</span>
+          <h2 class="text-3xl font-bold text-white mt-1">Cazador de Ofertas: Red Publicitaria Retail Media</h2>
+          <p class="text-sm text-slate-400">Cómo monetizar el tráfico físico de los usuarios en alianza con grandes cadenas comerciales.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="p-5 rounded-xl bg-slate-900 border border-slate-800 space-y-3">
+            <div class="text-3xl font-black text-rose-400 font-mono">56</div>
+            <div class="text-sm font-bold text-white">Comercios Aliados Activos</div>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              Cadenas de comida rápida, farmacias, cines y supermercados (Arturo's, Farmahorro, Cines Unidos, Traki, Automercados Plaza's).
+            </p>
+          </div>
+
+          <div class="p-5 rounded-xl bg-slate-900 border border-slate-800 space-y-3">
+            <div class="text-3xl font-black text-amber-400 font-mono">204</div>
+            <div class="text-sm font-bold text-white">Ofertas y Descuentos en Radar</div>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              Promociones geolocalizadas que se activan según la ubicación del abonado (desde 500 metros hasta 50 km de radio de cobertura).
+            </p>
+          </div>
+
+          <div class="p-5 rounded-xl bg-slate-900 border border-slate-800 space-y-3">
+            <div class="text-3xl font-black text-emerald-400 font-mono">20 / 80</div>
+            <div class="text-sm font-bold text-white">Split Comercial de Ingresos</div>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              Movilnet retiene el 20% de cada comisión publicitaria. Cero riesgo de inventario y margen bruto de ganancia superior al 85%.
+            </p>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800 text-xs text-slate-300 flex items-center justify-between">
+          <span>🛡️ <strong>Cuponería Antifraude:</strong> Cada cupón utiliza tokens temporales TOTP de 60 segundos de validez, impidiendo capturas de pantalla falsas o duplicadas en caja.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 6: Conquista de Digitel y Movistar -->
+    <section class="slide w-full" data-slide="6">
+      <div class="space-y-6">
+        <div>
+          <span class="text-xs text-purple-400 uppercase tracking-wider font-semibold">Estrategia de Conquista</span>
+          <h2 class="text-3xl font-bold text-white mt-1">Cómo Captamos Clientes de Movistar y Digitel</h2>
+          <p class="text-sm text-slate-400">El modelo Freemium y la Portabilidad Express convierten usuarios de la competencia sin costo publicitario.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+          <div class="space-y-4">
+            <div class="p-4 rounded-xl bg-slate-900 border border-slate-800">
+              <h4 class="text-sm font-bold text-white mb-1 flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded bg-purple-950 text-purple-300 text-xs font-mono">0414 / 0424 / 0412</span> Detección Perimetral
+              </h4>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                Cuando un usuario de la competencia ingresa al portal PWA o escribe a MOVI, el firewall lo identifica de inmediato y le otorga un <strong>Bono Freemium de Bienvenida (1.000 tokens)</strong> para consultar planes y ofertas.
+              </p>
+            </div>
+
+            <div class="p-4 rounded-xl bg-slate-900 border border-slate-800">
+              <h4 class="text-sm font-bold text-emerald-400 mb-1 flex items-center gap-2">
+                <i class="fa-solid fa-arrows-rotate"></i> Portabilidad Express con eSIM Digital
+              </h4>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                MOVI le ofrece conservar su número telefónico y pasarse a la red 4GMAX de Movilnet mediante la emisión instantánea de una eSIM digital descargable en 3 minutos.
+              </p>
+            </div>
+
+            <div class="p-4 rounded-xl bg-slate-900 border border-slate-800">
+              <h4 class="text-sm font-bold text-amber-400 mb-1 flex items-center gap-2">
+                <i class="fa-solid fa-trophy"></i> Valor Económico del Cliente Ganado
+              </h4>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                Cada cliente migrado genera un LTV anual promedio de <strong>$42 USD</strong> con un costo de adquisición (CAC) inferior a <strong>$0.35 USD</strong>.
+              </p>
+            </div>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-gradient-to-br from-purple-950/40 to-slate-900 border border-purple-800/40 space-y-4 text-center">
+            <div class="w-16 h-16 rounded-2xl bg-purple-600/20 text-purple-400 flex items-center justify-center text-2xl mx-auto border border-purple-500/30">
+              <i class="fa-solid fa-user-plus"></i>
+            </div>
+            <div class="text-2xl font-black text-white">120.000 Líneas Nuevas</div>
+            <p class="text-xs text-slate-300 max-w-sm mx-auto">
+              Meta anual de captación neta de abonados de la competencia durante el despliegue de Portabilidad Express eSIM en el Año 1.
+            </p>
+            <div class="pt-2 text-xs font-mono text-emerald-400 font-bold">
+              Impacto Anual: +$5.04 Millones USD en facturación
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 7: Simulador Interactivo de Campaña de Mercadeo -->
+    <section class="slide w-full" data-slide="7">
+      <div class="space-y-6">
+        <div>
+          <span class="text-xs text-rose-400 uppercase tracking-wider font-semibold">Simulador de Campaña</span>
+          <h2 class="text-3xl font-bold text-white mt-1">Simulador de Ingresos para el Equipo de Mercadeo</h2>
+          <p class="text-sm text-slate-400">Ajusta los parámetros para proyectar las ventas de tu próxima campaña comercial.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 bg-slate-900 border border-slate-800 rounded-2xl p-6">
+          <div class="lg:col-span-6 space-y-6">
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="text-slate-300">Audiencia Impactada por WhatsApp / PWA:</span>
+                <span id="sliderAudienceVal" class="font-bold text-white font-mono">500.000 usuarios</span>
+              </div>
+              <input type="range" id="sliderAudience" min="100000" max="2000000" step="50000" value="500000" oninput="calcMarketingCampaign()" class="w-full accent-rose-500">
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="text-slate-300">Tasa de Conversión Estimada (%):</span>
+                <span id="sliderConversionVal" class="font-bold text-white font-mono">8.5%</span>
+              </div>
+              <input type="range" id="sliderConversion" min="2" max="15" step="0.5" value="8.5" oninput="calcMarketingCampaign()" class="w-full accent-rose-500">
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="text-slate-300">Ticket Promedio del Paquete / Recarga:</span>
+                <span id="sliderTicketVal" class="font-bold text-white font-mono">$1.50 USD</span>
+              </div>
+              <input type="range" id="sliderTicket" min="0.5" max="5.0" step="0.25" value="1.50" oninput="calcMarketingCampaign()" class="w-full accent-rose-500">
+            </div>
+          </div>
+
+          <div class="lg:col-span-6 bg-slate-950/80 rounded-xl p-5 border border-slate-800/80 flex flex-col justify-between space-y-4">
+            <h4 class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Proyección de Resultados de Campaña</h4>
+            
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <div class="text-[11px] text-slate-400">Ventas Realizadas:</div>
+                <div id="resSales" class="text-2xl font-black text-rose-400 font-mono">42.500</div>
+              </div>
+              <div>
+                <div class="text-[11px] text-slate-400">Ingreso Bruto de Campaña:</div>
+                <div id="resGross" class="text-2xl font-black text-emerald-400 font-mono">$63.750 USD</div>
+              </div>
+              <div>
+                <div class="text-[11px] text-slate-400">Costo de Envío / Servidores:</div>
+                <div id="resCost" class="text-lg font-bold text-slate-300 font-mono">$175 USD</div>
+              </div>
+              <div>
+                <div class="text-[11px] text-slate-400">ROI Estimado de Campaña:</div>
+                <div id="resRoi" class="text-2xl font-black text-amber-400 font-mono">364x</div>
+              </div>
+            </div>
+
+            <div class="text-[10px] text-slate-500 border-t border-slate-800 pt-3">
+              Comparativa: La misma campaña enviada por SMS tradicional generaría apenas $8.250 USD con un costo de envío superior a $1.500 USD.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 8: Conclusiones y Próximos Pasos de Mercadeo -->
+    <section class="slide w-full" data-slide="8">
+      <div class="space-y-6">
+        <div>
+          <span class="text-xs text-emerald-400 uppercase tracking-wider font-semibold">Plan de Acción</span>
+          <h2 class="text-3xl font-bold text-white mt-1">Conclusión: El Arma de Crecimiento para Mercadeo</h2>
+          <p class="text-sm text-slate-400">Resumen de beneficios para el departamento comercial y primeros pasos inmediatos.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="p-5 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
+            <div class="text-xs text-rose-400 font-bold uppercase">1. Adopción Rápida</div>
+            <div class="text-lg font-bold text-white">Canales Ya Conocidos</div>
+            <p class="text-xs text-slate-300">
+              No hay que enseñar al usuario a usar una app nueva: ya usa WhatsApp a diario y el portal PWA abre instantáneamente sin gastar saldo.
+            </p>
+          </div>
+
+          <div class="p-5 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
+            <div class="text-xs text-amber-400 font-bold uppercase">2. Monetización Inmediata</div>
+            <div class="text-lg font-bold text-white">Quick Wins en 30 Días</div>
+            <p class="text-xs text-slate-300">
+              Las recargas C2P y la venta de Extra Datos comienzan a sumar ingresos desde la primera semana de encendido de la campaña.
+            </p>
+          </div>
+
+          <div class="p-5 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
+            <div class="text-xs text-emerald-400 font-bold uppercase">3. Autonomía Creativa</div>
+            <div class="text-lg font-bold text-white">Campañas en 24 Horas</div>
+            <p class="text-xs text-slate-300">
+              El equipo de mercadeo puede cargar promociones de la LVBP, Black Friday o combos escolares sin esperar meses de desarrollo tecnológico.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-gradient-to-r from-rose-950/60 to-slate-900 border border-rose-800/60 rounded-xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div>
+            <h4 class="text-base font-bold text-white">¿Listo para Ver la Experiencia del Usuario en Vivo?</h4>
+            <p class="text-xs text-slate-300">Prueba el Asistente MOVI directamente en tu celular o abre el portal PWA oficial.</p>
+          </div>
+          <a href="https://one21026-ids-movilnet-pwa-bxmz.onrender.com/ui/pwa_stitch/index.html" target="_blank" class="px-5 py-2.5 rounded-lg bg-rose-600 hover:bg-rose-500 font-bold text-white text-xs tracking-wider uppercase transition shadow-lg shadow-rose-600/30 whitespace-nowrap">
+            Abrir Portal PWA 4GMAX <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer con Regla Inviolable PWA -->
+  <footer class="border-t border-slate-800 bg-slate-900/60 px-6 py-4 text-xs text-slate-400 flex flex-col sm:flex-row items-center justify-between gap-2">
+    <div>
+      🌐 Portal PWA 4GMAX (Acceso libre por Wi-Fi o Datos Móviles — Cualquier Operadora):  
+      <a href="https://one21026-ids-movilnet-pwa-bxmz.onrender.com/ui/pwa_stitch/index.html" target="_blank" class="text-rose-400 hover:underline font-mono">
+        https://one21026-ids-movilnet-pwa-bxmz.onrender.com/ui/pwa_stitch/index.html
+      </a>
+    </div>
+    <div class="text-[11px] text-slate-500">
+      Telecomunicaciones Movilnet C.A. &copy; 2026 &bull; Gerencia de Mercadeo
+    </div>
+  </footer>
+
+  <!-- Lógica de Presentación y Simulador -->
+  <script>
+    let currentSlide = 1;
+    const totalSlides = 8;
+
+    function showSlide(n) {
+      document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+      const active = document.querySelector(`.slide[data-slide="${n}"]`);
+      if (active) active.classList.add('active');
+      document.getElementById('currentSlideNum').innerText = n;
+      document.getElementById('progressBar').style.width = `${(n / totalSlides) * 100}%`;
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides) {
+        currentSlide++;
+        showSlide(currentSlide);
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 1) {
+        currentSlide--;
+        showSlide(currentSlide);
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'Space') nextSlide();
+      if (e.key === 'ArrowLeft') prevSlide();
+    });
+
+    // Simulador de Campaña de Mercadeo
+    function calcMarketingCampaign() {
+      const audience = parseInt(document.getElementById('sliderAudience').value);
+      const conversion = parseFloat(document.getElementById('sliderConversion').value) / 100;
+      const ticket = parseFloat(document.getElementById('sliderTicket').value);
+
+      document.getElementById('sliderAudienceVal').innerText = `${audience.toLocaleString('es-VE')} usuarios`;
+      document.getElementById('sliderConversionVal').innerText = `${(conversion * 100).toFixed(1)}%`;
+      document.getElementById('sliderTicketVal').innerText = `$${ticket.toFixed(2)} USD`;
+
+      const sales = Math.round(audience * conversion);
+      const grossRevenue = sales * ticket;
+      // Costo marginal en MOVI: ~$0.00035 por sesión
+      const serverCost = Math.round(audience * 0.00035);
+      const roi = Math.round(grossRevenue / Math.max(serverCost, 1));
+
+      document.getElementById('resSales').innerText = sales.toLocaleString('es-VE');
+      document.getElementById('resGross').innerText = `$${grossRevenue.toLocaleString('es-VE')} USD`;
+      document.getElementById('resCost').innerText = `$${serverCost} USD`;
+      document.getElementById('resRoi').innerText = `${roi}x`;
+    }
+  </script>
+</body>
+</html>
